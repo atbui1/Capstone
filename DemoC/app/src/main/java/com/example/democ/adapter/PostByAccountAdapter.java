@@ -43,10 +43,14 @@ public class PostByAccountAdapter extends RecyclerView.Adapter<PostByAccountAdap
         holder.mTxtPostContent.setText(mListPost.get(position).getContent());
         holder.mTxtPostUsername.setText(mListPost.get(position).getFullName());
         int maxSize = mListPost.get(position).getImageVegetablesList().size() - 1;
-        Picasso.with(mContext).load(mListPost.get(position).getImageVegetablesList().get(maxSize).getUrl())
-                .placeholder(R.drawable.ic_launcher_background)
-                .error(R.drawable.caybacha)
-                .into(holder.mImgPostContent);
+        if (mListPost.get(position).getImageVegetablesList().size() > 0) {
+            Picasso.with(mContext).load(mListPost.get(position).getImageVegetablesList().get(maxSize).getUrl())
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.caybacha)
+                    .into(holder.mImgPostContent);
+        } else {
+            holder.mImgPostContent.setImageResource(R.mipmap.addimage64);
+        }
         if (holder.mLnlBtnExchange.getVisibility() == View.VISIBLE) {
             holder.mLnlBtnExchange.setVisibility(View.GONE);
         }

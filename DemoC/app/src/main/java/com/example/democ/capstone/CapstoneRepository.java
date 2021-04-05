@@ -48,7 +48,7 @@ public interface CapstoneRepository {
                          RequestBody quantity, RequestBody gardenId, RequestBody idDetailName, RequestBody idDetailDescription,
                          RequestBody idDetailFeature, RequestBody idDetailImage,
                          MultipartBody.Part newImages,
-                         String token, CallBackData<VegetableData> callBackData);
+                         String token, CallBackData<String> callBackData);
     void getAllVegetableByGardenId(Context context, int gardenId, String token, CallBackData<List<VegetableData>> callBackData);
     void deleteVegetable(Context context, int noVeg, int gardenId, String token, CallBackData<String> callBackData);
     void getAllVegetableNeed(Context context, String token, CallBackData<List<VegetableNeedAll>> callBackData);

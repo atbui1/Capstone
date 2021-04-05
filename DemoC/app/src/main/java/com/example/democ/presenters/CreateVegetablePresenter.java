@@ -35,10 +35,10 @@ public class CreateVegetablePresenter {
                                 MultipartBody.Part newImages, String token) {
         mCapstoneRepository.createVegetable(mContext, title, description, featture, newFeatture, quantity, gardenId,
                 idDetailName, idDetailDescription, idDetailFeature, idDetailImage, newImages, token,
-                new CallBackData<VegetableData>() {
+                new CallBackData<String>() {
                     @Override
-                    public void onSuccess(VegetableData vegetableData) {
-                        mCreateVegetableView.createVegetableSuccess(vegetableData);
+                    public void onSuccess(String msg) {
+                        mCreateVegetableView.createVegetableSuccess();
                     }
 
                     @Override

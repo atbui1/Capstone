@@ -246,7 +246,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
             requestImage = MultipartBody.Part.createFormData("NewImages", file.getName(), requestBody);
             mListImagePart.add(requestImage);
 //            idDetail
-            mStrNewFeature = "";
+            mStrNewFeature = mFeature;
             mStrIdDetailName = "";
             mStrIdDetailDescription = "";
             mStrIdDetailFeature = "";
@@ -268,7 +268,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
         RequestBody requestIdDetailImage = RequestBody.create(MediaType.parse("text/plain"), mStrIdDetailImage);
 
         System.out.println("------------------------------------------------------------------------");
-        System.out.println("mStrUrl: " +mStrUrl);
+        System.out.println("mStrUrl: " + mStrUrl);
         System.out.println("requestTitle: " +requestTitle);
         System.out.println("requestDescription: " + requestDescription);
         System.out.println("requestFeature: " + requestFeature);
@@ -488,7 +488,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
 
 
     @Override
-    public void createVegetableSuccess(VegetableData vegetableData) {
+    public void createVegetableSuccess() {
         System.out.println("************************ 5555555555555555 **************************************");
         System.out.println("createVegetableView Success");
         System.out.println("************************ 5555555555555555 **************************************");
@@ -504,6 +504,9 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
     @Override
     public void createVegetableFail() {
         Toast.makeText(getApplicationContext(), "FFFFFFFFFFFF", Toast.LENGTH_SHORT).show();
+        System.out.println("FFFFFFFFFFF FFFFFFFFFFF         FFFFFFFFFFFFFF      FFFFFFFFF");
+        System.out.println("tao rau fail");
+        System.out.println("FFFFFFFFFFF FFFFFFFFFFF         FFFFFFFFFFFFFF      FFFFFFFFF");
     }
 
     @Override

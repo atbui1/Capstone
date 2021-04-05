@@ -424,7 +424,7 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
                                 final RequestBody gardenId, final RequestBody idDetailName, final RequestBody idDetailDescription,
                                 final RequestBody idDetailFeature, final RequestBody idDetailImage,
                                 final MultipartBody.Part newImages,
-                                final String token, final CallBackData<VegetableData> callBackData) {
+                                final String token, final CallBackData<String> callBackData) {
         ClientApi clientApi = new ClientApi();
         final Gson gson = new Gson();
         Call<ResponseBody> serviceCall = clientApi.capstoneService().createVegetable( title, description, featture, newFeatture, quantity,
@@ -434,25 +434,32 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.code() == 200 && response.body() != null) {
                     try {
-                        String result = response.body().string();
-                        JSONObject jsonObject = new JSONObject(result);
-                        VegetableData vegetableData = gson.fromJson(jsonObject.toString(), VegetableData.class);
-                        if (vegetableData != null) {
-                            callBackData.onSuccess(vegetableData);
-                        } else {
-                            callBackData.onFail("");
-                        }
+//                        String result = response.body().string();
+//                        JSONObject jsonObject = new JSONObject(result);
+//                        VegetableData vegetableData = gson.fromJson(jsonObject.toString(), VegetableData.class);
+//                        if (vegetableData != null) {
+//                            callBackData.onSuccess(vegetableData);
+//                        } else {
+//                            callBackData.onFail("");
+//                        }
+                        callBackData.onSuccess("");
+                        System.out.println("SSSSSSSSSSSSSSSs tao rau thanh cong SSSSSSSSSSSSSSSSSSSSSSSS");
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 } else {
                     callBackData.onFail("");
+                    System.out.println("FFFFFFFFFFFFFFFFF tao rau fail       FFFFFFFFFFFFFFFFFFFF");
+                    System.out.println("code: " + response.code());
+                    System.out.println("FFFFFFFFFFFFFFFFF tao rau fail       FFFFFFFFFFFFFFFFFFFF");
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 callBackData.onFail("");
+                System.out.println("FFFFFFFFFFFFFFF tao rau loi server     FFFFFFFFFFFFFF");
+                System.out.println("FFFFFFFFFFFFFFF tao rau loi server     FFFFFFFFFFFFFF");
             }
         });
     }

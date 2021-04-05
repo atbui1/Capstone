@@ -34,7 +34,7 @@ public class VegetableData implements Serializable {
     @SerializedName("gardenId")
     private int gardenId;
     @SerializedName("quantity")
-    private String quantity;
+    private int quantity;
     //new 4 idDetail
     @SerializedName("idDetailName")
     private String idDetailName;
@@ -80,7 +80,7 @@ public class VegetableData implements Serializable {
 
     //CST search
     public VegetableData(int stt, String idName, String idDescription, String idFeature, String idImage, String name, String description,
-                         String feature, List<ImageVegetable> imageVegetables, int gardenId, String quantity) {
+                         String feature, List<ImageVegetable> imageVegetables, int gardenId, int quantity) {
         this.stt = stt;
         this.idName = idName;
         this.idDescription = idDescription;
@@ -96,7 +96,7 @@ public class VegetableData implements Serializable {
 
     //CST searchNew - 15
     public VegetableData(int stt, String idName, String idDescription, String idFeature, String idImage, String name,
-                         String description, String feature, List<ImageVegetable> imageVegetables, int gardenId, String quantity,
+                         String description, String feature, List<ImageVegetable> imageVegetables, int gardenId, int quantity,
                          String idDetailName, String idDetailDescription, String idDetailFeature, String idDetailImage) {
         this.stt = stt;
         this.idName = idName;
@@ -219,11 +219,11 @@ public class VegetableData implements Serializable {
         this.gardenId = gardenId;
     }
 
-    public String getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 

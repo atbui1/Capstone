@@ -154,28 +154,39 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
             @Override
             public void onClick(View view) {
                 try {
-                    mIntExchangeQuantityDonate = Integer.parseInt(edtQuantity.getText().toString());
+
+                    if (edtQuantity.getText().toString().equals("")) {
+                        mIntExchangeQuantityDonate = 0;
+                    } else {
+                        mIntExchangeQuantityDonate = Integer.parseInt(edtQuantity.getText().toString());
+                    }
                     int status = 1;
-                    System.out.println("thuc hien goi api exchange");
+                    System.out.println("thuc hien goi api exchange showDialogQuantity");
                     System.out.println("exchange quantity: " + mIntExchangeQuantityDonate);
+                    System.out.println("share quantity: " + mIntQuantityOfShare);
                     System.out.println("status: " + status);
                     System.out.println("shareid: " + mShareIdOfShare);
                     System.out.println("receivedBy: " + mAccountIdUser);
                     System.out.println("accessToken: " + mAccessToken);
-                    System.out.println("ket thuc goi api exchange");
+                    System.out.println("ket thuc goi api exchange showDialogQuantity");
                     String aabaa = "";
-                    if (mIntExchangeQuantityDonate > mIntQuantityOfAccount) {
+                    if (mIntExchangeQuantityDonate > mIntQuantityOfShare || mIntExchangeQuantityDonate < 1) {
                         showDialogQuantityErr();
+                        System.out.println("chay vao if showDialogQuantityErr");
                     } else {
                         // goi api exchange
                         ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityDonate, 0, mShareIdOfShare, aabaa);
                         System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+                        System.out.println("chay vao if showDialogQuantity");
                         System.out.println("mExchangeQuantity " + mIntExchangeQuantityDonate);
                         System.out.println("mShareIdOfShare " + mShareIdOfShare);
                         System.out.println("aaaa: " + aabaa);
                         System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
                         mCreateExchangePresenter.createExchange(exchangeRequest, mAccessToken);
                     }
+
+                    System.out.println("showDialogQuantity XXXXXXXXXXXXXXXXXx showDialogQuantity");
+
 
                 } catch (NumberFormatException ex) {
                     ex.printStackTrace();
@@ -238,6 +249,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
                     ex.printStackTrace();
                 }
 
+                System.out.println("chay toi check rau can nhan");
                 mCheckVegetableOfAccountPresenter.CheckVegetableOfAccountPresenter(mStrVegetableNeedId, mStrVegetableNeedName, mAccessToken);
                 dialog.dismiss();
             }
@@ -248,18 +260,23 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
 
     public void createExchange() {
         int status = 2;
-        System.out.println("thuc hien goi api exchange");
+        System.out.println("thuc hien goi api exchange createExchange");
         System.out.println("exchange quantity: " + mIntExchangeQuantityDonate);
         System.out.println("status: " + status);
         System.out.println("shareid: " + mShareIdOfShare);
         System.out.println("receivedBy: " + mAccountIdUser);
         System.out.println("accessToken: " + mAccessToken);
-        System.out.println("ket thuc goi api exchange");
         String aabaa = "";
-        if (mIntExchangeQuantityReceive < mIntQuantityOfAccount) {
+        System.out.println("mIntExchangeQuantityReceive: " + mIntExchangeQuantityReceive);
+        System.out.println("mIntExchangeQuantityDonate: " + mIntExchangeQuantityDonate);
+        System.out.println("mIntQuantityOfAccount: " + mIntQuantityOfAccount);
+        System.out.println("mIntQuantityOfShare: " + mIntQuantityOfShare);
+        if (mIntExchangeQuantityReceive > mIntQuantityOfShare || mIntExchangeQuantityReceive < 1) {
+            System.out.println("chay vao if mIntExchangeQuantityReceive > mIntQuantityOfShare");
             showDialogQuantityErr();
-        } else if (mIntExchangeQuantityDonate > mIntQuantityOfShare) {
-            showDialogQuantityErr();
+        } else if (mIntExchangeQuantityDonate > mIntQuantityOfAccount || mIntExchangeQuantityDonate < 1) {
+            System.out.println("chay vao else if mIntExchangeQuantityDonate > mIntQuantityOfAccount");
+            showDialogQuantityExchangeErr();
         } else {
             // goi api exchange
             ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityDonate, mIntExchangeQuantityReceive, mShareIdOfShare, aabaa);
@@ -271,6 +288,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
 
             mCreateExchangePresenter.createExchange(exchangeRequest, mAccessToken);
         }
+        System.out.println("ket thuc goi api exchange createExchange");
     }
 
     private void showDialogQuantityErr() {
@@ -281,17 +299,23 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         Button btnClose;
         btnClose = (Button) dialog.findViewById(R.id.btn_close);
         txtQuantity = (TextView) dialog.findViewById(R.id.txt_exchange_quantity);
-        txtQuantity.setText("Số lượng không lớn hơn " + mIntQuantityOfShare + " cây");
+        txtQuantity.setText("Số lượng nhận không lớn hơn " + mIntQuantityOfShare + " cây");
+
+        mIntExchangeQuantityDonate = 0;
+        System.out.println("set mIntExchangeQuantityDonate = 0 lai");
+
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mIntExchangeQuantityDonate = 0;
+                System.out.println("set lai cho nay btnClose mIntExchangeQuantityDonate = 0");
                 dialog.dismiss();
             }
         });
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
-    private void showDialogExchangeErr() {
+    private void showDialogQuantityExchangeErr() {
         final Dialog dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.dialog_exchange_quantity_err);
         dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
@@ -299,7 +323,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         Button btnClose;
         btnClose = (Button) dialog.findViewById(R.id.btn_close);
         txtQuantity = (TextView) dialog.findViewById(R.id.txt_exchange_quantity);
-        txtQuantity.setText("Số lượng không lớn hơn " + mIntQuantityOfShare + " cây");
+        txtQuantity.setText("Số lượng cho không lớn hơn " + mIntQuantityOfAccount + " cây");
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -347,7 +371,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
     public void clickBtnExchange(PostData shareData) {
         Toast.makeText(getContext(), "position: "
                 + "\n shareId: " + shareData.getId(), Toast.LENGTH_SHORT).show();
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA clickBtnExchange");
         mIntQuantityOfShare = shareData.getQuantity();
         mShareIdOfShare = shareData.getId();
         mAccountIdOfShare = shareData.getAccountId();
@@ -365,7 +389,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         if (mVegetableIdOfShare.isEmpty()) {
             mVegetableIdOfShare = "";
         }
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA clickBtnExchange");
         if (shareData.getStatius() == 1) {
             showDialogQuantity();
         } else if(shareData.getStatius() == 2) {
@@ -406,9 +430,9 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
 
     @Override
     public void createExchangeSuccess(List<ExchangeData> exchangeData) {
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA createExchangeSuccess");
         System.out.println("createExchangeSuccess");
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA createExchangeSuccess");
     }
 
     @Override
@@ -423,6 +447,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
         System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
         System.out.println("co rau");
+        System.out.println("mIntQuantityOfAccount: " + vegetableData.get(0).getQuantity());
+        mIntQuantityOfAccount = vegetableData.get(0).getQuantity();
         createExchange();
         System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
         System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");

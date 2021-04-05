@@ -170,6 +170,7 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
         } else if (mStrBtnOption == EXCHANGE_POST) {
             Toast.makeText(getApplicationContext(), "Exchange Exchange", Toast.LENGTH_SHORT).show();
             System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
+            System.out.println("mStrVegetableNeedName: " + mStrVegetableNeedName);
             System.out.println(EXCHANGE_POST + EXCHANGE_POST + EXCHANGE_POST + EXCHANGE_POST);
             ShareRequest shareRequest = new ShareRequest(mPostContent, mPostVegetableQuantity, mIntStatus, mPostVegetableId, mStrVegetableNeedId, mStrVegetableNeedName);
             System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
