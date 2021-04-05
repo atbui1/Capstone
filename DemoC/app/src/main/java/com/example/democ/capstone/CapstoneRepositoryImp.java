@@ -19,6 +19,7 @@ import com.example.democ.model.VegetableNeedAll;
 import com.example.democ.model.VegetableSearchDescription;
 import com.example.democ.model.VegetableSearchKeyword;
 import com.example.democ.model.WardData;
+import com.example.democ.model.WikiData;
 import com.example.democ.room.entities.User;
 import com.example.democ.utils.CallBackData;
 import com.example.democ.utils.ClientApi;
@@ -51,6 +52,7 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
     private static List<ProvinceData> mListProvince;
     private static List<DistrictData> mListDistrict;
     private static List<WardData> mListWard;
+    private static List<WikiData> mListWiki;
 
     @Override
     public void login(Context context, String userName, String password, String deviceToken, final CallBackData<User> callBackData) {
@@ -691,6 +693,44 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
                             callBackData.onFail("");
                         } else {
                             callBackData.onSuccess(mListVegetable);
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                } else {
+                    callBackData.onFail("");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                callBackData.onFail("");
+            }
+        });
+    }
+
+    @Override
+    public void searchByWiki(Context context, String searchValue, String token, final CallBackData<List<WikiData>> callBackData) {
+        mListWiki = new ArrayList<>();
+        ClientApi clientApi = new ClientApi();
+        Call<ResponseBody> serviceCall = clientApi.capstoneService().searchByWiki(searchValue, "Bearer " + token);
+        serviceCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.code() == 200 && response.body() != null) {
+                    try {
+                        String result = response.body().string();
+                        JSONArray jsonArray = new JSONArray(result);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            WikiData wikiData = new Gson().fromJson(jsonArray.getJSONObject(i).toString(), WikiData.class);
+                            mListWiki.add(wikiData);
+                        }
+                        if (mListWiki == null) {
+                            callBackData.onFail("");
+                            System.out.println("FFFFFFFFFFFFFFFF wiki search FFFFFFFFFFFFFFFFFFFFF");
+                        } else {
+                            callBackData.onSuccess(mListWiki);
+                            System.out.println("SSSSSSSSSSSSs wiki search SSSSSSSSSSSSSSSSSS");
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();

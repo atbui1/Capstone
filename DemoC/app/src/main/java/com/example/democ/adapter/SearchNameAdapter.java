@@ -58,7 +58,7 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
             return;
         }
         holder.mTxtVegetableName.setText(mVegetableList.get(position).getName());
-        holder.mTxtVegetableDescription.setText(mVegetableList.get(position).getDescription());
+//        holder.mTxtVegetableDescription.setText(mVegetableList.get(position).getDescription());
 //        holder.mTxtVegetableFeature.setText(mVegetableList.get(position).getFeature());
         System.out.println("11111111111111111111111111");
         System.out.println("22222222222222222222222222");
@@ -106,13 +106,13 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mTxtVegetableName, mTxtVegetableDescription;//, mTxtVegetableFeature;
+        TextView mTxtVegetableName;//, mTxtVegetableDescription;//, mTxtVegetableFeature;
         ImageView mImgVegetable;
         LinearLayout mLnlRootVegetable;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mTxtVegetableName = (TextView) itemView.findViewById(R.id.txt_vegetable_name);
-            mTxtVegetableDescription = (TextView) itemView.findViewById(R.id.txt_vegetable_description);
+//            mTxtVegetableDescription = (TextView) itemView.findViewById(R.id.txt_vegetable_description);
 //            mTxtVegetableFeature = (TextView) itemView.findViewById(R.id.txt_vegetable_feature);
             mImgVegetable = (ImageView) itemView.findViewById(R.id.img_vegetable);
             mLnlRootVegetable = (LinearLayout) itemView.findViewById(R.id.lnl_root_vegetable);

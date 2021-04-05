@@ -55,15 +55,23 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
             mVegetableFeature = bundle.getString("VEGETABLE_FEATURE");
             mNoVegetable = bundle.getInt("VEGETABLE_STT");
             mVegetableImg = bundle.getString("VEGETABLE_IMAGE");
+            if (mVegetableImg.equals("")) {
+                mImgVegetable.setImageResource(R.mipmap.addimage64);
+            } else {
+                Picasso.with(this).load(mVegetableImg)
+                        .placeholder(R.drawable.ic_launcher_background)
+                        .error(R.drawable.caybacha)
+                        .into(mImgVegetable);
+            }
             mGardenId = bundle.getInt("GARDEN_ID");
 
             mEdtVegetableName.setText(mVegetableName);
             mEdtVegetableDescription.setText(mVegetableDescription);
             mEdtVegetableFeature.setText(mVegetableFeature);
-            Picasso.with(this).load(mVegetableImg)
-                    .placeholder(R.drawable.ic_launcher_background)
-                    .error(R.drawable.caybacha)
-                    .into(mImgVegetable);
+//            Picasso.with(this).load(mVegetableImg)
+//                    .placeholder(R.drawable.ic_launcher_background)
+//                    .error(R.drawable.caybacha)
+//                    .into(mImgVegetable);
         }
 
 

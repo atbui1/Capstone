@@ -20,6 +20,7 @@ import com.example.democ.model.VegetableRequest;
 import com.example.democ.model.VegetableSearchDescription;
 import com.example.democ.model.VegetableSearchKeyword;
 import com.example.democ.model.WardData;
+import com.example.democ.model.WikiData;
 import com.example.democ.room.entities.User;
 import com.example.democ.utils.CallBackData;
 
@@ -58,6 +59,7 @@ public interface CapstoneRepository {
     void searchByName(Context context, String searchValue, String token, CallBackData<List<VegetableData>> callBackData);
     void searchByDescription(Context context, String searchValue, String token, CallBackData<List<VegetableData>> callBackData);
     void searchByKeyword(Context context, String searchValue, String token, CallBackData<List<VegetableData>> callBackData);
+    void searchByWiki(Context context, String searchValue, String token, CallBackData<List<WikiData>> callBackData);
 
 //    share - post
     void getAllShare(Context context, String token, CallBackData<List<PostData>> callBackData);

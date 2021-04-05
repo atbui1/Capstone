@@ -102,12 +102,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         int maxImage = mListPost.get(position).getImageVegetablesList().size() - 1;
 
 //img
-//        if (mListPost.get(position).getImageVegetablesList().get(maxImage).getUrl() != null) {
-//            Picasso.with(mContext).load(mListPost.get(position).getImageVegetablesList().get(maxImage).getUrl())
-//                    .placeholder(R.drawable.ic_launcher_background)
-//                    .error(R.drawable.caybacha)
-//                    .into(holder.mImgPostContent);
-//        }
+        if (mListPost.get(position).getImageVegetablesList().size() > 0) {
+            Picasso.with(mContext).load(mListPost.get(position).getImageVegetablesList().get(maxImage).getUrl())
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.caybacha)
+                    .into(holder.mImgPostContent);
+        } else {
+            holder.mImgPostContent.setImageResource(R.mipmap.addimage64);
+        }
 
         //click
         holder.mBtnPostExchange.setOnClickListener(new View.OnClickListener() {

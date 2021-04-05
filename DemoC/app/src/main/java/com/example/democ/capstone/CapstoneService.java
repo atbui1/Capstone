@@ -93,6 +93,9 @@ public interface CapstoneService {
     //Search by keyword
     @GET(ConfigApi.Api.SEARCH_KEYWORD)
     Call<ResponseBody> searchByKeyword(@Query("searchValue") String searchValue, @Header("Authorization") String token);
+    //search wiki
+    @GET(ConfigApi.Api.SEARCH_WIKI)
+    Call<ResponseBody> searchByWiki(@Query("") String searchValue, @Header("Authorization") String token);
 
     //post - share
     @GET(ConfigApi.Api.SHARE_ALL)
