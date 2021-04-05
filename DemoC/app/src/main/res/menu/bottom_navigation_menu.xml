@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/nav_diary"
+        android:enabled="true"
+        android:icon="@mipmap/clock"
+        android:title="Nhật ký"
+        app:showAsAction="ifRoom" />
+    <item
+
+        android:id="@+id/nav_garden"
+        android:enabled="true"
+        android:icon="@mipmap/messenger"
+        android:title="Vườn rau"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/nav_search"
+        android:enabled="true"
+        android:icon="@mipmap/search"
+        android:title="Tìm kiếm"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/nav_request_exchange"
+        android:enabled="true"
+        android:icon="@mipmap/post1"
+        android:title="Yêu cầu"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/nav_personal"
+        android:enabled="true"
+        android:icon="@mipmap/person"
+        android:title="Cá nhân"
+        app:showAsAction="ifRoom" />
+</menu>

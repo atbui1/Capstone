@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/dp16"
+    android:paddingRight="@dimen/dp16"
+    tools:context=".activity.LoginActivity">
+
+    <LinearLayout
+        android:background="@color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp150"></LinearLayout>
+
+    <!--email-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp50">
+        <EditText
+            android:id="@+id/edt_username"
+            android:hint="@string/edt_user_login"
+            android:gravity="center_vertical"
+            android:inputType="number"
+            android:background="@drawable/bg_edt"
+            android:paddingLeft="@dimen/dp8"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <!--password-->
+    <LinearLayout
+        android:layout_marginTop="@dimen/dp10"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp50">
+        <EditText
+            android:id="@+id/edt_password"
+            android:hint="@string/edt_password"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_edt"
+            android:inputType="textPassword"
+            android:paddingLeft="@dimen/dp8"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <!--forget password-->
+    <LinearLayout
+        android:weightSum="10"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/dp10"
+        android:layout_marginBottom="@dimen/dp10"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp50">
+        <LinearLayout
+            android:layout_weight="5"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent"></LinearLayout>
+        <LinearLayout
+            android:id="@+id/lnl_forgot_password"
+            android:layout_weight="5"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
+            <TextView
+                android:textSize="@dimen/sp17"
+                android:textStyle="bold"
+                android:textColor="@color/sick_green"
+                android:text="@string/edt_forgot_password"
+                android:gravity="center|right"
+                android:paddingRight="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+    </LinearLayout>
+    <!--btn-log in-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp50">
+        <Button
+            android:id="@+id/btn_login"
+            android:text="@string/btn_title_login"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="@dimen/sp20"
+            android:background="@drawable/bg_btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/lnl_register_account"
+        android:layout_marginTop="@dimen/dp10"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp50">
+        <TextView
+            android:textSize="@dimen/sp17"
+            android:text="@string/edt_no_account_register_now"
+            android:gravity="center|right"
+            android:textColor="@color/sick_green"
+            android:textStyle="bold"
+            android:paddingRight="@dimen/dp10"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+</LinearLayout>

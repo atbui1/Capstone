@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddImagePostActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!--tool bar custom by linearLayout-->
+        <LinearLayout
+            android:weightSum="10"
+            android:orientation="horizontal"
+            android:background="@color/sick_green"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <!--arrow left item-->
+            <LinearLayout
+                android:id="@+id/lnl_back_add_image_post"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:src="@mipmap/leftarrow3"
+                    android:layout_width="@dimen/dp40"
+                    android:layout_height="@dimen/dp40" />
+            </LinearLayout>
+            <!--menu title-->
+            <LinearLayout
+                android:layout_weight="6"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <TextView
+                    android:text="@string/menu_title_add_image_post"
+                    android:gravity="center"
+                    android:textSize="@dimen/sp20"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--menu right -->
+            <LinearLayout
+                android:layout_weight="2"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent"></LinearLayout>
+        </LinearLayout>
+        <!--image example-->
+        <LinearLayout
+            android:layout_marginTop="@dimen/dp150"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="70dp">
+            <ImageView
+                android:src="@mipmap/addimage64"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <!--image by camera-->
+        <LinearLayout
+            android:paddingLeft="100dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <TextView
+                android:id="@+id/txt_take_camera"
+                android:text="Chụp hình bằng camera"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/sp20"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <!--image by memory-->
+        <LinearLayout
+            android:paddingLeft="100dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <TextView
+                android:id="@+id/txt_take_gallery"
+                android:text="Chọn hình từ bộ nhớ"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/sp20"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

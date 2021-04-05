@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/light_sky_blue"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp250">
+        <TextView
+            android:text="ban muo tiem kiem theo the loai nao"
+            android:textSize="@dimen/sp17"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50" />
+        <TextView
+            android:id="@+id/txt_search_name"
+            android:text="tim kiem theo ten"
+            android:textSize="@dimen/sp17"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50" />
+        <TextView
+            android:id="@+id/txt_search_description"
+            android:text="tim kiem theo mo ta"
+            android:textSize="@dimen/sp17"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50" />
+        <TextView
+            android:id="@+id/txt_search_keyword"
+            android:text="tim kiem theo tu khoa"
+            android:textSize="@dimen/sp17"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50" />
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:id="@+id/btn_close"
+                android:background="@drawable/bg_edt"
+                android:text="dong"
+                android:paddingLeft="@dimen/dp50"
+                android:paddingRight="@dimen/dp50"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

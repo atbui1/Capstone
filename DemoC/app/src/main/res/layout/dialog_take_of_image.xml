@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp150">
+
+    <LinearLayout
+        android:background="@drawable/bg_edt"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/txt_img_camera"
+            android:text="Chụp hình bằng điện thoại"
+            android:paddingLeft="@dimen/dp50"
+            android:paddingRight="@dimen/dp20"
+            android:textSize="@dimen/sp20"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50" />
+        <TextView
+            android:id="@+id/txt_imh_storage"
+            android:text="Chọn hình từ album"
+            android:paddingLeft="@dimen/dp50"
+            android:paddingRight="@dimen/dp50"
+            android:textSize="@dimen/sp20"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50" />
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <Button
+                android:id="@+id/btn_close"
+                android:text="Đóng"
+                android:textSize="@dimen/sp17"
+                android:textColor="@color/white"
+                android:background="@drawable/bg_btn_login"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

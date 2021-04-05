@@ -1,0 +1,66 @@
+<resources>
+    <string name="app_name">DemoC</string>
+    <string name="title_activity_login">LoginActivity</string>
+
+    <string name="channel_name">channel_1</string>
+    <string name="channel_description">channel_description_1</string>
+
+    <string name="msg_token_fmt">msg_token_fmt</string>
+
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--txt name-->
+
+    <string name="txt_create_post">Tạo bài đăng</string>
+    <string name="txt_plant_image_create_post">Hình ảnh</string>
+    <string name="txt_phone_number">Số điện thoại</string>
+    <string name="txt_password">Mật khẩu</string>
+    <string name="txt_confirm_password">Xác nhận mật khẩu</string>
+    <string name="txt_full_name">Họ tên người dùng</string>
+    <string name="txt_yob">ngày sinh</string>
+    <string name="txt_sex">giới tính</string>
+    <string name="txt_email">email</string>
+    <string name="txt_plant_name">Tên</string>
+    <string name="txt_plant_description">Mô tả</string>
+    <string name="txt_plant_effect">Công dụng</string>
+    <string name="txt_email_or_phone_register">Email hoặc số điện thoại đăng ký</string>
+    <!--add gaden-->
+    <string name="txt_name_garden">Tên vườn rau</string>
+    <string name="txt_address_garden">Đại chỉ vườn rau</string>
+
+
+    <string name="menu_title_add_image_post">Chọn ảnh</string>
+    <string name="menu_title_profile">Trang cá nhân</string>
+
+
+    <!--edt name-->
+    <string name="edt_user_login">số điện thoại</string>
+    <string name="edt_password">Mật khẩu</string>
+    <string name="edt_forgot_password">Quên mật khẩu</string>
+    <string name="edt_no_account_register_now">Chưa có tài khoản? Đăng ký ngay</string>
+    <string name="edt_phone_number">Số điện thoại</string>
+    <string name="edt_confirm_password">Xác nhận mật khẩu</string>
+    <string name="edt_full_name">Họ tên</string>
+    <string name="edt_email">abc@gmail.com</string>
+    <string name="edt_email_or_phone_register">Email hoặc số điện thoại đăng ký</string>
+    <!--add gaden-->
+    <string name="edt_name_garden">Tên vườn rau</string>
+    <string name="edt_address_garden">Đại chỉ vườn rau</string>
+
+    <!--btn name-->
+    <string name="btn_title_login">Đăng Nhập</string>
+    <string name="btn_title_post">Đăng bài</string>
+    <string name="btn_title_create_vegetable">Tạo rau</string>
+    <string name="btn_title_register_account">Đăng ký tài khoản</string>
+    <string name="btn_title_confirm_password">Xác nhận</string>
+    <string name="btn_title_profile_follow">Follow</string>
+    <string name="btn_title_profile_edit">Edit profile</string>
+
+    <!--awesomeValidation-->
+    <string name="phone_error">Vui lòng nhập đúng số điện thoại</string>
+    <string name="email_error">Vui lòng nhập đúng email</string>
+    <string name="empty_error">Vui lòng không để trống</string>
+    <string name="password_confirm_error">Xác thực mật khẩu không đúng</string>
+
+</resources>

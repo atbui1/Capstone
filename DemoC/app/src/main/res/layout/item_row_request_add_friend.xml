@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:weightSum="10"
+        android:layout_marginBottom="@dimen/dp5"
+        android:background="@drawable/bg_edt"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp100">
+        <LinearLayout
+            android:layout_weight="7"
+            android:orientation="vertical"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp0">
+                <TextView
+                    android:id="@+id/txt_request_name"
+                    android:text="Nguoi A"
+                    android:textSize="@dimen/sp17"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/sp20"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp0">
+                <TextView
+                    android:id="@+id/txt_request_content"
+                    android:text="Muon ket ban voi ban"
+                    android:textSize="@dimen/sp15"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/sp20"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="3"
+            android:orientation="vertical"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/lnl_ok"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="@dimen/dp30"
+                    android:layout_height="@dimen/dp30">
+                    <ImageView
+                        android:src="@drawable/check"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/lnl_no"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="@dimen/dp30"
+                    android:layout_height="@dimen/dp30">
+                    <ImageView
+                        android:src="@drawable/remove"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

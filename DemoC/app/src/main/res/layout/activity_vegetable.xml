@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.VegetableActivity">
+
+
+    <LinearLayout
+        android:weightSum="10"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp50">
+        <LinearLayout
+            android:layout_weight="5"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/txt_vegetable_update"
+                android:text="chỉnh sữa"
+                android:textSize="@dimen/sp25"
+                android:gravity="center"
+                android:textColor="@color/sick_green"
+                android:background="@drawable/bg_edt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="5"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/txt_vegetable_delete"
+                android:text="Xóa"
+                android:textSize="@dimen/sp25"
+                android:gravity="center"
+                android:textColor="@color/red"
+                android:background="@drawable/bg_edt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lnl_root_vegetable"
+        android:layout_marginLeft="@dimen/dp10"
+        android:layout_marginRight="@dimen/dp10"
+        android:background="@drawable/bg_edt"
+        android:layout_marginTop="@dimen/dp5"
+        android:layout_marginBottom="@dimen/dp5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/dp8"
+            android:paddingRight="@dimen/dp8"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!--hinh anh-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp40">
+                <TextView
+                    android:text="@string/txt_plant_image_create_post"
+                    android:textSize="@dimen/sp20"
+                    android:textColor="@color/sick_green"
+                    android:textStyle="bold"
+                    android:padding="@dimen/dp8"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--img hinh anh-->
+            <LinearLayout
+                android:id="@+id/lnl_img_create_post"
+                android:layout_marginTop="@dimen/dp10"
+                android:background="@drawable/bg_edt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/img_vegetable"
+                    android:background="@drawable/bg_edt"
+                    android:src="@mipmap/addimage256"
+                    android:scaleType="fitStart"
+                    android:adjustViewBounds="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--tên loại rau, củ, quả-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txt_vegetable_name"
+                    android:background="@drawable/bg_edt"
+                    android:text="@string/txt_plant_name"
+                    android:textSize="@dimen/sp20"
+                    android:padding="@dimen/dp8"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--mô tả-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txt_vegetable_description"
+                    android:background="@drawable/bg_edt"
+                    android:text="@string/txt_plant_description"
+                    android:textSize="@dimen/sp20"
+                    android:padding="@dimen/dp8"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--công dụng-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txt_vegetable_feature"
+                    android:background="@drawable/bg_edt"
+                    android:text="@string/txt_plant_effect"
+                    android:textSize="@dimen/sp20"
+                    android:padding="@dimen/dp8"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

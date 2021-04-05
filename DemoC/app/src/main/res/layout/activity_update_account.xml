@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.UpdateAccountActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!--tool bar custom by linearLayout-->
+        <LinearLayout
+            android:weightSum="10"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <!--arrow left item-->
+            <LinearLayout
+                android:id="@+id/lnl_back"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:src="@mipmap/leftarrow"
+                    android:layout_width="@dimen/dp30"
+                    android:layout_height="@dimen/dp30" />
+            </LinearLayout>
+            <!--menu title-->
+            <LinearLayout
+                android:layout_weight="6"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <TextView
+                    android:text="Cập nhật thông tin"
+                    android:gravity="center"
+                    android:textSize="@dimen/sp20"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--menu right-->
+            <LinearLayout
+                android:layout_weight="2"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent"></LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:paddingLeft="@dimen/dp16"
+            android:paddingRight="@dimen/dp16"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!--name user-->
+
+            <!--password-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:text="@string/txt_password"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/sp17"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:textColor="@color/sick_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:background="@drawable/bg_edt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <EditText
+                    android:id="@+id/edt_password"
+                    android:background="@drawable/bg_edt"
+                    android:hint="@string/edt_password"
+                    android:inputType="text"
+                    android:paddingLeft="@dimen/dp8"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--confirm password-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:text="@string/txt_confirm_password"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/sp17"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:textColor="@color/sick_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:background="@drawable/bg_edt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <EditText
+                    android:id="@+id/edt_password_confirm"
+                    android:background="@drawable/bg_edt"
+                    android:hint="@string/edt_confirm_password"
+                    android:inputType="text"
+                    android:paddingLeft="@dimen/dp8"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--full name-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:text="@string/txt_full_name"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/sp17"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:textColor="@color/sick_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:background="@drawable/bg_edt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <EditText
+                    android:id="@+id/edt_full_name"
+                    android:background="@drawable/bg_edt"
+                    android:hint="@string/edt_full_name"
+                    android:inputType="text"
+                    android:paddingLeft="@dimen/dp8"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--YOB-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:text="@string/txt_yob"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/sp17"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:textColor="@color/sick_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:background="@drawable/bg_edt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:id="@+id/txt_yob"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_edt"
+                    android:textSize="@dimen/sp17"
+                    android:paddingLeft="@dimen/dp8"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--sex-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:text="@string/txt_sex"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/sp17"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:textColor="@color/sick_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:background="@drawable/bg_edt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:id="@+id/txt_sex"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_edt"
+                    android:paddingLeft="@dimen/dp8"
+                    android:textSize="@dimen/sp17"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--gmail-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:text="@string/txt_email"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/sp17"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:textColor="@color/sick_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:background="@drawable/bg_edt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <EditText
+                    android:id="@+id/edt_email"
+                    android:background="@drawable/bg_edt"
+                    android:hint="@string/edt_email"
+                    android:paddingLeft="@dimen/dp8"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--btn register account-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp20"
+                android:layout_marginBottom="@dimen/dp20"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <Button
+                    android:id="@+id/btn_update_account"
+                    android:background="@drawable/bg_btn_login"
+                    android:text="Cập nhật"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp20"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="@dimen/dp20"
+                    android:layout_marginRight="@dimen/dp20"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

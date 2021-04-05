@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "429894392196",
+    "project_id": "vegetable-6cd92",
+    "storage_bucket": "vegetable-6cd92.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:429894392196:android:094f099b93a351a57065d1",
+        "android_client_info": {
+          "package_name": "com.example.democ"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "429894392196-lo6g5mtqkn5leh25m15v2qibvb09o6hb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBk_Bjs4QIXVfRKCzU9DsNrXmUbLW8wNjc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "429894392196-lo6g5mtqkn5leh25m15v2qibvb09o6hb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

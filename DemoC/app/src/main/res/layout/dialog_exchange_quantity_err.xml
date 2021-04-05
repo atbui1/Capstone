@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp100">
+        <TextView
+            android:id="@+id/txt_exchange_quantity"
+            android:text="Số lượng cây bạn yêu cầu phải"
+            android:gravity="center"
+            android:textSize="@dimen/sp17"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50" />
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <Button
+                android:id="@+id/btn_close"
+                android:background="@drawable/bg_btn_login"
+                android:text="Đóng"
+                android:paddingLeft="@dimen/dp50"
+                android:paddingRight="@dimen/dp50"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
