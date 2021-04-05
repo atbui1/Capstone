@@ -69,8 +69,8 @@
                         android:layout_height="match_parent">
                         <ImageView
                             android:src="@drawable/arrowdown"
-                            android:layout_width="@dimen/dp30"
-                            android:layout_height="@dimen/dp30" />
+                            android:layout_width="@dimen/dp20"
+                            android:layout_height="@dimen/dp20" />
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout

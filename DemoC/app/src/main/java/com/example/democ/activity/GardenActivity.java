@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.democ.R;
 import com.example.democ.adapter.VegetableAdapter;
 import com.example.democ.adapter.VegetablePostAdapter;
+import com.example.democ.iclick.IClickVegetable;
 import com.example.democ.model.Garden;
 import com.example.democ.model.GardenResult;
 import com.example.democ.model.Vegetable;
@@ -33,7 +34,8 @@ import com.example.democ.views.DeleteGardenView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GardenActivity extends AppCompatActivity implements View.OnClickListener, DeleteGardenView, AllVegetableByGardenIdView {
+public class GardenActivity extends AppCompatActivity implements View.OnClickListener, DeleteGardenView, AllVegetableByGardenIdView,
+        IClickVegetable {
 
     private RecyclerView mRecyclerVegetable;
     private List<Vegetable> mVegetablesList;
@@ -123,28 +125,8 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
 
     public void updateUI() {
         if (mVegetableAdapter == null) {
-            mVegetableAdapter = new VegetableAdapter((ArrayList<VegetableData>) mVegetableDataList, getApplicationContext());
+            mVegetableAdapter = new VegetableAdapter((ArrayList<VegetableData>) mVegetableDataList, getApplicationContext(), this);
             mRecyclerVegetable.setAdapter(mVegetableAdapter);
-
-            mVegetableAdapter.getPosition(new VegetableAdapter.OnClickListener() {
-                @Override
-                public void onClickListener(int position) {
-                    Intent intent = new Intent(GardenActivity.this, VegetableActivity.class);
-                    Bundle bundle = new Bundle();
-//                    bundle.putString("VEGETABLE_IMAGE", );
-                    bundle.putString("VEGETABLE_NAME", mVegetableDataList.get(position).getName());
-                    bundle.putString("VEGETABLE_DESCRIPTION", mVegetableDataList.get(position).getDescription());
-                    bundle.putString("VEGETABLE_FEATURE", mVegetableDataList.get(position).getFeature());
-                    bundle.putInt("VEGETABLE_STT", mVegetableDataList.get(position).getStt());
-                    bundle.putString("VEGETABLE_IMAGE", mVegetableDataList.get(position).getImageVegetables().get(0).getUrl());
-                    bundle.putInt("GARDEN_ID", mGardenId);
-                    bundle.putString("GARDEN_NAME", mGardenName);
-                    bundle.putString("GARDEN_ADDRESS", mGardenAddress);
-                    intent.putExtras(bundle);
-                    Toast.makeText(getApplication(), "gardenId: " + mGardenId + "\n noVeg: " + mVegetableDataList.get(position).getStt(), Toast.LENGTH_SHORT).show();
-                    startActivity(intent);
-                }
-            });
         } else {
             mVegetableAdapter.notifyDataSetChanged();
         }
@@ -262,5 +244,31 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void getAllVegetableByGardenIdFail() {
 
+    }
+
+    @Override
+    public void clickVegetable(VegetableData vegetableData) {
+        Intent intent = new Intent(GardenActivity.this, VegetableActivity.class);
+        Bundle bundle = new Bundle();
+//                    bundle.putString("VEGETABLE_IMAGE", );
+        bundle.putString("VEGETABLE_NAME", vegetableData.getName());
+        bundle.putString("VEGETABLE_DESCRIPTION", vegetableData.getDescription());
+        bundle.putString("VEGETABLE_FEATURE", vegetableData.getFeature());
+        bundle.putInt("VEGETABLE_STT", vegetableData.getStt());
+        String linkUrl = "";
+
+        if (vegetableData.getImageVegetables().size() > 0) {
+            int maxSize = vegetableData.getImageVegetables().size() - 1;
+            linkUrl = vegetableData.getImageVegetables().get(maxSize).getUrl();
+        } else {
+            linkUrl = "";
+        }
+        bundle.putString("VEGETABLE_IMAGE", linkUrl);
+        bundle.putInt("GARDEN_ID", mGardenId);
+        bundle.putString("GARDEN_NAME", mGardenName);
+        bundle.putString("GARDEN_ADDRESS", mGardenAddress);
+        intent.putExtras(bundle);
+        Toast.makeText(getApplication(), "gardenId: " + mGardenId + "\n noVeg: " + vegetableData.getStt(), Toast.LENGTH_SHORT).show();
+        startActivity(intent);
     }
 }

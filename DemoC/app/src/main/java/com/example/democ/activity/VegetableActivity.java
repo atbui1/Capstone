@@ -59,6 +59,15 @@ public class VegetableActivity extends AppCompatActivity implements View.OnClick
             mVegetableFeature = bundle.getString("VEGETABLE_FEATURE");
             mNoVegetable = bundle.getInt("VEGETABLE_STT");
             mVegetableImg = bundle.getString("VEGETABLE_IMAGE");
+            if (mVegetableImg.equals("")) {
+                mVegetableImg = "";
+                mImgVegetable.setImageResource(R.mipmap.addimage64);
+            } else {
+                Picasso.with(this).load(mVegetableImg)
+                        .placeholder(R.drawable.ic_launcher_background)
+                        .error(R.drawable.caybacha)
+                        .into(mImgVegetable);
+            }
             mGardenId = bundle.getInt("GARDEN_ID");
             mGardenName = bundle.getString("GARDEN_NAME");
             mGardenAddress = bundle.getString("GARDEN_ADDRESS");
@@ -67,10 +76,10 @@ public class VegetableActivity extends AppCompatActivity implements View.OnClick
         mTxtVegetableName.setText(mVegetableName);
         mTxtVegetableDescription.setText(mVegetableDescription);
         mTxtVegetableFeature.setText(mVegetableFeature);
-        Picasso.with(this).load(mVegetableImg)
-                .placeholder(R.drawable.ic_launcher_background)
-                .error(R.drawable.caybacha)
-                .into(mImgVegetable);
+//        Picasso.with(this).load(mVegetableImg)
+//                .placeholder(R.drawable.ic_launcher_background)
+//                .error(R.drawable.caybacha)
+//                .into(mImgVegetable);
     }
 
     private void deleteVegetable() {
