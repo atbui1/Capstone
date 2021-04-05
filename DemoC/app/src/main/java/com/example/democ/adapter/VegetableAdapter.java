@@ -85,8 +85,8 @@ public class VegetableAdapter extends RecyclerView.Adapter<VegetableAdapter.View
         }
 //        Picasso.with(mContext).load(mVegetableList.get(position).getIdImage()).into(holder.mImgVegetable);
         holder.mTxtVegetableName.setText(mVegetableList.get(position).getName());
-        holder.mTxtVegetableDescription.setText(mVegetableList.get(position).getDescription());
-        holder.mTxtVegetableFeature.setText(mVegetableList.get(position).getFeature());
+//        holder.mTxtVegetableDescription.setText(mVegetableList.get(position).getDescription());
+//        holder.mTxtVegetableFeature.setText(mVegetableList.get(position).getFeature());
 
         //onclick
         holder.mLnlRootVegetable.setOnClickListener(new View.OnClickListener() {
@@ -117,15 +117,15 @@ public class VegetableAdapter extends RecyclerView.Adapter<VegetableAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView mImgVegetable;
-        TextView mTxtVegetableName, mTxtVegetableDescription, mTxtVegetableFeature;
+        TextView mTxtVegetableName;//, mTxtVegetableDescription, mTxtVegetableFeature;
         LinearLayout mLnlRootVegetable;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mImgVegetable = (ImageView) itemView.findViewById(R.id.img_vegetable);
             mTxtVegetableName = (TextView) itemView.findViewById(R.id.txt_vegetable_name);
-            mTxtVegetableDescription = (TextView) itemView.findViewById(R.id.txt_vegetable_description);
-            mTxtVegetableFeature = (TextView) itemView.findViewById(R.id.txt_vegetable_feature);
+//            mTxtVegetableDescription = (TextView) itemView.findViewById(R.id.txt_vegetable_description);
+//            mTxtVegetableFeature = (TextView) itemView.findViewById(R.id.txt_vegetable_feature);
             mLnlRootVegetable = (LinearLayout) itemView.findViewById(R.id.lnl_root_vegetable);
         }
     }

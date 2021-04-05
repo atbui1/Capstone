@@ -171,6 +171,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
 
         mListImageVegetable = new ArrayList<>();
         mStrSearchValue = mEdtSearchValue.getText().toString().trim();
+
 //        Matrix matrix = new Matrix();
 //        mImgCreateVegetable.setScaleType(ImageView.ScaleType.MATRIX);   //required
 //        matrix.postRotate((float) angle, pivotX, pivotY);
@@ -373,6 +374,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
     }
     //open bottom sheet
     private void clickOpenBottomSheet() {
+        mStrSearchValue = mEdtSearchValue.getText().toString();
         if (mStrSearchOption == SEARCH_NAME) {
             Toast.makeText(getApplicationContext(), "search name", Toast.LENGTH_SHORT).show();
             mSearchByNamePresenter.searchByName(mStrSearchValue, mToken);

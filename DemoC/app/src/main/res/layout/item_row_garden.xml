@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_marginTop="@dimen/dp8"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="@dimen/dp80">
 
     <LinearLayout
         android:id="@+id/lnl_garden_root"
@@ -30,6 +30,6 @@
             android:paddingBottom="@dimen/dp5"
             android:textSize="@dimen/dp16"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="@dimen/dp50" />
     </LinearLayout>
 </LinearLayout>

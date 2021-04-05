@@ -1,39 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:background="@color/light_sky_blue"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:paddingLeft="@dimen/dp10"
+        android:paddingRight="@dimen/dp10"
         android:orientation="vertical"
+        android:background="@drawable/bg_edt"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp250">
         <TextView
-            android:text="ban muo tiem kiem theo the loai nao"
+            android:text="Bạn muốn tìm kiếm theo loại nào"
             android:textSize="@dimen/sp17"
             android:gravity="center_vertical"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp50" />
         <TextView
             android:id="@+id/txt_search_name"
-            android:text="tim kiem theo ten"
+            android:text="Tìm kiếm theo tên"
             android:textSize="@dimen/sp17"
             android:gravity="center_vertical"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp50" />
         <TextView
             android:id="@+id/txt_search_description"
-            android:text="tim kiem theo mo ta"
+            android:text="Tìm kiếm theo mô tả"
             android:textSize="@dimen/sp17"
             android:gravity="center_vertical"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp50" />
         <TextView
             android:id="@+id/txt_search_keyword"
-            android:text="tim kiem theo tu khoa"
+            android:text="Tìm kiếm theo từ khóa"
             android:textSize="@dimen/sp17"
             android:gravity="center_vertical"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp50" />
         <LinearLayout
@@ -43,7 +49,9 @@
             <Button
                 android:id="@+id/btn_close"
                 android:background="@drawable/bg_edt"
-                android:text="dong"
+                android:text="Đóng"
+                android:textStyle="bold"
+                android:textSize="@dimen/sp20"
                 android:paddingLeft="@dimen/dp50"
                 android:paddingRight="@dimen/dp50"
                 android:layout_width="wrap_content"
