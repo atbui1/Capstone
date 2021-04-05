@@ -49,7 +49,7 @@ public class RequestExchangeAdapter extends RecyclerView.Adapter<RequestExchange
         if (exchangeData == null) {
             return;
         }
-        holder.mTxtRequestName.setText("Bạn " + position);
+        holder.mTxtRequestName.setText("Bạn " + mListExchange.get(position).getFullNameReceiver());
         holder.mTxtRequestContent.setText("Muốn nhận " + mListExchange.get(position).getQuantity()
                 + " " + mListExchange.get(position).getVegNameSend() + " từ bạn");
 

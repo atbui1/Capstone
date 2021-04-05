@@ -146,9 +146,9 @@ public class MainActivity extends AppCompatActivity implements AllGardenView, Al
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     Fragment selectFragment = null;
                     switch (item.getItemId()) {
-                        case R.id.nav_search:
-                            selectFragment = new SearchFragment();
-                            break;
+//                        case R.id.nav_search:
+//                            selectFragment = new SearchFragment();
+//                            break;
                         case R.id.nav_request_exchange:
                             selectFragment = new RequestExchangeFragment((ArrayList<ExchangeData>) mListAllExchange, mAccessToken);
                             break;
