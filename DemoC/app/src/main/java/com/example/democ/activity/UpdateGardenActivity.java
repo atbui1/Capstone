@@ -101,6 +101,7 @@ public class UpdateGardenActivity extends AppCompatActivity implements View.OnCl
         mWardPresenter = new WardPresenter(getApplication(),getApplicationContext(), this);
 
         mPersonalPresenter.getInfoPersonal();
+
     }
 
     private void initialData() {
@@ -155,14 +156,11 @@ public class UpdateGardenActivity extends AppCompatActivity implements View.OnCl
                 mTxtDistrict.setText(districtData.getName());
                 mIdWard = districtData.getId();
                 mStrDistrict = districtData.getName();
-
-                //
                 mWardPresenter.getWardById(mIdWard, mUser.getToken());
 
             }
         });
         districtBottomSheetFragment.show(getSupportFragmentManager(), districtBottomSheetFragment.getTag());
-//        districtBottomSheetFragment.setCancelable(false);
     }
     //get ward by id
     private void clickOpenWard() {
@@ -174,7 +172,6 @@ public class UpdateGardenActivity extends AppCompatActivity implements View.OnCl
             }
         });
         wardBottomSheetFragment.show(getSupportFragmentManager(), wardBottomSheetFragment.getTag());
-//        wardBottomSheetFragment.setCancelable(false);
     }
 
     @Override

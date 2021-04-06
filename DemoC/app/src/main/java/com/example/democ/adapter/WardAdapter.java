@@ -71,7 +71,9 @@ public class WardAdapter extends RecyclerView.Adapter<WardAdapter.ViewHolder> im
                 } else {
                     List<WardData> listSearch = new ArrayList<>();
                     for (WardData wardData:mListWardOld) {
-                        listSearch.add(wardData);
+                        if (wardData.getName().toLowerCase().contains(strSearch.toLowerCase())) {
+                            listSearch.add(wardData);
+                        }
                     }
                     mListWard = (ArrayList<WardData>) listSearch;
                 }

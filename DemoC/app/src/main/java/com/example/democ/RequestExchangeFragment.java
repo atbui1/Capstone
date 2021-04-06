@@ -129,8 +129,8 @@ public class RequestExchangeFragment extends Fragment implements  IClickExChange
 
     @Override
     public void allExchangeSuccess(List<ExchangeData> exchangeData) {
-//        mListExchange = (ArrayList<ExchangeData>) exchangeData;
-//        mListExchange.remove(mIntPositionClick);
+        mListExchange = (ArrayList<ExchangeData>) exchangeData;
+        mListExchange.remove(mIntPositionClick);
         mRequestExchangeAdapter.notifyItemRemoved(mIntPositionClick);
 
     }

@@ -59,16 +59,20 @@ public class RequestExchangeAdapter extends RecyclerView.Adapter<RequestExchange
 //                mIClickExChange.clickExchange(exchangeData);
 
 //                mListExchange.remove(position);
-                System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
-                System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
-                System.out.println("size: " + mListExchange.size());
-                System.out.println("abcd: " + position);
-                System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
-                System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+//                System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+//                System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+//                System.out.println("size: " + mListExchange.size());
+//                System.out.println("abcd: " + position);
+//                System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+//                System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+//                mIClickExChange.clickExchange(exchangeData, position);
+//                if (mListExchange.size() > 0) {
+//                    mListExchange.remove(position);
+//                }
+//                System.out.println("size abcd: " + mListExchange.size());
+//                System.out.println("DDDDDDDDDGGGGGGGGGGGGGGGGGGGG");
+
                 mIClickExChange.clickExchange(exchangeData, position);
-                mListExchange.remove(position);
-                System.out.println("size abcd: " + mListExchange.size());
-                System.out.println("DDDDDDDDDGGGGGGGGGGGGGGGGGGGG");
 
             }
         });

@@ -217,8 +217,8 @@
                     android:layout_height="@dimen/dp0">
                     <Button
                         android:id="@+id/btn_add_friend"
-                        android:background="@drawable/bg_btn_follow"
-                        android:text="Ket ban"
+                        android:background="@drawable/bg_btn_login"
+                        android:text="Kết bạn"
                         android:textColor="@color/white"
                         android:textSize="@dimen/sp20"
                         android:textStyle="bold"

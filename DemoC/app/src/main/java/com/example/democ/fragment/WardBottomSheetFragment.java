@@ -43,6 +43,7 @@ public class WardBottomSheetFragment extends BottomSheetDialogFragment {
         mBottomSheetDialog = new BottomSheetDialog(getContext(), R.style.BottomSheetDialogTheme);
         View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_province_bottom_sheet, null);
         mBottomSheetDialog.setContentView(view);
+
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_province_bottom_sheet);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
