@@ -16,6 +16,7 @@
 //import com.example.democ.R;
 //import com.example.democ.activity.SearchActivity;
 //import com.example.democ.adapter.SearchNameAdapter;
+//import com.example.democ.model.AccountSearchByName;
 //import com.example.democ.model.VegetableData;
 //
 //import java.util.ArrayList;

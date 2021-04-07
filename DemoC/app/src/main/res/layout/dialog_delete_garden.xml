@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
+            android:id="@+id/txt_content_delete"
             android:text="Bạn có muốn xóa vườn rau này không"
             android:textSize="@dimen/sp20"
             android:paddingLeft="@dimen/dp50"
@@ -22,18 +23,18 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp50">
             <Button
-                android:id="@+id/btn_delete_garden_no"
-                android:text="Không"
-                android:layout_marginRight="@dimen/dp16"
+                android:id="@+id/btn_delete_yes"
+                android:text="Có"
+                android:layout_marginRight="@dimen/dp20"
                 android:textSize="@dimen/sp17"
                 android:textColor="@color/white"
                 android:background="@drawable/bg_btn_login"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
             <Button
-                android:id="@+id/btn_delete_garden_yes"
-                android:text="Có"
-                android:layout_marginLeft="@dimen/dp16"
+                android:id="@+id/btn_delete_no"
+                android:text="Không"
+                android:layout_marginLeft="@dimen/dp20"
                 android:textSize="@dimen/sp17"
                 android:textColor="@color/white"
                 android:background="@drawable/bg_btn_login"

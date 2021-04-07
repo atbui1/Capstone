@@ -3,6 +3,7 @@ package com.example.democ.capstone;
 import android.content.Context;
 
 import com.example.democ.model.Account;
+import com.example.democ.model.AccountSearchByName;
 import com.example.democ.model.AddFriendRequest;
 import com.example.democ.model.DistrictData;
 import com.example.democ.model.ExchangeData;
@@ -53,6 +54,7 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
     private static List<DistrictData> mListDistrict;
     private static List<WardData> mListWard;
     private static List<WikiData> mListWiki;
+    private static List<AccountSearchByName> mListAccount;
 
     @Override
     public void login(Context context, String userName, String password, String deviceToken, final CallBackData<User> callBackData) {
@@ -262,6 +264,48 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                callBackData.onFail("");
+            }
+        });
+    }
+
+    @Override
+    public void searchAccountByName(Context context, String searchValue, String token, final CallBackData<List<AccountSearchByName>> callBackData) {
+        mListAccount = new ArrayList<>();
+        ClientApi clientApi = new ClientApi();
+        Call<ResponseBody> serviceCall = clientApi.capstoneService().searchAccountByName(searchValue, "Bearer " + token);
+        serviceCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.code() == 200 && response.body() != null) {
+                    try {
+                        String result = response.body().string();
+                        JSONArray jsonArray = new JSONArray(result);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            AccountSearchByName data = new Gson().fromJson(jsonArray.getJSONObject(i).toString(), AccountSearchByName.class);
+                            mListAccount.add(data);
+                        }
+                        if (mListAccount == null) {
+                            callBackData.onFail("");
+                            System.out.println("FFFFFFFFFFFFFFFFFFF  search name account fail FFFFFFFFFFFFFFFFF");
+                        } else {
+                            callBackData.onSuccess(mListAccount);
+                            System.out.println("SSSSSSSSSSSSSSSSSS  search name account success SSSSSSSSSSSSSSSSSSSSSSS");
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                } else {
+                    callBackData.onFail("");
+                    System.out.println("FFFFFFFFFFFFFFFF ngoai if search name account FFFFFFFFFFFFFFFFFFFFFFFFFF");
+                    System.out.println("code: " + response.code());
+                    System.out.println("FFFFFFFFFFFFFFFF ngoai if search name account FFFFFFFFFFFFFFFFFFFFFFFFFF");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                System.out.println("FFFFFFFFFFFFFFFFFFFFFFF  search name account onFailure    FFFFFFFFFFFFFFFFFFFFFFFF");
                 callBackData.onFail("");
             }
         });
@@ -865,6 +909,32 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                callBackData.onFail("");
+            }
+        });
+    }
+
+    @Override
+    public void deleteShare(Context context, String shareId, String token, final CallBackData<String> callBackData) {
+        ClientApi clientApi = new ClientApi();
+        Call<ResponseBody> serviceCall = clientApi.capstoneService().deleteShare(shareId, "Bearer " + token);
+        serviceCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.code() == 200) {
+                    callBackData.onSuccess("");
+                    System.out.println("SSSSSSSSSSSSSS xoa bai share thanh cong SSSSSSSSSSSSSSSSSSSSS");
+                } else {
+                    callBackData.onFail("");
+                    System.out.println("FFFFFFFFFFFFF xoa bai dang khg thanh cong FFFFFFFFFFFFFFFFFFFFFF");
+                    System.out.println("code: " + response.code());
+                    System.out.println("FFFFFFFFFFFFF xoa bai dang khg thanh cong FFFFFFFFFFFFFFFFFFFFFF");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                System.out.println("FFFFFFFFF xoa bai dang onFailure FFFFFFFFFFFFFFF");
                 callBackData.onFail("");
             }
         });

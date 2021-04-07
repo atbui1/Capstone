@@ -148,8 +148,8 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCanceledOnTouchOutside(false);
         Button mBtnYes, mBtnNo;
-        mBtnYes = (Button) dialog.findViewById(R.id.btn_delete_garden_yes);
-        mBtnNo = (Button) dialog.findViewById(R.id.btn_delete_garden_no);
+        mBtnYes = (Button) dialog.findViewById(R.id.btn_delete_yes);
+        mBtnNo = (Button) dialog.findViewById(R.id.btn_delete_no);
         mBtnNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

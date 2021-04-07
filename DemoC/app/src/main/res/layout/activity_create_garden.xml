@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,177 +7,220 @@
     android:orientation="vertical"
     tools:context=".activity.CreateGardenActivity">
 
+
+    <!--custom linear layout into toolbar-->
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_marginLeft="@dimen/dp16"
-        android:layout_marginRight="@dimen/dp16"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <!--name garden-->
+        android:layout_height="@dimen/dp50">
         <LinearLayout
-            android:layout_marginTop="@dimen/dp50"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp50">
+            android:id="@+id/lnl_back"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
+            <ImageView
+                android:src="@mipmap/leftarrow"
+                android:layout_width="@dimen/dp20"
+                android:layout_height="@dimen/dp20" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="3"
+            android:gravity="center"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
             <TextView
-                android:text="@string/txt_name_garden"
-                android:textStyle="bold"
-                android:textSize="@dimen/sp17"
-                android:gravity="center_vertical"
-                android:paddingLeft="8dp"
-                android:textColor="@color/sick_green"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-        <LinearLayout
-            android:background="@drawable/bg_edt"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp50">
-            <EditText
-                android:id="@+id/edt_garden_name"
-                android:background="@drawable/bg_edt"
-                android:hint="@string/edt_name_garden"
-                android:paddingLeft="@dimen/dp8"
-                android:inputType="text"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-        <!--Province-->
-        <LinearLayout
-            android:layout_marginTop="@dimen/dp10"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp50">
-            <TextView
-                android:text="Tỉnh/Thành phố"
-                android:textStyle="bold"
-                android:textSize="@dimen/sp17"
-                android:gravity="center_vertical"
-                android:paddingLeft="8dp"
-                android:textColor="@color/sick_green"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-        <LinearLayout
-            android:background="@drawable/bg_edt"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp50">
-            <TextView
-                android:id="@+id/txt_province"
-                android:background="@drawable/bg_edt"
-                android:text="Tỉnh/Thành phố"
-                android:gravity="center_vertical"
-                android:paddingLeft="@dimen/dp8"
-                android:inputType="text"
-                android:textSize="@dimen/sp15"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-        <!--district-->
-        <LinearLayout
-            android:layout_marginTop="@dimen/dp10"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp50">
-            <TextView
-                android:text="Quận/Huyện"
-                android:textStyle="bold"
-                android:textSize="@dimen/sp17"
-                android:gravity="center_vertical"
-                android:paddingLeft="8dp"
-                android:textColor="@color/sick_green"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-        <LinearLayout
-            android:background="@drawable/bg_edt"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp50">
-            <TextView
-                android:id="@+id/txt_district"
-                android:background="@drawable/bg_edt"
-                android:text="Quận/Huyện"
-                android:gravity="center_vertical"
-                android:paddingLeft="@dimen/dp8"
-                android:inputType="text"
-                android:textSize="@dimen/sp15"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-        <!--Province-->
-        <LinearLayout
-            android:layout_marginTop="@dimen/dp10"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp50">
-            <TextView
-                android:text="Phường/Xã"
-                android:textStyle="bold"
-                android:textSize="@dimen/sp17"
-                android:gravity="center_vertical"
-                android:paddingLeft="8dp"
-                android:textColor="@color/sick_green"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-        <LinearLayout
-            android:background="@drawable/bg_edt"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp50">
-            <TextView
-                android:id="@+id/txt_ward"
-                android:background="@drawable/bg_edt"
-                android:text="Phường/Xã"
-                android:gravity="center_vertical"
-                android:paddingLeft="@dimen/dp8"
-                android:inputType="text"
-                android:textSize="@dimen/sp15"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-        <!--address garden-->
-        <LinearLayout
-            android:layout_marginTop="@dimen/dp10"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp50">
-            <TextView
-                android:text="Đại chỉ chi tiết"
-                android:textStyle="bold"
-                android:textSize="@dimen/sp17"
-                android:gravity="center_vertical"
-                android:paddingLeft="8dp"
-                android:textColor="@color/sick_green"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-        <LinearLayout
-            android:background="@drawable/bg_edt"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp50">
-            <EditText
-                android:id="@+id/edt_garden_address"
-                android:background="@drawable/bg_edt"
-                android:hint="Địa chỉ chi tiết"
-                android:paddingLeft="@dimen/dp8"
-                android:inputType="text"
-                android:textSize="@dimen/sp15"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-        <!--btn add garden-->
-        <LinearLayout
-            android:layout_marginTop="@dimen/dp20"
-            android:layout_marginBottom="@dimen/dp30"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp50">
-            <Button
-                android:id="@+id/btn_create_garden"
-                android:background="@drawable/bg_btn_login"
                 android:text="Tạo vườn rau"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp20"
+                android:textSize="@dimen/dp20"
+                android:textColor="@color/sick_green"
                 android:textStyle="bold"
-                android:layout_marginLeft="@dimen/dp20"
-                android:layout_marginRight="@dimen/dp20"
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
         </LinearLayout>
     </LinearLayout>
 
-</ScrollView>
+    <!--NestedScrollView-->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/dp16"
+            android:layout_marginRight="@dimen/dp16"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!--name garden-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:text="@string/txt_name_garden"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/sp17"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:textColor="@color/sick_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:background="@drawable/bg_edt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <EditText
+                    android:id="@+id/edt_garden_name"
+                    android:background="@drawable/bg_edt"
+                    android:hint="@string/edt_name_garden"
+                    android:paddingLeft="@dimen/dp8"
+                    android:inputType="text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--Province-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:text="Tỉnh/Thành phố"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/sp17"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:textColor="@color/sick_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:background="@drawable/bg_edt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:id="@+id/txt_province"
+                    android:background="@drawable/bg_edt"
+                    android:text="Tỉnh/Thành phố"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dp8"
+                    android:inputType="text"
+                    android:textSize="@dimen/sp15"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--district-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:text="Quận/Huyện"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/sp17"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:textColor="@color/sick_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:background="@drawable/bg_edt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:id="@+id/txt_district"
+                    android:background="@drawable/bg_edt"
+                    android:text="Quận/Huyện"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dp8"
+                    android:inputType="text"
+                    android:textSize="@dimen/sp15"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--Province-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:text="Phường/Xã"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/sp17"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:textColor="@color/sick_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:background="@drawable/bg_edt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:id="@+id/txt_ward"
+                    android:background="@drawable/bg_edt"
+                    android:text="Phường/Xã"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dp8"
+                    android:inputType="text"
+                    android:textSize="@dimen/sp15"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--address garden-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:text="Đại chỉ chi tiết"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/sp17"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:textColor="@color/sick_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:background="@drawable/bg_edt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <EditText
+                    android:id="@+id/edt_garden_address"
+                    android:background="@drawable/bg_edt"
+                    android:hint="Địa chỉ chi tiết"
+                    android:paddingLeft="@dimen/dp8"
+                    android:inputType="text"
+                    android:textSize="@dimen/sp15"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--btn add garden-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp20"
+                android:layout_marginBottom="@dimen/dp30"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <Button
+                    android:id="@+id/btn_create_garden"
+                    android:background="@drawable/bg_btn_login"
+                    android:text="Tạo vườn rau"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp20"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="@dimen/dp20"
+                    android:layout_marginRight="@dimen/dp20"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

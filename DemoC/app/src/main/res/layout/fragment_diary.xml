@@ -7,19 +7,51 @@
     android:orientation="vertical"
     tools:context=".DiaryFragment">
 
+    <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="@dimen/dp50">-->
+        <!--<Button-->
+            <!--android:id="@+id/btn_search"-->
+            <!--android:text="SEARCH"-->
+            <!--android:textSize="@dimen/dp30"-->
+            <!--android:background="@color/red"-->
+            <!--android:textColor="@color/sick_green"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
+    <!--</LinearLayout>-->
+
     <LinearLayout
-        android:orientation="vertical"
+        android:id="@+id/lnl_search"
+        android:background="@color/white"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp50">
-        <Button
-            android:id="@+id/btn_search"
-            android:text="SEARCH"
-            android:textSize="@dimen/dp30"
-            android:background="@color/red"
-            android:textColor="@color/sick_green"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_weight="4"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_marginTop="@dimen/dp5"
+                android:layout_marginBottom="@dimen/dp5"
+                android:layout_marginLeft="@dimen/dp50"
+                android:background="@drawable/bg_edt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
+            <ImageView
+                android:src="@drawable/search1"
+                android:layout_marginLeft="@dimen/dp5"
+                android:layout_width="@dimen/dp30"
+                android:layout_height="@dimen/dp30" />
+        </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_marginTop="@dimen/dp50"
         android:orientation="vertical"
@@ -27,9 +59,9 @@
         android:layout_height="@dimen/dp50">
         <Button
             android:id="@+id/btn_create_post"
-            android:text="tao bai dang"
-            android:textSize="@dimen/dp30"
-            android:background="@color/dark_yellow"
+            android:text="Đăng bài"
+            android:textSize="@dimen/dp20"
+            android:background="@color/white"
             android:textColor="@color/sick_green"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

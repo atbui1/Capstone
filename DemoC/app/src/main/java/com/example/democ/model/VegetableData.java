@@ -9,6 +9,8 @@ public class VegetableData implements Serializable {
 
     @SerializedName("no")
     private int stt;
+    @SerializedName("id")
+    private String id;
     @SerializedName("idName")
     private String idName;
     @SerializedName("idDescription")
@@ -31,6 +33,10 @@ public class VegetableData implements Serializable {
     private String newFeatture;
     @SerializedName("images")
     private List<ImageVegetable> imageVegetables;
+    // image wiki
+    @SerializedName("newImages")
+    private List<ImageWiki> imageWikis;
+    //
     @SerializedName("gardenId")
     private int gardenId;
     @SerializedName("quantity")
@@ -44,7 +50,31 @@ public class VegetableData implements Serializable {
     private String idDetailFeature;
     @SerializedName("idDetailImage")
     private String idDetailImage;
+    @SerializedName("isFixed")
+    private boolean isFixed;
+    @SerializedName("nameSearch")
+    private String nameSearch;
+    @SerializedName("synonymOfFeature")
+    private String synonymOfFeature;
 
+
+    //CTS wiki - response - 12
+    public VegetableData(String id, String idDescription, String title, String description, String featture,
+                         List<ImageVegetable> imageVegetables, List<ImageWiki> imageWikis, int gardenId,
+                         int quantity, boolean isFixed, String nameSearch, String synonymOfFeature) {
+        this.id = id;
+        this.idDescription = idDescription;
+        this.title = title;
+        this.description = description;
+        this.featture = featture;
+        this.imageVegetables = imageVegetables;
+        this.imageWikis = imageWikis;
+        this.gardenId = gardenId;
+        this.quantity = quantity;
+        this.isFixed = isFixed;
+        this.nameSearch = nameSearch;
+        this.synonymOfFeature = synonymOfFeature;
+    }
 
     //CST all - name
     public VegetableData(int stt, String idName, String idDescription, String idFeature, String idImage, String title, String description,

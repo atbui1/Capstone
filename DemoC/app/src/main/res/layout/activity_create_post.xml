@@ -222,7 +222,6 @@
                     <TextView
                         android:id="@+id/txt_btn_option"
                         android:layout_weight="5"
-                        android:background="@drawable/bg_edt"
                         android:hint="Tạo bài chia sẽ"
                         android:gravity="center_vertical"
                         android:padding="@dimen/dp8"
@@ -230,12 +229,13 @@
                         android:layout_height="match_parent" />
                     <LinearLayout
                         android:layout_weight="1"
+                        android:gravity="center"
                         android:layout_width="@dimen/dp0"
                         android:layout_height="match_parent">
                         <ImageView
-                            android:src="@mipmap/menu1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
+                            android:src="@drawable/arrowdown"
+                            android:layout_width="@dimen/dp20"
+                            android:layout_height="@dimen/dp20" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

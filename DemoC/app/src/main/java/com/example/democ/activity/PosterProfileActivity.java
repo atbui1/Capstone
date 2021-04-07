@@ -1,6 +1,8 @@
 package com.example.democ.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,13 +14,20 @@ import android.widget.Toast;
 
 import com.example.democ.R;
 import com.example.democ.model.AddFriendRequest;
+import com.example.democ.model.PostData;
+import com.example.democ.presenters.GetAllShareByIdPresenter;
 import com.example.democ.presenters.PersonalPresenter;
 import com.example.democ.presenters.SendAddFriendPresenter;
 import com.example.democ.room.entities.User;
+import com.example.democ.views.GetAllShareByIdView;
 import com.example.democ.views.PersonalView;
 import com.example.democ.views.SendAddFriendView;
 
-public class PosterProfileActivity extends AppCompatActivity implements View.OnClickListener, SendAddFriendView, PersonalView {
+import java.util.ArrayList;
+import java.util.List;
+
+public class PosterProfileActivity extends AppCompatActivity implements View.OnClickListener, SendAddFriendView, PersonalView,
+        GetAllShareByIdView {
 
     private LinearLayout mLnlBackProfileHome;
     private TextView mTxtPosterFullName;
@@ -28,6 +37,11 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
     private PersonalPresenter mPersonalPresenter;
     private User mUser;
     private final static String ADD_FRIEND = "ket ban";
+
+    //RecyclerView
+    private RecyclerView mRecyclerView;
+    private GetAllShareByIdPresenter mGetAllShareByIdPresenter;
+    private ArrayList<PostData> mListPost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +73,16 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
         mSendAddFriendPresenter = new SendAddFriendPresenter(getApplication(), getApplicationContext(), this);
 
         mPersonalPresenter = new PersonalPresenter(getApplicationContext(), this);
+
+//        RecyclerView
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_share_by_account);
+        mRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setNestedScrollingEnabled(false);
+
+        mGetAllShareByIdPresenter = new GetAllShareByIdPresenter(getApplication(), getApplicationContext(), this);
+        mListPost = new ArrayList<>();
     }
 
     private void initialData() {
@@ -97,5 +121,15 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
         mUser = user;
 //        AddFriendRequest addFriendRequest = new AddFriendRequest(mStrAccountUserId, mStrAccountShareId);
 //        mSendAddFriendPresenter.sendAddFriend(addFriendRequest, user.getToken());
+    }
+
+    @Override
+    public void getAllShareByIdSuccess(List<PostData> postDataList) {
+
+    }
+
+    @Override
+    public void getAllShareByIdFail() {
+
     }
 }

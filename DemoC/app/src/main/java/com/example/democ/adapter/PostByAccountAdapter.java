@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.democ.R;
+import com.example.democ.iclick.IClickPost;
+import com.example.democ.iclick.IClickPostAccount;
 import com.example.democ.model.PostData;
 import com.squareup.picasso.Picasso;
 
@@ -21,24 +23,35 @@ import java.util.ArrayList;
 public class PostByAccountAdapter extends RecyclerView.Adapter<PostByAccountAdapter.ViewHolder> {
     ArrayList<PostData> mListPost;
     Context mContext;
+    IClickPostAccount mIClickPostAccount;
 
     public PostByAccountAdapter(ArrayList<PostData> mListPost, Context mContext) {
         this.mListPost = mListPost;
         this.mContext = mContext;
     }
 
+    public PostByAccountAdapter(ArrayList<PostData> mListPost, IClickPostAccount mIClickPostAccount) {
+        this.mListPost = mListPost;
+        this.mIClickPostAccount = mIClickPostAccount;
+    }
+
     @NonNull
     @Override
     public PostByAccountAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View itemView = layoutInflater.inflate(R.layout.item_row_post, parent, false);
+        View itemView = layoutInflater.inflate(R.layout.item_row_post_account, parent, false);
         return new ViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PostByAccountAdapter.ViewHolder holder, int position) {
+        final PostData postData = mListPost.get(position);
+        if (postData == null) {
+            return;
+        }
+
         String postTime = mListPost.get(position).getCreatedDate();
-        String subPostTime = postTime.substring(0, 9);
+        String subPostTime = postTime.substring(0, 10);
         holder.mTxtPostTime.setText(subPostTime);
         holder.mTxtPostContent.setText(mListPost.get(position).getContent());
         holder.mTxtPostUsername.setText(mListPost.get(position).getFullName());
@@ -51,9 +64,22 @@ public class PostByAccountAdapter extends RecyclerView.Adapter<PostByAccountAdap
         } else {
             holder.mImgPostContent.setImageResource(R.mipmap.addimage64);
         }
-        if (holder.mLnlBtnExchange.getVisibility() == View.VISIBLE) {
-            holder.mLnlBtnExchange.setVisibility(View.GONE);
-        }
+//        if (holder.mLnlBtnExchange.getVisibility() == View.VISIBLE) {
+//            holder.mLnlBtnExchange.setVisibility(View.GONE);
+//        }
+        holder.mLnlLeftMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mIClickPostAccount.clickPostAccount(postData);
+                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx");
+                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx");
+                System.out.println("a: " + postData.getAccountId());
+                System.out.println("b: " + postData.getFullName());
+                System.out.println("c: " + postData.getContent());
+                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx");
+                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx");
+            }
+        });
     }
 
     @Override

@@ -28,21 +28,23 @@ import retrofit2.http.Query;
 public interface CapstoneService {
 
     //login
-    @POST(ConfigApi.Api.LOGIN)
+    @POST(ConfigApi.Api.ACCOUNT_LOGIN)
     @Headers("Content-Type:application/json; charset=utf-8")
     Call<ResponseBody> login(@Body RequestBody body);
 
     //account
-    @POST(ConfigApi.Api.REGISTER)
+    @POST(ConfigApi.Api.ACCOUNT_REGISTER)
     Call<ResponseBody> register(@Body RequestBody body);
-    @GET(ConfigApi.Api.GET_INFO_ACCOUNT)
+    @GET(ConfigApi.Api.ACCOUNT_GET_INFO)
     Call<ResponseBody> getInfoAccount(@Header("Authorization") String token);
-    @PUT(ConfigApi.Api.UPDATE_ACCOUNT)
+    @PUT(ConfigApi.Api.ACCOUNT_UPDATE)
     Call<ResponseBody> updateAccount(@Body RequestBody body, @Header("Authorization") String token);
-    @GET(ConfigApi.Api.ADD_FRIEND)
+    @GET(ConfigApi.Api.ACCOUNT_ADD_FRIEND)
     Call<ResponseBody> getAddFriendRequest(@Header("Authorization") String token);
-    @POST(ConfigApi.Api.SEND_ADD_FRIEND)
+    @POST(ConfigApi.Api.ACCOUNT_SEND_ADD_FRIEND)
     Call<ResponseBody> sendAddFriend(@Body RequestBody body, @Header("Authorization") String token);
+    @GET(ConfigApi.Api.ACCOUNT_SEARCH_NAME)
+    Call<ResponseBody> searchAccountByName(@Query("searchValue") String searchValue, @Header("Authorization") String token);
 
     //garden
     @Headers("Content-Type:application/json; charset=utf-8")
@@ -95,7 +97,7 @@ public interface CapstoneService {
     Call<ResponseBody> searchByKeyword(@Query("searchValue") String searchValue, @Header("Authorization") String token);
     //search wiki
     @GET(ConfigApi.Api.SEARCH_WIKI)
-    Call<ResponseBody> searchByWiki(@Query("") String searchValue, @Header("Authorization") String token);
+    Call<ResponseBody> searchByWiki(@Query("title") String searchValue, @Header("Authorization") String token);
 
     //post - share
     @GET(ConfigApi.Api.SHARE_ALL)
@@ -103,8 +105,10 @@ public interface CapstoneService {
     @GET(ConfigApi.Api.SHARE_ALL_BY_ID)
     Call<ResponseBody> getAllShareById(@Header("Authorization") String token);
 //    tao bai post
-    @POST(ConfigApi.Api.CREATE_POST_SHARE)
+    @POST(ConfigApi.Api.SHARE_CREATE_POST)
     Call<ResponseBody> createPostShare(@Body RequestBody body, @Header("Authorization") String token);
+    @POST(ConfigApi.Api.SHARE_DELETE)
+    Call<ResponseBody> deleteShare(@Query("Id") String shareId, @Header("Authorization") String token);
 
     //ExchangeDetail
     @POST(ConfigApi.Api.EXCHANGE)

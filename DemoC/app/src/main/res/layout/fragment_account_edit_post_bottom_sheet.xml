@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/lnl_post_edit"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <TextView
+                android:text="Chỉnh sữa"
+                android:textSize="@dimen/sp17"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dp20"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/lnl_post_delete"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <TextView
+                android:text="xóa"
+                android:textSize="@dimen/sp17"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dp20"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

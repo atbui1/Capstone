@@ -3,6 +3,7 @@ package com.example.democ.capstone;
 import android.content.Context;
 
 import com.example.democ.model.Account;
+import com.example.democ.model.AccountSearchByName;
 import com.example.democ.model.AddFriendRequest;
 import com.example.democ.model.DistrictData;
 import com.example.democ.model.ExchangeData;
@@ -38,6 +39,7 @@ public interface CapstoneRepository {
     void updateAccount(Context context, Account account, String token, CallBackData<Account> callBackData);
     void getAddFriendRequest(Context context, String token, CallBackData<List<AddFriendRequest>> callBackData);
     void sendAddFriend(Context context, AddFriendRequest addFriendRequest, String token, CallBackData<AddFriendRequest> callBackData);
+    void searchAccountByName(Context context, String searchValue, String token, CallBackData<List<AccountSearchByName>> callBackData);
 
     void createGarden(Context context, Garden garden, String token, CallBackData<GardenResult> callBackData);
     void getAllGarden(Context context, String token, CallBackData<List<GardenResult>> callBackData);
@@ -65,10 +67,11 @@ public interface CapstoneRepository {
     void getAllShare(Context context, String token, CallBackData<List<PostData>> callBackData);
     void getAllShareById(Context context, String token, CallBackData<List<PostData>> callBackData);
     void createPostShare(Context context, ShareRequest shareRequest, String token, CallBackData<ShareData> callBackData);
-    void isAcceptExchange(Context context, int status, ArrayList<String> exchangeId, String token, CallBackData<String> callBackData);
-    void deleteExchangeRequest(Context context, String exchangeId, String token, CallBackData<String> callBackData);
+    void deleteShare(Context context, String shareId, String token, CallBackData<String> callBackData);
 
 //    exchange
+    void isAcceptExchange(Context context, int status, ArrayList<String> exchangeId, String token, CallBackData<String> callBackData);
+    void deleteExchangeRequest(Context context, String exchangeId, String token, CallBackData<String> callBackData);
     void createExchange(Context context, ExchangeRequest exchangeRequest, String token, CallBackData<List<ExchangeData>> callBackData);
     void getAllExchange(Context context, String token, CallBackData<List<ExchangeData>> callBackData);
 //    upload image

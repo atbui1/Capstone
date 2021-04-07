@@ -9,13 +9,11 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,18 +23,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.democ.R;
+import com.example.democ.fragment.ListTextWikiBottomSheetFragment;
 import com.example.democ.fragment.SearchByNameBottomSheetFragment;
+import com.example.democ.fragment.SearchByWikiBottomSheetFragment;
+import com.example.democ.iclick.IClickListTextWiki;
 import com.example.democ.iclick.IClickVegetable;
-import com.example.democ.model.Garden;
+import com.example.democ.iclick.IClickWiki;
 import com.example.democ.model.ImageVegetable;
 import com.example.democ.model.VegetableData;
 import com.example.democ.model.VegetableDescription;
-import com.example.democ.model.VegetableRequest;
-import com.example.democ.model.VegetableSearchDescription;
+import com.example.democ.model.WikiData;
 import com.example.democ.presenters.CreateVegetablePresenter;
 import com.example.democ.presenters.SearchByDescriptionPresenter;
 import com.example.democ.presenters.SearchByKeywordPresenter;
 import com.example.democ.presenters.SearchByNamePresenter;
+import com.example.democ.presenters.SearchByWikiPresenter;
 import com.example.democ.presenters.UploadImagePresenter;
 import com.example.democ.room.entities.User;
 import com.example.democ.room.managements.UserManagement;
@@ -44,8 +45,12 @@ import com.example.democ.views.CreateVegetableView;
 import com.example.democ.views.SearchByDescriptionView;
 import com.example.democ.views.SearchByKeywordView;
 import com.example.democ.views.SearchByNameView;
+import com.example.democ.views.SearchByWikiView;
 import com.example.democ.views.UploadImageView;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -54,6 +59,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -63,11 +69,14 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 public class CreateVegetableActivity extends AppCompatActivity implements View.OnClickListener, CreateVegetableView, UploadImageView,
-        SearchByNameView, SearchByDescriptionView, SearchByKeywordView {
+        SearchByNameView, SearchByDescriptionView, SearchByKeywordView, SearchByWikiView {
 
     private ImageView mImgCreateVegetable;
     private EditText mEdtVegetableName, mEdtVegetableDescription, mEdtVegetableFeature, mEdtVegetableQuantity;
     private Button mBtnCreateVegetable;
+
+    //btn_edit_true
+    private Button mBtnEditTrue;
 
     private static final int CAMERA_REQUEST = 0;
     private static int request_code_image = 123;
@@ -96,11 +105,14 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
     private final static String SEARCH_NAME = "Tìm kiếm theo tên";
     private final static String SEARCH_DESCRIPTION = "Tìm kiếm theo mô tả";
     private final static String SEARCH_KEYWORD = "Tìm kiếm theo từ khóa";
+    private final static String SEARCH_WIKI = "Tìm kiếm từ wikipedia";
     private ArrayList<VegetableData> mListVegetable;
     private ArrayList<VegetableDescription> mListVegetableSearchDescription;
+    private ArrayList<WikiData> mListWiki;
     private SearchByNamePresenter mSearchByNamePresenter;
     private SearchByDescriptionPresenter mSearchByDescriptionPresenter;
     private SearchByKeywordPresenter mSearchByKeywordPresenter;
+    private SearchByWikiPresenter mSearchByWikiPresenter;
     private String mStrUrl = "";
     private String mStrNewFeature = "", mStrIdDetailName = "", mStrIdDetailDescription = "", mStrIdDetailFeature = "", mStrIdDetailImage = "";
 
@@ -141,6 +153,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
         mSearchByNamePresenter = new SearchByNamePresenter(getApplication(), this, this);
         mSearchByDescriptionPresenter = new SearchByDescriptionPresenter(getApplication(), this,this);
         mSearchByKeywordPresenter = new SearchByKeywordPresenter(getApplication(), this, this);
+        mSearchByWikiPresenter = new SearchByWikiPresenter(getApplication(), this, this);
     }
 
     private void initialData() {
@@ -332,11 +345,12 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
         dialog.setContentView(R.layout.dialog_option_search);
         dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
         //anh xa
-        TextView txtSearchName, txtSearchDescription, txtSearchKeyword;
+        TextView txtSearchName, txtSearchDescription, txtSearchKeyword, txtSearchWiki;
         Button btnClose;
         txtSearchName = (TextView) dialog.findViewById(R.id.txt_search_name);
         txtSearchDescription = (TextView) dialog.findViewById(R.id.txt_search_description);
         txtSearchKeyword = (TextView) dialog.findViewById(R.id.txt_search_keyword);
+        txtSearchWiki = (TextView) dialog.findViewById(R.id.txt_search_wiki);
         btnClose = (Button) dialog.findViewById(R.id.btn_close);
         //onclick
         txtSearchName.setOnClickListener(new View.OnClickListener() {
@@ -363,6 +377,14 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
                 dialog.dismiss();
             }
         });
+        txtSearchWiki.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mStrSearchOption = SEARCH_WIKI;
+                mTxtOptionSearch.setText(mStrSearchOption);
+                dialog.dismiss();
+            }
+        });
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -384,6 +406,9 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
         } else if (mStrSearchOption == SEARCH_KEYWORD) {
             Toast.makeText(getApplicationContext(), "search keyword", Toast.LENGTH_SHORT).show();
             mSearchByKeywordPresenter.searchByKeyword(mStrSearchValue, mToken);
+        } else if (mStrSearchOption == SEARCH_WIKI) {
+            Toast.makeText(getApplicationContext(), "search wiki", Toast.LENGTH_SHORT).show();
+            mSearchByWikiPresenter.searchByWiki(mStrSearchValue, mToken);
         }
     }
 
@@ -614,6 +639,64 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
 
     @Override
     public void SearchByKeywordFail() {
+
+    }
+
+    public void clickOpenListText(final List<String> listText) {
+        ListTextWikiBottomSheetFragment listTextWikiBottomSheetFragment = new ListTextWikiBottomSheetFragment(listText,
+                new IClickListTextWiki() {
+                    @Override
+                    public void clickListText(String msg, int pos) {
+                        mEdtVegetableFeature.setText(listText.get(pos));
+                        String featurePosition = listText.get(pos);
+                        List<String> subMtp = Arrays.asList(featurePosition.split("\n\r"));
+                        for(String w:subMtp){
+                            System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+                            System.out.println(w);
+                            System.out.println("vi tri dau tien khi cat");
+                            String a = subMtp.get(0);
+                            System.out.println(a);
+                            System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
+                        }
+                    }
+                });
+        listTextWikiBottomSheetFragment.show(getSupportFragmentManager(), listTextWikiBottomSheetFragment.getTag());
+    }
+
+    @Override
+    public void searchByWikiSuccess(List<WikiData> wikiData) {
+        mListWiki = (ArrayList<WikiData>) wikiData;
+        SearchByWikiBottomSheetFragment searchByWikiBottomSheetFragment =
+                new SearchByWikiBottomSheetFragment(mListWiki, new IClickWiki() {
+                    @Override
+                    public void clickWiki(WikiData wikiData) {
+                        mEdtVegetableName.setText(wikiData.getName());
+                        mEdtVegetableDescription.setText(wikiData.getDescription());
+                        mEdtVegetableFeature.setText(wikiData.getFeature());
+                        mStrUrl = "";
+                        mStrIdDetailName = "";
+                        mStrIdDetailDescription = "";
+                        mStrIdDetailFeature = "";
+                        mStrIdDetailImage = "";
+                        mImgCreateVegetable.setImageResource(R.mipmap.addimage64);
+                        System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLl");
+                        System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLl");
+                        List<String> listTextWikis = wikiData.getListText();
+                        for (int i =0; i < listTextWikis.size(); i++) {
+                            System.out.println("111 **** 1111");
+                            System.out.println(i);
+                            System.out.println(listTextWikis.get(i));
+                            System.out.println("222 *** 222");
+                        }
+
+                        clickOpenListText(listTextWikis);
+                    }
+                });
+        searchByWikiBottomSheetFragment.show(getSupportFragmentManager(), searchByWikiBottomSheetFragment.getTag());
+    }
+
+    @Override
+    public void searchByWikiFail() {
 
     }
 }

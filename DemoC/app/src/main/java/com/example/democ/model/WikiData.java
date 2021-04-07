@@ -3,6 +3,7 @@ package com.example.democ.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class WikiData implements Serializable {
     @SerializedName("name")
@@ -11,11 +12,14 @@ public class WikiData implements Serializable {
     private String description;
     @SerializedName("feature")
     private String feature;
+    @SerializedName("listText")
+    private List<String> listText;
 
-    public WikiData(String name, String description, String feature) {
+    public WikiData(String name, String description, String feature, List<String> listText) {
         this.name = name;
         this.description = description;
         this.feature = feature;
+        this.listText = listText;
     }
 
     public String getName() {
@@ -40,5 +44,13 @@ public class WikiData implements Serializable {
 
     public void setFeature(String feature) {
         this.feature = feature;
+    }
+
+    public List<String> getListText() {
+        return listText;
+    }
+
+    public void setListText(List<String> listText) {
+        this.listText = listText;
     }
 }

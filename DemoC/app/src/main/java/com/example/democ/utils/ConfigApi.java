@@ -5,12 +5,13 @@ public class ConfigApi {
 
     public interface Api {
 
-        String REGISTER = "api/Account/Registration";
-        String LOGIN = "api/Login/MobileLogin";
-        String GET_INFO_ACCOUNT = "api/Account/GetAccountDetailByPhoneNumber";
-        String UPDATE_ACCOUNT = "api/Account/Update";
-        String ADD_FRIEND = "api/AccountRequest/GetAccountRequest";
-        String SEND_ADD_FRIEND = "api/AccountRequest";
+        String ACCOUNT_LOGIN = "api/Login/MobileLogin";
+        String ACCOUNT_REGISTER = "api/Account/Registration";
+        String ACCOUNT_GET_INFO = "api/Account/GetAccountDetailByPhoneNumber";
+        String ACCOUNT_UPDATE = "api/Account/Update";
+        String ACCOUNT_ADD_FRIEND = "api/AccountRequest/GetAccountRequest";
+        String ACCOUNT_SEND_ADD_FRIEND = "api/AccountRequest";
+        String ACCOUNT_SEARCH_NAME = "api/Account/SearchAccount";
 
         String CREATE_GARDEN = "api/Garden";
         String GET_ALL_GARDEN = "api/Garden/GetByAccountId";
@@ -28,9 +29,10 @@ public class ConfigApi {
         String SEARCH_WIKI = "LeakInfoFromWiki";
 
         //post -share
-        String CREATE_POST_SHARE = "api/ShareDetail";
+        String SHARE_CREATE_POST = "api/ShareDetail";
         String SHARE_ALL = "api/ShareDetail/GetAll";
         String SHARE_ALL_BY_ID = "api/ShareDetail/GetAllShareById";
+        String SHARE_DELETE = "api/ShareDetail";
 
         //exchange
         String EXCHANGE = "api/ExchangeDetail";

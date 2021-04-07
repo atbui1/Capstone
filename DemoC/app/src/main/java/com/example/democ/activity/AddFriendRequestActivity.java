@@ -1,11 +1,14 @@
 package com.example.democ.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -33,6 +36,7 @@ public class AddFriendRequestActivity extends AppCompatActivity implements View.
     private GetAddFriendRequestPresenter mGetAddFriendRequestPresenter;
     private PersonalPresenter mPersonalPresenter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +60,7 @@ public class AddFriendRequestActivity extends AppCompatActivity implements View.
         mPersonalPresenter = new PersonalPresenter(getApplicationContext(), this);
         mPersonalPresenter.getInfoPersonal();
         mGetAddFriendRequestPresenter = new GetAddFriendRequestPresenter(getApplication(), getApplicationContext(), this);
+
     }
 
     private void initialData() {
@@ -73,14 +78,32 @@ public class AddFriendRequestActivity extends AppCompatActivity implements View.
 
     public void clickBack() {
         Intent intent = new Intent(AddFriendRequestActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
+
+    //toolbar
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        finish();
+        return super.onOptionsItemSelected(item);
+//        switch (item.getItemId()) {
+//            case R.id.tl_tool_bar:
+//                finish();
+//                return true;
+//                default:
+//                    return super.onOptionsItemSelected(item);
+//        }
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.lnl_back:
-                clickBack();
-//                finish();
+//                clickBack();
+                finish();
                 break;
         }
     }

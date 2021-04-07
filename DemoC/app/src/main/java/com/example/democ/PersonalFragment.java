@@ -24,6 +24,8 @@ import com.example.democ.activity.LoginActivity;
 import com.example.democ.activity.AddFriendRequestActivity;
 import com.example.democ.activity.UpdateAccountActivity;
 import com.example.democ.adapter.PostByAccountAdapter;
+import com.example.democ.fragment.AccountEditPostBottomSheetFragment;
+import com.example.democ.iclick.IClickPostAccount;
 import com.example.democ.model.PostData;
 import com.example.democ.presenters.GetAllShareByIdPresenter;
 import com.example.democ.presenters.LogoutPresenter;
@@ -41,14 +43,16 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-public class PersonalFragment extends Fragment implements View.OnClickListener, LogoutView, PersonalView, GetAllShareByIdView {
+public class PersonalFragment extends Fragment implements View.OnClickListener, LogoutView, PersonalView, GetAllShareByIdView,
+        IClickPostAccount {
 
     private View mView;
     private ImageView mImgPersonal;
     private TextView mTxtFullNamePersonal, mTxtTotalPosts;
-    private Button mBtnLogout, mBtnShowRequestAddFriend, mBtnUpdateAccount;
     private LogoutPresenter mLogoutPresenter;
     private PersonalPresenter mPersonalPresenter;
+
+    private User mUser;
 
     //11
     private RecyclerView mRecyclerViewPost;
@@ -101,12 +105,6 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
 
         mImgPersonal = (ImageView) mView.findViewById(R.id.img_personal);
         mImgPersonal.setOnClickListener(this);
-        mBtnLogout = (Button) mView.findViewById(R.id.btn_logout);
-        mBtnLogout.setOnClickListener(this);
-        mBtnShowRequestAddFriend = (Button) mView.findViewById(R.id.btn_show_request_add_friend);
-        mBtnShowRequestAddFriend.setOnClickListener(this);
-        mBtnUpdateAccount = (Button) mView.findViewById(R.id.btn_update_account);
-        mBtnUpdateAccount.setOnClickListener(this);
         mTxtFullNamePersonal = (TextView) mView.findViewById(R.id.txt_full_name_personal);
 
         //11
@@ -148,24 +146,42 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
         }
     }
 
-    public void requestAddFriend() {
+    public void clickOpenRequestAddFriend() {
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         Intent intent = new Intent(getActivity(), AddFriendRequestActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
         startActivity(intent);
     }
-    public void updateAccount() {
+    public void clickOpenUpdateAccount() {
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         Intent intent = new Intent(getActivity(), UpdateAccountActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
         startActivity(intent);
     }
 
     public void updateUI() {
         if (mPostByAccountAdapter == null) {
-            mPostByAccountAdapter = new PostByAccountAdapter(mListPost, getContext().getApplicationContext());
+//            mPostByAccountAdapter = new PostByAccountAdapter(mListPost, getContext().getApplicationContext());
+            mPostByAccountAdapter = new PostByAccountAdapter(mListPost, this);
             mRecyclerViewPost.setAdapter(mPostByAccountAdapter);
         } else {
             mPostByAccountAdapter.notifyDataSetChanged();
         }
+    }
+
+    private void clickOpenLeftMenu(PostData postData) {
+        String token = mUser.getToken();
+        AccountEditPostBottomSheetFragment accountEditPostBottomSheetFragment = new AccountEditPostBottomSheetFragment(postData, token);
+//        accountEditPostBottomSheetFragment.show();
+
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        System.out.println("a1: " + postData.getContent());
+        System.out.println("b1: " + postData.getId());
+        System.out.println("ab1 token: " + token);
+        System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+
+        accountEditPostBottomSheetFragment.show(getFragmentManager(), accountEditPostBottomSheetFragment.getTag());
+
     }
 
     @Override
@@ -176,24 +192,15 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
                          " ahihi 22222222222222", Toast.LENGTH_SHORT)
                         .show();
                 break;
-            case R.id.btn_show_request_add_friend:
-                requestAddFriend();
-                break;
-            case R.id.btn_update_account:
-                updateAccount();
-                break;
-            case R.id.btn_logout:
-                logoutApp();
-                break;
                 //DrawerLayout - navigationView
             case R.id.lnl_menu:
                 mDrawerLayout.openDrawer(GravityCompat.END);
                 break;
             case R.id.lnl_request_add_friend:
-                requestAddFriend();
+                clickOpenRequestAddFriend();
                 break;
             case R.id.lnl_edit_profile:
-                updateAccount();
+                clickOpenUpdateAccount();
                 break;
             case R.id.lnl_logout:
                 logoutApp();
@@ -216,6 +223,9 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void showInfoPersonal(User user) {
+
+        mUser = user;
+
         mTxtFullNamePersonal.setText(user.getFullName());
         //11
         mGetAllShareByIdPresenter.getAllShareById(user.getToken());
@@ -235,5 +245,22 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void getAllShareByIdFail() {
 
+    }
+
+    @Override
+    public void clickPostAccount(PostData postData) {
+        //jjsjd
+        //jjsjd
+        //jjsjd
+        //jjsjd
+//        token = mUser.getToken();
+        System.out.println("personal fragment ***********************************");
+        String aa = postData.getContent();
+        String bb = postData.getId();
+        System.out.println("aa: " + aa);
+        System.out.println("bb: " + bb);
+//        System.out.println("token: " + token);
+        System.out.println("personal fragment ***********************************");
+        clickOpenLeftMenu(postData);
     }
 }

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +48,7 @@ public class CreateGardenActivity extends AppCompatActivity implements View.OnCl
     private EditText mEdtGardenName, mEdtGardenAddress;
     private Button mBtnCreateGarden;
     private TextView mTxtProvince, mTxtDistrict, mTxtWard;
+    private LinearLayout mLnlBack;
 
     private PersonalPresenter mPersonalPresenter;
     private CreateGardenPresenter mCreateGardenPresenter;
@@ -85,6 +87,8 @@ public class CreateGardenActivity extends AppCompatActivity implements View.OnCl
         mBtnCreateGarden = (Button) findViewById(R.id.btn_create_garden);
         mBtnCreateGarden.setOnClickListener(this);
 
+        mLnlBack = (LinearLayout) findViewById(R.id.lnl_back);
+        mLnlBack.setOnClickListener(this);
         mTxtProvince = (TextView) findViewById(R.id.txt_province);
         mTxtDistrict = (TextView) findViewById(R.id.txt_district);
         mTxtWard = (TextView) findViewById(R.id.txt_ward);
@@ -237,6 +241,9 @@ public class CreateGardenActivity extends AppCompatActivity implements View.OnCl
                 } else {
                     clickOpenWard();
                 }
+                break;
+            case R.id.lnl_back:
+                finish();
                 break;
         }
     }

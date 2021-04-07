@@ -193,7 +193,8 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
                 updateAccount();
                 break;
             case R.id.lnl_back:
-                clickBack();
+//                clickBack();
+                finish();
                 break;
         }
     }

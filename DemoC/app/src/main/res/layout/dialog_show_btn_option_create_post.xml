@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:background="@color/light_sky_blue"
+    android:background="@drawable/bg_edt"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -12,6 +12,7 @@
             android:text="Bạn muốn tạo bài đăng nào?"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/sp20"
+            android:paddingRight="@dimen/dp20"
             android:textSize="@dimen/sp17"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

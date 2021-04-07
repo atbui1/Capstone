@@ -10,6 +10,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:weightSum="10"
+        android:layout_marginTop="@dimen/dp10"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp50">
         <LinearLayout
@@ -19,6 +20,8 @@
             <EditText
                 android:id="@+id/edt_search_value"
                 android:background="@drawable/bg_edt"
+                android:layout_marginLeft="@dimen/dp50"
+                android:layout_marginTop="@dimen/dp5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>
@@ -27,13 +30,16 @@
             android:layout_width="0dp"
             android:layout_height="match_parent">
             <LinearLayout
+                android:id="@+id/lnl_search"
+                android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <ImageView
-                    android:id="@+id/img_search"
-                    android:src="@mipmap/menu1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_marginTop="@dimen/dp5"
+                    android:layout_margin="@dimen/dp5"
+                    android:src="@drawable/search1"
+                    android:layout_width="@dimen/dp30"
+                    android:layout_height="@dimen/dp30" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

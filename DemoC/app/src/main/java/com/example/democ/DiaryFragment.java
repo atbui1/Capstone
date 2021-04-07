@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.democ.activity.CreatePostActivity;
 import com.example.democ.activity.PosterProfileActivity;
-//import com.example.democ.activity.SearchActivity;
+import com.example.democ.activity.SearchActivity;
 import com.example.democ.adapter.PostAdapter;
 import com.example.democ.iclick.IClickPost;
 import com.example.democ.model.ExchangeData;
@@ -44,6 +44,7 @@ import java.util.List;
 public class DiaryFragment extends Fragment implements View.OnClickListener, IClickPost, CreateExchangeView, CheckVegetableOfAccountView {
 
     private Button mBtnCreatePost, mBtnSearch;
+    private LinearLayout mLnlSearch;
 
     private View mView;
     private RecyclerView mRecyclerPost;
@@ -91,8 +92,11 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
 
         mBtnCreatePost = (Button) mView.findViewById(R.id.btn_create_post);
         mBtnCreatePost.setOnClickListener(this);
-        mBtnSearch = (Button) mView.findViewById(R.id.btn_search);
-        mBtnSearch.setOnClickListener(this);
+//        mBtnSearch = (Button) mView.findViewById(R.id.btn_search);
+//        mBtnSearch.setOnClickListener(this);
+        mLnlSearch = (LinearLayout) mView.findViewById(R.id.lnl_search);
+        mLnlSearch.setOnClickListener(this);
+
         mRecyclerPost = mView.findViewById(R.id.recycler_diary);
         mRecyclerPost.setHasFixedSize(true);
 //        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(),
@@ -363,6 +367,10 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
 //                Intent intentSearch = new Intent(getActivity().getApplicationContext(), SearchActivity.class);
 //                startActivity(intentSearch);
 //                break;
+            case R.id.lnl_search:
+                Intent intentSearch1 = new Intent(getActivity().getApplicationContext(), SearchActivity.class);
+                startActivity(intentSearch1);
+                break;
         }
     }
 

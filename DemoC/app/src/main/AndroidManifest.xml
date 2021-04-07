@@ -18,7 +18,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.UpdateAccountActivity"></activity>
+        <activity android:name=".activity.UpdatePostActivity"></activity>
+        <activity android:name=".activity.UpdateAccountActivity" />
         <activity android:name=".activity.AddFriendRequestActivity" />
         <activity android:name=".activity.UpdateVegetableActivity" />
         <activity android:name=".activity.SearchActivity" />

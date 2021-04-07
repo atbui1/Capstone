@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.democ.R;
 import com.example.democ.activity.CreateGardenActivity;
+import com.example.democ.activity.UpdateAccountActivity;
 import com.example.democ.adapter.GardenAdapter;
 import com.example.democ.model.GardenResult;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -83,13 +84,17 @@ public class GardenFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    private void clickOpenCreateGarden() {
+        Intent intent = new Intent(getContext().getApplicationContext(), CreateGardenActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        startActivity(intent);
+    }
     @Override
     public void onClick(View view) {
         int id = view.getId();
         switch (id) {
             case R.id.fab_add_garden:
-                Intent intentCreateGarden = new Intent(getContext().getApplicationContext(), CreateGardenActivity.class);
-                startActivity(intentCreateGarden);
+                clickOpenCreateGarden();
                 break;
         }
     }
