@@ -26,12 +26,14 @@ import com.example.democ.R;
 import com.example.democ.fragment.ListTextWikiBottomSheetFragment;
 import com.example.democ.fragment.SearchByNameBottomSheetFragment;
 import com.example.democ.fragment.SearchByWikiBottomSheetFragment;
+import com.example.democ.fragment.VegetableNeedBottomSheetFragment;
 import com.example.democ.iclick.IClickListTextWiki;
 import com.example.democ.iclick.IClickVegetable;
 import com.example.democ.iclick.IClickWiki;
 import com.example.democ.model.ImageVegetable;
 import com.example.democ.model.VegetableData;
 import com.example.democ.model.VegetableDescription;
+import com.example.democ.model.VegetableNeedAll;
 import com.example.democ.model.WikiData;
 import com.example.democ.presenters.CreateVegetablePresenter;
 import com.example.democ.presenters.SearchByDescriptionPresenter;
@@ -78,10 +80,6 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
     //btn_edit_true
     private Button mBtnEditTrue;
 
-    private static final int CAMERA_REQUEST = 0;
-    private static int request_code_image = 123;
-    private String mediaPath;
-    private Uri outputFileUri;
 
     static int mGardenId;
     static String mGardenName, mGardenAddress, mToken;
@@ -92,9 +90,11 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
     private List<MultipartBody.Part> mListImagePart;
     private List<ImageVegetable> mListImageVegetable;
     private UploadImagePresenter mUploadImagePresenter;
-    private MultipartBody.Part requestImage = null;
-
-    String imgBase64;
+    private MultipartBody.Part mRequestImage = null;
+    private static final int CAMERA_REQUEST = 0;
+    private static int request_code_image = 123;
+    private String mMediaPath;
+    private Uri outputFileUri;
 
     //new seacrh
     private EditText mEdtSearchValue;
@@ -113,8 +113,13 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
     private SearchByDescriptionPresenter mSearchByDescriptionPresenter;
     private SearchByKeywordPresenter mSearchByKeywordPresenter;
     private SearchByWikiPresenter mSearchByWikiPresenter;
-    private String mStrUrl = "";
-    private String mStrNewFeature = "", mStrIdDetailName = "", mStrIdDetailDescription = "", mStrIdDetailFeature = "", mStrIdDetailImage = "";
+    private String mStrUrl = null;
+    private String mStrNameSearch = "", mStrSynonymOfFeature = "", mStrIdDescription = "";
+    private boolean mBlIsFixed = false;
+    private static String URL_SEARCH_NAME = "url_search_name";
+    private static String URL_SEARCH_WIKI = "url_search_wiki";
+    private static String URL_TELEPHONE = "url_telephone";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,6 +197,47 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
 
     }
 
+    private  void showDialogQuantityErr() {
+        final Dialog dialog = new Dialog(CreateVegetableActivity.this);
+        dialog.setContentView(R.layout.dialog_login_fail);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCanceledOnTouchOutside(false);
+
+        TextView txtDetail;
+        Button btnOk;
+        txtDetail = (TextView) dialog.findViewById(R.id.txt_detail_err);
+        btnOk = (Button) dialog.findViewById(R.id.btn_close);
+        txtDetail.setText("Vui lòng nhập số lượng");
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    private  void showDialogChoiceImage() {
+        final Dialog dialog = new Dialog(CreateVegetableActivity.this);
+        dialog.setContentView(R.layout.dialog_login_fail);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCanceledOnTouchOutside(false);
+
+        TextView txtDetail;
+        Button btnOk;
+        txtDetail = (TextView) dialog.findViewById(R.id.txt_detail_err);
+        btnOk = (Button) dialog.findViewById(R.id.btn_close);
+        txtDetail.setText("Vui lòng chọn ảnh từ điện thoại");
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    //take a image
     private void showDialogTakeOfImage() {
         final Dialog dialog = new Dialog(CreateVegetableActivity.this);
         dialog.setContentView(R.layout.dialog_take_of_image);
@@ -242,75 +288,101 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
             Toast.makeText(getApplicationContext(), "khong covert dc quantity", Toast.LENGTH_SHORT).show();
         }
 
+        if (mQuantity == 0) {
+            showDialogQuantityErr();
+            return;
+        }
         //new
-        if (mStrUrl != null) {
-            mStrNewFeature = "";
-            requestImage = null;
-            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-            System.out.println("chay vao if");
-            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-
-        } else {
-
+        if (mStrUrl.equals(URL_TELEPHONE)) {
             //image
             mListImagePart = new ArrayList<>();
-            File file = new File(mediaPath);
+            File file = new File(mMediaPath);
+            String file_path = file.getAbsolutePath();
+            String[] file_path_arr = file_path.split("\\.");
+            file_path = file_path_arr[0] + System.currentTimeMillis() + "." + file_path_arr[1];
             RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-            requestImage = MultipartBody.Part.createFormData("NewImages", file.getName(), requestBody);
-            mListImagePart.add(requestImage);
+            System.out.println("cat chuoi thay doi ten file path");
+            System.out.println("file_path: " + file_path);
+            System.out.println("cat chuoi thay doi ten file path");
+            mRequestImage = MultipartBody.Part.createFormData("NewImages", file_path, requestBody);
+            mListImagePart.add(mRequestImage);
+            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            System.out.println("chay vao if");
+            System.out.println("media path if: " + mMediaPath);
+            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
+        } else if(mStrUrl.equals(URL_SEARCH_NAME)) {
+            mRequestImage = null;
+
 //            idDetail
-            mStrNewFeature = mFeature;
-            mStrIdDetailName = "";
-            mStrIdDetailDescription = "";
-            mStrIdDetailFeature = "";
-            mStrIdDetailImage = "";
+            mStrSearchValue = "";
+            mStrSynonymOfFeature = "";
+            showDialogChoiceImage();
             System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-            System.out.println("chay vao elsse");
+            System.out.println("chay vao elsse if URL_SEARCH_NAME");
             System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+        } else if(mStrUrl.equals(URL_SEARCH_WIKI)) {
+            mRequestImage = null;
+            mStrIdDescription = "";
+            showDialogChoiceImage();
+            System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
+            System.out.println("chay vao elsse if URL_SEARCH_WIKI");
+            System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
         }
 
         RequestBody requestTitle = RequestBody.create(MediaType.parse("text/plain"), mName);
         RequestBody requestDescription = RequestBody.create(MediaType.parse("text/plain"), mDescription);
         RequestBody requestFeature = RequestBody.create(MediaType.parse("text/plain"), mFeature);
-        RequestBody requestNewFeature = RequestBody.create(MediaType.parse("text/plain"), mStrNewFeature);
         RequestBody requestQuantity = (RequestBody) RequestBody.create(MediaType.parse("text/plain"), String.valueOf(mQuantity));
         RequestBody requestGardenId = (RequestBody) RequestBody.create(MediaType.parse("text/plain"), String.valueOf(mGardenId));
-        RequestBody requestIdDetailName = RequestBody.create(MediaType.parse("text/plain"), mStrIdDetailName);
-        RequestBody requestIdDetailDescription = RequestBody.create(MediaType.parse("text/plain"), mStrIdDetailDescription);
-        RequestBody requestIdDetailFeature = RequestBody.create(MediaType.parse("text/plain"), mStrIdDetailFeature);
-        RequestBody requestIdDetailImage = RequestBody.create(MediaType.parse("text/plain"), mStrIdDetailImage);
+        RequestBody requestIdDescription = RequestBody.create(MediaType.parse("text/plain"), mStrIdDescription);
+        RequestBody requestIsFixed = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(mBlIsFixed));
+        RequestBody requestNameSearch = RequestBody.create(MediaType.parse("text/plain"), mStrNameSearch);
+        RequestBody requestSynonymOfFeature = RequestBody.create(MediaType.parse("text/plain"), mStrSynonymOfFeature);
 
         System.out.println("------------------------------------------------------------------------");
         System.out.println("mStrUrl: " + mStrUrl);
-        System.out.println("requestTitle: " +requestTitle);
+        System.out.println("requestTitle: " + requestTitle);
         System.out.println("requestDescription: " + requestDescription);
         System.out.println("requestFeature: " + requestFeature);
-        System.out.println("requestNewFeature: " + requestNewFeature);
         System.out.println("requestQuantity: " + requestQuantity);
         System.out.println("requestGardenId: " + requestGardenId);
-        System.out.println("requestIdDetailName: " + requestIdDetailName);
-        System.out.println("requestIdDetailDescription: " + requestIdDetailDescription);
-        System.out.println("requestIdDetailFeature: " + requestIdDetailFeature);
-        System.out.println("requestIdDetailImage: " + requestIdDetailImage);
-        System.out.println("requestImage: " + requestImage);
+        System.out.println("requestIdDescription: " + requestIdDescription);
+        System.out.println("requestIsFixed: " + requestIsFixed);
+        System.out.println("requestNameSearch: " + requestNameSearch);
+        System.out.println("requestSynonymOfFeature: " + requestSynonymOfFeature);
+        System.out.println("requestImage: " + mRequestImage);
         System.out.println("mToken: " + mToken);
         System.out.println("------------------------------------------------------------------------");
 
+        if (mStrUrl.equals(URL_TELEPHONE)) {
+            System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+            System.out.println("chay api");
+            System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+            mCreateVegetablePresenter.createVegetable(requestTitle, requestDescription, requestFeature, requestQuantity,
+                requestGardenId, requestIdDescription, requestIsFixed, requestNameSearch, requestSynonymOfFeature,
+                    mRequestImage, mToken);
+        } else {
+            System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG");
+            System.out.println("khong chay api");
+            System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG");
+        }
+
 //        mCreateVegetablePresenter.createVegetable(requestTitle, requestDescription, requestFeature, requestQuantity, requestGardenId, requestImage, mToken);
 
-        mCreateVegetablePresenter.createVegetable(requestTitle, requestDescription, requestFeature, requestNewFeature, requestQuantity,
-                requestGardenId, requestIdDetailName, requestIdDetailDescription, requestIdDetailFeature, requestIdDetailImage,
-                requestImage, mToken);
+//        mCreateVegetablePresenter.createVegetable(requestTitle, requestDescription, requestFeature, requestQuantity,
+//                requestGardenId, requestIdDescription, requestIsFixed, requestNameSearch, requestSynonymOfFeature,
+//                requestImage, mToken);
     }
 
     public void uploadImage() {
 
         mListImagePart = new ArrayList<>();
 
-        File file = new File(mediaPath);
+        File file = new File(mMediaPath);
         RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
-        requestImage = MultipartBody.Part.createFormData("newItem", file.getName(), requestBody);
-        mListImagePart.add(requestImage);
+        mRequestImage = MultipartBody.Part.createFormData("newItem", file.getName(), requestBody);
+        mListImagePart.add(mRequestImage);
 
         System.out.println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
         System.out.println(mListImagePart);
@@ -416,7 +488,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        mStrUrl = null;
+        mStrUrl = URL_TELEPHONE;
 
         try {
             if (requestCode == 2 && resultCode == RESULT_OK && data != null){
@@ -426,14 +498,14 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
                 assert  cursor != null;
                 cursor.moveToFirst();
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                mediaPath = cursor.getString(columnIndex);
+                mMediaPath = cursor.getString(columnIndex);
 
                 System.out.println("----------- **************** ---------------------");
                 System.out.println("link tu bo nho");
-                System.out.println("media path: " + mediaPath);
+                System.out.println("media path: " + mMediaPath);
                 System.out.println("----------- **************** ---------------------");
 
-                mImgCreateVegetable.setImageBitmap(BitmapFactory.decodeFile(mediaPath));
+                mImgCreateVegetable.setImageBitmap(BitmapFactory.decodeFile(mMediaPath));
                 cursor.close();
 
             }
@@ -470,11 +542,11 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
                         e.printStackTrace();
                     }
 
-                    mediaPath = destination.getAbsolutePath();
+                    mMediaPath = destination.getAbsolutePath();
                     System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
                     System.out.println("link came ra");
                     System.out.println("*************");
-                    System.out.println("medipath: " + mediaPath);
+                    System.out.println("medipath: " + mMediaPath);
                     System.out.println("*************");
                     System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
                     mImgCreateVegetable.setImageBitmap(bitmap);
@@ -518,17 +590,19 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
         System.out.println("createVegetableView Success");
         System.out.println("************************ 5555555555555555 **************************************");
         Intent intent = new Intent(CreateVegetableActivity.this, GardenActivity.class);
-//        Bundle bundle = new Bundle();
-//        bundle.putString("GARDEN_NAME", mGardenName);
-//        bundle.putString("GARDEN_ADdRESS", mGardenAddress);
+        Bundle bundle = new Bundle();
+        bundle.putString("GARDEN_NAME", mGardenName);
+        bundle.putString("GARDEN_ADdRESS", mGardenAddress);
 //        intent.putExtras(bundle);
+        intent.putExtra("infoGarden", bundle);
         startActivity(intent);
-        finish();
+//        setResult(1, intent);
+//        finish();
     }
 
     @Override
     public void createVegetableFail() {
-        Toast.makeText(getApplicationContext(), "FFFFFFFFFFFF", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "FFFFFFFFFFFF tao rau khong thanh cong", Toast.LENGTH_SHORT).show();
         System.out.println("FFFFFFFFFFF FFFFFFFFFFF         FFFFFFFFFFFFFF      FFFFFFFFF");
         System.out.println("tao rau fail");
         System.out.println("FFFFFFFFFFF FFFFFFFFFFF         FFFFFFFFFFFFFF      FFFFFFFFF");
@@ -561,19 +635,19 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
                 new SearchByNameBottomSheetFragment(mListVegetable, new IClickVegetable() {
                     @Override
                     public void clickVegetable(VegetableData vegetableData) {
+                        mStrIdDescription = vegetableData.getIdDescription();
                         mEdtVegetableName.setText(vegetableData.getName());
                         mEdtVegetableDescription.setText(vegetableData.getDescription());
                         mEdtVegetableFeature.setText(vegetableData.getFeature());
-                        mStrUrl = vegetableData.getImageVegetables().get(0).getUrl();
-                        mStrIdDetailName = vegetableData.getIdDetailName();
-                        mStrIdDetailDescription = vegetableData.getIdDetailDescription();
-                        mStrIdDetailFeature = vegetableData.getIdDetailFeature();
-                        mStrIdDetailImage = vegetableData.getIdDetailImage();
-                        if (vegetableData.getImageVegetables().get(0).getUrl() != null) {
-                            Picasso.with(getApplication()).load(vegetableData.getImageVegetables().get(0).getUrl())
+                        mStrUrl = URL_SEARCH_NAME;
+                        int maxSize = vegetableData.getImageVegetables().size() - 1;
+                        if (vegetableData.getImageVegetables().size() > 0) {
+                            Picasso.with(getApplication()).load(vegetableData.getImageVegetables().get(maxSize).getUrl())
                                     .placeholder(R.drawable.ic_launcher_background)
                                     .error(R.drawable.caybacha)
                                     .into(mImgCreateVegetable);
+                        } else {
+                            mImgCreateVegetable.setImageResource(R.mipmap.addimage64);
                         }
                     }
                 });
@@ -673,11 +747,8 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
                         mEdtVegetableName.setText(wikiData.getName());
                         mEdtVegetableDescription.setText(wikiData.getDescription());
                         mEdtVegetableFeature.setText(wikiData.getFeature());
-                        mStrUrl = "";
-                        mStrIdDetailName = "";
-                        mStrIdDetailDescription = "";
-                        mStrIdDetailFeature = "";
-                        mStrIdDetailImage = "";
+                        mStrUrl = URL_SEARCH_WIKI;
+                        mStrIdDescription = "";
                         mImgCreateVegetable.setImageResource(R.mipmap.addimage64);
                         System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLl");
                         System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLl");

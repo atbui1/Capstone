@@ -1,19 +1,31 @@
 package com.example.democ.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
-public class ShareData implements Serializable {
+public class ShareDetail implements Serializable {
+    @SerializedName("id")
     private String id;
+    @SerializedName("shareContent")
     private String shareContent;
+    @SerializedName("quantity")
     private int quantity;
+    @SerializedName("status")
     private int status;
+    @SerializedName("dateShare")
     private String dateShare;
+    @SerializedName("accountId")
     private String accountId;
+    @SerializedName("vegetableId")
     private String vegetableId;
+    @SerializedName("lock")
+    private boolean lock;
+    @SerializedName("appAccount")
     private AppAccount appAccount;
 
-    public ShareData(String id, String shareContent, int quantity, int status, String dateShare,
-                     String accountId, String vegetableId, AppAccount appAccount) {
+    public ShareDetail(String id, String shareContent, int quantity, int status, String dateShare,
+                       String accountId, String vegetableId, AppAccount appAccount) {
         this.id = id;
         this.shareContent = shareContent;
         this.quantity = quantity;

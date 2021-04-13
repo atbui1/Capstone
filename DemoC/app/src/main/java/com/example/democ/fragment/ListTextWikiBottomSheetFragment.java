@@ -31,10 +31,6 @@ public class ListTextWikiBottomSheetFragment extends BottomSheetDialogFragment {
         this.mIClickListTextWiki = mIClickListTextWiki;
     }
 
-    public ListTextWikiBottomSheetFragment(List<String> mListText) {
-        this.mListText = mListText;
-    }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

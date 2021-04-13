@@ -27,6 +27,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     ArrayList<PostData> mListPost;
@@ -34,6 +36,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private IClickPost mIClickPost;
     UserManagement userManagement;
     static String mAccountId;
+    private static String POST_SHARE = "Nhận rau";
+    private static String POST_EXCHANGE = "Đổi rau";
 
 //    public PostAdapter(ArrayList<PostData> mListPost, Context mContext) {
 //        this.mListPost = mListPost;
@@ -57,47 +61,48 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-
         final PostData postData = mListPost.get(position);
         if (postData == null) {
             return;
         }
 
-        userManagement = new UserManagement(mContext);
-        userManagement.getmUserInfo(new UserManagement.OnDataCallBackUser() {
-            @Override
-            public void onDataSuccess(User user) {
-                mAccountId = user.getAccountId();
-                System.out.println("-------------");
-                System.out.println(mAccountId);
-                System.out.println(postData.getAccountId());
-                System.out.println("-------------");
-                if (mAccountId.equals(mListPost.get(position).getAccountId())){
-                    System.out.println("*******");
-                    System.out.println(postData.getAccountId());
-                    System.out.println("*****");
-                    holder.mLnlBtnExchange.setVisibility(View.GONE);
-                } else {
-//                    holder.mLnlBtnExchange.setVisibility(View.INVISIBLE);
-                }
-                int statusShare = postData.getStatius();
-                if (statusShare == 1) {
-                    holder.mBtnPostExchange.setText("Nhận");
-                } else if(statusShare == 2) {
-                    holder.mBtnPostExchange.setText("Trao đổi");
-                }
-            }
-
-            @Override
-            public void onDataFail() {
-
-            }
-        });
+//        userManagement = new UserManagement(mContext);
+//        userManagement.getmUserInfo(new UserManagement.OnDataCallBackUser() {
+//            @Override
+//            public void onDataSuccess(User user) {
+//                mAccountId = user.getAccountId();
+//                System.out.println("-------------");
+//                System.out.println(mAccountId);
+//                System.out.println(postData.getAccountId());
+//                System.out.println("-------------");
+//                if (mAccountId.equals(mListPost.get(position).getAccountId())){
+//                    System.out.println("*******");
+//                    System.out.println(postData.getAccountId());
+//                    System.out.println("*****");
+//                    holder.mLnlBtnExchange.setVisibility(View.GONE);
+//                } else {
+////                    holder.mLnlBtnExchange.setVisibility(View.INVISIBLE);
+//                }
+//                int statusShare = postData.getStatius();
+//                if (statusShare == 1) {
+//                    holder.mBtnPostExchange.setText("Nhận");
+//                } else if(statusShare == 2) {
+//                    holder.mBtnPostExchange.setText("Trao đổi");
+//                }
+//            }
+//
+//            @Override
+//            public void onDataFail() {
+//
+//            }
+//        });
 
         holder.mTxtPostTime.setText(mListPost.get(position).getCreatedDate());
+        holder.mTxtVegetablePostQuantity.setText("Số lượng: " + String.valueOf(mListPost.get(position).getQuantity()));
         holder.mTxtPostContent.setText(mListPost.get(position).getContent());
         holder.mTxtPostUsername.setText(mListPost.get(position).getFullName());
-        Picasso.with(mContext).load("https://mtrend.vn/wp-content/uploads/2019/05/anh-co-trang-trung-quoc-8.jpg").into(holder.mImgPostUser);
+        Picasso.with(mContext).load("https://mtrend.vn/wp-content/uploads/2019/05/anh-co-trang-trung-quoc-8.jpg")
+                .into(holder.mImgImagePostUser);
 
         int maxImage = mListPost.get(position).getImageVegetablesList().size() - 1;
 
@@ -110,35 +115,32 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         } else {
             holder.mImgPostContent.setImageResource(R.mipmap.addimage64);
         }
+        //show share or exchange
+        if (mListPost.get(position).getStatius() == 1) {
+            holder.mBtnPostExchange.setText(POST_SHARE);
+        } else if (mListPost.get(position).getStatius() == 2) {
+            holder.mBtnPostExchange.setText(POST_EXCHANGE);
+        }
 
-        //click
+        //click exchange
         holder.mBtnPostExchange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mIClickPost.clickBtnExchange(postData);
             }
         });
-        holder.mImgPostUser.setOnClickListener(new View.OnClickListener() {
+        // click user
+        holder.mImgImagePostUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mIClickPost.clickPosterUser(postData);
             }
         });
-        //
+        //click report
         holder.mLnlLeftMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                int statusShare = postData.getStatius();
-//                if (statusShare == 1) {
-//                    holder.mBtnPostExchange.setText("Nhận");
-//                } else if(statusShare == 2) {
-//                    holder.mBtnPostExchange.setText("Trao đổi");
-//                }
-//                if ((holder.mLnlBtnExchange.getVisibility() == View.GONE) && !(mAccountId.equals(postData.getAccountId()))) {
-//                    holder.mLnlBtnExchange.setVisibility(View.VISIBLE);
-//                } else {
-//                    holder.mLnlBtnExchange.setVisibility(View.GONE);
-//                }
+                mIClickPost.clickReportPost(postData);
             }
         });
 
@@ -153,15 +155,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView mImgPostUser, mImgPostContent, mImgPostLikeStatus;
-        TextView mTxtPostUsername, mTxtPostTime, mTxtPostContent, mTxtPostNumberLike, mTxtVegetablePostNeed;
-        LinearLayout mLnlPostLike, mLnlPostComment, mLnlBtnExchange, mLnlLeftMenu;
+        ImageView mImgPostContent, mImgPostLikeStatus;
+        TextView mTxtPostUsername, mTxtPostTime, mTxtPostContent, mTxtPostNumberLike, mTxtVegetablePostNeed, mTxtVegetablePostQuantity;
+        LinearLayout mLnlPostLike, mLnlPostComment, mLnlBtnExchange, mLnlLeftMenu, mLnlImagePostUser;
         Button mBtnPostExchange;
+        CircleImageView mImgImagePostUser;
         private int numberLike = 0;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            mImgPostUser = (ImageView) itemView.findViewById(R.id.img_post_user);
+
             mTxtPostUsername = (TextView) itemView.findViewById(R.id.txt_post_username);
             mTxtPostTime = (TextView) itemView.findViewById(R.id.txt_post_time);
             mTxtPostContent = (TextView) itemView.findViewById(R.id.txt_post_content);
@@ -172,9 +175,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             mImgPostLikeStatus = (ImageView) itemView.findViewById(R.id.img_post_like_status);
             mBtnPostExchange = (Button) itemView.findViewById(R.id.btn_exchange);
             mTxtVegetablePostNeed = (TextView) itemView.findViewById(R.id.txt_vegetable_need);
+            mLnlImagePostUser = (LinearLayout) itemView.findViewById(R.id.lnl_image_post_user);
             //
             mLnlBtnExchange = (LinearLayout) itemView.findViewById(R.id.lnl_btn_exchange);
             mLnlLeftMenu = (LinearLayout) itemView.findViewById(R.id.lnl_left_menu);
+            mImgImagePostUser = (CircleImageView) itemView.findViewById(R.id.img_post_user);
+            mTxtVegetablePostQuantity = (TextView) itemView.findViewById(R.id.txt_post_vegetable_quantity);
 
 //            mImgPostUser.setOnClickListener((View.OnClickListener) this);
             mImgPostContent.setOnClickListener((View.OnClickListener) this);

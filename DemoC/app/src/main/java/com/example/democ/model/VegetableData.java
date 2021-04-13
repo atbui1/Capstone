@@ -33,6 +33,7 @@ public class VegetableData implements Serializable {
     private String newFeatture;
     @SerializedName("images")
     private List<ImageVegetable> imageVegetables;
+
     // image wiki
     @SerializedName("newImages")
     private List<ImageWiki> imageWikis;
@@ -41,15 +42,6 @@ public class VegetableData implements Serializable {
     private int gardenId;
     @SerializedName("quantity")
     private int quantity;
-    //new 4 idDetail
-    @SerializedName("idDetailName")
-    private String idDetailName;
-    @SerializedName("idDetailDescription")
-    private String idDetailDescription;
-    @SerializedName("idDetailFeature")
-    private String idDetailFeature;
-    @SerializedName("idDetailImage")
-    private String idDetailImage;
     @SerializedName("isFixed")
     private boolean isFixed;
     @SerializedName("nameSearch")
@@ -58,7 +50,7 @@ public class VegetableData implements Serializable {
     private String synonymOfFeature;
 
 
-    //CTS wiki - response - 12
+    /** CTS new create vegetable - response - 12 */
     public VegetableData(String id, String idDescription, String title, String description, String featture,
                          List<ImageVegetable> imageVegetables, List<ImageWiki> imageWikis, int gardenId,
                          int quantity, boolean isFixed, String nameSearch, String synonymOfFeature) {
@@ -74,6 +66,19 @@ public class VegetableData implements Serializable {
         this.isFixed = isFixed;
         this.nameSearch = nameSearch;
         this.synonymOfFeature = synonymOfFeature;
+    }
+
+    //CST vegetable by garden id
+    public VegetableData(int stt, String id, String idDescription, String name, String feature,
+                         List<ImageVegetable> imageVegetables, int gardenId, int quantity) {
+        this.stt = stt;
+        this.id = id;
+        this.idDescription = idDescription;
+        this.name = name;
+        this.feature = feature;
+        this.imageVegetables = imageVegetables;
+        this.gardenId = gardenId;
+        this.quantity = quantity;
     }
 
     //CST all - name
@@ -124,33 +129,20 @@ public class VegetableData implements Serializable {
         this.quantity = quantity;
     }
 
-    //CST searchNew - 15
-    public VegetableData(int stt, String idName, String idDescription, String idFeature, String idImage, String name,
-                         String description, String feature, List<ImageVegetable> imageVegetables, int gardenId, int quantity,
-                         String idDetailName, String idDetailDescription, String idDetailFeature, String idDetailImage) {
-        this.stt = stt;
-        this.idName = idName;
-        this.idDescription = idDescription;
-        this.idFeature = idFeature;
-        this.idImage = idImage;
-        this.name = name;
-        this.description = description;
-        this.feature = feature;
-        this.imageVegetables = imageVegetables;
-        this.gardenId = gardenId;
-        this.quantity = quantity;
-        this.idDetailName = idDetailName;
-        this.idDetailDescription = idDetailDescription;
-        this.idDetailFeature = idDetailFeature;
-        this.idDetailImage = idDetailImage;
-    }
-
     public int getStt() {
         return stt;
     }
 
     public void setStt(int stt) {
         this.stt = stt;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getIdName() {
@@ -241,6 +233,14 @@ public class VegetableData implements Serializable {
         this.imageVegetables = imageVegetables;
     }
 
+    public List<ImageWiki> getImageWikis() {
+        return imageWikis;
+    }
+
+    public void setImageWikis(List<ImageWiki> imageWikis) {
+        this.imageWikis = imageWikis;
+    }
+
     public int getGardenId() {
         return gardenId;
     }
@@ -257,35 +257,27 @@ public class VegetableData implements Serializable {
         this.quantity = quantity;
     }
 
-    public String getIdDetailName() {
-        return idDetailName;
+    public boolean isFixed() {
+        return isFixed;
     }
 
-    public void setIdDetailName(String idDetailName) {
-        this.idDetailName = idDetailName;
+    public void setFixed(boolean fixed) {
+        isFixed = fixed;
     }
 
-    public String getIdDetailDescription() {
-        return idDetailDescription;
+    public String getNameSearch() {
+        return nameSearch;
     }
 
-    public void setIdDetailDescription(String idDetailDescription) {
-        this.idDetailDescription = idDetailDescription;
+    public void setNameSearch(String nameSearch) {
+        this.nameSearch = nameSearch;
     }
 
-    public String getIdDetailFeature() {
-        return idDetailFeature;
+    public String getSynonymOfFeature() {
+        return synonymOfFeature;
     }
 
-    public void setIdDetailFeature(String idDetailFeature) {
-        this.idDetailFeature = idDetailFeature;
-    }
-
-    public String getIdDetailImage() {
-        return idDetailImage;
-    }
-
-    public void setIdDetailImage(String idDetailImage) {
-        this.idDetailImage = idDetailImage;
+    public void setSynonymOfFeature(String synonymOfFeature) {
+        this.synonymOfFeature = synonymOfFeature;
     }
 }

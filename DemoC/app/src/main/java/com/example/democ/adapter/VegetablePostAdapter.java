@@ -38,6 +38,7 @@ public class VegetablePostAdapter extends RecyclerView.Adapter<VegetablePostAdap
             return;
         }
         holder.mTxtVegetableName.setText(mVegetableList.get(position).getName());
+        holder.mTxtVegetableQuantity.setText("Số lượng: " + mVegetableList.get(position).getQuantity());
         holder.mTxtVegetableName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,10 +58,11 @@ public class VegetablePostAdapter extends RecyclerView.Adapter<VegetablePostAdap
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mTxtVegetableName;
+        TextView mTxtVegetableName, mTxtVegetableQuantity;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mTxtVegetableName = (TextView) itemView.findViewById(R.id.txt_vegetable_name);
+            mTxtVegetableQuantity = (TextView) itemView.findViewById(R.id.txt_vegetable_quantity);
         }
     }
 }

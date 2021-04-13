@@ -63,12 +63,6 @@ public class GardenFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initialData() {
-//        mGardenList = new ArrayList<>();
-//        mGardenList.add(new Garden("vuon 1", "Quang trung"));
-//        mGardenList.add(new Garden("vuon 2", "Quan 2"));
-//        mGardenList.add(new Garden("vuon 3", "Quan 3"));
-//        mGardenList.add(new Garden("vuon 4", "Quan 4"));
-//        mGardenList.add(new Garden("vuon 5", "Quan 5"));
 
         updateUI();
     }

@@ -18,7 +18,6 @@ public class ConfigApi {
         String GARDEN = "api/Garden";
         String VEGETABLE = "api/Vegetable";
         String CREATE_VEGETABLE = "api/Vegetable";
-        String CREATE_VEGETABLE_URL = "api/Vegetable";
         String VEGETABLE_ALL_BY_GARDEN_ID = "api/Vegetable/GetByGardenId";
         String VEGETABLE_NEED_ALL = "api/Vegetable/GetAllVegetable";
         String VEGETABLE_CHECK = "api/Vegetable/CheckVegetableInGarden";
@@ -47,5 +46,8 @@ public class ConfigApi {
         String PROVINCE = "api/Province";
         String DISTRICT = "api/District";
         String WARD = "api/Ward";
+
+        //report
+        String REPORT_POST = "api/Report";
     }
 }

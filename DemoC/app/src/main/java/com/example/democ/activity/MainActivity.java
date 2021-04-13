@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements AllGardenView, Al
                             selectFragment = new PersonalFragment();
                             break;
                     }
-                    getSupportFragmentManager().beginTransaction().add(R.id.frame_container, selectFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, selectFragment).commit();
                     return true;
                 }
             };

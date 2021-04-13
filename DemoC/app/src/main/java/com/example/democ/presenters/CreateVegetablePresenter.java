@@ -28,13 +28,13 @@ public class CreateVegetablePresenter {
         mCapstoneRepository = new CapstoneRepositoryImp();
     }
 
-    public void createVegetable(RequestBody title, RequestBody description, RequestBody featture, RequestBody newFeatture,
-                                RequestBody quantity, RequestBody gardenId,
-                                RequestBody idDetailName, RequestBody idDetailDescription,
-                                RequestBody idDetailFeature, RequestBody idDetailImage,
+    public void createVegetable(RequestBody title, RequestBody description, RequestBody featture,
+                                RequestBody quantity, RequestBody gardenId, RequestBody IdDescription,
+                                RequestBody IsFixed, RequestBody NameSearch,
+                                RequestBody SynonymOfFeature,
                                 MultipartBody.Part newImages, String token) {
-        mCapstoneRepository.createVegetable(mContext, title, description, featture, newFeatture, quantity, gardenId,
-                idDetailName, idDetailDescription, idDetailFeature, idDetailImage, newImages, token,
+        mCapstoneRepository.createVegetable(mContext, title, description, featture, quantity, gardenId, IdDescription,
+                IsFixed, NameSearch, SynonymOfFeature, newImages, token,
                 new CallBackData<String>() {
                     @Override
                     public void onSuccess(String msg) {

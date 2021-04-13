@@ -46,25 +46,16 @@
                         android:layout_height="@dimen/dp150">
                         <!--avatar image-->
                         <LinearLayout
+                            android:id="@+id/lnl_image_person"
                             android:gravity="center"
                             android:elevation="@dimen/dp80"
                             android:layout_width="@dimen/dp100"
                             android:layout_height="@dimen/dp100">
-                            <androidx.cardview.widget.CardView
-                                card_view:cardCornerRadius="@dimen/dp40"
-                                card_view:cardElevation="@dimen/dp2"
-                                card_view:contentPadding="@dimen/dp0"
-                                android:layout_marginTop="35dp"
-                                android:layout_marginBottom="35dp"
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:src="@drawable/avatar1"
                                 android:layout_width="@dimen/dp80"
-                                android:layout_height="@dimen/dp80">
-                                <ImageView
-                                    android:id="@+id/img_personal"
-                                    android:src="@drawable/avatar1"
-                                    android:scaleType="centerCrop"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent" />
-                            </androidx.cardview.widget.CardView>
+                                android:layout_height="@dimen/dp80" />
+
                         </LinearLayout>
                         <!--full name-->
                         <LinearLayout

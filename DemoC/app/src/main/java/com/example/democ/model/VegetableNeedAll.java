@@ -10,6 +10,8 @@ public class VegetableNeedAll implements Serializable {
     @SerializedName("text")
     private String text;
 
+    private boolean isChecked;
+
     public VegetableNeedAll(String id, String text) {
         this.id = id;
         this.text = text;
@@ -29,5 +31,13 @@ public class VegetableNeedAll implements Serializable {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 }

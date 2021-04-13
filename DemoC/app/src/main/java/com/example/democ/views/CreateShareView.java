@@ -1,8 +1,8 @@
 package com.example.democ.views;
 
-import com.example.democ.model.ShareData;
+import com.example.democ.model.ShareDetail;
 
 public interface CreateShareView {
-    void createShareViewSuccess(ShareData shareData);
+    void createShareViewSuccess(ShareDetail shareDetail);
     void createShareViewFail();
 }

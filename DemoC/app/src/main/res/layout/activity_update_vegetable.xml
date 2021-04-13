@@ -58,18 +58,79 @@
             <LinearLayout
                 android:layout_marginTop="@dimen/dp10"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/edt_vegetable_name"
-                    android:background="@drawable/bg_edt"
-                    android:hint="tên"
+                android:layout_height="@dimen/dp40">
+                <TextView
+                    android:text="@string/txt_plant_name"
                     android:textSize="@dimen/sp20"
+                    android:textColor="@color/sick_green"
+                    android:textStyle="bold"
                     android:padding="@dimen/dp8"
                     android:gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edt_vegetable_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_edt"
+                    android:gravity="center_vertical"
+                    android:hint="tên"
+                    android:inputType="text"
+                    android:padding="@dimen/dp8"
+                    android:textSize="@dimen/sp20" />
+            </LinearLayout>
+            <!--so luong-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp40">
+                <TextView
+                    android:text="Số lượng"
+                    android:textSize="@dimen/sp20"
+                    android:textColor="@color/sick_green"
+                    android:textStyle="bold"
+                    android:padding="@dimen/dp8"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edt_vegetable_quantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_edt"
+                    android:gravity="center_vertical"
+                    android:hint="0"
+                    android:inputType="number"
+                    android:padding="@dimen/dp8"
+                    android:textSize="@dimen/sp20" />
+            </LinearLayout>
             <!--mô tả-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp40">
+                <TextView
+                    android:text="@string/txt_plant_description"
+                    android:textSize="@dimen/sp20"
+                    android:textColor="@color/sick_green"
+                    android:textStyle="bold"
+                    android:padding="@dimen/dp8"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
             <LinearLayout
                 android:layout_marginTop="@dimen/dp10"
                 android:layout_width="match_parent"
@@ -81,10 +142,26 @@
                     android:textSize="@dimen/sp20"
                     android:padding="@dimen/dp8"
                     android:gravity="center_vertical"
+                    android:inputType="text|textMultiLine"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>
             <!--công dụng-->
+            <!--hinh anh-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp40">
+                <TextView
+                    android:text="@string/txt_plant_effect"
+                    android:textSize="@dimen/sp20"
+                    android:textColor="@color/sick_green"
+                    android:textStyle="bold"
+                    android:padding="@dimen/dp8"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
             <LinearLayout
                 android:layout_marginTop="@dimen/dp10"
                 android:layout_width="match_parent"
@@ -96,6 +173,7 @@
                     android:textSize="@dimen/sp20"
                     android:padding="@dimen/dp8"
                     android:gravity="center_vertical"
+                    android:inputType="text|textMultiLine"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>

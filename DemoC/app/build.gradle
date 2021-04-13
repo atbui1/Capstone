@@ -31,6 +31,8 @@ dependencies {
 
 //    cardview
     implementation "androidx.cardview:cardview:1.0.0"
+    //circle imageview
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 //    recycleview
     implementation "androidx.recyclerview:recyclerview:1.1.0"
 //    picasso

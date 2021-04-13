@@ -13,13 +13,12 @@ import com.example.democ.model.GardenResult;
 import com.example.democ.model.ImageVegetable;
 import com.example.democ.model.PostData;
 import com.example.democ.model.ProvinceData;
-import com.example.democ.model.ShareData;
+import com.example.democ.model.ReportPost;
+import com.example.democ.model.ShareDetail;
 import com.example.democ.model.ShareRequest;
+import com.example.democ.model.UpdateVegetableRequest;
 import com.example.democ.model.VegetableData;
 import com.example.democ.model.VegetableNeedAll;
-import com.example.democ.model.VegetableRequest;
-import com.example.democ.model.VegetableSearchDescription;
-import com.example.democ.model.VegetableSearchKeyword;
 import com.example.democ.model.WardData;
 import com.example.democ.model.WikiData;
 import com.example.democ.room.entities.User;
@@ -46,13 +45,16 @@ public interface CapstoneRepository {
     void updateGarden(Context context, Garden garden, String token, CallBackData<Garden> callBackData);
     void deleteGarden(Context context, int gardenId, String token, CallBackData<String> callBackData);
 
-    void createVegetable(Context context, RequestBody title, RequestBody description, RequestBody featture, RequestBody newFeatture,
-                         RequestBody quantity, RequestBody gardenId, RequestBody idDetailName, RequestBody idDetailDescription,
-                         RequestBody idDetailFeature, RequestBody idDetailImage,
+    void createVegetable(Context context, RequestBody title, RequestBody description, RequestBody featture, RequestBody quantity,
+                         RequestBody gardenId, RequestBody IdDescription, RequestBody IsFixed, RequestBody NameSearch,
+                         RequestBody SynonymOfFeature,
                          MultipartBody.Part newImages,
                          String token, CallBackData<String> callBackData);
     void getAllVegetableByGardenId(Context context, int gardenId, String token, CallBackData<List<VegetableData>> callBackData);
     void deleteVegetable(Context context, int noVeg, int gardenId, String token, CallBackData<String> callBackData);
+//    void updateVegetable(Context context, String idVeg, String title, String description, String feature, int quantity, int gardenId,
+//                         List<MultipartBody.Part> newImages, String token, CallBackData<VegetableData> callBackData);
+    void updateVegetable(Context context, UpdateVegetableRequest updateVegetableRequest, String token, CallBackData<VegetableData> callBackData);
     void getAllVegetableNeed(Context context, String token, CallBackData<List<VegetableNeedAll>> callBackData);
     void checkVegetableOfAccount(Context context, String vegetableNeedId, String vegetableNeedName, String token,
                                  CallBackData<List<VegetableData>> callBackData);
@@ -66,7 +68,7 @@ public interface CapstoneRepository {
 //    share - post
     void getAllShare(Context context, String token, CallBackData<List<PostData>> callBackData);
     void getAllShareById(Context context, String token, CallBackData<List<PostData>> callBackData);
-    void createPostShare(Context context, ShareRequest shareRequest, String token, CallBackData<ShareData> callBackData);
+    void createPostShare(Context context, ShareRequest shareRequest, String token, CallBackData<ShareDetail> callBackData);
     void deleteShare(Context context, String shareId, String token, CallBackData<String> callBackData);
 
 //    exchange
@@ -81,4 +83,7 @@ public interface CapstoneRepository {
     void getAllProvince(Context context, String token, CallBackData<List<ProvinceData>> callBackData);
     void getDistrictById(Context context, int id, String token, CallBackData<List<DistrictData>> callBackData);
     void getWardById(Context context, int id, String token, CallBackData<List<WardData>> callBackData);
+
+    //Report post
+    void reportPost(Context context, ReportPost reportPost, String token, CallBackData<String> callBackData);
 }

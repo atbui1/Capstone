@@ -21,10 +21,8 @@ public class PostData implements Serializable {
     private int statius;
     @SerializedName("content")
     private String content;
-    @SerializedName("vegetableNeedId")
-    private String vegetableNeedId;
-    @SerializedName("vegetableNeedName")
-    private String vegetableNeedName;
+    @SerializedName("vegetableShare")
+    private List<VegetableShare> vegetableShareList;
     @SerializedName("createdDate")
     private String createdDate;
     @SerializedName("accountId")
@@ -34,8 +32,9 @@ public class PostData implements Serializable {
     @SerializedName("images")
     private List<ImageVegetable> imageVegetablesList;
 
-    public PostData(String id, String vegName, String vegDescription, String vegFeature, int quantity, int statius, String content,
-                    String vegetableNeedId, String vegetableNeedName, String createdDate, String accountId,
+    //CST GetAllShareById - 12 element
+    public PostData(String id, String vegName, String vegDescription, String vegFeature, int quantity, int statius,
+                    String content, List<VegetableShare> vegetableShareList, String createdDate, String accountId,
                     String fullName, List<ImageVegetable> imageVegetablesList) {
         this.id = id;
         this.vegName = vegName;
@@ -44,8 +43,7 @@ public class PostData implements Serializable {
         this.quantity = quantity;
         this.statius = statius;
         this.content = content;
-        this.vegetableNeedId = vegetableNeedId;
-        this.vegetableNeedName = vegetableNeedName;
+        this.vegetableShareList = vegetableShareList;
         this.createdDate = createdDate;
         this.accountId = accountId;
         this.fullName = fullName;
@@ -108,20 +106,12 @@ public class PostData implements Serializable {
         this.content = content;
     }
 
-    public String getVegetableNeedId() {
-        return vegetableNeedId;
+    public List<VegetableShare> getVegetableShareList() {
+        return vegetableShareList;
     }
 
-    public void setVegetableNeedId(String vegetableNeedId) {
-        this.vegetableNeedId = vegetableNeedId;
-    }
-
-    public String getVegetableNeedName() {
-        return vegetableNeedName;
-    }
-
-    public void setVegetableNeedName(String vegetableNeedName) {
-        this.vegetableNeedName = vegetableNeedName;
+    public void setVegetableShareList(List<VegetableShare> vegetableShareList) {
+        this.vegetableShareList = vegetableShareList;
     }
 
     public String getCreatedDate() {

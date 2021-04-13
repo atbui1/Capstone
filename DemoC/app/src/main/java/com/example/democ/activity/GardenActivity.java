@@ -1,5 +1,6 @@
 package com.example.democ.activity;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,17 +26,19 @@ import com.example.democ.model.Vegetable;
 import com.example.democ.model.VegetableData;
 import com.example.democ.presenters.AllVegetableByGardenIdPresenter;
 import com.example.democ.presenters.DeleteGardenPresenter;
+import com.example.democ.presenters.PersonalPresenter;
 import com.example.democ.presenters.UpdateGardenPresenter;
 import com.example.democ.room.entities.User;
 import com.example.democ.room.managements.UserManagement;
 import com.example.democ.views.AllVegetableByGardenIdView;
 import com.example.democ.views.DeleteGardenView;
+import com.example.democ.views.PersonalView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GardenActivity extends AppCompatActivity implements View.OnClickListener, DeleteGardenView, AllVegetableByGardenIdView,
-        IClickVegetable {
+        IClickVegetable, PersonalView {
 
     private RecyclerView mRecyclerVegetable;
     private List<Vegetable> mVegetablesList;
@@ -43,7 +46,7 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
 
     static int mGardenId;
     static String mGardenName, mGardenAddress;
-    static List<VegetableData> mVegetableDataList;
+    private List<VegetableData> mVegetableDataList;
 
     private TextView mTxtGardenName, mTxtGardenAddress, mTxtUpdateGarden, mTxtDeleteGarden;
 //    private FloatingActionButton mFabAddVegetable;
@@ -52,7 +55,9 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
     private User mUser;
     private UserManagement mUserManagement;
     private DeleteGardenPresenter mDeleteGardenPresenter;
+    private PersonalPresenter mPersonalPresenter;
     private AllVegetableByGardenIdPresenter mAllVegetableByGardenIdPresenter;
+    private static int CREATE_VEGETABLE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +69,12 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initialView() {
+        mPersonalPresenter = new PersonalPresenter(getApplication(), this);
+        mPersonalPresenter.getInfoPersonal();
+        mDeleteGardenPresenter = new DeleteGardenPresenter(getApplication(), this, this);
+        mAllVegetableByGardenIdPresenter = new AllVegetableByGardenIdPresenter(getApplication(), this, this);
+
+//        mVegetableDataList = new ArrayList<>();
 
         mTxtUpdateGarden = (TextView) findViewById(R.id.txt_update_garden);
         mTxtUpdateGarden.setOnClickListener(this);
@@ -78,8 +89,7 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initialData() {
-        mDeleteGardenPresenter = new DeleteGardenPresenter(getApplication(), this, this);
-        mAllVegetableByGardenIdPresenter = new AllVegetableByGardenIdPresenter(getApplication(), this, this);
+
 
         mRecyclerVegetable = (RecyclerView) findViewById(R.id.recycler_vegetable);
         mRecyclerVegetable.setHasFixedSize(true);
@@ -91,35 +101,49 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
         mTxtGardenAddress = (TextView) findViewById(R.id.txt_garden_address);
 
 
-        Intent intentGardenAdapter = getIntent();
-        Bundle bundleGardenAdapter = intentGardenAdapter.getExtras();
+        Intent intent = getIntent();
+//        Bundle bundleGardenAdapter = intentGardenAdapter.getExtras();
+        //bundle garden
+        Bundle bundleGardenAdapter = intent.getBundleExtra("infoGardenTo");
+        //bundle create vegetable
+        Bundle bundleCreateVegetable = intent.getBundleExtra("infoGarden");
         if (bundleGardenAdapter != null) {
             mGardenName = bundleGardenAdapter.getString("GARDEN_NAME");
             mGardenAddress = bundleGardenAdapter.getString("GARDEN_ADDRESS");
             mGardenId = bundleGardenAdapter.getInt("GARDEN_ID");
             mTxtGardenName.setText(mGardenName);
             mTxtGardenAddress.setText(mGardenAddress);
+            System.out.println("chay bundleGardenAdapter ***************************************");
+        }
+        if (bundleCreateVegetable != null) {
+            mGardenName = bundleCreateVegetable.getString("GARDEN_NAME");
+            mGardenAddress = bundleCreateVegetable.getString("GARDEN_ADDRESS");
+            mGardenId = bundleCreateVegetable.getInt("GARDEN_ID");
+            mTxtGardenName.setText(mGardenName);
+            mTxtGardenAddress.setText(mGardenAddress);
+            System.out.println("chay bundleCreateVegetable **************************");
         }
 
         //bundle frm
-        mUserManagement = new UserManagement(getApplication());
-        mUserManagement.getmUserInfo(new UserManagement.OnDataCallBackUser() {
-            @Override
-            public void onDataSuccess(User user) {
-                mUser = user;
-                //get all vegetable
-                System.out.println("garden activity line 114");
-                mAllVegetableByGardenIdPresenter.getAllVegetableByGardenId(mGardenId, mUser.getToken());
-            }
+//        mUserManagement = new UserManagement(getApplication());
+//        mUserManagement.getmUserInfo(new UserManagement.OnDataCallBackUser() {
+//            @Override
+//            public void onDataSuccess(User user) {
+//                mUser = user;
+//                //get all vegetable
+//                System.out.println("garden activity line 114");
+//                mAllVegetableByGardenIdPresenter.getAllVegetableByGardenId(mGardenId, mUser.getToken());
+//            }
+//
+//            @Override
+//            public void onDataFail() {
+//
+//            }
+//        });
 
-            @Override
-            public void onDataFail() {
-
-            }
-        });
-
-        mVegetableDataList = new ArrayList<>();
-
+        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+        System.out.println("chay xong initialview 111");
+        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
 //        updateUI();
     }
 
@@ -136,7 +160,7 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
         String token = mUser.getToken();
         System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        System.out.println(token);
+        System.out.println("token delete garden: " + token);
         System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         mDeleteGardenPresenter.deleteGarden(mGardenId, token);
@@ -229,15 +253,23 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void getAllVegetableByGardenIdSuccess(List<VegetableData> vegetableData) {
-        this.mVegetableDataList = vegetableData;
+        mVegetableDataList = vegetableData;
+        System.out.println("gggggggggggggggggggggggggggggggggggggggggggggggg");
+        System.out.println("mVegetableDataList.size truoc if else: " + mVegetableDataList.size());
         System.out.println("gggggggggggggggggggggggggggggggggggggggggggggggg");
         if (mVegetableDataList.size() > 0) {
-            System.out.println("getAllVegetableByGardenIdSuccess garden activity");
-            initialView();
+            System.out.println("getAllVegetableByGardenIdSuccess garden activity trong if");
+            System.out.println("mVegetableDataList.size: " + mVegetableDataList.size());
+//            initialView();
             updateUI();
         } else {
-            System.out.println("Load recycleView trong");
+            System.out.println("Load recycleView trong else");
+            System.out.println("chay vao else getAllVegetableByGardenIdSuccess");
+//            initialView();
+            System.out.println("chay vao else getAllVegetableByGardenIdSuccess size: " + mVegetableDataList.size());
+//            return;
         }
+//        initialView();
 
     }
 
@@ -249,26 +281,68 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void clickVegetable(VegetableData vegetableData) {
         Intent intent = new Intent(GardenActivity.this, VegetableActivity.class);
-        Bundle bundle = new Bundle();
-//                    bundle.putString("VEGETABLE_IMAGE", );
-        bundle.putString("VEGETABLE_NAME", vegetableData.getName());
-        bundle.putString("VEGETABLE_DESCRIPTION", vegetableData.getDescription());
-        bundle.putString("VEGETABLE_FEATURE", vegetableData.getFeature());
-        bundle.putInt("VEGETABLE_STT", vegetableData.getStt());
-        String linkUrl = "";
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+//        Bundle bundle = new Bundle();
+//        bundle.putString("VEGETABLE_ID", vegetableData.getId());
+//        bundle.putString("VEGETABLE_NAME", vegetableData.getName());
+//        bundle.putString("VEGETABLE_DESCRIPTION", vegetableData.getDescription());
+//        bundle.putString("VEGETABLE_FEATURE", vegetableData.getFeature());
+//        bundle.putInt("VEGETABLE_QUANTITY", vegetableData.getQuantity());
+//        String linkUrl = "";
+//
+//        if (vegetableData.getImageVegetables().size() > 0) {
+//            int maxSize = vegetableData.getImageVegetables().size() - 1;
+//            linkUrl = vegetableData.getImageVegetables().get(maxSize).getUrl();
+//        } else {
+//            linkUrl = "";
+//        }
+//        bundle.putString("VEGETABLE_IMAGE", linkUrl);
+//        bundle.putString("VEGETABLE_DES_ID", vegetableData.getIdDescription());
+//        bundle.putString("VEGETABLE_NAME_SEARCH", vegetableData.getNameSearch());
+//        bundle.putString("VEGETABLE_SYNONYM", vegetableData.getSynonymOfFeature());
+//        bundle.putBoolean("IS_FIXED", vegetableData.isFixed());
+//        bundle.putInt("GARDEN_ID", mGardenId);
+//        bundle.putString("GARDEN_NAME", mGardenName);
+//        bundle.putString("GARDEN_ADDRESS", mGardenAddress);
+//        intent.putExtras(bundle);
+//        Toast.makeText(getApplication(), "gardenId: " + mGardenId + "\n iDVeg: " + vegetableData.getId(), Toast.LENGTH_SHORT).show();
+//        startActivity(intent);
+//        startActivityForResult(intent, CREATE_VEGETABLE);
 
-        if (vegetableData.getImageVegetables().size() > 0) {
-            int maxSize = vegetableData.getImageVegetables().size() - 1;
-            linkUrl = vegetableData.getImageVegetables().get(maxSize).getUrl();
-        } else {
-            linkUrl = "";
-        }
-        bundle.putString("VEGETABLE_IMAGE", linkUrl);
+        /*      send new                  */
+        Bundle bundle = new Bundle();
+        VegetableData vegetable = vegetableData;
         bundle.putInt("GARDEN_ID", mGardenId);
         bundle.putString("GARDEN_NAME", mGardenName);
         bundle.putString("GARDEN_ADDRESS", mGardenAddress);
+        bundle.putSerializable("zxc", vegetable);
         intent.putExtras(bundle);
-        Toast.makeText(getApplication(), "gardenId: " + mGardenId + "\n noVeg: " + vegetableData.getStt(), Toast.LENGTH_SHORT).show();
-        startActivity(intent);
+        startActivityForResult(intent, CREATE_VEGETABLE);
     }
+
+    @Override
+    public void showInfoPersonal(User user) {
+        mUser = user;
+        mAllVegetableByGardenIdPresenter.getAllVegetableByGardenId(mGardenId, user.getToken());
+        System.out.println("chay showInfoPersonal ***************************");
+        System.out.println("garden Id: " + mGardenId);
+        System.out.println("token showInfoPersonal: " + user.getToken());
+        System.out.println("chay showInfoPersonal ***************************");
+    }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (data == null) {
+//            return;
+//        }
+//        if (requestCode == CREATE_VEGETABLE) {
+//            Bundle bundle = data.getBundleExtra("infoGarden");
+//            mGardenName = bundle.getString("GARDEN_NAME");
+//            mGardenAddress = bundle.getString("GARDEN_ADDRESS");
+//            mGardenId = bundle.getInt("GARDEN_ID");
+//            mTxtGardenName.setText(mGardenName);
+//            mTxtGardenAddress.setText(mGardenAddress);
+//        }
+//    }
 }

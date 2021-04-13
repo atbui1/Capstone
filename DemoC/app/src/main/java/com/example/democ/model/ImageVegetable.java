@@ -17,18 +17,24 @@ public class ImageVegetable implements Serializable {
     private String localUrl;
     @SerializedName("vegetableDescriptionId")
     private String vegetableDescriptionId;
+    @SerializedName("accountId")
+    private String accountId;
     @SerializedName("vegetableDescription")
     private VegetableDescription vegetableDescription;
+    @SerializedName("appAccount")
+    private AppAccount appAccount;
 
-    public ImageVegetable(int id, String name, String thumbnail, String url, String localUrl,
-                          String vegetableDescriptionId, VegetableDescription vegetableDescription) {
+    public ImageVegetable(int id, String name, String thumbnail, String url, String localUrl, String vegetableDescriptionId,
+                          String accountId, VegetableDescription vegetableDescription, AppAccount appAccount) {
         this.id = id;
         this.name = name;
         this.thumbnail = thumbnail;
         this.url = url;
         this.localUrl = localUrl;
         this.vegetableDescriptionId = vegetableDescriptionId;
+        this.accountId = accountId;
         this.vegetableDescription = vegetableDescription;
+        this.appAccount = appAccount;
     }
 
     public int getId() {
@@ -79,11 +85,27 @@ public class ImageVegetable implements Serializable {
         this.vegetableDescriptionId = vegetableDescriptionId;
     }
 
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
     public VegetableDescription getVegetableDescription() {
         return vegetableDescription;
     }
 
     public void setVegetableDescription(VegetableDescription vegetableDescription) {
         this.vegetableDescription = vegetableDescription;
+    }
+
+    public AppAccount getAppAccount() {
+        return appAccount;
+    }
+
+    public void setAppAccount(AppAccount appAccount) {
+        this.appAccount = appAccount;
     }
 }

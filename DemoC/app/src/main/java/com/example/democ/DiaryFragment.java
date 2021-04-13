@@ -23,6 +23,7 @@ import com.example.democ.activity.CreatePostActivity;
 import com.example.democ.activity.PosterProfileActivity;
 import com.example.democ.activity.SearchActivity;
 import com.example.democ.adapter.PostAdapter;
+import com.example.democ.fragment.ReportPostBottomSheetFragment;
 import com.example.democ.iclick.IClickPost;
 import com.example.democ.model.ExchangeData;
 import com.example.democ.model.ExchangeRequest;
@@ -31,17 +32,22 @@ import com.example.democ.model.PostData;
 import com.example.democ.model.VegetableData;
 import com.example.democ.presenters.CheckVegetableOfAccountPresenter;
 import com.example.democ.presenters.CreateExchangePresenter;
+import com.example.democ.presenters.PersonalPresenter;
+import com.example.democ.presenters.ReportPostPresenter;
 import com.example.democ.room.entities.User;
 import com.example.democ.room.managements.UserManagement;
 import com.example.democ.views.CheckVegetableOfAccountView;
 import com.example.democ.views.CreateExchangeView;
+import com.example.democ.views.PersonalView;
+import com.example.democ.views.ReportPostView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class DiaryFragment extends Fragment implements View.OnClickListener, IClickPost, CreateExchangeView, CheckVegetableOfAccountView {
+public class DiaryFragment extends Fragment implements View.OnClickListener, IClickPost, CreateExchangeView, CheckVegetableOfAccountView,
+        ReportPostView, PersonalView {
 
     private Button mBtnCreatePost, mBtnSearch;
     private LinearLayout mLnlSearch;
@@ -65,6 +71,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
     private UserManagement mUserManagement;
     private CreateExchangePresenter mCreateExchangePresenter;
     private CheckVegetableOfAccountPresenter mCheckVegetableOfAccountPresenter;
+    private ReportPostPresenter mReportPostPresenter;
+    private PersonalPresenter mPersonalPresenter;
     private LinearLayout mLnlBtnExchange;
 
 //    public DiaryFragment(List<PostData> mPostList, String mAccessToken) {
@@ -90,6 +98,9 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
 
     private void initialView() {
 
+        mPersonalPresenter = new PersonalPresenter(getActivity(), this);
+        mPersonalPresenter.getInfoPersonal();
+
         mBtnCreatePost = (Button) mView.findViewById(R.id.btn_create_post);
         mBtnCreatePost.setOnClickListener(this);
 //        mBtnSearch = (Button) mView.findViewById(R.id.btn_search);
@@ -107,17 +118,18 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         mUserManagement = new UserManagement(getContext());
         mCreateExchangePresenter = new CreateExchangePresenter(getActivity().getApplication(), getActivity(), this);
         mCheckVegetableOfAccountPresenter = new CheckVegetableOfAccountPresenter(getActivity().getApplication(), getActivity(), this);
-        mUserManagement.getmUserInfo(new UserManagement.OnDataCallBackUser() {
-            @Override
-            public void onDataSuccess(User user) {
-                mAccountIdUser = user.getAccountId();
-            }
-
-            @Override
-            public void onDataFail() {
-
-            }
-        });
+        mReportPostPresenter = new ReportPostPresenter(getActivity().getApplication(), getActivity(), this);
+//        mUserManagement.getmUserInfo(new UserManagement.OnDataCallBackUser() {
+//            @Override
+//            public void onDataSuccess(User user) {
+//                mAccountIdUser = user.getAccountId();
+//            }
+//
+//            @Override
+//            public void onDataFail() {
+//
+//            }
+//        });
 
         mLnlBtnExchange = (LinearLayout) mView.findViewById(R.id.lnl_btn_exchange);
 
@@ -320,7 +332,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         dialog.show();
     }
     private void showDialogQuantityExchangeErr() {
-        final Dialog dialog = new Dialog(getContext());
+        final Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.dialog_exchange_quantity_err);
         dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
         TextView txtQuantity;
@@ -356,6 +368,17 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         dialog.show();
     }
 
+    public void clickOpenReportBottomSheet(PostData postData) {
+        String accessToken = mUser.getToken();
+        String accountId = mUser.getAccountId();
+        System.out.println("**********clickOpenReportBottomSheet*************");
+        System.out.println("access token: " + accessToken);
+        System.out.println("accountId: " + accountId);
+        System.out.println("**********clickOpenReportBottomSheet*************");
+        ReportPostBottomSheetFragment reportPostBottomSheetFragment = new ReportPostBottomSheetFragment(postData, accessToken, accountId);
+        reportPostBottomSheetFragment.show(getFragmentManager(), reportPostBottomSheetFragment.getTag());
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -384,8 +407,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         mShareIdOfShare = shareData.getId();
         mAccountIdOfShare = shareData.getAccountId();
         mVegetableIdOfShare = shareData.getId();
-        mStrVegetableNeedId = shareData.getVegetableNeedId();
-        mStrVegetableNeedName = shareData.getVegetableNeedName();
+//        mStrVegetableNeedId = shareData.getVegetableNeedId();
+//        mStrVegetableNeedName = shareData.getVegetableNeedName();
         System.out.println("shareId: " + shareData.getId());
         System.out.println("quantity: " + mIntQuantityOfShare);
         System.out.println("Quantity input: " + mIntExchangeQuantityDonate);
@@ -429,6 +452,22 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         }
 
     }
+
+    @Override
+    public void clickReportPost(PostData shareData) {
+        mAccountIdUser = mUser.getAccountId();
+        String accountIdiInShare = shareData.getAccountId();
+        mShareIdOfShare = shareData.getId();
+        System.out.println("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+        System.out.println("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+        System.out.println("account id: " + mAccountIdUser);
+        System.out.println("accountIdiInShare: " + accountIdiInShare);
+        System.out.println("share id: " + mShareIdOfShare);
+        System.out.println("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+        System.out.println("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+        clickOpenReportBottomSheet(shareData);
+    }
+
     private void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_container, fragment);
@@ -441,6 +480,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA createExchangeSuccess");
         System.out.println("createExchangeSuccess");
         System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA createExchangeSuccess");
+        initialView();
     }
 
     @Override
@@ -470,5 +510,21 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         showDialogCheckVegetableNeedErr();
         System.out.println("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
         System.out.println("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN");
+    }
+
+    @Override
+    public void reportPostSuccess() {
+
+    }
+
+    @Override
+    public void reportPostFail() {
+
+    }
+
+    @Override
+    public void showInfoPersonal(User user) {
+        mUser = user;
+        mAccountIdUser = mUser.getAccountId();
     }
 }

@@ -57,7 +57,8 @@ public class GardenAdapter extends RecyclerView.Adapter<GardenAdapter.ViewHolder
                 bundle.putString("GARDEN_NAME", mGardenList.get(position).getName());
                 bundle.putString("GARDEN_ADDRESS", mGardenList.get(position).getAddress());
                 bundle.putInt("GARDEN_ID", mGardenList.get(position).getId());
-                intentGarden.putExtras(bundle);
+//                intentGarden.putExtras(bundle);
+                intentGarden.putExtra("infoGardenTo", bundle);
                 context.startActivity(intentGarden);
             }
         });

@@ -47,7 +47,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
         IClickPostAccount {
 
     private View mView;
-    private ImageView mImgPersonal;
+    private LinearLayout mLnlImagePerson;
     private TextView mTxtFullNamePersonal, mTxtTotalPosts;
     private LogoutPresenter mLogoutPresenter;
     private PersonalPresenter mPersonalPresenter;
@@ -87,6 +87,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
         mLogoutPresenter = new LogoutPresenter(getActivity().getApplication(), getActivity(), this);
 
         //22
+        mLnlImagePerson = (LinearLayout) mView.findViewById(R.id.lnl_image_person);
         mDrawerLayout = (DrawerLayout) mView.findViewById(R.id.drawer_layout);
         mLnlMenu = (LinearLayout) mView.findViewById(R.id.lnl_menu);
         mLnlMenu.setOnClickListener(this);
@@ -103,8 +104,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
         mListPost = new ArrayList<>();
         //11
 
-        mImgPersonal = (ImageView) mView.findViewById(R.id.img_personal);
-        mImgPersonal.setOnClickListener(this);
+        mLnlImagePerson.setOnClickListener(this);
         mTxtFullNamePersonal = (TextView) mView.findViewById(R.id.txt_full_name_personal);
 
         //11
@@ -162,7 +162,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
     public void updateUI() {
         if (mPostByAccountAdapter == null) {
 //            mPostByAccountAdapter = new PostByAccountAdapter(mListPost, getContext().getApplicationContext());
-            mPostByAccountAdapter = new PostByAccountAdapter(mListPost, this);
+            mPostByAccountAdapter = new PostByAccountAdapter(mListPost, getContext().getApplicationContext(), this);
             mRecyclerViewPost.setAdapter(mPostByAccountAdapter);
         } else {
             mPostByAccountAdapter.notifyDataSetChanged();
@@ -187,7 +187,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.img_personal:
+            case R.id.lnl_image_person:
                 Toast.makeText(view.getContext(),
                          " ahihi 22222222222222", Toast.LENGTH_SHORT)
                         .show();

@@ -1,20 +1,20 @@
 package com.example.democ.model;
 
+import java.util.List;
+
 public class ShareRequest {
     private String content;
     private int quantity;
     private int status;
     private String vegetableId;
-    private String vegetableNeedId;
-    private String vegetableNeedName;
+    private List<String> vegetableNeedId;
 
-    public ShareRequest(String content, int quantity, int status, String vegetableId, String vegetableNeedId, String vegetableNeedName) {
+    public ShareRequest(String content, int quantity, int status, String vegetableId, List<String> vegetableNeedId) {
         this.content = content;
         this.quantity = quantity;
         this.status = status;
         this.vegetableId = vegetableId;
         this.vegetableNeedId = vegetableNeedId;
-        this.vegetableNeedName = vegetableNeedName;
     }
 
     public String getContent() {
@@ -49,19 +49,11 @@ public class ShareRequest {
         this.vegetableId = vegetableId;
     }
 
-    public String getVegetableNeedId() {
+    public List<String> getVegetableNeedId() {
         return vegetableNeedId;
     }
 
-    public void setVegetableNeedId(String vegetableNeedId) {
+    public void setVegetableNeedId(List<String> vegetableNeedId) {
         this.vegetableNeedId = vegetableNeedId;
-    }
-
-    public String getVegetableNeedName() {
-        return vegetableNeedName;
-    }
-
-    public void setVegetableNeedName(String vegetableNeedName) {
-        this.vegetableNeedName = vegetableNeedName;
     }
 }

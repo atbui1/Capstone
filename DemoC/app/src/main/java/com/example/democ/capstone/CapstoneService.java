@@ -53,7 +53,6 @@ public interface CapstoneService {
 
     @GET(ConfigApi.Api.GET_ALL_GARDEN)
     Call<ResponseBody> getAllGarden(@Header("Authorization") String token);
-
     @PUT(ConfigApi.Api.GARDEN)
     Call<ResponseBody> updateGarden(@Body RequestBody body, @Header("Authorization") String token);
     @DELETE(ConfigApi.Api.GARDEN)
@@ -65,13 +64,12 @@ public interface CapstoneService {
     Call<ResponseBody> createVegetable(@Part("Title") RequestBody title,
                                        @Part("Description") RequestBody description,
                                        @Part("Featture") RequestBody featture,
-                                       @Part("NewFeatture") RequestBody newFeatture,
                                        @Part("Quantity") RequestBody quantity,
                                        @Part("gardenId") RequestBody gardenId,
-                                       @Part("IdDetailName") RequestBody idDetailName,
-                                       @Part("IdDetailDescription") RequestBody idDetailDescription,
-                                       @Part("IdDetailFeature") RequestBody idDetailFeature,
-                                       @Part("IdDetailImage") RequestBody idDetailImage,
+                                       @Part("IdDescription") RequestBody IdDescription,
+                                       @Part("IsFixed") RequestBody IsFixed,
+                                       @Part("NameSearch") RequestBody NameSearch,
+                                       @Part("SynonymOfFeature") RequestBody SynonymOfFeature,
                                        @Part MultipartBody.Part newImages,
                                        @Header("Authorization") String token);
 
@@ -80,6 +78,18 @@ public interface CapstoneService {
     Call<ResponseBody> getAllVegetableByGardenId(@Query("GardenId") int gardenId, @Header("Authorization") String token);
     @DELETE(ConfigApi.Api.VEGETABLE)
     Call<ResponseBody> deleteVegetable(@Query("noVeg") int noVeg, @Query("gardenId") int gardenId, @Header("Authorization") String token);
+//    @Multipart
+//    @PUT(ConfigApi.Api.VEGETABLE)
+//    Call<ResponseBody> updateVegetable(@Part("id") String IdVeg,
+//                                       @Part("title") String title,
+//                                       @Part("description") String description,
+//                                       @Part("featture") String featture,
+//                                       @Part("quantity") int quantity,
+//                                       @Part("gardenId") int gardenId,
+//                                       @Part List<MultipartBody.Part> newImages,
+//                                       @Header("Authorization") String token);
+    @PUT(ConfigApi.Api.VEGETABLE)
+    Call<ResponseBody> updateVegetable(@Body RequestBody body, @Header("Authorization") String token);
     @GET(ConfigApi.Api.VEGETABLE_NEED_ALL)
     Call<ResponseBody> getAllVegetableNeed(@Header("Authorization") String token);
     @GET(ConfigApi.Api.VEGETABLE_CHECK)
@@ -132,5 +142,9 @@ public interface CapstoneService {
     Call<ResponseBody> getDistrictByID(@Query("Id") int id, @Header("Authorization") String token);
     @GET(ConfigApi.Api.WARD)
     Call<ResponseBody> getWardById(@Query("Id") int id, @Header("Authorization") String token);
+
+    //report
+    @POST(ConfigApi.Api.REPORT_POST)
+    Call<ResponseBody> reportPost(@Body RequestBody body,@Header("Authorization") String token);
 
 }

@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.renderscript.Sampler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +20,7 @@ import com.example.democ.iclick.IClickGarden;
 import com.example.democ.iclick.IClickVegetable;
 import com.example.democ.iclick.IClickVegetableNeed;
 import com.example.democ.model.GardenResult;
-import com.example.democ.model.ShareData;
+import com.example.democ.model.ShareDetail;
 import com.example.democ.model.ShareRequest;
 import com.example.democ.model.VegetableData;
 import com.example.democ.model.VegetableNeedAll;
@@ -40,15 +39,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CreatePostActivity extends AppCompatActivity implements View.OnClickListener, CreateShareView,
-        AllGardenView, AllVegetableByGardenIdView, AllVegetableNeedView {
+        AllGardenView, AllVegetableByGardenIdView, AllVegetableNeedView,
+        VegetableNeedBottomSheetFragment.IVegetableNeedListener {
 
     private Button mBtnCreatePost;
     private EditText mEdtPostContent, mEdtPostVegetableQuantity;
     private TextView mTxtPostVegetableName, mTxtPostGarden, mTxtBtnOption, mTxtPostVegetableNeed;
     private LinearLayout mLnlVegetableNeed, mLnlShowBtnOption;
 
-    private String mPostContent, mPostGardenName, mPostVegetableName, mPostVegetableId;
-    private int mGardenId, mPostVegetableQuantity;
+    private String mPostContent = "", mPostGardenName, mPostVegetableName = "", mPostVegetableId, mStrQuantity = "";
+    private int mGardenId, mPostVegetableQuantity, mIntVegetableQuantity;
 
     private CreateSharePresenter mCreateSharePresenter;
     private AllGardenPresenter mAllGardenPresenter;
@@ -58,15 +58,20 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
     private UserManagement mUserManagement;
     private List<GardenResult> mListGarden;
     private List<VegetableData> mListVegetable;
-    private List<VegetableNeedAll> mListVegetableNedd;
+    private List<VegetableNeedAll> mListVegetableNeed;
 
-    String mStrQuantity;
     String mStrBtnOption = "Tạo bài chia sẽ";
     String mStrVegetableNeedName = "";
-    String mStrVegetableNeedId = "";
+    List<String> mStrVegetableNeedId;
     int mIntStatus = 1;
     private final static String SHARE_POST = "Tạo bài chia sẽ";
     private final static String EXCHANGE_POST = "Tạo bài trao đổi";
+
+    //aa
+    private List<VegetableNeedAll> mListAllNeed = new ArrayList<>();
+    private List<String> mListVegetableNeedName;
+    private List<String> mListVegetableNeedId;
+    //aa
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +83,14 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void initialView() {
+        //aaa
+        mListAllNeed = new ArrayList<>();
+        mListVegetableNeedName = new ArrayList<>();
+        mListVegetableNeedId = new ArrayList<>();
+        //aaa
         mListGarden = new ArrayList<>();
         mListVegetable = new ArrayList<>();
-        mListVegetableNedd = new ArrayList<>();
+        mListVegetableNeed = new ArrayList<>();
 
         mBtnCreatePost = (Button) findViewById(R.id.btn_create_post);
         mBtnCreatePost.setOnClickListener((View.OnClickListener) this);
@@ -148,6 +158,13 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
         } catch (NumberFormatException ex) {
             Toast.makeText(getApplicationContext(), "khoong the convert quantity", Toast.LENGTH_SHORT).show();
         }
+        if (mPostContent == "" || mStrQuantity == "" || mPostVegetableName == "") {
+            showDialogInputInfo();
+            return;
+        } else if (mPostVegetableQuantity > mIntVegetableQuantity) {
+            showDialogQuantityErr();
+            return;
+        }
 //        final ShareRequest shareRequest = new ShareRequest(mPostContent, mPostVegetableQuantity, status, mPostVegetableId);
 //        ShareRequest shareRequest = new ShareRequest(mPostContent, mPostVegetableQuantity, mIntStatus, mPostVegetableId, mStrVegetableNeedId, mStrVegetableNeedName);
         System.out.println("content: " + mPostContent);
@@ -160,26 +177,72 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
             Toast.makeText(getApplicationContext(), "share share", Toast.LENGTH_SHORT).show();
             System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
             System.out.println(SHARE_POST + SHARE_POST+SHARE_POST + SHARE_POST);
-            mStrVegetableNeedId = "";
+            mStrVegetableNeedId = null;
             mStrVegetableNeedName = "";
             System.out.println("vegetable need id: " + mStrVegetableNeedId);
             System.out.println("vegetable need name: " + mStrVegetableNeedName);
-            ShareRequest shareRequest = new ShareRequest(mPostContent, mPostVegetableQuantity, mIntStatus, mPostVegetableId, mStrVegetableNeedId, mStrVegetableNeedName);
+            ShareRequest shareRequest = new ShareRequest(mPostContent, mPostVegetableQuantity, mIntStatus,
+                    mPostVegetableId, mStrVegetableNeedId);
             System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
+            /** tao bai share */
             mCreateSharePresenter.createShare(shareRequest, mUser.getToken());
         } else if (mStrBtnOption == EXCHANGE_POST) {
             Toast.makeText(getApplicationContext(), "Exchange Exchange", Toast.LENGTH_SHORT).show();
             System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
             System.out.println("mStrVegetableNeedName: " + mStrVegetableNeedName);
             System.out.println(EXCHANGE_POST + EXCHANGE_POST + EXCHANGE_POST + EXCHANGE_POST);
-            ShareRequest shareRequest = new ShareRequest(mPostContent, mPostVegetableQuantity, mIntStatus, mPostVegetableId, mStrVegetableNeedId, mStrVegetableNeedName);
+            ShareRequest shareRequest = new ShareRequest(mPostContent, mPostVegetableQuantity, mIntStatus,
+                    mPostVegetableId, mListVegetableNeedId);
+            System.out.println("mListVegetableNeedId size: " + mListVegetableNeedId.size());
+            System.out.println("in ra : " + mListVegetableNeedId);
             System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
+            /** tao bai exchange */
             mCreateSharePresenter.createShare(shareRequest, mUser.getToken());
         }
 
 //        mCreateSharePresenter.createShare(shareRequest, mUser.getToken());
     }
 
+    //show dialog input info
+    private void showDialogInputInfo() {
+        final Dialog dialog = new Dialog(CreatePostActivity.this);
+        dialog.setContentView(R.layout.dialog_login_fail);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtDetailErr;
+        Button btnClose;
+        txtDetailErr = (TextView) dialog.findViewById(R.id.txt_detail_err);
+        btnClose = (Button) dialog.findViewById(R.id.btn_close);
+        txtDetailErr.setText("Vui lòng nhập đủ thông tin");
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+
+    //show dialog check quantity post > quantity vegetable
+    private void showDialogQuantityErr() {
+        final Dialog dialog = new Dialog(CreatePostActivity.this);
+        dialog.setContentView(R.layout.dialog_login_fail);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtDetailErr;
+        Button btnClose;
+        txtDetailErr = (TextView) dialog.findViewById(R.id.txt_detail_err);
+        btnClose = (Button) dialog.findViewById(R.id.btn_close);
+        txtDetailErr.setText("Số lượng không lớn hơn: " + mIntVegetableQuantity);
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+    //select option post
     private void showOptionBtn() {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_show_btn_option_create_post);
@@ -274,11 +337,14 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void clickVegetable(VegetableData vegetableData) {
                 Toast.makeText(CreatePostActivity.this, vegetableData.getName(), Toast.LENGTH_SHORT).show();
-                mTxtPostVegetableName.setText(vegetableData.getName());
-                mPostVegetableId = vegetableData.getIdName();
+                mPostVegetableName = vegetableData.getName();
+                mTxtPostVegetableName.setText(mPostVegetableName);
+                mPostVegetableId = vegetableData.getId();
+                mIntVegetableQuantity = vegetableData.getQuantity();
                 System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCC");
                 System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCC");
-                System.out.println(mPostVegetableId);
+                System.out.println("mPostVegetableId: " + mPostVegetableId);
+                System.out.println("mIntVegetableQuantity: " + mIntVegetableQuantity);
                 System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCC");
                 System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCC");
             }
@@ -288,21 +354,14 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void clickOpenVegetableNeed() {
-        VegetableNeedBottomSheetFragment vegetableNeedBottomSheetFragment = new VegetableNeedBottomSheetFragment(mListVegetableNedd,
-                new IClickVegetableNeed() {
-                    @Override
-                    public void clickVegetableNeed(VegetableNeedAll vegetableNeedAll) {
-                        mStrVegetableNeedName = vegetableNeedAll.getText();
-                        mStrVegetableNeedId = vegetableNeedAll.getId();
-                        mTxtPostVegetableNeed.setText(mStrVegetableNeedName);
-                    }
-                });
+        VegetableNeedBottomSheetFragment vegetableNeedBottomSheetFragment = new VegetableNeedBottomSheetFragment(mListVegetableNeed);
         vegetableNeedBottomSheetFragment.show(getSupportFragmentManager(), vegetableNeedBottomSheetFragment.getTag());
-        vegetableNeedBottomSheetFragment.setCancelable(false);
+
+//        vegetableNeedBottomSheetFragment.setCancelable(false);
     }
 
     @Override
-    public void createShareViewSuccess(ShareData shareData) {
+    public void createShareViewSuccess(ShareDetail shareDetail) {
         Intent intent = new Intent(CreatePostActivity.this, MainActivity.class);
         startActivity(intent);
     }
@@ -339,6 +398,40 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void allVegetableNeedSuccess(List<VegetableNeedAll> vegetableNeedAlls) {
-        this.mListVegetableNedd = vegetableNeedAlls;
+        this.mListVegetableNeed = vegetableNeedAlls;
+    }
+
+    @Override
+    public void getVegetableNeed(List<VegetableNeedAll> vegetableNeedAll) {
+        mListAllNeed = vegetableNeedAll;
+        mListVegetableNeedName = new ArrayList<>();
+        mListVegetableNeedId = new ArrayList<>();
+        if (mListAllNeed != null) {
+            System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
+            System.out.println("ttt size mListAllNeed: " + mListAllNeed.size());
+            String vegetableNeedName, vegetableNeedId;
+            List<String> mListTmp = new ArrayList<>();
+            for (int i = 0; i < mListAllNeed.size(); i++) {
+                vegetableNeedName = mListAllNeed.get(i).getText();
+                vegetableNeedId = mListAllNeed.get(i).getId();
+                mListVegetableNeedName.add(vegetableNeedName);
+                mListVegetableNeedId.add(vegetableNeedId);
+                mListTmp.add(vegetableNeedName);
+            }
+            System.out.println("tttttttttttttttttttttttttttttt");
+            System.out.println("ttt size name: " + mListVegetableNeedName.size());
+            System.out.println("tt size id: " + mListVegetableNeedId.size());
+
+            mTxtPostVegetableNeed.setText(String.valueOf(mListTmp));
+//            mListVegetableNeedName.clear();
+            mListTmp.clear();
+            System.out.println("tttttttttttttttttttttttttttttt");
+            System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
+        } else {
+            System.out.println("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
+            System.out.println("mListAllNeed null");
+            System.out.println("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
+        }
+
     }
 }
