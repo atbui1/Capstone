@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements AllGardenView, Al
 
     private User mUser;
     private UserManagement mUserManagement;
-    public static String mAccessToken;
+    public static String mAccessToken, mAccountId;
     private static List<GardenResult> mListAllGarden;
     private static List<PostData> mListAllPost;
     private static List<ExchangeData> mListAllExchange;
@@ -114,22 +114,17 @@ public class MainActivity extends AppCompatActivity implements AllGardenView, Al
         mPersonalPresenter = new PersonalPresenter(getApplicationContext(), this);
         mPersonalPresenter.getInfoPersonal();
 
-        Intent intentFromLogin = getIntent();
-        Bundle bundleFromLogin = intentFromLogin.getExtras();
-        if (bundleFromLogin != null) {
-            mAccessToken = bundleFromLogin.getString("STRING_TOKEN");
-            System.out.println(mAccessToken);
-        }
-        mAllGardenPresenter.getAllGarden(mAccessToken);
+//        Intent intentFromLogin = getIntent();
+//        Bundle bundleFromLogin = intentFromLogin.getExtras();
+//        if (bundleFromLogin != null) {
+//            mAccessToken = bundleFromLogin.getString("STRING_TOKEN");
+//            System.out.println(mAccessToken);
+//        }
+//        mAllGardenPresenter.getAllGarden(mAccessToken);
 
         mListAllGarden = new ArrayList<>();
         mListAllPost = new ArrayList<>();
         mListAllExchange = new ArrayList<>();
-        System.out.println("AAAAAAAAAAA");
-        System.out.println("list garden: " + mListAllGarden);
-        System.out.println("BBBBBBBBBBBBB");
-
-
     }
 
     private void loadFragment(Fragment fragment) {
@@ -150,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements AllGardenView, Al
 //                            selectFragment = new SearchFragment();
 //                            break;
                         case R.id.nav_request_exchange:
-                            selectFragment = new RequestExchangeFragment((ArrayList<ExchangeData>) mListAllExchange, mAccessToken);
+                            selectFragment = new RequestExchangeFragment((ArrayList<ExchangeData>) mListAllExchange);
                             break;
                         case R.id.nav_diary:
                             selectFragment = new DiaryFragment((ArrayList<PostData>) mListAllPost, mAccessToken, mUser);
@@ -175,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements AllGardenView, Al
 
 //            get all share - post
             System.out.println("---------------- *************** -----------------------");
-            mAllSharePresenter.getAllShare(mAccessToken);
+//            mAllSharePresenter.getAllShare(mAccessToken);
             System.out.println("chay mAllSharePresenter.getAllShare(mAccessToken);");
 //            mAllExchangePresenter.getAllExchange(mAccessToken);
             System.out.println("---------------- *************** -----------------------");
@@ -204,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements AllGardenView, Al
 
     @Override
     public void allShareFail() {
-
+        System.out.println("FFFFFFFFFFFFFFFFF   allShareFail main home   FFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
     }
 
     @Override
@@ -230,5 +225,9 @@ public class MainActivity extends AppCompatActivity implements AllGardenView, Al
         mUser = user;
         mAllExchangePresenter.getAllExchange(user.getToken());
         mAllSharePresenter.getAllShare(user.getToken());
+        mAllGardenPresenter.getAllGarden(user.getToken());
+        System.out.println("AAAAAAAAAA  get all share main home AAAAAAAAAAAAAAAAAA");
+        System.out.println("token: " + user.getToken());
+        System.out.println("AAAAAAAAAA  get all share main home AAAAAAAAAAAAAAAAAA");
     }
 }

@@ -20,7 +20,11 @@ import com.example.democ.R;
 import com.example.democ.activity.AddFriendRequestActivity;
 import com.example.democ.activity.MainActivity;
 import com.example.democ.activity.UpdatePostActivity;
+import com.example.democ.adapter.PostByAccountAdapter;
 import com.example.democ.model.PostData;
+import com.example.democ.model.PostSearchDescription;
+import com.example.democ.model.PostSearchKeyword;
+import com.example.democ.model.PostSearchName;
 import com.example.democ.presenters.DeleteSharePresenter;
 import com.example.democ.views.DeleteShareView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -31,11 +35,29 @@ public class AccountEditPostBottomSheetFragment extends BottomSheetDialogFragmen
 
     private BottomSheetDialog mBottomSheetDialog;
     private PostData mPostData;
+    private PostSearchDescription mPostSearchDescription;
+    private PostSearchKeyword mPostSearchKeyword;
+    private PostSearchName mPostSearchName;
     private String mToken;
     private DeleteSharePresenter mDeleteSharePresenter;
 
     public AccountEditPostBottomSheetFragment(PostData mPostData, String mToken) {
         this.mPostData = mPostData;
+        this.mToken = mToken;
+    }
+
+    public AccountEditPostBottomSheetFragment(PostSearchDescription mPostSearchDescription, String mToken) {
+        this.mPostSearchDescription = mPostSearchDescription;
+        this.mToken = mToken;
+    }
+
+    public AccountEditPostBottomSheetFragment(PostSearchKeyword mPostSearchKeyword, String mToken) {
+        this.mPostSearchKeyword = mPostSearchKeyword;
+        this.mToken = mToken;
+    }
+
+    public AccountEditPostBottomSheetFragment(PostSearchName mPostSearchName, String mToken) {
+        this.mPostSearchName = mPostSearchName;
         this.mToken = mToken;
     }
 
@@ -53,6 +75,7 @@ public class AccountEditPostBottomSheetFragment extends BottomSheetDialogFragmen
         lnlDelete.setOnClickListener(this);
 
         mDeleteSharePresenter = new DeleteSharePresenter(getActivity().getApplication(), getActivity(), this);
+
 
         return mBottomSheetDialog;
     }
@@ -129,12 +152,9 @@ public class AccountEditPostBottomSheetFragment extends BottomSheetDialogFragmen
                 break;
             case R.id.lnl_post_delete:
                 System.out.println("BBBBBBBBBBBBB   AccountEditPostBottomSheetFragment  BBBBBBBBBBBBBBBBBBBBBBB");
-                System.out.println("post content: " + mPostData.getContent());
-                System.out.println("post id: " + mPostData.getId());
-                System.out.println("post full name: " + mPostData.getFullName());
-                System.out.println("post account id: " + mPostData.getAccountId());
-                System.out.println("post status: " + mPostData.getStatius());
-                System.out.println("post quantity: " + mPostData.getQuantity());
+                System.out.println("click dele post");
+                System.out.println("BBBBBBBBBBBBB   AccountEditPostBottomSheetFragment  BBBBBBBBBBBBBBBBBBBBBBB");
+
                 mBottomSheetDialog.dismiss();
                 showDialogDeletePost();
                 break;
@@ -144,6 +164,9 @@ public class AccountEditPostBottomSheetFragment extends BottomSheetDialogFragmen
     @Override
     public void deleteShareSuccess() {
         new PersonalFragment();
+        System.out.println("DDDDDDDDDDDDDDDD   AccountEditPostBottomSheetFragment  DDDDDDDDDDDDDDDDDDDDDDD");
+        System.out.println("delete post success");
+        System.out.println("DDDDDDDDDDDDDDDD   AccountEditPostBottomSheetFragment  DDDDDDDDDDDDDDDDDDDDDDD");
     }
 
     @Override

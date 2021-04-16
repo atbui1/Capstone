@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp50">
         <TextView
-            android:text="Tạo Rau"
+            android:text="Thêm rau"
             android:textSize="@dimen/sp20"
             android:textStyle="bold"
             android:textColor="@color/white"

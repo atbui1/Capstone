@@ -143,6 +143,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 mIClickPost.clickReportPost(postData);
             }
         });
+        //click detail
+        holder.mLnlImgPostContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mIClickPost.clickPostDetail(postData);
+            }
+        });
 
     }
 
@@ -157,7 +164,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView mImgPostContent, mImgPostLikeStatus;
         TextView mTxtPostUsername, mTxtPostTime, mTxtPostContent, mTxtPostNumberLike, mTxtVegetablePostNeed, mTxtVegetablePostQuantity;
-        LinearLayout mLnlPostLike, mLnlPostComment, mLnlBtnExchange, mLnlLeftMenu, mLnlImagePostUser;
+        LinearLayout mLnlPostLike, mLnlPostComment, mLnlBtnExchange, mLnlLeftMenu, mLnlImagePostUser, mLnlImgPostContent;
         Button mBtnPostExchange;
         CircleImageView mImgImagePostUser;
         private int numberLike = 0;
@@ -181,9 +188,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             mLnlLeftMenu = (LinearLayout) itemView.findViewById(R.id.lnl_left_menu);
             mImgImagePostUser = (CircleImageView) itemView.findViewById(R.id.img_post_user);
             mTxtVegetablePostQuantity = (TextView) itemView.findViewById(R.id.txt_post_vegetable_quantity);
+            mLnlImgPostContent = (LinearLayout) itemView.findViewById(R.id.lnl_img_post_content);
 
 //            mImgPostUser.setOnClickListener((View.OnClickListener) this);
-            mImgPostContent.setOnClickListener((View.OnClickListener) this);
+//            mImgPostContent.setOnClickListener((View.OnClickListener) this);
             mTxtPostUsername.setOnClickListener((View.OnClickListener) this);
             mLnlPostLike.setOnClickListener((View.OnClickListener) this);
             mLnlPostComment.setOnClickListener((View.OnClickListener) this);
@@ -206,11 +214,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                             mTxtPostUsername.getText() + "sssssssssssssss", Toast.LENGTH_SHORT)
                             .show();
                     break;
-                case R.id.img_post_content:
-                    Toast.makeText(view.getContext(),
-                            "Zoom hình", Toast.LENGTH_SHORT)
-                            .show();
-                    break;
+//                case R.id.img_post_content:
+//                    Toast.makeText(view.getContext(),
+//                            "Zoom hình", Toast.LENGTH_SHORT)
+//                            .show();
+//                    break;
                 case R.id.lnl_post_like:
                     numberLike = numberLike + 1;
                     if (numberLike % 2 != 0) {

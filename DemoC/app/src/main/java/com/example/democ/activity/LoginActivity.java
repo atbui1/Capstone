@@ -123,10 +123,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Toast.makeText(this, "Login thanh cong (LoginActivity)", Toast.LENGTH_SHORT).show();
         System.out.println("2222222222222222222222  LOGIN SUCCESS   222222222222222222222222222222");
         Intent intentMain = new Intent(LoginActivity.this, MainActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("STRING_TOKEN", user.getToken());
-        System.out.println(user.getToken());
-        intentMain.putExtras(bundle);
+//        Bundle bundle = new Bundle();
+//        bundle.putString("STRING_TOKEN", user.getToken());
+//        System.out.println(user.getToken());
+//        intentMain.putExtras(bundle);
         startActivity(intentMain);
 //        finish();
     }

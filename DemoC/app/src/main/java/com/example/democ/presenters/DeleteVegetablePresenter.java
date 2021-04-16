@@ -21,8 +21,8 @@ public class DeleteVegetablePresenter {
         mCapstoneRepository = new CapstoneRepositoryImp();
     }
 
-    public void deleteVegetable(int noVeg, int gardenId, String token) {
-        mCapstoneRepository.deleteVegetable(mContext, noVeg, gardenId, token, new CallBackData<String>() {
+    public void deleteVegetable(String vegetableId, String token) {
+        mCapstoneRepository.deleteVegetable(mContext, vegetableId, token, new CallBackData<String>() {
             @Override
             public void onSuccess(String s) {
                 mDeleteVegetableView.DeleteVegetableSuccess();

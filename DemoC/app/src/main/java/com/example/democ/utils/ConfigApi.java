@@ -25,19 +25,24 @@ public class ConfigApi {
         String SEARCH_NAME = "api/Vegetable/SearchByName";
         String SEARCH_DESCRIPTION = "api/Vegetable/SearchByDescription";
         String SEARCH_KEYWORD = "api/Vegetable/SearchByKeyword";
-        String SEARCH_WIKI = "LeakInfoFromWiki";
+        String SEARCH_WIKI_TITLE = "LeakInfoFromWiki";
+        String SEARCH_WIKI_DES = "GetDescription";
 
         //post -share
         String SHARE_CREATE_POST = "api/ShareDetail";
         String SHARE_ALL = "api/ShareDetail/GetAll";
         String SHARE_ALL_BY_ID = "api/ShareDetail/GetAllShareById";
         String SHARE_DELETE = "api/ShareDetail";
+        String SHARE_SEARCH_DESCRIPTION = "api/ShareDetail/SearchShareByDescription";
+        String SHARE_SEARCH_NAME = "api/ShareDetail/SearchShareByName";
+        String SHARE_SEARCH_KEYWORD = "api/ShareDetail/SearchShareByKeyword";
 
         //exchange
         String EXCHANGE = "api/ExchangeDetail";
         String EXCHANGE_ALL = "api/ExchangeDetail/GetExchangeRequest";
         String EXCHANGE_IS_ACCEPT = "api/ExchangeDetail/IsAccept";
         String EXCHANGE_DELETE_REQUEST = "api/ExchangeDetail";
+        String EXCHANGE_HISTORY = "api/ExchangeDetail/GetByAccountId";
 
         //upload image
         String UPLOAD_IMAGE = "api/Vegetable/Image";
@@ -49,5 +54,7 @@ public class ConfigApi {
 
         //report
         String REPORT_POST = "api/Report";
+        //QRCode
+        String QR_CODE = "api/QRCode";
     }
 }

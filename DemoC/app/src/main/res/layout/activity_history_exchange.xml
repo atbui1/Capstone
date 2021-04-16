@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.HistoryExchangeActivity">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp50">
+        <LinearLayout
+            android:id="@+id/lnl_back"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
+            <ImageView
+                android:src="@mipmap/leftarrow"
+                android:layout_width="@dimen/dp20"
+                android:layout_height="@dimen/dp20" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="4"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent"></LinearLayout>
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent"></LinearLayout>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_history"
+        android:layout_marginLeft="@dimen/dp16"
+        android:layout_marginRight="@dimen/dp16"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dp10">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>

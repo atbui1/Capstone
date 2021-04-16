@@ -77,7 +77,7 @@ public interface CapstoneService {
     @GET(ConfigApi.Api.VEGETABLE_ALL_BY_GARDEN_ID)
     Call<ResponseBody> getAllVegetableByGardenId(@Query("GardenId") int gardenId, @Header("Authorization") String token);
     @DELETE(ConfigApi.Api.VEGETABLE)
-    Call<ResponseBody> deleteVegetable(@Query("noVeg") int noVeg, @Query("gardenId") int gardenId, @Header("Authorization") String token);
+    Call<ResponseBody> deleteVegetable(@Query("Id") String Id, @Header("Authorization") String token);
 //    @Multipart
 //    @PUT(ConfigApi.Api.VEGETABLE)
 //    Call<ResponseBody> updateVegetable(@Part("id") String IdVeg,
@@ -106,19 +106,27 @@ public interface CapstoneService {
     @GET(ConfigApi.Api.SEARCH_KEYWORD)
     Call<ResponseBody> searchByKeyword(@Query("searchValue") String searchValue, @Header("Authorization") String token);
     //search wiki
-    @GET(ConfigApi.Api.SEARCH_WIKI)
-    Call<ResponseBody> searchByWiki(@Query("title") String searchValue, @Header("Authorization") String token);
+    @GET(ConfigApi.Api.SEARCH_WIKI_TITLE)
+    Call<ResponseBody> searchByWikiTitle(@Query("title") String searchValue, @Header("Authorization") String token);
+    @GET(ConfigApi.Api.SEARCH_WIKI_DES)
+    Call<ResponseBody> getDescriptionWiki(@Query("title") String searchValue, @Header("Authorization") String token);
 
     //post - share
     @GET(ConfigApi.Api.SHARE_ALL)
     Call<ResponseBody> getAllShare(@Header("Authorization") String token);
     @GET(ConfigApi.Api.SHARE_ALL_BY_ID)
-    Call<ResponseBody> getAllShareById(@Header("Authorization") String token);
+    Call<ResponseBody> getAllShareById(@Query("Id") String Id, @Header("Authorization") String token);
 //    tao bai post
     @POST(ConfigApi.Api.SHARE_CREATE_POST)
     Call<ResponseBody> createPostShare(@Body RequestBody body, @Header("Authorization") String token);
-    @POST(ConfigApi.Api.SHARE_DELETE)
+    @DELETE(ConfigApi.Api.SHARE_DELETE)
     Call<ResponseBody> deleteShare(@Query("Id") String shareId, @Header("Authorization") String token);
+    @GET(ConfigApi.Api.SHARE_SEARCH_DESCRIPTION)
+    Call<ResponseBody> searchShareByDescription(@Query("valueSearch") String valueSearch, @Header("Authorization") String token);
+    @GET(ConfigApi.Api.SHARE_SEARCH_NAME)
+    Call<ResponseBody> searchShareByName(@Query("valueSearch") String valuSearch, @Header("Authorization") String token);
+    @GET(ConfigApi.Api.SHARE_SEARCH_KEYWORD)
+    Call<ResponseBody> searchShareByKeyword(@Query("valueSearch") String valueSearch, @Header("Authorization") String token);
 
     //ExchangeDetail
     @POST(ConfigApi.Api.EXCHANGE)
@@ -126,9 +134,11 @@ public interface CapstoneService {
     @GET(ConfigApi.Api.EXCHANGE_ALL)
     Call<ResponseBody> getAllExchange(@Header("Authorization") String token);
     @PUT(ConfigApi.Api.EXCHANGE_IS_ACCEPT)
-    Call<ResponseBody> isAcceptExchange(@Query("Status") int Status, @Body RequestBody body, @Header("Authorization") String token);
+    Call<ResponseBody> isAcceptExchange(@Query("Id") String Id, @Query("Status") int Status, @Header("Authorization") String token);
     @DELETE(ConfigApi.Api.EXCHANGE_DELETE_REQUEST)
     Call<ResponseBody> deleteExchangeRequest(@Query("Id") String exchangeId, @Header("Authorization") String token);
+    @GET(ConfigApi.Api.EXCHANGE_HISTORY)
+    Call<ResponseBody> getHistoryExchange(@Header("Authorization") String token);
 
 //    upload image
     @Multipart
@@ -145,6 +155,9 @@ public interface CapstoneService {
 
     //report
     @POST(ConfigApi.Api.REPORT_POST)
-    Call<ResponseBody> reportPost(@Body RequestBody body,@Header("Authorization") String token);
+    Call<ResponseBody> reportPost(@Body RequestBody body, @Header("Authorization") String token);
+    //QRCode
+    @GET(ConfigApi.Api.QR_CODE)
+    Call<ResponseBody> getQRCode(@Query("ExchangeId") String ExchangeId, @Header("Authorization") String token);
 
 }

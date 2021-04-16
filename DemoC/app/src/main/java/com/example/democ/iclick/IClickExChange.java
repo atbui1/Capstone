@@ -3,5 +3,6 @@ package com.example.democ.iclick;
 import com.example.democ.model.ExchangeData;
 
 public interface IClickExChange {
-    void clickExchange(ExchangeData exchangeData, int positionClick);
+    void clickExchangeAccept(ExchangeData exchangeData, int positionClick);
+    void clickExchangeRemove(ExchangeData exchangeData, int positionClick);
 }

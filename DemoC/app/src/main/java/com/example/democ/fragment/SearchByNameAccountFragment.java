@@ -36,6 +36,8 @@ public class SearchByNameAccountFragment extends Fragment implements IClickAccou
     private SearchAccountByNameAdapter mSearchAccountByNameAdapter;
     private IClickAccountName mIClickAccountName;
 
+    public static String SEARCH_ACCOUNT = "SearchAccount";
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -85,24 +87,11 @@ public class SearchByNameAccountFragment extends Fragment implements IClickAccou
 
     @Override
     public void clickAccountName(AccountSearchByName accountSearchByName) {
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-        System.out.println("Click account id: " + accountSearchByName.getAccountId());
-        System.out.println("Click account name: " + accountSearchByName.getAccountName());
-
-
         Intent intent = new Intent(getContext().getApplicationContext(), PosterProfileActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
         Bundle bundle = new Bundle();
-//        mStrNameOfShare = shareData.getFullName();
-//        mAccountIdOfShare = shareData.getAccountId();
-//        bundle.putString("ACCOUNT_ID", mAccountIdUser);
-//        bundle.putString("ACCOUNT_SHARE", mAccountIdOfShare);
-//        bundle.putString("NAME_SHARE", mStrNameOfShare);
-        bundle.putString("ACCOUNT_ID", accountSearchByName.getAccountId());
+        bundle.putSerializable(SEARCH_ACCOUNT, accountSearchByName);
         intent.putExtras(bundle);
-        System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
         startActivity(intent);
-        System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
     }
 }

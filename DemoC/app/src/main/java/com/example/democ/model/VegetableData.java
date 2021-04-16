@@ -280,4 +280,9 @@ public class VegetableData implements Serializable {
     public void setSynonymOfFeature(String synonymOfFeature) {
         this.synonymOfFeature = synonymOfFeature;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

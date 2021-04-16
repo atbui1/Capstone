@@ -28,27 +28,29 @@ import com.example.democ.presenters.AllGardenPresenter;
 import com.example.democ.presenters.AllVegetableByGardenIdPresenter;
 import com.example.democ.presenters.AllVegetableNeedPresenter;
 import com.example.democ.presenters.CreateSharePresenter;
+import com.example.democ.presenters.PersonalPresenter;
 import com.example.democ.room.entities.User;
 import com.example.democ.room.managements.UserManagement;
 import com.example.democ.views.AllGardenView;
 import com.example.democ.views.AllVegetableByGardenIdView;
 import com.example.democ.views.AllVegetableNeedView;
 import com.example.democ.views.CreateShareView;
+import com.example.democ.views.PersonalView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CreatePostActivity extends AppCompatActivity implements View.OnClickListener, CreateShareView,
-        AllGardenView, AllVegetableByGardenIdView, AllVegetableNeedView,
+        AllGardenView, AllVegetableByGardenIdView, AllVegetableNeedView, PersonalView,
         VegetableNeedBottomSheetFragment.IVegetableNeedListener {
 
+
+    private final static String KEY_VEGETABLE_SEND = "qaz";
     private Button mBtnCreatePost;
     private EditText mEdtPostContent, mEdtPostVegetableQuantity;
     private TextView mTxtPostVegetableName, mTxtPostGarden, mTxtBtnOption, mTxtPostVegetableNeed;
     private LinearLayout mLnlVegetableNeed, mLnlShowBtnOption;
-
-    private String mPostContent = "", mPostGardenName, mPostVegetableName = "", mPostVegetableId, mStrQuantity = "";
-    private int mGardenId, mPostVegetableQuantity, mIntVegetableQuantity;
 
     private CreateSharePresenter mCreateSharePresenter;
     private AllGardenPresenter mAllGardenPresenter;
@@ -72,6 +74,12 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
     private List<String> mListVegetableNeedName;
     private List<String> mListVegetableNeedId;
     //aa
+    private String mPostContent = "", mPostGardenName = "", mPostVegetableName = "", mPostVegetableId, mStrQuantity = "";
+    private int mGardenId, mPostVegetableQuantity, mIntVegetableQuantity;
+
+    private String mVegetableName, mVegetableId;
+    private int mNoVegetable, mVegetableQuantity;
+    private PersonalPresenter mPersonalPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +91,8 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void initialView() {
+        mPersonalPresenter = new PersonalPresenter(getApplicationContext(), this);
+        mPersonalPresenter.getInfoPersonal();;
         //aaa
         mListAllNeed = new ArrayList<>();
         mListVegetableNeedName = new ArrayList<>();
@@ -113,20 +123,20 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
         mAllVegetableNeedPresenter = new AllVegetableNeedPresenter(getApplication(), this, this);
 
         mCreateSharePresenter = new CreateSharePresenter(getApplication(), this, this);
-        mUserManagement = new UserManagement(getApplication());
-        mUserManagement.getmUserInfo(new UserManagement.OnDataCallBackUser() {
-            @Override
-            public void onDataSuccess(User user) {
-                mUser = user;
-                mAllGardenPresenter.getAllGarden(mUser.getToken());
-                mAllVegetableNeedPresenter.getAllVegetableNeed(mUser.getToken());
-            }
-
-            @Override
-            public void onDataFail() {
-
-            }
-        });
+//        mUserManagement = new UserManagement(getApplication());
+//        mUserManagement.getmUserInfo(new UserManagement.OnDataCallBackUser() {
+//            @Override
+//            public void onDataSuccess(User user) {
+//                mUser = user;
+//                mAllGardenPresenter.getAllGarden(mUser.getToken());
+//                mAllVegetableNeedPresenter.getAllVegetableNeed(mUser.getToken());
+//            }
+//
+//            @Override
+//            public void onDataFail() {
+//
+//            }
+//        });
 
         mTxtBtnOption.setText(mStrBtnOption);
         mTxtPostVegetableNeed.setText(mStrVegetableNeedName);
@@ -146,8 +156,41 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
 //
 //        mCreateSharePresenter = new CreateSharePresenter(getApplication(), this, this);
 
+        getDataVegetableNew();
     }
 
+    public void getDataVegetableNew() {
+        Intent intentGetData = getIntent();
+        Bundle bundleGetData = intentGetData.getExtras();
+        if (bundleGetData != null) {
+            VegetableData vegetableData = (VegetableData) bundleGetData.getSerializable(KEY_VEGETABLE_SEND);
+            mVegetableId = vegetableData.getId();
+            mVegetableName = vegetableData.getName();
+
+            mVegetableQuantity = vegetableData.getQuantity();
+            mGardenId = bundleGetData.getInt("GARDEN_ID");
+            mPostGardenName = bundleGetData.getString("GARDEN_NAME");
+
+
+            mIntVegetableQuantity = mVegetableQuantity;
+            mPostVegetableQuantity = mVegetableQuantity;
+            mPostVegetableId = mVegetableId;
+            mPostVegetableName = mVegetableName;
+            mEdtPostVegetableQuantity.setText(String.valueOf(mVegetableQuantity));
+            mTxtPostGarden.setText(mPostGardenName);
+            mTxtPostVegetableName.setText(mVegetableName);
+
+//            mListVegetable = new ArrayList<>();
+//            mAllVegetableByGardenIdPresenter.getAllVegetableByGardenId(mGardenId, mUser.getToken());
+
+            System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
+            System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
+            System.out.println("ten vuon rau: " + mPostGardenName);
+            System.out.println("id vuon rau: " + mGardenId);
+            System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
+            System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
+        }
+    }
     public void createPost() {
         mPostContent = mEdtPostContent.getText().toString();
 //        int status = 0;
@@ -158,7 +201,14 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
         } catch (NumberFormatException ex) {
             Toast.makeText(getApplicationContext(), "khoong the convert quantity", Toast.LENGTH_SHORT).show();
         }
+        System.out.println("KKKKKKKKKKKKKKKKKKKkk");
+        System.out.println("content: " + mPostContent);
+        System.out.println("quantity: " + mStrQuantity);
+        System.out.println("vegename: " + mPostVegetableName);
+        System.out.println("so luong: " + mPostVegetableQuantity);
+        System.out.println("KKKKKKKKKKKKKKKKKKKkk");
         if (mPostContent == "" || mStrQuantity == "" || mPostVegetableName == "") {
+
             showDialogInputInfo();
             return;
         } else if (mPostVegetableQuantity > mIntVegetableQuantity) {
@@ -329,7 +379,7 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
             }
         });
         gardenBottomSheetFragment.show(getSupportFragmentManager(), gardenBottomSheetFragment.getTag());
-        gardenBottomSheetFragment.setCancelable(false);
+//        gardenBottomSheetFragment.setCancelable(false);
     }
 //    get all vegetable by id
     private void clickOpenVegetableBottomSheet() {
@@ -433,5 +483,20 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
             System.out.println("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
         }
 
+    }
+
+    @Override
+    public void showInfoPersonal(User user) {
+        mUser = user;
+        mAllGardenPresenter.getAllGarden(mUser.getToken());
+        mAllVegetableNeedPresenter.getAllVegetableNeed(mUser.getToken());
+        if (String.valueOf(mGardenId).equals("")) {
+            System.out.println("AAAAAAAAAAAAAAAAAaa");
+            System.out.println("khong co id garden");
+            System.out.println("AAAAAAAAAAAAAAAAAaa");
+        } else {
+            System.out.println("vao else showInfoPersonal");
+            mAllVegetableByGardenIdPresenter.getAllVegetableByGardenId(mGardenId, mUser.getToken());
+        }
     }
 }

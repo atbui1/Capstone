@@ -9,13 +9,37 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp200">
+        android:layout_height="@dimen/dp250">
         <TextView
             android:text="vui lòng nhập"
             android:textSize="@dimen/sp17"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp50" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <TextView
+                    android:text="Chọn rau cho"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dp20"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <Spinner
+                    android:id="@+id/sp_vegetable_need"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></Spinner>
+            </LinearLayout>
+        </LinearLayout>
         <LinearLayout
             android:weightSum="10"
             android:orientation="horizontal"

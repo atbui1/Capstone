@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.PostDetailActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!--header-->
+            <LinearLayout
+                android:weightSum="10"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/dp5"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <!--avatar poster-->
+                <LinearLayout
+                    android:id="@+id/lnl_image_post_user"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:layout_width="@dimen/dp0"
+                    android:layout_height="match_parent">
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/img_post_user"
+                        android:src="@drawable/avatar1"
+                        android:layout_width="@dimen/dp50"
+                        android:layout_height="@dimen/dp50" />
+                </LinearLayout>
+                <!--ten nguoi dang va thoi gian-->
+                <LinearLayout
+                    android:layout_weight="7"
+                    android:orientation="vertical"
+                    android:layout_width="@dimen/dp0"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp0">
+                        <TextView
+                            android:id="@+id/txt_post_username"
+                            android:text="Tên người đăng"
+                            android:textSize="@dimen/sp17"
+                            android:gravity="center_vertical"
+                            android:textStyle="bold"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp0">
+                        <TextView
+                            android:id="@+id/txt_post_time"
+                            android:text="Thời gian"
+                            android:textSize="@dimen/sp15"
+                            android:gravity="center_vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+                </LinearLayout>
+                <!--meatmenu-->
+                <LinearLayout
+                    android:id="@+id/lnl_left_menu"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_width="@dimen/dp0"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:src="@mipmap/menu1"
+                        android:layout_width="@dimen/dp20"
+                        android:layout_height="@dimen/dp30" />
+                </LinearLayout>
+            </LinearLayout>
+            <!--noi dung, tieu de bai dang-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txt_post_content"
+                    android:paddingLeft="@dimen/dp8"
+                    android:text="Thanh long không hạt"
+                    android:textSize="@dimen/sp15"
+                    android:paddingTop="@dimen/dp8"
+                    android:paddingBottom="@dimen/dp8"
+                    android:inputType="textMultiLine|textAutoComplete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <!--Số lượng rau-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txt_post_vegetable_quantity"
+                    android:paddingLeft="@dimen/dp8"
+                    android:text="Thanh long không hạt"
+                    android:textSize="@dimen/sp15"
+                    android:paddingTop="@dimen/dp8"
+                    android:paddingBottom="@dimen/dp8"
+                    android:inputType="textMultiLine|textAutoComplete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <!--thong tin rau muon trao doi-->
+            <LinearLayout
+                android:id="@+id/lnl_btn_exchange"
+                android:weightSum="10"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <LinearLayout
+                    android:background="@color/dark_yellow"
+                    android:layout_weight="7"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/txt_vegetable_need"
+                        android:text="Muốn đổi rau abc"
+                        android:textSize="@dimen/sp17"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="@dimen/dp10"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+                <LinearLayout
+                    android:background="@color/red"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent">
+                    <Button
+                        android:id="@+id/btn_exchange"
+                        android:text="đổi rau"
+                        android:background="@color/white"
+                        android:textSize="@dimen/dp20"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+            <!--hinh anh-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp2"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/img_post_content"
+                    android:src="@drawable/avatar1"
+                    android:scaleType="fitStart"
+                    android:adjustViewBounds="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--so luot like-->
+            <LinearLayout
+                android:weightSum="10"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp40">
+                <!--so luot like-->
+                <LinearLayout
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:layout_width="@dimen/dp0"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:src="@mipmap/heart"
+                        android:layout_width="@dimen/dp20"
+                        android:layout_height="@dimen/dp20" />
+                </LinearLayout>
+                <!--nguoi like like-->
+                <LinearLayout
+                    android:layout_weight="8"
+                    android:gravity="center"
+                    android:layout_width="@dimen/dp0"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/txt_number_like_post"
+                        android:gravity="center_vertical"
+                        android:textSize="@dimen/sp13"
+                        android:text="bạn và 25 người"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+            </LinearLayout>
+            <!--duong ke ngang height la 1-->
+            <TextView
+                android:background="@color/background"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp1" />
+            <!--btn like and comment-->
+            <LinearLayout
+                android:weightSum="10"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp40">
+                <!--btn like-->
+                <LinearLayout
+                    android:id="@+id/lnl_post_like"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:layout_width="@dimen/dp0"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_width="@dimen/dp30"
+                        android:layout_height="@dimen/dp30">
+                        <ImageView
+                            android:id="@+id/img_post_like_status"
+                            android:src="@mipmap/heart1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+                </LinearLayout>
+                <!--btn comment-->
+                <LinearLayout
+                    android:id="@+id/lnl_post_comment"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:layout_width="@dimen/dp0"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_width="@dimen/dp30"
+                        android:layout_height="@dimen/dp30">
+                        <ImageView
+                            android:src="@mipmap/comment"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+                </LinearLayout>
+                <!--layout trong-->
+                <LinearLayout
+                    android:layout_weight="4"
+                    android:layout_width="@dimen/dp0"
+                    android:layout_height="match_parent">
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

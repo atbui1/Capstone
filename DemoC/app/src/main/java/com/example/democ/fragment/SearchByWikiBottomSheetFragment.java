@@ -12,22 +12,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.democ.R;
-import com.example.democ.adapter.SearchWikiAdapter;
+import com.example.democ.adapter.SearchWikiTitleAdapter;
 import com.example.democ.iclick.IClickWiki;
+import com.example.democ.iclick.IClickWikiTitle;
 import com.example.democ.model.WikiData;
+import com.example.democ.model.WikiDataTitle;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
 
 public class SearchByWikiBottomSheetFragment extends BottomSheetDialogFragment {
-    private ArrayList<WikiData> mListWiki;
-    private IClickWiki mIClickWiki;
+    private ArrayList<WikiDataTitle> mListWiki;
+    private IClickWikiTitle mIClickWikiTitle;
     private BottomSheetDialog mBottomSheetDialog;
 
-    public SearchByWikiBottomSheetFragment(ArrayList<WikiData> mListWiki, IClickWiki mIClickWiki) {
+    public SearchByWikiBottomSheetFragment(ArrayList<WikiDataTitle> mListWiki, IClickWikiTitle mIClickWikiTitle) {
         this.mListWiki = mListWiki;
-        this.mIClickWiki = mIClickWiki;
+        this.mIClickWikiTitle = mIClickWikiTitle;
     }
 
     @NonNull
@@ -42,15 +44,15 @@ public class SearchByWikiBottomSheetFragment extends BottomSheetDialogFragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        SearchWikiAdapter searchWikiAdapter = new SearchWikiAdapter(mListWiki, new IClickWiki() {
+        SearchWikiTitleAdapter searchWikiTitleAdapter = new SearchWikiTitleAdapter(mListWiki, new IClickWikiTitle() {
             @Override
-            public void clickWiki(WikiData wikiData) {
-                mIClickWiki.clickWiki(wikiData);
+            public void clickWikiTitle(WikiDataTitle wikiDataTitle) {
+                mIClickWikiTitle.clickWikiTitle(wikiDataTitle);
                 mBottomSheetDialog.dismiss();
             }
         });
 
-        recyclerView.setAdapter(searchWikiAdapter);
+        recyclerView.setAdapter(searchWikiTitleAdapter);
         RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(itemDecoration);
 

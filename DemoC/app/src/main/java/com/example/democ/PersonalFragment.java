@@ -1,6 +1,7 @@
 package com.example.democ;
 
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,17 +21,21 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.democ.activity.HistoryExchangeActivity;
 import com.example.democ.activity.LoginActivity;
 import com.example.democ.activity.AddFriendRequestActivity;
 import com.example.democ.activity.UpdateAccountActivity;
+import com.example.democ.activity.UpdatePostActivity;
 import com.example.democ.adapter.PostByAccountAdapter;
 import com.example.democ.fragment.AccountEditPostBottomSheetFragment;
 import com.example.democ.iclick.IClickPostAccount;
 import com.example.democ.model.PostData;
+import com.example.democ.presenters.DeleteSharePresenter;
 import com.example.democ.presenters.GetAllShareByIdPresenter;
 import com.example.democ.presenters.LogoutPresenter;
 import com.example.democ.presenters.PersonalPresenter;
 import com.example.democ.room.entities.User;
+import com.example.democ.views.DeleteShareView;
 import com.example.democ.views.GetAllShareByIdView;
 import com.example.democ.views.LogoutView;
 import com.example.democ.views.PersonalView;
@@ -44,15 +49,17 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 public class PersonalFragment extends Fragment implements View.OnClickListener, LogoutView, PersonalView, GetAllShareByIdView,
-        IClickPostAccount {
+        IClickPostAccount, DeleteShareView {
 
     private View mView;
     private LinearLayout mLnlImagePerson;
     private TextView mTxtFullNamePersonal, mTxtTotalPosts;
     private LogoutPresenter mLogoutPresenter;
     private PersonalPresenter mPersonalPresenter;
+    private DeleteSharePresenter mDeleteSharePresenter;
 
     private User mUser;
+    private static int mIntPostionDelete = 0;
 
     //11
     private RecyclerView mRecyclerViewPost;
@@ -63,7 +70,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
     //11
     //22
     private DrawerLayout mDrawerLayout;
-    private LinearLayout mLnlMenu, mLnlEditProfile, mLnlRequestAddFriend, mLnlLogout;
+    private LinearLayout mLnlMenu, mLnlEditProfile, mLnlRequestAddFriend, mLnlLogout, mLnlHistoryExchange;
     //22
 
     private static MultipartBody.Part fileUpload;
@@ -83,6 +90,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
     private void initialView() {
         mPersonalPresenter = new PersonalPresenter(getActivity().getApplication(), this);
         mPersonalPresenter.getInfoPersonal();
+        mDeleteSharePresenter = new DeleteSharePresenter(getActivity().getApplication(), getActivity(), this);
 
         mLogoutPresenter = new LogoutPresenter(getActivity().getApplication(), getActivity(), this);
 
@@ -97,6 +105,8 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
         mLnlEditProfile.setOnClickListener(this);
         mLnlLogout = (LinearLayout) mView.findViewById(R.id.lnl_logout);
         mLnlLogout.setOnClickListener(this);
+        mLnlHistoryExchange = (LinearLayout) mView.findViewById(R.id.lnl_history_exchange);
+        mLnlHistoryExchange.setOnClickListener(this);
         //22
 
         //11
@@ -158,6 +168,11 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
         startActivity(intent);
     }
+    public void clickOpenHistoryExchange() {
+        Intent intent = new Intent(getActivity(), HistoryExchangeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        startActivity(intent);
+    }
 
     public void updateUI() {
         if (mPostByAccountAdapter == null) {
@@ -183,7 +198,76 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
         accountEditPostBottomSheetFragment.show(getFragmentManager(), accountEditPostBottomSheetFragment.getTag());
 
     }
+    private void clickOpenUpdatePost(PostData postData) {
+        int maxSize = postData.getImageVegetablesList().size() -1;
+        String urlImage = "";
 
+        Intent intent = new Intent(getActivity(), UpdatePostActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        Bundle bundle = new Bundle();
+        bundle.putString("POST_CONTENT", postData.getContent());
+        if (postData.getImageVegetablesList().size() == 0) {
+            urlImage = "";
+        } else {
+            urlImage = postData.getImageVegetablesList().get(maxSize).getUrl();
+        }
+        bundle.putString("POST_IMAGE", urlImage);
+        bundle.putInt("POST_QUANTITY", postData.getQuantity());
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+    private void showDialogDeletePost(final String posterId) {
+        final Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_delete_garden);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtContentDelete;
+        Button btnDeleteYes, btnDeleteNo;
+        btnDeleteYes = (Button) dialog.findViewById(R.id.btn_delete_yes);
+        btnDeleteNo = (Button) dialog.findViewById(R.id.btn_delete_no);
+        txtContentDelete = (TextView) dialog.findViewById(R.id.txt_content_delete);
+        txtContentDelete.setText("Bạn có muốn xóa bài đăng này không");
+        btnDeleteNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        btnDeleteYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
+                System.out.println("goi api xoa bai post");
+                System.out.println("token: " + mUser.getToken());
+                System.out.println("postid: " + posterId);
+                System.out.println("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
+                mDeleteSharePresenter.deleteShare(posterId, mUser.getToken());
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+
+    private void showDialoDeleteErr() {
+        final Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_exchange_quantity_err);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtQuantity;
+        Button btnClose;
+        btnClose = (Button) dialog.findViewById(R.id.btn_close);
+        txtQuantity = (TextView) dialog.findViewById(R.id.txt_exchange_quantity);
+        txtQuantity.setText("Bài đăng đang có yêu cầu nhận rau");
+
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -198,6 +282,9 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
                 break;
             case R.id.lnl_request_add_friend:
                 clickOpenRequestAddFriend();
+                break;
+            case R.id.lnl_history_exchange:
+                clickOpenHistoryExchange();
                 break;
             case R.id.lnl_edit_profile:
                 clickOpenUpdateAccount();
@@ -228,7 +315,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
 
         mTxtFullNamePersonal.setText(user.getFullName());
         //11
-        mGetAllShareByIdPresenter.getAllShareById(user.getToken());
+        mGetAllShareByIdPresenter.getAllShareById(user.getAccountId(), user.getToken());
         //11
     }
 
@@ -249,18 +336,28 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void clickPostAccount(PostData postData) {
-        //jjsjd
-        //jjsjd
-        //jjsjd
-        //jjsjd
-//        token = mUser.getToken();
-        System.out.println("personal fragment ***********************************");
-        String aa = postData.getContent();
-        String bb = postData.getId();
-        System.out.println("aa: " + aa);
-        System.out.println("bb: " + bb);
-//        System.out.println("token: " + token);
-        System.out.println("personal fragment ***********************************");
-        clickOpenLeftMenu(postData);
+//        clickOpenLeftMenu(postData);
+        clickOpenUpdatePost(postData);
+    }
+
+    @Override
+    public void clickDeletePostAccount(PostData postData, int positionDelete) {
+        mIntPostionDelete = positionDelete;
+        showDialogDeletePost(postData.getId().trim());
+        System.out.println("AAAAAAAAAAAAAAA     clickDeletePostAccount  AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        System.out.println("AAAAAAAAAAAAAAA     clickDeletePostAccount  AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    }
+
+    @Override
+    public void deleteShareSuccess() {
+        mListPost.remove(mIntPostionDelete);
+        mPostByAccountAdapter.notifyItemRemoved(mIntPostionDelete);
+        System.out.println("BBBBBBBBBBBBBBBBBBB     deleteShareSuccess  BBBBBBBBBBBBBBBBBBB");
+        System.out.println("BBBBBBBBBBBBBBB     deleteShareSuccess  BBBBBBBBBBBBBBB");
+    }
+
+    @Override
+    public void deleteShareFail() {
+        showDialoDeleteErr();
     }
 }

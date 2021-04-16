@@ -2,33 +2,45 @@ package com.example.democ.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.democ.R;
+import com.example.democ.model.Vegetable;
 import com.example.democ.model.VegetableData;
 import com.example.democ.presenters.DeleteVegetablePresenter;
+import com.example.democ.presenters.PersonalPresenter;
 import com.example.democ.room.entities.User;
 import com.example.democ.room.managements.UserManagement;
 import com.example.democ.views.DeleteVegetableView;
+import com.example.democ.views.PersonalView;
 import com.squareup.picasso.Picasso;
 
-public class VegetableActivity extends AppCompatActivity implements View.OnClickListener, DeleteVegetableView {
+public class VegetableActivity extends AppCompatActivity implements View.OnClickListener, DeleteVegetableView, PersonalView {
 
+    private final static String KEY_VEGETABLE = "KEY_VEGETABLE";
+    private final static String KEY_VEGETABLE_SEND = "qaz";
+    private final static String KEY_VEGETABLE_DELETE = "KEY_VEGETABLE_DELETE";
     private ImageView mImgVegetable;
     private TextView mTxtVegetableName, mTxtVegetableDescription, mTxtVegetableFeature,
-            mTxtVegetableUpdate, mTxtVegetableDelete, mTxtVegetableQuantity;
+            mTxtVegetableUpdate, mTxtVegetableDelete, mTxtVegetableQuantity, mTxtCreatePost;
     private LinearLayout mLnlBack;
 
     private DeleteVegetablePresenter mDeleteVegetablePresenter;
     private UserManagement mUserManagement;
-    private String mVegetableImg, mVegetableName, mVegetableDescription, mVegetableFeature, mGardenName, mGardenAddress;
+    private String mVegetableImg, mVegetableName, mVegetableDescription, mVegetableFeature, mGardenName, mGardenAddress, mVegetableId = "";
     private int mNoVegetable, mGardenId, mVegetableQuantity;
+
+    private VegetableData mVegetableData;
+    private User mUser;
+    private PersonalPresenter mPersonalPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +52,9 @@ public class VegetableActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void initialView() {
+        mPersonalPresenter = new PersonalPresenter(getApplicationContext(), this);
+        mPersonalPresenter.getInfoPersonal();
+
         mImgVegetable = (ImageView) findViewById(R.id.img_vegetable);
         mTxtVegetableName = (TextView) findViewById(R.id.txt_vegetable_name);
         mTxtVegetableDescription = (TextView) findViewById(R.id.txt_vegetable_description);
@@ -49,6 +64,8 @@ public class VegetableActivity extends AppCompatActivity implements View.OnClick
         mTxtVegetableDelete.setOnClickListener(this);
         mTxtVegetableUpdate = (TextView) findViewById(R.id.txt_vegetable_update);
         mTxtVegetableUpdate.setOnClickListener(this);
+        mTxtCreatePost = (TextView) findViewById(R.id.txt_create_post);
+        mTxtCreatePost.setOnClickListener(this);
         mLnlBack = (LinearLayout) findViewById(R.id.lnl_back);
         mLnlBack.setOnClickListener(this);
 
@@ -95,9 +112,12 @@ public class VegetableActivity extends AppCompatActivity implements View.OnClick
     public void getDataVegetableNew() {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        VegetableData vegetableData = (VegetableData) bundle.getSerializable("zxc");
+//        VegetableData vegetableData = (VegetableData) bundle.getSerializable("zxc");
+        mVegetableData = (VegetableData) bundle.getSerializable(KEY_VEGETABLE);
+        VegetableData vegetableData = mVegetableData;
 
         mVegetableName = vegetableData.getName();
+        mVegetableId = vegetableData.getId();
         mVegetableQuantity = vegetableData.getQuantity();
         mVegetableDescription = vegetableData.getDescription();
         mVegetableFeature = vegetableData.getFeature();
@@ -128,20 +148,22 @@ public class VegetableActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void deleteVegetable() {
-        mUserManagement.getmUserInfo(new UserManagement.OnDataCallBackUser() {
-            @Override
-            public void onDataSuccess(User user) {
-                System.out.println("chay delete vegetable trong vegetable activity");
-                System.out.println("gardenId: " + mGardenId);
-                System.out.println("noVegetable: " + mNoVegetable);
-                mDeleteVegetablePresenter.deleteVegetable(mNoVegetable, mGardenId, user.getToken());
-            }
-
-            @Override
-            public void onDataFail() {
-
-            }
-        });
+//        mUserManagement.getmUserInfo(new UserManagement.OnDataCallBackUser() {
+//            @Override
+//            public void onDataSuccess(User user) {
+//                System.out.println("chay delete vegetable trong vegetable activity");
+//                System.out.println("gardenId: " + mGardenId);
+//                System.out.println("noVegetable: " + mNoVegetable);
+//                System.out.println("vegetable id: " + mVegetableId);
+//                mDeleteVegetablePresenter.deleteVegetable(mVegetableId, user.getToken());
+//            }
+//
+//            @Override
+//            public void onDataFail() {
+//
+//            }
+//        });
+        showDialogDelete();
     }
 
     public void sendDataToUpdateVegetableActivity() {
@@ -160,12 +182,13 @@ public class VegetableActivity extends AppCompatActivity implements View.OnClick
         /* getting info bundle */
         Intent intentGetData = getIntent();
         Bundle bundleGetData = intentGetData.getExtras();
-        VegetableData vegetableData = (VegetableData) bundleGetData.getSerializable("zxc");
+        VegetableData vegetableData = (VegetableData) bundleGetData.getSerializable(KEY_VEGETABLE);
         /* getting send info bundle */
         Intent intentSendData = new Intent(VegetableActivity.this, UpdateVegetableActivity.class);
         Bundle bundleSendData = new Bundle();
         bundleSendData.putInt("GARDEN_ID", mGardenId);
-        bundleSendData.putSerializable("qaz", vegetableData);
+        bundleSendData.putInt("GARDEN_NAME", mGardenId);
+        bundleSendData.putSerializable(KEY_VEGETABLE_SEND, vegetableData);
         intentSendData.putExtras(bundleSendData);
         startActivity(intentSendData);
     }
@@ -178,6 +201,52 @@ public class VegetableActivity extends AppCompatActivity implements View.OnClick
         startActivity(intent);
     }
 
+    private void clickOpenCreatePost() {
+        /* getting info bundle */
+        Intent intentGetData = getIntent();
+        Bundle bundleGetData = intentGetData.getExtras();
+        VegetableData vegetableData = (VegetableData) bundleGetData.getSerializable(KEY_VEGETABLE);
+        /* getting send info bundle */
+//        Intent intentSendData = new Intent(VegetableActivity.this, UpdateVegetableActivity.class);
+        Intent intentSendData = new Intent(VegetableActivity.this, CreatePostActivity.class);
+        intentSendData.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        Bundle bundleSendData = new Bundle();
+        bundleSendData.putInt("GARDEN_ID", mGardenId);
+        bundleSendData.putString("GARDEN_NAME", mGardenName);
+        bundleSendData.putSerializable(KEY_VEGETABLE_SEND, vegetableData);
+        intentSendData.putExtras(bundleSendData);
+        startActivity(intentSendData);
+    }
+
+    /* dialog delete vegetable*/
+    private void showDialogDelete() {
+        final Dialog dialog = new Dialog(VegetableActivity.this);
+        dialog.setContentView(R.layout.dialog_delete_garden);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtQuantity;
+        Button btnClose, btnDelete;
+        btnClose = (Button) dialog.findViewById(R.id.btn_delete_no);
+        btnDelete = (Button) dialog.findViewById(R.id.btn_delete_yes);
+        txtQuantity = (TextView) dialog.findViewById(R.id.txt_content_delete);
+        txtQuantity.setText("Bạn có muốn xóa rau: " + mVegetableName + " không?");
+
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDeleteVegetablePresenter.deleteVegetable(mVegetableId, mUser.getToken());
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -188,6 +257,9 @@ public class VegetableActivity extends AppCompatActivity implements View.OnClick
                 Toast.makeText(getApplicationContext(), mVegetableName + mVegetableFeature , Toast.LENGTH_SHORT).show();
                 sendDataToUpdateVegetableActivity();
                 break;
+            case R.id.txt_create_post:
+                clickOpenCreatePost();
+                break;
             case R.id.lnl_back:
                 finish();
                 break;
@@ -197,7 +269,13 @@ public class VegetableActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void DeleteVegetableSuccess() {
         System.out.println("interface Delete Vegetable Success");
-        Intent intent = new Intent(VegetableActivity.this, GardenActivity.class);
+        Intent intent = new Intent(VegetableActivity.this, MainActivity.class);
+//        Bundle bundle = new Bundle();
+//        bundle.putInt("GARDEN_ID", mGardenId);
+//        bundle.putString("GARDEN_NAME", mGardenName);
+//        bundle.putString("GARDEN_ADDRESS", mGardenAddress);
+//        bundle.putBundle(KEY_VEGETABLE_DELETE,bundle);
+//        intent.putExtras(bundle);
         startActivity(intent);
 //        sendDataToGardenActivity();
     }
@@ -205,5 +283,10 @@ public class VegetableActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void DeleteVegetableFail() {
 
+    }
+
+    @Override
+    public void showInfoPersonal(User user) {
+        mUser = user;
     }
 }

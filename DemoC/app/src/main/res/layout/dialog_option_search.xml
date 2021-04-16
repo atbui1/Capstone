@@ -10,7 +10,7 @@
         android:orientation="vertical"
         android:background="@drawable/bg_edt"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp300">
+        android:layout_height="@dimen/dp200">
         <TextView
             android:text="Bạn muốn tìm kiếm theo loại nào"
             android:textSize="@dimen/sp17"
@@ -26,22 +26,22 @@
             android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp50" />
-        <TextView
-            android:id="@+id/txt_search_description"
-            android:text="Tìm kiếm theo mô tả"
-            android:textSize="@dimen/sp17"
-            android:gravity="center_vertical"
-            android:textColor="@color/black"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp50" />
-        <TextView
-            android:id="@+id/txt_search_keyword"
-            android:text="Tìm kiếm theo từ khóa"
-            android:textSize="@dimen/sp17"
-            android:gravity="center_vertical"
-            android:textColor="@color/black"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp50" />
+        <!--<TextView-->
+            <!--android:id="@+id/txt_search_description"-->
+            <!--android:text="Tìm kiếm theo mô tả"-->
+            <!--android:textSize="@dimen/sp17"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:textColor="@color/black"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/dp50" />-->
+        <!--<TextView-->
+            <!--android:id="@+id/txt_search_keyword"-->
+            <!--android:text="Tìm kiếm theo từ khóa"-->
+            <!--android:textSize="@dimen/sp17"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:textColor="@color/black"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/dp50" />-->
         <TextView
             android:id="@+id/txt_search_wiki"
             android:text="Tìm kiếm từ wikipedia"

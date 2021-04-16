@@ -23,8 +23,8 @@ public class IsAcceptExchangePresenter {
         mCapstoneRepository = new CapstoneRepositoryImp();
     }
 
-    public void isAcceptExchange(int status, ArrayList<String> exchangeId, String token) {
-        mCapstoneRepository.isAcceptExchange(mContext, status, exchangeId, token, new CallBackData<String>() {
+    public void isAcceptExchange(String id, int status, String token) {
+        mCapstoneRepository.isAcceptExchange(mContext, id, status, token, new CallBackData<String>() {
             @Override
             public void onSuccess(String s) {
                 mIsAcceptExchangeView.isAcceptExchangeSuccess();

@@ -24,6 +24,8 @@ public class PostByAccountAdapter extends RecyclerView.Adapter<PostByAccountAdap
     ArrayList<PostData> mListPost;
     Context mContext;
     IClickPostAccount mIClickPostAccount;
+    private static String POST_SHARE = "Nhận rau";
+    private static String POST_EXCHANGE = "Đổi rau";
 
     public PostByAccountAdapter(ArrayList<PostData> mListPost, Context mContext, IClickPostAccount mIClickPostAccount) {
         this.mListPost = mListPost;
@@ -40,7 +42,7 @@ public class PostByAccountAdapter extends RecyclerView.Adapter<PostByAccountAdap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PostByAccountAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final PostByAccountAdapter.ViewHolder holder, int position) {
         final PostData postData = mListPost.get(position);
         if (postData == null) {
             return;
@@ -63,23 +65,20 @@ public class PostByAccountAdapter extends RecyclerView.Adapter<PostByAccountAdap
             holder.mImgPostContent.setImageResource(R.mipmap.addimage64);
         }
 
-
-//        if (holder.mLnlBtnExchange.getVisibility() == View.VISIBLE) {
-//            holder.mLnlBtnExchange.setVisibility(View.GONE);
-//        }
-        holder.mLnlLeftMenu.setOnClickListener(new View.OnClickListener() {
+        holder.mTxtDeletePost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mIClickPostAccount.clickDeletePostAccount(postData, holder.getAdapterPosition());
+            }
+        });
+        holder.mTxtEditPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mIClickPostAccount.clickPostAccount(postData);
-                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx");
-                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx");
-                System.out.println("a: " + postData.getAccountId());
-                System.out.println("b: " + postData.getFullName());
-                System.out.println("c: " + postData.getContent());
-                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx");
-                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXxxxxxxxxx");
             }
         });
+
+
     }
 
     @Override
@@ -92,7 +91,8 @@ public class PostByAccountAdapter extends RecyclerView.Adapter<PostByAccountAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView mImgPostContent, mImgPostLikeStatus;
-        TextView mTxtPostUsername, mTxtPostTime, mTxtPostContent, mTxtPostNumberLike, mTxtVegetablePostNeed, mTxtVegetablePostQuantity;
+        TextView mTxtPostUsername, mTxtPostTime, mTxtPostContent, mTxtPostNumberLike, mTxtVegetablePostNeed,
+                mTxtVegetablePostQuantity, mTxtDeletePost, mTxtEditPost, mTxtBtnExchange;
         LinearLayout mLnlPostLike, mLnlPostComment, mLnlBtnExchange, mLnlLeftMenu;
         Button mBtnPostExchange;
         public ViewHolder(@NonNull View itemView) {
@@ -110,6 +110,9 @@ public class PostByAccountAdapter extends RecyclerView.Adapter<PostByAccountAdap
             mLnlLeftMenu = (LinearLayout) itemView.findViewById(R.id.lnl_left_menu);
             mLnlBtnExchange = (LinearLayout) itemView.findViewById(R.id.lnl_btn_exchange);
             mTxtVegetablePostQuantity = (TextView) itemView.findViewById(R.id.txt_post_vegetable_quantity);
+            mTxtDeletePost = (TextView) itemView.findViewById(R.id.txt_post_remove);
+            mTxtEditPost = (TextView) itemView.findViewById(R.id.txt_post_edit);
+            mTxtBtnExchange = (TextView) itemView.findViewById(R.id.txt_btn_exchange);
         }
     }
 }

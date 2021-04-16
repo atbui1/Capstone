@@ -13,7 +13,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/dp50">
     <TextView
-    android:text="@string/txt_create_post"
+    android:text="Cho rau"
     android:textStyle="bold"
     android:textSize="@dimen/sp20"
     android:gravity="center"

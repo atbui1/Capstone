@@ -16,23 +16,24 @@ import com.example.democ.model.ExchangeData;
 import com.example.democ.room.managements.UserManagement;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RequestExchangeAdapter extends RecyclerView.Adapter<RequestExchangeAdapter.ViewHolder> {
 
-    private ArrayList<ExchangeData> mListExchange;
+    private List<ExchangeData> mListExchange;
     private Context mContext;
     private IClickExChange mIClickExChange;
 
-//    public RequestExchangeAdapter(ArrayList<ExchangeData> mListExchange, Context mContext) {
-//        this.mListExchange = mListExchange;
-//        this.mContext = mContext;
-//    }
 
-
-    public RequestExchangeAdapter(ArrayList<ExchangeData> mListExchange, Context mContext, IClickExChange mIClickExChange) {
+    public RequestExchangeAdapter(List<ExchangeData> mListExchange, Context mContext, IClickExChange mIClickExChange) {
         this.mListExchange = mListExchange;
         this.mContext = mContext;
         this.mIClickExChange = mIClickExChange;
+    }
+
+    public void setData(List<ExchangeData> list) {
+        this.mListExchange = list;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -51,29 +52,19 @@ public class RequestExchangeAdapter extends RecyclerView.Adapter<RequestExchange
         }
         holder.mTxtRequestName.setText("Bạn " + mListExchange.get(position).getFullNameReceiver());
         holder.mTxtRequestContent.setText("Muốn nhận " + mListExchange.get(position).getQuantity()
-                + " " + mListExchange.get(position).getVegNameSend() + " từ bạn");
+                + " " + mListExchange.get(position).getVegNameReceive() + " từ bạn");
 
         holder.mLnlImgRequestAgree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                mIClickExChange.clickExchange(exchangeData);
+                mIClickExChange.clickExchangeAccept(exchangeData, holder.getAdapterPosition());
 
-//                mListExchange.remove(position);
-//                System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
-//                System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
-//                System.out.println("size: " + mListExchange.size());
-//                System.out.println("abcd: " + position);
-//                System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
-//                System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
-//                mIClickExChange.clickExchange(exchangeData, position);
-//                if (mListExchange.size() > 0) {
-//                    mListExchange.remove(position);
-//                }
-//                System.out.println("size abcd: " + mListExchange.size());
-//                System.out.println("DDDDDDDDDGGGGGGGGGGGGGGGGGGGG");
-
-                mIClickExChange.clickExchange(exchangeData, position);
-
+            }
+        });
+        holder.mLnlImageRequestRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mIClickExChange.clickExchangeRemove(exchangeData, holder.getAdapterPosition());
             }
         });
     }

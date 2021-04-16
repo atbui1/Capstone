@@ -144,6 +144,7 @@
         </LinearLayout>
         <!--hinh anh-->
         <LinearLayout
+            android:id="@+id/lnl_img_post_content"
             android:layout_marginTop="@dimen/dp2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -151,7 +152,6 @@
                 android:id="@+id/img_post_content"
                 android:src="@drawable/avatar1"
                 android:scaleType="fitXY"
-                android:rotation="90"
                 android:adjustViewBounds="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

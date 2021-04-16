@@ -4,4 +4,5 @@ import com.example.democ.model.PostData;
 
 public interface IClickPostAccount {
     void clickPostAccount(PostData postData);
+    void clickDeletePostAccount(PostData postData, int positionDelete);
 }

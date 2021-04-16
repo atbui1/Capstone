@@ -3,22 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.SearchByDescriptionFragment">
+    android:orientation="vertical"
+    tools:context=".fragment.SearchShareByNameFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp50">
         <TextView
             android:id="@+id/txt_search_value"
-            android:background="@color/red"
+            android:text="aaaaaaaaaaaa"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/dp20"
+            android:background="@color/sick_green"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_search_description"
+        android:id="@+id/recycler_search_name"
         android:layout_marginTop="@dimen/dp50"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

@@ -70,4 +70,9 @@ public class GardenResult implements Serializable {
     public void setAppAccount(AppAccount appAccount) {
         this.appAccount = appAccount;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

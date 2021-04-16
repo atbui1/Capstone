@@ -38,7 +38,7 @@ public class SearchDescriptionAdapter extends RecyclerView.Adapter<SearchDescrip
     @Override
     public void onBindViewHolder(@NonNull SearchDescriptionAdapter.ViewHolder holder, int position) {
         holder.mTxtVegetableName.setText(mVegetableList.get(position).getName());
-        holder.mTxtVegetableDescription.setText(mVegetableList.get(position).getDescription());
+//        holder.mTxtVegetableDescription.setText(mVegetableList.get(position).getDescription());
 //        holder.mTxtVegetableFeature.setText(mVegetableList.get(position).getFeature());
         int maxSize = mVegetableList.get(position).getImageVegetables().size() - 1;
         if (mVegetableList.get(position).getImageVegetables().get(maxSize).getUrl() != null) {
@@ -58,12 +58,12 @@ public class SearchDescriptionAdapter extends RecyclerView.Adapter<SearchDescrip
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mTxtVegetableName, mTxtVegetableDescription;//, mTxtVegetableFeature;
+        TextView mTxtVegetableName;//, mTxtVegetableDescription;//, mTxtVegetableFeature;
         ImageView mImgVegetable;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mTxtVegetableName = (TextView) itemView.findViewById(R.id.txt_vegetable_name);
-            mTxtVegetableDescription = (TextView) itemView.findViewById(R.id.txt_vegetable_description);
+//            mTxtVegetableDescription = (TextView) itemView.findViewById(R.id.txt_vegetable_description);
 //            mTxtVegetableFeature = (TextView) itemView.findViewById(R.id.txt_vegetable_feature);
             mImgVegetable = (ImageView) itemView.findViewById(R.id.img_vegetable);
         }

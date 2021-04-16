@@ -24,8 +24,8 @@ public class GetAllShareByIdPresenter {
         mCapstoneRepository = new CapstoneRepositoryImp();
     }
 
-    public void getAllShareById(String token) {
-        mCapstoneRepository.getAllShareById(mContext, token, new CallBackData<List<PostData>>() {
+    public void getAllShareById(String id, String token) {
+        mCapstoneRepository.getAllShareById(mContext, id, token, new CallBackData<List<PostData>>() {
             @Override
             public void onSuccess(List<PostData> postData) {
                 mGetAllShareByIdView.getAllShareByIdSuccess(postData);

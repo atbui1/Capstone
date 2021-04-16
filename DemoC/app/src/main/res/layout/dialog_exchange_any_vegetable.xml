@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@drawable/bg_edt"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp300">
+        <LinearLayout
+            android:layout_marginLeft="@dimen/dp50"
+            android:layout_marginRight="@dimen/dp50"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <TextView
+                android:text="Chon 1 loại rau bạn muốn cho"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <TextView
+                    android:paddingLeft="@dimen/dp10"
+                    android:text="Chọn vườn"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="2"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <Spinner
+                    android:id="@+id/sp_garden"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></Spinner>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <TextView
+                    android:paddingLeft="@dimen/dp10"
+                    android:text="Chọn rau"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="2"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <Spinner
+                    android:id="@+id/sp_vegetable"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></Spinner>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <TextView
+                    android:text="Số lượng nhận"
+                    android:paddingLeft="@dimen/dp10"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <EditText
+                    android:id="@+id/edt_quantity_receive"
+                    android:inputType="number"
+                    android:paddingLeft="@dimen/dp10"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <TextView
+                    android:text="Số lượng cho"
+                    android:paddingLeft="@dimen/dp10"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <EditText
+                    android:id="@+id/edt_quantity_donate"
+                    android:inputType="number"
+                    android:paddingLeft="@dimen/dp10"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <Button
+                    android:id="@+id/btn_close"
+                    android:background="@drawable/bg_edt"
+                    android:text="Đóng"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <Button
+                    android:id="@+id/btn_ok"
+                    android:background="@drawable/bg_edt"
+                    android:text="xác nhận"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

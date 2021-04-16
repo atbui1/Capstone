@@ -25,10 +25,12 @@ public class AllSharePresenter {
     }
 
     public void getAllShare(String token) {
+        System.out.println("AAAAAAAAAA  AllSharePresenter AAAAAAAAAAAAAAAAAA");
         mCapstoneRepository.getAllShare(mContext, token, new CallBackData<List<PostData>>() {
             @Override
             public void onSuccess(List<PostData> postData) {
                 mAllShareView.allShareSuccess(postData);
+                System.out.println("BBBBBBBBBBBBBB  AllSharePresenter BBBBBBBBBBBBBBBB");
             }
 
             @Override

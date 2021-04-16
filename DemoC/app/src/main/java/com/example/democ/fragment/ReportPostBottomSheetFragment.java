@@ -14,6 +14,9 @@ import androidx.annotation.Nullable;
 
 import com.example.democ.R;
 import com.example.democ.model.PostData;
+import com.example.democ.model.PostSearchDescription;
+import com.example.democ.model.PostSearchKeyword;
+import com.example.democ.model.PostSearchName;
 import com.example.democ.model.ReportPost;
 import com.example.democ.presenters.ReportPostPresenter;
 import com.example.democ.views.ReportPostView;
@@ -29,14 +32,36 @@ public class ReportPostBottomSheetFragment extends BottomSheetDialogFragment imp
     private LinearLayout mLnlReportSpam, mLnlReportContentErr, mLnlReportCheat;
     private ReportPostPresenter mReportPostPresenter;
     private View mView;
-    private PostData postData;
+    private PostData mPostData;
+    private PostSearchName mPostSearchName;
+    private PostSearchKeyword mPostSearchKeyword;
+    private PostSearchDescription mPostSearchDescription;
     private String accessToken;
     private String accountId;
+    private String mPostId = "";
 
-    public ReportPostBottomSheetFragment(PostData postData, String accessToken, String accountId) {
-        this.postData = postData;
+    public ReportPostBottomSheetFragment(PostData mPostData, String accessToken, String accountId) {
+        this.mPostData = mPostData;
         this.accessToken = accessToken;
         this.accountId = accountId;
+    }
+
+    public ReportPostBottomSheetFragment(PostSearchName mPostSearchName, String accessToken, String accountId) {
+        this.mPostSearchName = mPostSearchName;
+        this.accessToken = accessToken;
+        this.accountId = accountId;
+    }
+
+    public ReportPostBottomSheetFragment(PostSearchKeyword mPostSearchKeyword, String accessToken, String accountId) {
+        this.mPostSearchKeyword = mPostSearchKeyword;
+        this.accessToken = accessToken;
+        this.accountId = accountId;
+    }
+
+    public ReportPostBottomSheetFragment(PostSearchDescription mPostSearchDescription, String accountId, String mPostId) {
+        this.mPostSearchDescription = mPostSearchDescription;
+        this.accountId = accountId;
+        this.mPostId = mPostId;
     }
 
     @NonNull
@@ -62,22 +87,50 @@ public class ReportPostBottomSheetFragment extends BottomSheetDialogFragment imp
 
     private void reportSpam() {
         String reportContent = R_SPAM;
-        String postId = postData.getId();
-        ReportPost reportPost = new ReportPost(reportContent, postId, accountId);
+        if (mPostData != null) {
+            mPostId = mPostData.getId();
+        } else if (mPostSearchName != null) {
+            mPostId = mPostSearchName.getId();
+        } else if (mPostSearchKeyword != null) {
+            mPostId = mPostSearchKeyword.getId();
+        } else if (mPostSearchDescription != null) {
+            mPostId = mPostSearchDescription.getId();
+        }
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        System.out.println("mPostId report: " + mPostId);
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        ReportPost reportPost = new ReportPost(reportContent, mPostId, accountId);
         mReportPostPresenter.reportPost(reportPost, accessToken);
         mBottomSheetDialog.dismiss();
     }
     private void reportContentErr() {
         String reportContent = R_CONTENT_ERR;
-        String postId = postData.getId();
-        ReportPost reportPost = new ReportPost(reportContent, postId, accountId);
+        if (mPostData != null) {
+            mPostId = mPostData.getId();
+        } else if (mPostSearchName != null) {
+            mPostId = mPostSearchName.getId();
+        } else if (mPostSearchKeyword != null) {
+            mPostId = mPostSearchKeyword.getId();
+        } else if (mPostSearchDescription != null) {
+            mPostId = mPostSearchDescription.getId();
+        }
+
+        ReportPost reportPost = new ReportPost(reportContent, mPostId, accountId);
         mReportPostPresenter.reportPost(reportPost, accessToken);
         mBottomSheetDialog.dismiss();
     }
     private void reportCheat() {
         String reportContent = R_CHEAT;
-        String postId = postData.getId();
-        ReportPost reportPost = new ReportPost(reportContent, postId, accountId);
+        if (mPostData != null) {
+            mPostId = mPostData.getId();
+        } else if (mPostSearchName != null) {
+            mPostId = mPostSearchName.getId();
+        } else if (mPostSearchKeyword != null) {
+            mPostId = mPostSearchKeyword.getId();
+        } else if (mPostSearchDescription != null) {
+            mPostId = mPostSearchDescription.getId();
+        }
+        ReportPost reportPost = new ReportPost(reportContent, mPostId, accountId);
         mReportPostPresenter.reportPost(reportPost, accessToken);
         mBottomSheetDialog.dismiss();
     }

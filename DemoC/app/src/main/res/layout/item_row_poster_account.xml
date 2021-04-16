@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_marginTop="@dimen/dp8"
+    android:background="@color/background"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/dp5"
+        android:layout_marginBottom="@dimen/dp5"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!--header-->
+        <LinearLayout
+            android:weightSum="10"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/dp5"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <!--avatar poster-->
+            <LinearLayout
+                android:layout_weight="2"
+                android:gravity="center"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:src="@drawable/avatar1"
+                    android:layout_width="@dimen/dp50"
+                    android:layout_height="@dimen/dp50" />
+            </LinearLayout>
+            <!--ten nguoi dang va thoi gian-->
+            <LinearLayout
+                android:layout_weight="7"
+                android:orientation="vertical"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp0">
+                    <TextView
+                        android:id="@+id/txt_post_username"
+                        android:text="Tên người đăng"
+                        android:textSize="@dimen/sp17"
+                        android:gravity="center_vertical"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp0">
+                    <TextView
+                        android:id="@+id/txt_post_time"
+                        android:text="Thời gian"
+                        android:textSize="@dimen/sp15"
+                        android:gravity="center_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+            </LinearLayout>
+            <!--meatmenu-->
+            <LinearLayout
+                android:id="@+id/lnl_left_menu"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--meatmenu-->
+            <!--<LinearLayout-->
+            <!--android:id="@+id/lnl_left_menu"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_width="@dimen/dp0"-->
+            <!--android:layout_height="match_parent">-->
+            <!--<ImageView-->
+            <!--android:src="@mipmap/menu1"-->
+            <!--android:layout_width="@dimen/dp20"-->
+            <!--android:layout_height="@dimen/dp30" />-->
+            <!--</LinearLayout>-->
+        </LinearLayout>
+        <!--noi dung, tieu de bai dang-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/txt_post_content"
+                android:paddingLeft="@dimen/dp8"
+                android:text="Thanh long không hạt"
+                android:textSize="@dimen/sp15"
+                android:paddingTop="@dimen/dp8"
+                android:paddingBottom="@dimen/dp8"
+                android:inputType="textMultiLine|textAutoComplete"
+                android:padding="@dimen/dp5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <!--so luong rau-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/txt_post_vegetable_quantity"
+                android:paddingLeft="@dimen/dp8"
+                android:text="Thanh long không hạt"
+                android:textSize="@dimen/sp15"
+                android:paddingTop="@dimen/dp8"
+                android:paddingBottom="@dimen/dp8"
+                android:inputType="textMultiLine|textAutoComplete"
+                android:padding="@dimen/dp5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <!--hinh anh-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <TextView
+                android:id="@+id/txt_btn_exchange"
+                android:text="trao doi"
+                android:gravity="center"
+                android:background="@drawable/bg_edt"
+                android:textSize="@dimen/sp20"
+                android:layout_width="@dimen/dp150"
+                android:layout_height="@dimen/dp50" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="@dimen/dp2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/img_post_content"
+                android:src="@drawable/avatar1"
+                android:scaleType="fitStart"
+                android:adjustViewBounds="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <!--duong ke ngang height la 1-->
+        <TextView
+            android:background="@color/background"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp1" />
+        <!--edit-delete-->
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/lnl_btn_exchange"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <LinearLayout
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/txt_post_remove"
+                    android:text="Xóa"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/sp17"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/dp5"
+                    android:layout_marginBottom="@dimen/dp5"
+                    android:background="@drawable/bg_edt_red"
+                    android:layout_width="@dimen/dp100"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/txt_post_edit"
+                    android:text="Chỉnh sữa"
+                    android:textColor="@color/sick_green"
+                    android:textSize="@dimen/sp17"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/dp5"
+                    android:layout_marginBottom="@dimen/dp5"
+                    android:background="@drawable/bg_edt"
+                    android:layout_width="@dimen/dp100"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

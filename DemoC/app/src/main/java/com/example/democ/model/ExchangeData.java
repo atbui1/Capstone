@@ -7,8 +7,6 @@ import java.io.Serializable;
 public class ExchangeData implements Serializable {
     @SerializedName("id")
     private String id;
-    @SerializedName("vegNameSend")
-    private String vegNameSend;
     @SerializedName("vegNameReceive")
     private String vegNameReceive;
     @SerializedName("quantity")
@@ -28,10 +26,9 @@ public class ExchangeData implements Serializable {
     @SerializedName("shareDetailId")
     private String shareDetailId;
 
-    public ExchangeData(String id, String vegNameSend, String vegNameReceive, int quantity, int status, String createdDate,
-                        String fullNameHost, String fullNameReceiver, String accountHostId, String receiverId, String shareDetailId) {
+    public ExchangeData(String id, String vegNameReceive, int quantity, int status, String createdDate, String fullNameHost,
+                        String fullNameReceiver, String accountHostId, String receiverId, String shareDetailId) {
         this.id = id;
-        this.vegNameSend = vegNameSend;
         this.vegNameReceive = vegNameReceive;
         this.quantity = quantity;
         this.status = status;
@@ -49,14 +46,6 @@ public class ExchangeData implements Serializable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getVegNameSend() {
-        return vegNameSend;
-    }
-
-    public void setVegNameSend(String vegNameSend) {
-        this.vegNameSend = vegNameSend;
     }
 
     public String getVegNameReceive() {

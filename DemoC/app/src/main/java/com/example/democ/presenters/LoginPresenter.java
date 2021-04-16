@@ -23,7 +23,7 @@ public class LoginPresenter {
     private Context mContext;
     private UserManagement mUserManagement;
     private Application mApplication;
-    private static User mUser;
+//    private static User mUser;
 
     public LoginPresenter(Application application, Context context, LoginView loginView) {
         mApplication = application;
@@ -40,17 +40,22 @@ public class LoginPresenter {
                 if (user != null){
                     //add user to room
                     addUserToRoom(user);
-                    mUser = user;
-                    System.out.println(user.getToken());
-                    System.out.println("******************* LINE 32 loginpresenter");
+//                    mUser = user;
+
                 } else {
 //                    mLoginView.loginFail("Lưu thông tin người dùng thất bại");
+                    System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+                    System.out.println("luu thong tin nguoi dung vao room fail");
+                    System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
                 }
             }
 
             @Override
             public void onFail(String msgFail) {
-                System.out.println("******************* onfail line 40 loginpresenter");
+                System.out.println("************** login presenter err******************");
+                System.out.println(msgFail);
+                System.out.println("************** login presenter err******************");
+
                 showDialogLoginFail();
             }
         });
@@ -61,7 +66,8 @@ public class LoginPresenter {
         mUserManagement.addUser(user, new UserManagement.OnDataCallBackUser() {
             @Override
             public void onDataSuccess(User user) {
-                mLoginView.loginSuccess(mUser);
+//                mLoginView.loginSuccess(mUser);
+                mLoginView.loginSuccess(user);
             }
 
             @Override

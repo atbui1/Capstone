@@ -13,12 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.democ.R;
 import com.example.democ.activity.GardenActivity;
-import com.example.democ.activity.LoginActivity;
-import com.example.democ.activity.MainActivity;
 import com.example.democ.model.GardenResult;
-import com.example.democ.room.entities.User;
-import com.example.democ.room.managements.UserManagement;
-import com.example.democ.views.LoginView;
 
 import java.util.ArrayList;
 

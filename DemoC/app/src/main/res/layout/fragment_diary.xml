@@ -59,7 +59,7 @@
         android:layout_height="@dimen/dp50">
         <Button
             android:id="@+id/btn_create_post"
-            android:text="Đăng bài"
+            android:text="Cho rau"
             android:textSize="@dimen/dp20"
             android:background="@color/white"
             android:textColor="@color/sick_green"
