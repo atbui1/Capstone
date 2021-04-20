@@ -43,7 +43,7 @@ public class RequestAddFriendAdapter extends RecyclerView.Adapter<RequestAddFrie
         LinearLayout mLnlOk, mLnlNo;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            mTxtRequestName = (TextView) itemView.findViewById(R.id.txt_request_name);
+//            mTxtRequestName = (TextView) itemView.findViewById(R.id.txt_request_name);
             mTxtContent = (TextView) itemView.findViewById(R.id.txt_request_content);
             mLnlOk = (LinearLayout) itemView.findViewById(R.id.lnl_ok);
             mLnlNo = (LinearLayout) itemView.findViewById(R.id.lnl_no);

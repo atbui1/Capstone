@@ -38,7 +38,7 @@ public class VegetablePostAdapter extends RecyclerView.Adapter<VegetablePostAdap
             return;
         }
         holder.mTxtVegetableName.setText(mVegetableList.get(position).getName());
-        holder.mTxtVegetableQuantity.setText("Số lượng: " + mVegetableList.get(position).getQuantity());
+        holder.mTxtVegetableQuantity.setText(String.valueOf(mVegetableList.get(position).getQuantity()));
         holder.mTxtVegetableName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

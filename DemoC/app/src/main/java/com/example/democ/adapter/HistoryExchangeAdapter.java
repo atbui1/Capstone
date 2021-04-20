@@ -42,23 +42,40 @@ public class HistoryExchangeAdapter extends RecyclerView.Adapter<HistoryExchange
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HistoryExchangeAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final HistoryExchangeAdapter.ViewHolder holder, final int position) {
         final ExchangeData exchangeData = mListHistory.get(position);
         if (exchangeData == null) {
             return;
         }
-        holder.mTxtInfoExchange.setText("Bạn " + exchangeData.getFullNameHost() + " đã nhận " + exchangeData.getVegNameReceive());
+        holder.mTxtInfoExchange.setText(" nhận " + exchangeData.getVegNameReceive() + " " + exchangeData.getFullNameHost());
+        String postTime = mListHistory.get(position).getCreatedDate();
+        String subTime = postTime.substring(0, 10);
+        holder.mTxtExchangeTime.setText("Thời gian: " + subTime);
+
+
         if (exchangeData.getStatus() == 1) {
-            holder.mTxtExchangeStatus.setText("Trạng thái: Chưa cho, nhận rau");
-            holder.mTxtExchangeStatus.setTextColor(ContextCompat.getColor(mContext, R.color.dark_yellow));
-        } else if (exchangeData.getStatus() == 2) {
-            holder.mTxtExchangeStatus.setText("Trạng thái: đã cho, nhận rau");
+            holder.mTxtExchangeStatus.setText("Trạng thái: Yêu cầu chưa sữ lý");
             holder.mTxtExchangeStatus.setTextColor(ContextCompat.getColor(mContext, R.color.sick_green));
+        } else if (exchangeData.getStatus() == 2) {
+            holder.mTxtExchangeStatus.setText("Trạng thái: Đã chấp thuận");
+            holder.mTxtExchangeStatus.setTextColor(ContextCompat.getColor(mContext, R.color.dark_yellow));
+        } else if (exchangeData.getStatus() == 3) {
+            holder.mTxtExchangeStatus.setText("Trạng thái: Yêu cầu bị Từ chối");
+            holder.mTxtExchangeStatus.setTextColor(ContextCompat.getColor(mContext, R.color.red));
+        } else if (exchangeData.getStatus() == 4) {
+            holder.mTxtExchangeStatus.setText("Trạng thái: Hoàn thành trao đổi");
+            holder.mTxtExchangeStatus.setTextColor(ContextCompat.getColor(mContext, R.color.dark_sky_blue));
         }
         holder.mLnlRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mIClickExChange.clickExchangeAccept(exchangeData, position);
+            }
+        });
+        holder.mLnlHistoryDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mIClickExChange.clickExchangeRemove(exchangeData, holder.getAdapterPosition());
             }
         });
     }
@@ -72,13 +89,15 @@ public class HistoryExchangeAdapter extends RecyclerView.Adapter<HistoryExchange
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout mLnlRoot;
-        TextView mTxtInfoExchange, mTxtExchangeStatus;
+        LinearLayout mLnlRoot, mLnlHistoryDelete;
+        TextView mTxtInfoExchange, mTxtExchangeStatus, mTxtExchangeTime;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mLnlRoot = (LinearLayout) itemView.findViewById(R.id.lnl_root);
+            mLnlHistoryDelete = (LinearLayout) itemView.findViewById(R.id.lnl_history_delete);
             mTxtInfoExchange = (TextView) itemView.findViewById(R.id.txt_exchange_info);
             mTxtExchangeStatus = (TextView) itemView.findViewById(R.id.txt_exchange_status);
+            mTxtExchangeTime = (TextView) itemView.findViewById(R.id.txt_exchange_time);
         }
     }
 }

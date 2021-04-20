@@ -1,18 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swiperefreshlayout"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white"
+    android:background="@color/dark"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".RequestExchangeFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_request_exchange"
-        android:layout_marginTop="@dimen/dp10"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <LinearLayout
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <TextView
+                android:text="Yêu cầu trao đổi"
+                android:textStyle="bold"
+                android:textSize="@dimen/sp20"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_request_exchange"
+            android:background="@color/dark"
+            android:paddingTop="@dimen/dp20"
+            android:paddingLeft="@dimen/dp10"
+            android:paddingRight="@dimen/dp10"
+            android:paddingBottom="@dimen/dp10"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
+
+    <!--<androidx.recyclerview.widget.RecyclerView-->
+        <!--android:id="@+id/recycler_request_exchange"-->
+        <!--android:background="@color/dark"-->
+        <!--android:paddingTop="@dimen/dp20"-->
+        <!--android:paddingLeft="@dimen/dp10"-->
+        <!--android:paddingRight="@dimen/dp10"-->
+        <!--android:paddingBottom="@dimen/dp10"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+
+    <!--</androidx.recyclerview.widget.RecyclerView>-->
 
 
-</FrameLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

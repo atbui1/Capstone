@@ -253,6 +253,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>
+            <!--request add friend-->
+            <LinearLayout
+                android:id="@+id/lnl_friend"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:text="Danh sách bạn bè"
+                    android:paddingLeft="@dimen/dp50"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/sp17"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
             <!--history exchange-->
             <LinearLayout
                 android:id="@+id/lnl_history_exchange"

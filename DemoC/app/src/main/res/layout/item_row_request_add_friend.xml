@@ -6,23 +6,50 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:weightSum="10"
         android:layout_marginBottom="@dimen/dp5"
         android:background="@drawable/bg_edt"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp100">
+        android:layout_height="@dimen/dp150">
+        <!--text-->
         <LinearLayout
-            android:layout_weight="7"
+            android:layout_weight="2"
             android:orientation="vertical"
-            android:layout_width="@dimen/dp0"
-            android:layout_height="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp0">
+            <!--<LinearLayout-->
+                <!--android:layout_weight="1"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/dp0">-->
+                <!--<TextView-->
+                    <!--android:id="@+id/txt_request_name"-->
+                    <!--android:text="Nguoi A"-->
+                    <!--android:textSize="@dimen/sp17"-->
+                    <!--android:gravity="center_vertical"-->
+                    <!--android:paddingLeft="@dimen/sp20"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent" />-->
+            <!--</LinearLayout>-->
+            <!--<LinearLayout-->
+                <!--android:layout_weight="2"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/dp0">-->
+                <!--<TextView-->
+                    <!--android:id="@+id/txt_request_content"-->
+                    <!--android:text="Muon ket ban voi ban"-->
+                    <!--android:textSize="@dimen/sp15"-->
+                    <!--android:gravity="center_vertical"-->
+                    <!--android:paddingLeft="@dimen/sp20"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent" />-->
+            <!--</LinearLayout>-->
             <LinearLayout
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp0">
                 <TextView
-                    android:id="@+id/txt_request_name"
+                    android:id="@+id/txt_request_content"
+                    android:inputType="text|textMultiLine"
                     android:text="Nguoi A"
                     android:textSize="@dimen/sp17"
                     android:gravity="center_vertical"
@@ -30,36 +57,32 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>
-            <LinearLayout
-                android:layout_weight="2"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp0">
-                <TextView
-                    android:id="@+id/txt_request_content"
-                    android:text="Muon ket ban voi ban"
-                    android:textSize="@dimen/sp15"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="@dimen/sp20"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
         </LinearLayout>
+        <!--event-->
         <LinearLayout
-            android:layout_weight="3"
-            android:orientation="vertical"
-            android:layout_width="@dimen/dp0"
-            android:layout_height="match_parent">
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp0">
             <LinearLayout
                 android:id="@+id/lnl_ok"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:background="@drawable/bg_edt_full_green"
+                android:layout_marginLeft="@dimen/dp20"
+                android:layout_marginRight="@dimen/dp20"
+                android:layout_marginTop="@dimen/dp5"
+                android:layout_marginBottom="@dimen/dp5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <LinearLayout
-                    android:layout_width="@dimen/dp30"
-                    android:layout_height="@dimen/dp30">
-                    <ImageView
-                        android:src="@drawable/check"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:text="Chấp nhận"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp17"
+                        android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                 </LinearLayout>
@@ -68,13 +91,21 @@
                 android:id="@+id/lnl_no"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:background="@drawable/bg_dark"
+                android:layout_marginLeft="@dimen/dp20"
+                android:layout_marginRight="@dimen/dp20"
+                android:layout_marginTop="@dimen/dp5"
+                android:layout_marginBottom="@dimen/dp5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <LinearLayout
-                    android:layout_width="@dimen/dp30"
-                    android:layout_height="@dimen/dp30">
-                    <ImageView
-                        android:src="@drawable/remove"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:text="Từ chối"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp17"
+                        android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                 </LinearLayout>

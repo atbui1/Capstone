@@ -50,9 +50,15 @@ public class RequestExchangeAdapter extends RecyclerView.Adapter<RequestExchange
         if (exchangeData == null) {
             return;
         }
-        holder.mTxtRequestName.setText("Bạn " + mListExchange.get(position).getFullNameReceiver());
-        holder.mTxtRequestContent.setText("Muốn nhận " + mListExchange.get(position).getQuantity()
-                + " " + mListExchange.get(position).getVegNameReceive() + " từ bạn");
+//        holder.mTxtRequestName.setText("Bạn " + mListExchange.get(position).getFullNameReceiver());
+//        holder.mTxtRequestContent.setText("Muốn nhận " + mListExchange.get(position).getQuantity()
+//                + " " + mListExchange.get(position).getVegNameReceive() + " từ bạn");
+        holder.mTxtRequestContent.setText(mListExchange.get(position).getFullNameReceiver()
+        + " Muốn nhận "
+        + mListExchange.get(position).getQuantity()
+        + " "
+        + mListExchange.get(position).getVegNameReceive()
+        + " từ bạn");
 
         holder.mLnlImgRequestAgree.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,12 +84,13 @@ public class RequestExchangeAdapter extends RecyclerView.Adapter<RequestExchange
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mTxtRequestName, mTxtRequestContent;
+//        TextView mTxtRequestName, mTxtRequestContent;
+        TextView mTxtRequestContent;
         LinearLayout mLnlImgRequestAgree, mLnlImageRequestRemove;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            mTxtRequestName = (TextView) itemView.findViewById(R.id.txt_request_name);
+//            mTxtRequestName = (TextView) itemView.findViewById(R.id.txt_request_name);
             mTxtRequestContent = (TextView) itemView.findViewById(R.id.txt_request_content);
             mLnlImgRequestAgree = (LinearLayout) itemView.findViewById(R.id.lnl_img_request_agree);
             mLnlImageRequestRemove = (LinearLayout) itemView.findViewById(R.id.lnl_img_request_remove);

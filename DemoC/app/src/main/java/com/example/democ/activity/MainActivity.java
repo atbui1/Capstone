@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.democ.RequestExchangeFragment;
 import com.example.democ.fragment.EmptyFragment;
@@ -24,6 +25,7 @@ import com.example.democ.model.PostData;
 import com.example.democ.presenters.AllExchangePresenter;
 import com.example.democ.presenters.AllGardenPresenter;
 import com.example.democ.presenters.AllSharePresenter;
+import com.example.democ.presenters.LoginPresenter;
 import com.example.democ.presenters.PersonalPresenter;
 import com.example.democ.room.entities.User;
 import com.example.democ.room.managements.UserManagement;
@@ -41,7 +43,7 @@ import com.google.firebase.iid.InstanceIdResult;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements AllGardenView, AllShareView, AllExchangeView, PersonalView {
+public class MainActivity extends AppCompatActivity {//} implements AllGardenView, AllShareView, AllExchangeView, PersonalView {
 
     private BottomNavigationView mBottomNavigationView;
 
@@ -55,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements AllGardenView, Al
     private AllSharePresenter mAllSharePresenter;
     private AllExchangePresenter mAllExchangePresenter;
     private PersonalPresenter mPersonalPresenter;
+    /*Back 2 tap exit app*/
+    private long mBackPressTime;
 
     //new
 
@@ -80,47 +84,39 @@ public class MainActivity extends AppCompatActivity implements AllGardenView, Al
 //        });
 
 
-//        initialView();
+        initialView();
         initialData();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mBackPressTime + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+            return;
+        } else {
+            Toast.makeText(MainActivity.this, "Click BACK lần nữa để thoát ứng dụng", Toast.LENGTH_SHORT).show();
+        }
+        mBackPressTime = System.currentTimeMillis();
     }
 
     private void initialView() {
         mBottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         mBottomNavigationView.setOnNavigationItemSelectedListener(navListener);
-//        Fragment selectedFragment = new GardenFragment();
-//        getSupportFragmentManager().beginTransaction().add(R.id.frame_container,
-//                selectedFragment).commit();
 
-//        loadFragment(new GardenFragment());
         Fragment selectedFragment = null;
-        System.out.println("initial view ****************");
-        System.out.println("mListAllGarden:  " + mListAllGarden.size());
-        System.out.println("initial view ****************");
-//        if (mListAllGarden.size() > 0) {
-//            selectedFragment = new GardenFragment((ArrayList<GardenResult>) mListAllGarden, mAccessToken);
-//        } else {
-//            selectedFragment = new EmptyFragment();
-//        }
-        selectedFragment = new DiaryFragment((ArrayList<PostData>) mListAllPost, mAccessToken, mUser);
+
+        selectedFragment = new DiaryFragment();
         getSupportFragmentManager().beginTransaction().add(R.id.frame_container, selectedFragment).commit();
 
     }
 
     private void initialData() {
-        mAllGardenPresenter = new AllGardenPresenter(getApplication(), this, this);
-        mAllSharePresenter = new AllSharePresenter(getApplication(), this, this);
-        mAllExchangePresenter = new AllExchangePresenter(getApplication(), this, this);
+//        mAllGardenPresenter = new AllGardenPresenter(getApplication(), this, this);
+//        mAllSharePresenter = new AllSharePresenter(getApplication(), this, this);
+//        mAllExchangePresenter = new AllExchangePresenter(getApplication(), this, this);
+//        mPersonalPresenter = new PersonalPresenter(getApplicationContext(), this);
+//        mPersonalPresenter.getInfoPersonal();
 
-        mPersonalPresenter = new PersonalPresenter(getApplicationContext(), this);
-        mPersonalPresenter.getInfoPersonal();
-
-//        Intent intentFromLogin = getIntent();
-//        Bundle bundleFromLogin = intentFromLogin.getExtras();
-//        if (bundleFromLogin != null) {
-//            mAccessToken = bundleFromLogin.getString("STRING_TOKEN");
-//            System.out.println(mAccessToken);
-//        }
-//        mAllGardenPresenter.getAllGarden(mAccessToken);
 
         mListAllGarden = new ArrayList<>();
         mListAllPost = new ArrayList<>();
@@ -145,13 +141,16 @@ public class MainActivity extends AppCompatActivity implements AllGardenView, Al
 //                            selectFragment = new SearchFragment();
 //                            break;
                         case R.id.nav_request_exchange:
-                            selectFragment = new RequestExchangeFragment((ArrayList<ExchangeData>) mListAllExchange);
+//                            selectFragment = new RequestExchangeFragment((ArrayList<ExchangeData>) mListAllExchange);
+                            selectFragment = new RequestExchangeFragment();
                             break;
                         case R.id.nav_diary:
-                            selectFragment = new DiaryFragment((ArrayList<PostData>) mListAllPost, mAccessToken, mUser);
+//                            selectFragment = new DiaryFragment((ArrayList<PostData>) mListAllPost, mAccessToken, mUser);
+                            selectFragment = new DiaryFragment();
                             break;
                         case R.id.nav_garden:
-                            selectFragment = new GardenFragment((ArrayList<GardenResult>) mListAllGarden, mAccessToken);
+//                            selectFragment = new GardenFragment((ArrayList<GardenResult>) mListAllGarden, mAccessToken);
+                            selectFragment = new GardenFragment();
                             break;
                         case R.id.nav_personal:
                             selectFragment = new PersonalFragment();
@@ -162,72 +161,66 @@ public class MainActivity extends AppCompatActivity implements AllGardenView, Al
                 }
             };
 
-    @Override
-    public void getAllGardenSuccess(List<GardenResult> listAllGarden) {
-        this.mListAllGarden = listAllGarden;
-        if (mListAllGarden.size() > 0) {
-            initialView();
-
-//            get all share - post
-            System.out.println("---------------- *************** -----------------------");
-//            mAllSharePresenter.getAllShare(mAccessToken);
-            System.out.println("chay mAllSharePresenter.getAllShare(mAccessToken);");
-//            mAllExchangePresenter.getAllExchange(mAccessToken);
-            System.out.println("---------------- *************** -----------------------");
-        } else {
-            initialView();
-        }
-    }
-
-    @Override
-    public void getAllGardenFail() {
-
-    }
-
-    @Override
-    public void allShareSuccess(List<PostData> postData) {
-        System.out.println("------------ ************* ------------------");
-        System.out.println("chay toi interface get all share");
-        mListAllPost = postData;
-        if (mListAllPost.size() > 0) {
-            System.out.println("------------- vao if get all share ------------------------");
-            System.out.println(mListAllPost.size());
-            initialView();
-            System.out.println("------------- ket thuc if get all share ------------------------");
-        }
-    }
-
-    @Override
-    public void allShareFail() {
-        System.out.println("FFFFFFFFFFFFFFFFF   allShareFail main home   FFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
-    }
-
-    @Override
-    public void allExchangeSuccess(List<ExchangeData> exchangeData) {
-        System.out.println("------------ ************* ------------------");
-        System.out.println("chay toi interface get all exchange");
-        mListAllExchange = exchangeData;
-        if (mListAllExchange.size() > 0) {
-            System.out.println("------------- vao if get all exchange ------------------------");
-            System.out.println(mListAllExchange.size());
-            initialView();
-            System.out.println("------------- ket thuc if get all exchange ------------------------");
-        }
-    }
-
-    @Override
-    public void allExchangeFail() {
-
-    }
-
-    @Override
-    public void showInfoPersonal(User user) {
-        mUser = user;
-        mAllExchangePresenter.getAllExchange(user.getToken());
-        mAllSharePresenter.getAllShare(user.getToken());
-        mAllGardenPresenter.getAllGarden(user.getToken());
-        System.out.println("AAAAAAAAAA  get all share main home AAAAAAAAAAAAAAAAAA");
-        System.out.println("token: " + user.getToken());
-        System.out.println("AAAAAAAAAA  get all share main home AAAAAAAAAAAAAAAAAA");
-    }
+//    @Override
+//    public void getAllGardenSuccess(List<GardenResult> listAllGarden) {
+//        this.mListAllGarden = listAllGarden;
+//        if (mListAllGarden.size() > 0) {
+//            initialView();
+//
+////            get all share - post
+//            System.out.println("---------------- *************** -----------------------");
+////            mAllSharePresenter.getAllShare(mAccessToken);
+//            System.out.println("chay mAllSharePresenter.getAllShare(mAccessToken);");
+////            mAllExchangePresenter.getAllExchange(mAccessToken);
+//            System.out.println("---------------- *************** -----------------------");
+//        } else {
+//            initialView();
+//        }
+//    }
+//    @Override
+//    public void getAllGardenFail() {
+//
+//    }
+//    @Override
+//    public void allShareSuccess(List<PostData> postData) {
+//        System.out.println("------------ ************* ------------------");
+//        System.out.println("chay toi interface get all share");
+//        mListAllPost = postData;
+//        if (mListAllPost.size() > 0) {
+//            System.out.println("------------- vao if get all share ------------------------");
+//            System.out.println(mListAllPost.size());
+//            initialView();
+//            System.out.println("------------- ket thuc if get all share ------------------------");
+//        }
+//    }
+//    @Override
+//    public void allShareFail() {
+//        System.out.println("FFFFFFFFFFFFFFFFF   allShareFail main home   FFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+//    }
+//    @Override
+//    public void allExchangeSuccess(List<ExchangeData> exchangeData) {
+//        System.out.println("------------ ************* ------------------");
+//        System.out.println("chay toi interface get all exchange");
+//        mListAllExchange = exchangeData;
+//        if (mListAllExchange.size() > 0) {
+//            System.out.println("------------- vao if get all exchange ------------------------");
+//            System.out.println(mListAllExchange.size());
+//            initialView();
+//            System.out.println("------------- ket thuc if get all exchange ------------------------");
+//        }
+//    }
+//    @Override
+//    public void allExchangeFail() {
+//
+//    }
+//    @Override
+//    public void showInfoPersonal(User user) {
+//        mUser = user;
+//        mAllExchangePresenter.getAllExchange(user.getToken());
+//        mAllSharePresenter.getAllShare(user.getToken());
+//        mAllGardenPresenter.getAllGarden(user.getToken());
+//        System.out.println("AAAAAAAAAA  get all share main home AAAAAAAAAAAAAAAAAA");
+//        System.out.println("token: " + user.getToken());
+//        System.out.println("AAAAAAAAAA  get all share main home AAAAAAAAAAAAAAAAAA");
+//    }
 }

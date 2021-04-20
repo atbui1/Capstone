@@ -9,6 +9,15 @@ public class ShareRequest {
     private String vegetableId;
     private List<String> vegetableNeedId;
 
+    /*post share*/
+    public ShareRequest(String content, int quantity, int status, String vegetableId) {
+        this.content = content;
+        this.quantity = quantity;
+        this.status = status;
+        this.vegetableId = vegetableId;
+    }
+
+    /*post exchange*/
     public ShareRequest(String content, int quantity, int status, String vegetableId, List<String> vegetableNeedId) {
         this.content = content;
         this.quantity = quantity;

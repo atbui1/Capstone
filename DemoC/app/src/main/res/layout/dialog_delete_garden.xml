@@ -4,7 +4,7 @@
     android:layout_height="@dimen/dp150">
 
     <LinearLayout
-        android:background="@drawable/bg_edt"
+        android:background="@drawable/bg_edt_white"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -26,18 +26,24 @@
                 android:id="@+id/btn_delete_yes"
                 android:text="Có"
                 android:layout_marginRight="@dimen/dp20"
+                android:layout_marginBottom="@dimen/dp5"
+                android:paddingLeft="@dimen/dp20"
+                android:paddingRight="@dimen/dp20"
                 android:textSize="@dimen/sp17"
-                android:textColor="@color/white"
-                android:background="@drawable/bg_btn_login"
+                android:textColor="@color/red"
+                android:background="@drawable/bg_edt_red"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
             <Button
                 android:id="@+id/btn_delete_no"
                 android:text="Không"
                 android:layout_marginLeft="@dimen/dp20"
+                android:layout_marginBottom="@dimen/dp5"
+                android:paddingLeft="@dimen/dp20"
+                android:paddingRight="@dimen/dp20"
                 android:textSize="@dimen/sp17"
-                android:textColor="@color/white"
-                android:background="@drawable/bg_btn_login"
+                android:textColor="@color/sick_green"
+                android:background="@drawable/bg_edt"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
         </LinearLayout>

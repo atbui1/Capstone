@@ -30,7 +30,7 @@
             android:layout_width="@dimen/dp0"
             android:layout_height="match_parent">
             <TextView
-                android:text="Tạo vườn rau"
+                android:text="Thêm vườn rau"
                 android:textSize="@dimen/dp20"
                 android:textColor="@color/sick_green"
                 android:textStyle="bold"

@@ -54,12 +54,7 @@ public class VegetableNeedPostAdapter extends RecyclerView.Adapter<VegetableNeed
             return;
         }
         holder.mTxtVegetableName.setText(mListVegetable.get(position).getText());
-//        holder.mTxtVegetableName.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                iClickVegetableNeed.clickVegetableNeed(vegetableNeedAll);
-//            }
-//        });
+
         holder.bind(mListVegetable.get(position));
     }
 
@@ -97,13 +92,6 @@ public class VegetableNeedPostAdapter extends RecyclerView.Adapter<VegetableNeed
 //    getting all items selected
     public ArrayList<VegetableNeedAll> getAllSelected() {
         return mListVegetable;
-    }
-    //    delete selected
-    public ArrayList<VegetableNeedAll> deleteSelected() {
-        for (int i = 0; i < mListVegetable.size(); i ++) {
-            mListVegetable.get(i).isChecked();
-        }
-        return null;
     }
 
 //    getting select when btn click

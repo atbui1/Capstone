@@ -1,51 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:background="@drawable/bg_edt_white"
+    android:layout_marginLeft="@dimen/dp50"
+    android:layout_marginRight="@dimen/dp50"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
     <LinearLayout
-        android:background="@color/white"
+        android:background="@drawable/bg_edt_white"
         android:orientation="vertical"
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp150">
         <TextView
             android:text="Bạn muốn lấy mấy cây"
-            android:textSize="@dimen/sp17"
+            android:textSize="@dimen/sp20"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp50" />
         <EditText
             android:id="@+id/edt_exchange_quantity"
             android:background="@drawable/bg_edt"
-            android:layout_marginLeft="@dimen/dp100"
-            android:layout_marginRight="@dimen/dp100"
+            android:paddingLeft="@dimen/dp10"
+            android:hint="Nhập số lượng"
+            android:layout_marginLeft="@dimen/dp50"
+            android:layout_marginRight="@dimen/dp50"
             android:inputType="number"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp50" />
+            android:layout_height="@dimen/dp40" />
         <LinearLayout
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp50">
             <Button
                 android:layout_weight="1"
-                android:id="@+id/btn_ok"
-                android:text="ok"
-                android:background="@drawable/bg_btn_login"
+                android:id="@+id/btn_close"
+                android:text="Đóng"
+                android:background="@drawable/bg_edt_red"
+                android:textColor="@color/red"
                 android:textSize="@dimen/sp20"
-                android:paddingLeft="@dimen/dp50"
-                android:paddingRight="@dimen/dp50"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingRight="@dimen/dp10"
+                android:layout_marginLeft="@dimen/dp5"
+                android:layout_marginRight="@dimen/dp20"
+                android:layout_marginTop="@dimen/dp5"
+                android:layout_marginBottom="@dimen/dp5"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
             <Button
                 android:layout_weight="1"
-                android:id="@+id/btn_close"
-                android:text="No"
-                android:background="@drawable/bg_btn_login"
+                android:id="@+id/btn_ok"
+                android:text="Nhận rau"
+                android:background="@drawable/bg_edt"
+                android:textColor="@color/sick_green"
                 android:textSize="@dimen/sp20"
-                android:paddingLeft="@dimen/dp50"
-                android:paddingRight="@dimen/dp50"
+                android:paddingLeft="@dimen/dp5"
+                android:paddingRight="@dimen/dp5"
+                android:layout_marginLeft="@dimen/dp20"
+                android:layout_marginRight="@dimen/dp5"
+                android:layout_marginTop="@dimen/dp5"
+                android:layout_marginBottom="@dimen/dp5"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
         </LinearLayout>

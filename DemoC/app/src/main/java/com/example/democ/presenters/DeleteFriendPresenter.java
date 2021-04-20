@@ -6,31 +6,31 @@ import android.content.Context;
 import com.example.democ.capstone.CapstoneRepository;
 import com.example.democ.capstone.CapstoneRepositoryImp;
 import com.example.democ.utils.CallBackData;
-import com.example.democ.views.DeleteExchangeRequestView;
+import com.example.democ.views.DeleteFriendView;
 
-public class DeleteExchangeRequestPresenter {
+public class DeleteFriendPresenter {
     private CapstoneRepository mCapstoneRepository;
     private Application mApplication;
     private Context mContext;
-    private DeleteExchangeRequestView mDeleteExchangeRequestView;
+    private DeleteFriendView mDeleteFriendView;
 
-    public DeleteExchangeRequestPresenter(Application mApplication, Context mContext, DeleteExchangeRequestView mDeleteExchangeRequestView) {
+    public DeleteFriendPresenter(Application mApplication, Context mContext, DeleteFriendView mDeleteFriendView) {
         this.mApplication = mApplication;
         this.mContext = mContext;
-        this.mDeleteExchangeRequestView = mDeleteExchangeRequestView;
+        this.mDeleteFriendView = mDeleteFriendView;
         mCapstoneRepository = new CapstoneRepositoryImp();
     }
 
-    public void deleteExchangeRequest(String exchangeId, String token) {
-        mCapstoneRepository.deleteExchangeRequest(mContext, exchangeId, token, new CallBackData<String>() {
+    public void deleteFriend(int idRequest, String token) {
+        mCapstoneRepository.deleteFriend(mContext, idRequest, token, new CallBackData<String>() {
             @Override
             public void onSuccess(String s) {
-                mDeleteExchangeRequestView.deleteExchangeRequestSuccess();
+                mDeleteFriendView.deleteFriendSuccess();
             }
 
             @Override
             public void onFail(String msgFail) {
-                mDeleteExchangeRequestView.deleteExchangeRequestFail();
+                mDeleteFriendView.deleteFriendFail();
             }
         });
     }

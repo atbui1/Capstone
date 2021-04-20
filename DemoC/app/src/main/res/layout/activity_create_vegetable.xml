@@ -8,18 +8,40 @@
     tools:context=".activity.CreateVegetableActivity">
 
     <!--liner layout instead toolbar-->
+
     <LinearLayout
         android:background="@color/sick_green"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp50">
-        <TextView
-            android:text="Thêm rau"
-            android:textSize="@dimen/sp20"
-            android:textStyle="bold"
-            android:textColor="@color/white"
+        <LinearLayout
+            android:id="@+id/lnl_back"
+            android:layout_weight="1"
             android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
+            <ImageView
+                android:src="@mipmap/leftarrow"
+                android:layout_width="@dimen/dp20"
+                android:layout_height="@dimen/dp20" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="4"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="@dimen/dp50">
+            <TextView
+                android:text="Thêm rau"
+                android:textSize="@dimen/sp20"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent"></LinearLayout>
     </LinearLayout>
     <ScrollView
         android:layout_width="match_parent"
@@ -35,44 +57,21 @@
 
             <!--search vegetable-->
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp50">
-                <EditText
-                    android:id="@+id/edt_search_value"
-                    android:paddingLeft="@dimen/dp16"
-                    android:background="@drawable/bg_edt"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_marginTop="@dimen/dp5"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/dp10"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp50">
                 <LinearLayout
-                    android:id="@+id/lnl_option_search"
-                    android:orientation="horizontal"
                     android:layout_weight="4"
                     android:layout_width="@dimen/dp0"
                     android:layout_height="match_parent">
-                    <TextView
-                        android:id="@+id/txt_option_search"
-                        android:paddingLeft="@dimen/dp5"
-                        android:layout_weight="8"
-                        android:text="Tìm kiếm theo tên"
-                        android:textSize="@dimen/sp17"
-                        android:gravity="center_vertical"
-                        android:layout_width="@dimen/dp0"
+                    <EditText
+                        android:id="@+id/edt_search_value"
+                        android:paddingLeft="@dimen/dp16"
+                        android:hint="Gợi ý thông tin về rau"
+                        android:background="@drawable/bg_edt"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent" />
-                    <LinearLayout
-                        android:layout_weight="2"
-                        android:gravity="center_vertical"
-                        android:layout_width="@dimen/dp0"
-                        android:layout_height="match_parent">
-                        <ImageView
-                            android:src="@drawable/arrowdown"
-                            android:layout_width="@dimen/dp20"
-                            android:layout_height="@dimen/dp20" />
-                    </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/lnl_search"
@@ -82,8 +81,8 @@
                     android:layout_height="match_parent">
                     <ImageView
                         android:src="@drawable/search1"
-                        android:layout_width="@dimen/dp30"
-                        android:layout_height="@dimen/dp30" />
+                        android:layout_width="@dimen/dp20"
+                        android:layout_height="@dimen/dp20" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -140,8 +139,7 @@
                 <ImageView
                     android:id="@+id/img_create_vegetable"
                     android:src="@mipmap/addimage256"
-                    android:scaleType="fitXY"
-                    android:rotation="90"
+                    android:scaleType="fitStart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>
@@ -234,28 +232,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>
-            <!--cho phep sua-->
-            <!--<LinearLayout-->
-                <!--android:layout_marginTop="@dimen/dp10"-->
-                <!--android:layout_marginBottom="@dimen/dp20"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="@dimen/dp50">-->
-                <!--<Button-->
-                    <!--android:id="@+id/btn_edit_true"-->
-                    <!--android:background="@drawable/bg_btn_login"-->
-                    <!--android:textColor="@color/white"-->
-                    <!--android:text="@string/btn_title_create_vegetable"-->
-                    <!--android:textSize="@dimen/sp20"-->
-                    <!--android:textStyle="bold"-->
-                    <!--android:layout_marginLeft="@dimen/dp20"-->
-                    <!--android:layout_marginRight="@dimen/dp20"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent" />-->
-            <!--</LinearLayout>-->
-            <!--btn tạo rau-->
             <LinearLayout
-                android:layout_marginTop="@dimen/dp10"
-                android:layout_marginBottom="@dimen/dp20"
+                android:layout_marginTop="@dimen/dp30"
+                android:layout_marginBottom="@dimen/dp40"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp50">
                 <Button

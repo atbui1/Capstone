@@ -31,6 +31,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //token device
     private static String DEVICE_TOKEN = "";
     //token device
+
+    /*back exit app*/
+    private long mBackPressTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +42,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         initialView();
         initialData();
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+
+        if (mBackPressTime + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+            return;
+        } else {
+            Toast.makeText(LoginActivity.this, "Click BACK thêm lần nữa để thoát ứng dụng", Toast.LENGTH_SHORT).show();
+        }
+        mBackPressTime = System.currentTimeMillis();
     }
 
     private void initialView() {

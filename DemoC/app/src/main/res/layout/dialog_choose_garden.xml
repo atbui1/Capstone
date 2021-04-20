@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@drawable/bg_edt"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:background="@drawable/bg_edt"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:background="@drawable/bg_dark"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <TextView
+                android:text="Vui lòng chọn vườn rau"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingRight="@dimen/dp10"
+                android:gravity="center"
+                android:textSize="@dimen/sp20"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <!--list garden-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_garden_dialog"
+            android:layout_marginLeft="@dimen/dp8"
+            android:layout_marginRight="@dimen/dp8"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp200"
+            android:layout_marginTop="@dimen/dp10" />
+
+
+    </LinearLayout>
+</LinearLayout>

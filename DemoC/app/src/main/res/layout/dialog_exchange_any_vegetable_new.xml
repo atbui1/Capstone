@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@drawable/bg_edt_white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@drawable/bg_edt_white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp300">
+        <LinearLayout
+            android:background="@drawable/bg_dark"
+            android:paddingLeft="@dimen/dp50"
+            android:paddingRight="@dimen/dp50"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <TextView
+                android:text="Chọn rau bạn muốn cho"
+                android:textSize="@dimen/sp20"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <TextView
+                    android:paddingLeft="@dimen/dp10"
+                    android:text="Chọn vườn"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="2"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/txt_garden_name"
+                    android:text="Tên vườn rau"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/dp20"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <TextView
+                    android:paddingLeft="@dimen/dp10"
+                    android:text="Chọn rau"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="2"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/txt_vegetable_name"
+                    android:text="Chọn rau muốn cho"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/dp20"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <TextView
+                    android:text="Số lượng nhận"
+                    android:paddingLeft="@dimen/dp10"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <EditText
+                    android:id="@+id/edt_quantity_receive"
+                    android:background="@drawable/bg_edt"
+                    android:inputType="number"
+                    android:paddingLeft="@dimen/dp10"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/dp5"
+                    android:layout_marginBottom="@dimen/dp5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <TextView
+                    android:text="Số lượng cho"
+                    android:paddingLeft="@dimen/dp10"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <EditText
+                    android:id="@+id/edt_quantity_donate"
+                    android:background="@drawable/bg_edt"
+                    android:inputType="number"
+                    android:paddingLeft="@dimen/dp10"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/dp5"
+                    android:layout_marginBottom="@dimen/dp5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <LinearLayout
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <Button
+                    android:id="@+id/btn_close"
+                    android:background="@drawable/bg_edt_red"
+                    android:text="Đóng"
+                    android:textColor="@color/red"
+                    android:paddingLeft="@dimen/dp30"
+                    android:paddingRight="@dimen/dp30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <Button
+                    android:id="@+id/btn_ok"
+                    android:background="@drawable/bg_edt"
+                    android:text="Trao đổi"
+                    android:textColor="@color/sick_green"
+                    android:paddingRight="@dimen/dp20"
+                    android:paddingLeft="@dimen/dp20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

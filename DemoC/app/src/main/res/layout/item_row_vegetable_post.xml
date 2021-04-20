@@ -30,6 +30,7 @@
                 android:id="@+id/txt_vegetable_quantity"
                 android:text="so luong: 3"
                 android:textSize="@dimen/sp17"
+                android:textColor="@color/red"
                 android:gravity="center_vertical"
                 android:paddingLeft="@dimen/dp20"
                 android:layout_width="match_parent"

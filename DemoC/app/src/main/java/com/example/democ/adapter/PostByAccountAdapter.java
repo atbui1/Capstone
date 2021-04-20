@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.democ.R;
-import com.example.democ.iclick.IClickPost;
 import com.example.democ.iclick.IClickPostAccount;
 import com.example.democ.model.PostData;
 import com.squareup.picasso.Picasso;
@@ -53,7 +52,7 @@ public class PostByAccountAdapter extends RecyclerView.Adapter<PostByAccountAdap
         holder.mTxtPostTime.setText(subPostTime);
         holder.mTxtPostContent.setText(mListPost.get(position).getContent());
         holder.mTxtPostUsername.setText(mListPost.get(position).getFullName());
-        holder.mTxtVegetablePostQuantity.setText("Số lượng " + String.valueOf(mListPost.get(position).getQuantity()));
+        holder.mTxtVegetablePostQuantity.setText("Số lượng: " + String.valueOf(mListPost.get(position).getQuantity()));
         int maxSize = mListPost.get(position).getImageVegetablesList().size() - 1;
 
         if (mListPost.get(position).getImageVegetablesList().size() > 0) {

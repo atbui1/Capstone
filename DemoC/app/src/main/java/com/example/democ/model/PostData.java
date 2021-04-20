@@ -29,13 +29,15 @@ public class PostData implements Serializable {
     private String accountId;
     @SerializedName("fullName")
     private String fullName;
+    @SerializedName("phoneNumber")
+    private String phoneNumber;
     @SerializedName("images")
     private List<ImageVegetable> imageVegetablesList;
 
     //CST GetAllShareById - 12 element
     public PostData(String id, String vegName, String vegDescription, String vegFeature, int quantity, int statius,
                     String content, List<VegetableShare> vegetableShareList, String createdDate, String accountId,
-                    String fullName, List<ImageVegetable> imageVegetablesList) {
+                    String fullName, String phoneNumber, List<ImageVegetable> imageVegetablesList) {
         this.id = id;
         this.vegName = vegName;
         this.vegDescription = vegDescription;
@@ -47,6 +49,7 @@ public class PostData implements Serializable {
         this.createdDate = createdDate;
         this.accountId = accountId;
         this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
         this.imageVegetablesList = imageVegetablesList;
     }
 
@@ -132,6 +135,14 @@ public class PostData implements Serializable {
 
     public String getFullName() {
         return fullName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public void setFullName(String fullName) {

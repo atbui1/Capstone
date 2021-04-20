@@ -52,7 +52,8 @@ public class PosterAccountAdapter extends RecyclerView.Adapter<PosterAccountAdap
         holder.mTxtPostTime.setText(subPostTime);
         holder.mTxtPostContent.setText(mListPost.get(position).getContent());
         holder.mTxtPostUsername.setText(mListPost.get(position).getFullName());
-        holder.mTxtVegetablePostQuantity.setText("Số lượng " + String.valueOf(mListPost.get(position).getQuantity()));
+        holder.mTxtVegetablePostQuantity.setText("Số lượng: " + String.valueOf(mListPost.get(position).getQuantity()));
+        holder.mTxtPhoneNumber.setText("Liên hệ: " + mListPost.get(position).getPhoneNumber());
         int maxSize = mListPost.get(position).getImageVegetablesList().size() - 1;
 
         if (mListPost.get(position).getImageVegetablesList().size() > 0) {
@@ -69,10 +70,18 @@ public class PosterAccountAdapter extends RecyclerView.Adapter<PosterAccountAdap
         } else if (postData.getStatius() == 2) {
             holder.mTxtBtnExchange.setText(POST_EXCHANGE);
         }
+        /*click exchange*/
         holder.mTxtBtnExchange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mIClickPostAccount.clickPostAccount(postData);
+            }
+        });
+        /*click call phone*/
+        holder.mTxtPhoneNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mIClickPostAccount.clickCallPhone(postData);
             }
         });
     }
@@ -88,7 +97,7 @@ public class PosterAccountAdapter extends RecyclerView.Adapter<PosterAccountAdap
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView mImgPostContent, mImgPostLikeStatus;
         TextView mTxtPostUsername, mTxtPostTime, mTxtPostContent, mTxtPostNumberLike, mTxtVegetablePostNeed,
-                mTxtVegetablePostQuantity, mTxtDeletePost, mTxtEditPost, mTxtBtnExchange;
+                mTxtVegetablePostQuantity, mTxtDeletePost, mTxtEditPost, mTxtBtnExchange, mTxtPhoneNumber;
         LinearLayout mLnlPostLike, mLnlPostComment, mLnlBtnExchange, mLnlLeftMenu;
         Button mBtnPostExchange;
         public ViewHolder(@NonNull View itemView) {
@@ -109,6 +118,7 @@ public class PosterAccountAdapter extends RecyclerView.Adapter<PosterAccountAdap
             mTxtDeletePost = (TextView) itemView.findViewById(R.id.txt_post_remove);
             mTxtEditPost = (TextView) itemView.findViewById(R.id.txt_post_edit);
             mTxtBtnExchange = (TextView) itemView.findViewById(R.id.txt_btn_exchange);
+            mTxtPhoneNumber = (TextView) itemView.findViewById(R.id.txt_post_phone_number);
         }
     }
 }

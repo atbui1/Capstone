@@ -9,8 +9,12 @@ public class ConfigApi {
         String ACCOUNT_REGISTER = "api/Account/Registration";
         String ACCOUNT_GET_INFO = "api/Account/GetAccountDetailByPhoneNumber";
         String ACCOUNT_UPDATE = "api/Account/Update";
+        //Friend
+        String ACCOUNT_FRIEND = "/api/AccountFriend";
         String ACCOUNT_ADD_FRIEND = "api/AccountRequest/GetAccountRequest";
         String ACCOUNT_SEND_ADD_FRIEND = "api/AccountRequest";
+        String ACCOUNT_DELETE_FRIEND = "api/AccountFriend";
+
         String ACCOUNT_SEARCH_NAME = "api/Account/SearchAccount";
 
         String CREATE_GARDEN = "api/Garden";
@@ -41,7 +45,7 @@ public class ConfigApi {
         String EXCHANGE = "api/ExchangeDetail";
         String EXCHANGE_ALL = "api/ExchangeDetail/GetExchangeRequest";
         String EXCHANGE_IS_ACCEPT = "api/ExchangeDetail/IsAccept";
-        String EXCHANGE_DELETE_REQUEST = "api/ExchangeDetail";
+        String EXCHANGE_DELETE_HISTORY = "api/ExchangeDetail";
         String EXCHANGE_HISTORY = "api/ExchangeDetail/GetByAccountId";
 
         //upload image
@@ -56,5 +60,6 @@ public class ConfigApi {
         String REPORT_POST = "api/Report";
         //QRCode
         String QR_CODE = "api/QRCode";
+
     }
 }

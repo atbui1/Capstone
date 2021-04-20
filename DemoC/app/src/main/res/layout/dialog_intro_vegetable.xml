@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@drawable/bg_edt"
+    android:layout_marginTop="@dimen/dp100"
+    android:layout_marginBottom="@dimen/dp100"
+    android:layout_marginLeft="@dimen/dp30"
+    android:layout_marginRight="@dimen/dp30"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:background="@drawable/bg_edt_white"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <TextView
+                android:background="@drawable/bg_dark"
+                android:text="Bạn muốn thêm loại rau này?"
+                android:gravity="center"
+                android:textSize="@dimen/sp20"
+                android:textColor="@color/sick_green"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <androidx.core.widget.NestedScrollView
+            android:layout_margin="@dimen/dp5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <!--tên loại rau, củ, quả-->
+                <LinearLayout
+                    android:layout_marginTop="@dimen/dp10"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp40">
+                    <TextView
+                        android:text="@string/txt_plant_name"
+                        android:textSize="@dimen/sp17"
+                        android:textColor="@color/sick_green"
+                        android:textStyle="bold"
+                        android:padding="@dimen/dp8"
+                        android:gravity="center_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginTop="@dimen/dp5"
+                    android:background="@drawable/bg_edt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/txt_vegetable_name"
+                        android:background="@drawable/bg_edt"
+                        android:paddingTop="@dimen/dp10"
+                        android:paddingBottom="@dimen/dp10"
+                        android:inputType="text"
+                        android:padding="@dimen/dp8"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+                <!--hình ảnh-->
+                <LinearLayout
+                    android:layout_marginTop="@dimen/dp10"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp40">
+                    <TextView
+                        android:text="@string/txt_plant_image_create_post"
+                        android:textSize="@dimen/sp17"
+                        android:textColor="@color/sick_green"
+                        android:textStyle="bold"
+                        android:padding="@dimen/dp8"
+                        android:gravity="center_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/lnl_img_create_vegetable"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:background="@drawable/bg_edt"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp200">
+                    <ImageView
+                        android:id="@+id/img_create_vegetable"
+                        android:src="@mipmap/addimage256"
+                        android:scaleType="fitStart"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
+                <!--mô tả-->
+                <LinearLayout
+                    android:layout_marginTop="@dimen/dp10"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp40">
+                    <TextView
+                        android:text="@string/txt_plant_description"
+                        android:textSize="@dimen/sp17"
+                        android:textColor="@color/sick_green"
+                        android:textStyle="bold"
+                        android:padding="@dimen/dp8"
+                        android:gravity="center_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginTop="@dimen/dp10"
+                    android:background="@drawable/bg_edt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/txt_vegetable_description"
+                        android:background="@drawable/bg_edt"
+                        android:tag="true"
+                        android:inputType="text|textMultiLine"
+                        android:padding="@dimen/dp8"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+                <!--công dụng-->
+                <LinearLayout
+                    android:layout_marginTop="@dimen/dp10"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp40">
+                    <TextView
+                        android:text="@string/txt_plant_effect"
+                        android:textSize="@dimen/sp17"
+                        android:textColor="@color/sick_green"
+                        android:textStyle="bold"
+                        android:padding="@dimen/dp8"
+                        android:gravity="center_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginTop="@dimen/dp10"
+                    android:background="@drawable/bg_edt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/txt_vegetable_feature"
+                        android:background="@drawable/bg_edt"
+                        android:inputType="text|textMultiLine"
+                        android:padding="@dimen/dp8"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+                <!--button-->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/dp30"
+                    android:layout_marginBottom="@dimen/dp30"
+                    android:background="@color/transparent"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp50">
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="@dimen/dp0"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:id="@+id/txt_close"
+                            android:layout_marginLeft="@dimen/dp20"
+                            android:layout_marginRight="@dimen/dp20"
+                            android:layout_marginTop="@dimen/dp5"
+                            android:layout_marginBottom="@dimen/dp5"
+                            android:background="@drawable/bg_edt_red"
+                            android:text="Không"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:textColor="@color/red"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="@dimen/dp0"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:id="@+id/txt_admit"
+                            android:layout_marginLeft="@dimen/dp20"
+                            android:layout_marginRight="@dimen/dp20"
+                            android:layout_marginTop="@dimen/dp5"
+                            android:layout_marginBottom="@dimen/dp5"
+                            android:background="@drawable/bg_edt"
+                            android:text="Đúng"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:textColor="@color/sick_green"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+
+</LinearLayout>

@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.democ.R;
+import com.example.democ.iclick.IClickAddFriend;
 import com.example.democ.model.AddFriendRequest;
 
 import java.util.ArrayList;
@@ -19,10 +20,11 @@ import java.util.ArrayList;
 public class AddFriendAdapter extends RecyclerView.Adapter<AddFriendAdapter.ViewHolder> {
     ArrayList<AddFriendRequest> mListAddFriend;
     Context mContext;
+    IClickAddFriend mIClickAddFriend;
 
-    public AddFriendAdapter(ArrayList<AddFriendRequest> mListAddFriend, Context mContext) {
+    public AddFriendAdapter(ArrayList<AddFriendRequest> mListAddFriend, IClickAddFriend mIClickAddFriend) {
         this.mListAddFriend = mListAddFriend;
-        this.mContext = mContext;
+        this.mIClickAddFriend = mIClickAddFriend;
     }
 
     @NonNull
@@ -34,8 +36,26 @@ public class AddFriendAdapter extends RecyclerView.Adapter<AddFriendAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AddFriendAdapter.ViewHolder holder, int position) {
-        holder.mTxtRequestName.setText(mListAddFriend.get(position).getAccountSendName());
+    public void onBindViewHolder(@NonNull final AddFriendAdapter.ViewHolder holder, final int position) {
+        final AddFriendRequest addFriendRequest = mListAddFriend.get(position);
+        if (addFriendRequest == null) {
+            return;
+        }
+//        holder.mTxtRequestName.setText(mListAddFriend.get(position).getAccountSendName());
+        holder.mTxtContent.setText(mListAddFriend.get(position).getAccountSendName()
+        + " muốn kết bạn với bạn");
+        holder.mLnlOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mIClickAddFriend.clickFriendAdmit(addFriendRequest, holder.getAdapterPosition());
+            }
+        });
+        holder.mLnlNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mIClickAddFriend.clickFriendReject(addFriendRequest, holder.getAdapterPosition());
+            }
+        });
     }
 
     @Override
@@ -47,11 +67,12 @@ public class AddFriendAdapter extends RecyclerView.Adapter<AddFriendAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mTxtRequestName, mTxtContent;
+//        TextView mTxtRequestName, mTxtContent;
+        TextView mTxtContent;
         LinearLayout mLnlOk, mLnlNo;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            mTxtRequestName = (TextView) itemView.findViewById(R.id.txt_request_name);
+//            mTxtRequestName = (TextView) itemView.findViewById(R.id.txt_request_name);
             mTxtContent = (TextView) itemView.findViewById(R.id.txt_request_content);
             mLnlOk = (LinearLayout) itemView.findViewById(R.id.lnl_ok);
             mLnlNo = (LinearLayout) itemView.findViewById(R.id.lnl_no);

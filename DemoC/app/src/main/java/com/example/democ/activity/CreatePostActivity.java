@@ -46,7 +46,7 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
         VegetableNeedBottomSheetFragment.IVegetableNeedListener {
 
 
-    private final static String KEY_VEGETABLE_SEND = "qaz";
+    private final static String KEY_VEGETABLE_SEND_CREATE_SHARE = "KEY_VEGETABLE_SEND_CREATE_SHARE";
     private Button mBtnCreatePost;
     private EditText mEdtPostContent, mEdtPostVegetableQuantity;
     private TextView mTxtPostVegetableName, mTxtPostGarden, mTxtBtnOption, mTxtPostVegetableNeed;
@@ -163,7 +163,7 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
         Intent intentGetData = getIntent();
         Bundle bundleGetData = intentGetData.getExtras();
         if (bundleGetData != null) {
-            VegetableData vegetableData = (VegetableData) bundleGetData.getSerializable(KEY_VEGETABLE_SEND);
+            VegetableData vegetableData = (VegetableData) bundleGetData.getSerializable(KEY_VEGETABLE_SEND_CREATE_SHARE);
             mVegetableId = vegetableData.getId();
             mVegetableName = vegetableData.getName();
 

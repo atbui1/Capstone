@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.democ.activity.FriendActivity;
 import com.example.democ.activity.HistoryExchangeActivity;
 import com.example.democ.activity.LoginActivity;
 import com.example.democ.activity.AddFriendRequestActivity;
@@ -70,7 +71,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
     //11
     //22
     private DrawerLayout mDrawerLayout;
-    private LinearLayout mLnlMenu, mLnlEditProfile, mLnlRequestAddFriend, mLnlLogout, mLnlHistoryExchange;
+    private LinearLayout mLnlMenu, mLnlEditProfile, mLnlRequestAddFriend, mLnlLogout, mLnlHistoryExchange, mLnlFriend;
     //22
 
     private static MultipartBody.Part fileUpload;
@@ -84,8 +85,10 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
         mView = inflater.inflate(R.layout.abc, container, false);
         initialView();
         initialData();
+
         return mView;
     }
+
 
     private void initialView() {
         mPersonalPresenter = new PersonalPresenter(getActivity().getApplication(), this);
@@ -107,6 +110,8 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
         mLnlLogout.setOnClickListener(this);
         mLnlHistoryExchange = (LinearLayout) mView.findViewById(R.id.lnl_history_exchange);
         mLnlHistoryExchange.setOnClickListener(this);
+        mLnlFriend = (LinearLayout) mView.findViewById(R.id.lnl_friend);
+        mLnlFriend.setOnClickListener(this);
         //22
 
         //11
@@ -170,6 +175,11 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
     }
     public void clickOpenHistoryExchange() {
         Intent intent = new Intent(getActivity(), HistoryExchangeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        startActivity(intent);
+    }
+    public void clickOpenFriend() {
+        Intent intent = new Intent(getActivity(), FriendActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
         startActivity(intent);
     }
@@ -289,6 +299,9 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
             case R.id.lnl_edit_profile:
                 clickOpenUpdateAccount();
                 break;
+            case R.id.lnl_friend:
+                clickOpenFriend();
+                break;
             case R.id.lnl_logout:
                 logoutApp();
                 break;
@@ -346,6 +359,11 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
         showDialogDeletePost(postData.getId().trim());
         System.out.println("AAAAAAAAAAAAAAA     clickDeletePostAccount  AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         System.out.println("AAAAAAAAAAAAAAA     clickDeletePostAccount  AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    }
+
+    @Override
+    public void clickCallPhone(PostData postData) {
+
     }
 
     @Override

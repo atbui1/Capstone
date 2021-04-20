@@ -31,10 +31,10 @@ public class CreateVegetablePresenter {
     public void createVegetable(RequestBody title, RequestBody description, RequestBody featture,
                                 RequestBody quantity, RequestBody gardenId, RequestBody IdDescription,
                                 RequestBody IsFixed, RequestBody NameSearch,
-                                RequestBody SynonymOfFeature,
+                                RequestBody SynonymOfFeature, RequestBody requestLinkImage,
                                 MultipartBody.Part newImages, String token) {
         mCapstoneRepository.createVegetable(mContext, title, description, featture, quantity, gardenId, IdDescription,
-                IsFixed, NameSearch, SynonymOfFeature, newImages, token,
+                IsFixed, NameSearch, SynonymOfFeature, requestLinkImage, newImages, token,
                 new CallBackData<String>() {
                     @Override
                     public void onSuccess(String msg) {

@@ -87,6 +87,44 @@
                 android:layout_height="match_parent" />
         </LinearLayout>
     </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/dp10"
+        android:layout_marginBottom="@dimen/dp10"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp50">
+        <LinearLayout
+            android:id="@+id/lnl_create_post_exchange"
+            android:layout_weight="1"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
+            <TextView
+                android:text="trao doi rau"
+                android:gravity="center"
+                android:background="@drawable/bg_edt_red"
+                android:layout_marginLeft="@dimen/dp20"
+                android:layout_marginRight="@dimen/dp20"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/lnl_create_post_share"
+            android:layout_weight="1"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
+            <TextView
+                android:text="Cho rau"
+                android:gravity="center"
+                android:background="@drawable/bg_edt"
+                android:layout_marginLeft="@dimen/dp20"
+                android:layout_marginRight="@dimen/dp20"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
+
+
     <!--NestedScrollView-->
     <androidx.core.widget.NestedScrollView
         android:layout_marginTop="@dimen/dp10"

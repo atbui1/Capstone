@@ -4,22 +4,45 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:id="@+id/lnl_root"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp100">
-        <TextView
-            android:id="@+id/txt_exchange_info"
-            android:gravity="center_vertical"
-            android:paddingLeft="@dimen/dp10"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp50" />
-        <TextView
-            android:id="@+id/txt_exchange_status"
-            android:gravity="center_vertical"
-            android:paddingLeft="@dimen/dp10"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp50" />
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/lnl_root"
+            android:layout_weight="8"
+            android:orientation="vertical"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="@dimen/dp150">
+            <TextView
+                android:id="@+id/txt_exchange_info"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp70" />
+            <TextView
+                android:id="@+id/txt_exchange_time"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp40" />
+            <TextView
+                android:id="@+id/txt_exchange_status"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp40" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/lnl_history_delete"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
+            <ImageView
+                android:src="@mipmap/delete"
+                android:layout_width="@dimen/dp20"
+                android:layout_height="@dimen/dp20" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

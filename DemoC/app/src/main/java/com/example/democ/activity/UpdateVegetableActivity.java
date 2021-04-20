@@ -3,6 +3,7 @@ package com.example.democ.activity;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
@@ -18,17 +19,23 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.democ.R;
-import com.example.democ.model.UpdateVegetableRequest;
+import com.example.democ.model.UpdateVegetableResponse;
 import com.example.democ.model.VegetableData;
 import com.example.democ.presenters.PersonalPresenter;
 import com.example.democ.presenters.UpdateVegetablePresenter;
 import com.example.democ.room.entities.User;
 import com.example.democ.views.PersonalView;
 import com.example.democ.views.UpdateVegetableView;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -36,11 +43,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -50,14 +54,21 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
 
     private static final int REQUEST_CAMERA = 1;
     private static final int REQUEST_STORAGE = 2;
-    private String mMediaPath = "";
+    private final static String KEY_VEGETABLE_UPDATE = "KEY_VEGETABLE_UPDATE";
+    private final static String KEY_VEGETABLE_SEND_UPDATE = "KEY_VEGETABLE_SEND_UPDATE";
+    private final String URL_TELEPHONE = "URL_TELEPHONE";
+    private final String URL_LINK = "URL_LINK";
+
+
+    private String mMediaPath = "", mStrCheckLink = "";
     private List<MultipartBody.Part> mListImagePart;
     private MultipartBody.Part mRequestImage = null;
 
     private Button mBtnUpdateVegetable;
     private ImageView mImgVegetable;
+    private LinearLayout mLnlBack;
     private EditText mEdtVegetableName, mEdtVegetableDescription, mEdtVegetableFeature, mEdtVegetableQuantity;
-    private String mVegetableImg, mVegetableName, mVegetableDescription, mVegetableFeature, mVegetableId;
+    private String mVegetableImg, mVegetableName, mVegetableDescription, mVegetableFeature, mVegetableId, mGardenName, mGardenAddress;
     private int mNoVegetable, mGardenId, mVegetableQuantity;
 
     private UpdateVegetablePresenter mUpdateVegetablePresenter;
@@ -75,6 +86,8 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
     }
 
     private void initialView() {
+        checkPermission();
+
         mPersonalPresenter = new PersonalPresenter(getApplicationContext(), this);
         mPersonalPresenter.getInfoPersonal();
 
@@ -84,6 +97,8 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
         mEdtVegetableDescription = (EditText) findViewById(R.id.edt_vegetable_description);
         mEdtVegetableFeature = (EditText) findViewById(R.id.edt_vegetable_feature);
         mEdtVegetableQuantity = (EditText) findViewById(R.id.edt_vegetable_quantity);
+        mLnlBack = (LinearLayout) findViewById(R.id.lnl_back);
+        mLnlBack.setOnClickListener(this);
         mImgVegetable.setOnClickListener(this);
         mBtnUpdateVegetable.setOnClickListener(this);
     }
@@ -94,43 +109,10 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
         getDataVegetableNew();
     }
 
-    //getting data vegetable
-    public void getDataVegetable() {
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        if (bundle != null) {
-            mVegetableName = bundle.getString("VEGETABLE_NAME");
-            mVegetableDescription = bundle.getString("VEGETABLE_DESCRIPTION");
-            mVegetableFeature = bundle.getString("VEGETABLE_FEATURE");
-            mNoVegetable = bundle.getInt("VEGETABLE_STT");
-            mVegetableImg = bundle.getString("VEGETABLE_IMAGE");
-            mVegetableQuantity = bundle.getInt("VEGETABLE_QUANTITY");
-            if (mVegetableImg.equals("")) {
-                mImgVegetable.setImageResource(R.mipmap.addimage64);
-            } else {
-                Picasso.with(this).load(mVegetableImg)
-                        .placeholder(R.drawable.ic_launcher_background)
-                        .error(R.drawable.caybacha)
-                        .into(mImgVegetable);
-            }
-            mGardenId = bundle.getInt("GARDEN_ID");
-
-            mEdtVegetableName.setText(mVegetableName);
-            mEdtVegetableDescription.setText(mVegetableDescription);
-            mEdtVegetableFeature.setText(mVegetableFeature);
-            mEdtVegetableQuantity.setText(String.valueOf(mVegetableQuantity));
-//            Picasso.with(this).load(mVegetableImg)
-//                    .placeholder(R.drawable.ic_launcher_background)
-//                    .error(R.drawable.caybacha)
-//                    .into(mImgVegetable);
-        }
-
-
-    }
     public void getDataVegetableNew() {
         Intent intentGetData = getIntent();
         Bundle bundleGetData = intentGetData.getExtras();
-        VegetableData vegetableData = (VegetableData) bundleGetData.getSerializable("qaz");
+        VegetableData vegetableData = (VegetableData) bundleGetData.getSerializable(KEY_VEGETABLE_SEND_UPDATE);
         if (bundleGetData != null) {
             mVegetableId = vegetableData.getId();
             mVegetableName = vegetableData.getName();
@@ -152,27 +134,14 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
             }
             mVegetableQuantity = vegetableData.getQuantity();
             mGardenId = bundleGetData.getInt("GARDEN_ID");
+            mGardenName = bundleGetData.getString("GARDEN_NAME");
+            mGardenAddress = bundleGetData.getString("GARDEN_ADDRESS");
 
             mEdtVegetableName.setText(mVegetableName);
             mEdtVegetableDescription.setText(mVegetableDescription);
             mEdtVegetableFeature.setText(mVegetableFeature);
             mEdtVegetableQuantity.setText(String.valueOf(mVegetableQuantity));
 
-            System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
-            System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
-            System.out.println("1   veg id: " + vegetableData.getId());
-            System.out.println("2   name-title: " + vegetableData.getName());
-            System.out.println("3   description: " + vegetableData.getDescription());
-            System.out.println("4   feature: " + vegetableData.getFeature());
-            System.out.println("5   garden Id: " + mGardenId);
-            System.out.println("6   image" + mVegetableImg);
-            System.out.println("7   quantity: " + vegetableData.getQuantity());
-            System.out.println("8   des Id: " + vegetableData.getIdDescription());
-            System.out.println("9   isfix: " + vegetableData.isFixed());
-            System.out.println("10   namesearch: " + vegetableData.getNameSearch());
-            System.out.println("11  synonym: " + vegetableData.getSynonymOfFeature());
-            System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
-            System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
         }
     }
 
@@ -196,7 +165,27 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
         });
         dialog.show();
     }
-    //update vegetable
+    /*incomplete information*/
+    private  void showDialogInputInfoyErr() {
+        final Dialog dialog = new Dialog(UpdateVegetableActivity.this);
+        dialog.setContentView(R.layout.dialog_login_fail);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCanceledOnTouchOutside(false);
+
+        TextView txtDetail;
+        Button btnOk;
+        txtDetail = (TextView) dialog.findViewById(R.id.txt_detail_err);
+        btnOk = (Button) dialog.findViewById(R.id.btn_close);
+        txtDetail.setText("Vui lòng điền đủ thông tin");
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+    /*update vegetable*/
     public void updateVegetable() {
         mVegetableName = mEdtVegetableName.getText().toString();
         mVegetableDescription = mEdtVegetableDescription.getText().toString();
@@ -211,20 +200,16 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
         if (quantityTmp == 0) {
             showDialogQuantityErr();
             return;
-        } else {
-            mVegetableQuantity = quantityTmp;
+        } else if (mVegetableName.equals("") || mVegetableDescription.equals("") || mVegetableFeature.equals("")) {
+            showDialogInputInfoyErr();
+            return;
         }
+//        else {
+//            mVegetableQuantity = quantityTmp;
+//        }
 
-        if (mMediaPath.equals("")) {
-            mListImagePart = new ArrayList<>();
-            File file = new File(mMediaPath);
-            RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-            mRequestImage = MultipartBody.Part.createFormData("newImages", mVegetableImg, requestBody);
-            mListImagePart.add(mRequestImage);
-            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-            System.out.println("chay vao if");
-            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        } else {
+        RequestBody requestLinkImage = null;
+        if (mStrCheckLink.equals(URL_TELEPHONE)) {
             mListImagePart = new ArrayList<>();
             File file = new File(mMediaPath);
             String file_path = file.getAbsolutePath();
@@ -233,11 +218,27 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
             RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
             mRequestImage = MultipartBody.Part.createFormData("newImages", file_path, requestBody);
             mListImagePart.add(mRequestImage);
+            mVegetableImg = "";
+            requestLinkImage = RequestBody.create(MediaType.parse("text/plain"), mVegetableImg);
+            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            System.out.println("chay vao if URL_CAMERA");
+            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        } else {
+            mRequestImage = null;
+            requestLinkImage = RequestBody.create(MediaType.parse("text/plain"), mVegetableImg);
             System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
             System.out.println("mRequestImage: " + mRequestImage);
             System.out.println("chay vao else");
             System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
         }
+        RequestBody requestId = RequestBody.create(MediaType.parse("text/plain"), mVegetableId);
+        RequestBody requestTitle = RequestBody.create(MediaType.parse("text/plain"), mVegetableName);
+        RequestBody requestDescription = RequestBody.create(MediaType.parse("text/plain"), mVegetableDescription);
+        RequestBody requestFeature = RequestBody.create(MediaType.parse("text/plain"), mVegetableFeature);
+        RequestBody requestQuantity = (RequestBody) RequestBody.create(MediaType.parse("text/plain"), String.valueOf(quantityTmp));
+        RequestBody requestGardenId = (RequestBody) RequestBody.create(MediaType.parse("text/plain"), String.valueOf(mGardenId));
+
+
         System.out.println("goi api ***************** ************************");
         System.out.println("access token: " + mAccessToken);
         System.out.println("access token muser: " + mUser.getToken());
@@ -246,13 +247,12 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
         System.out.println("mVegetableDescription: " + mVegetableDescription);
         System.out.println("mVegetableFeature: " + mVegetableFeature);
         System.out.println("mVegetableQuantity: " + mVegetableQuantity);
+        System.out.println("media path: " + mMediaPath);
+        System.out.println("link image: " + mVegetableImg);
         System.out.println("mGardenId: " + mGardenId);
-        System.out.println("mListImagePart: " + mListImagePart);
-//        mUpdateVegetablePresenter.updateVegetable(mVegetableId, mVegetableName, mVegetableDescription, mVegetableFeature,
-//                mVegetableQuantity, mGardenId, mListImagePart, mAccessToken);
-        UpdateVegetableRequest updateVegetableRequest = new UpdateVegetableRequest(mVegetableId, mVegetableName, mVegetableDescription,
-                mVegetableFeature, mVegetableQuantity, mGardenId, mListImagePart);
-        mUpdateVegetablePresenter.updateVegetable(updateVegetableRequest, mAccessToken);
+
+        mUpdateVegetablePresenter.updateVegetable(requestId, requestTitle, requestDescription, requestFeature, requestQuantity,
+                requestGardenId, requestLinkImage, mRequestImage, mAccessToken);
         System.out.println("goi api ***************** ************************");
 
     }
@@ -305,16 +305,17 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
             case R.id.img_vegetable:
                 showDialogTakeOfImage();
                 break;
+            case R.id.lnl_back:
+                finish();
+                break;
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-//        mStrUrl = URL_TELEPHONE;
-
         try {
+            mStrCheckLink = URL_TELEPHONE;
             if (requestCode == REQUEST_STORAGE && resultCode == RESULT_OK && data != null){
                 Uri selectImage = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -332,32 +333,20 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
                 mImgVegetable.setImageBitmap(BitmapFactory.decodeFile(mMediaPath));
                 cursor.close();
 
-            }
-        } catch (Exception ex) {
-            Toast.makeText(this, "upload image fail", Toast.LENGTH_SHORT).show();
-        }
-
-        //cach 2
-        try {
-
-            if (requestCode == REQUEST_CAMERA && resultCode == RESULT_OK &&data != null) {
-//                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-//                mImgCreateVegetable.setImageBitmap(bitmap);
-
+            } else if (requestCode == REQUEST_CAMERA && resultCode == RESULT_OK &&data != null) {
                 try {
-                    Uri selectedImage = data.getData();
                     Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bytes);
 
 
-                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-                    File destination = new File(Environment.getExternalStorageDirectory() + "/" +
-                            getString(R.string.app_name), "IMG_" + timeStamp + ".jpg");
+                    File path = Environment.getExternalStoragePublicDirectory(
+                            Environment.DIRECTORY_PICTURES);
+                    File file = new File(path, ".jpg");
                     FileOutputStream fo;
                     try {
-                        destination.createNewFile();
-                        fo = new FileOutputStream(destination);
+                        path.mkdirs();
+                        fo = new FileOutputStream(file);
                         fo.write(bytes.toByteArray());
                         fo.close();
                     } catch (FileNotFoundException e) {
@@ -366,13 +355,12 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
                         e.printStackTrace();
                     }
 
-                    mMediaPath = destination.getAbsolutePath();
-                    System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
-                    System.out.println("link came ra");
-                    System.out.println("*************");
-                    System.out.println("medipath: " + mMediaPath);
-                    System.out.println("*************");
-                    System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
+                    mMediaPath = file.getAbsolutePath();
+
+                    System.out.println("----------- **************** ---------------------");
+                    System.out.println("link tu camera");
+                    System.out.println("media path: " + mMediaPath);
+                    System.out.println("----------- **************** ---------------------");
                     mImgVegetable.setImageBitmap(bitmap);
 
                 } catch (Exception e) {
@@ -380,13 +368,20 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
                 }
             }
         } catch (Exception ex) {
-            Toast.makeText(this, "upload image 22222222222", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "upload image fail", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     @Override
-    public void updateVegetableSuccess(VegetableData vegetableData) {
-        Intent intent = new Intent(UpdateVegetableActivity.this, MainActivity.class);
+    public void updateVegetableSuccess(UpdateVegetableResponse updateVegetableResponse) {
+        Intent intent = new Intent(UpdateVegetableActivity.this, GardenActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("GARDEN_ID", mGardenId);
+        bundle.putString("GARDEN_NAME", mGardenName);
+        bundle.putString("GARDEN_ADDRESS", mGardenAddress);
+
+        intent.putExtra(KEY_VEGETABLE_UPDATE, bundle);
         startActivity(intent);
     }
 
@@ -399,5 +394,28 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
     public void showInfoPersonal(User user) {
         mUser = user;
         mAccessToken = mUser.getToken();
+    }
+
+    /*check permission*/
+    private void checkPermission() {
+        Dexter.withContext(UpdateVegetableActivity.this)
+                .withPermissions(Manifest.permission.CAMERA,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
+                        if (multiplePermissionsReport.areAllPermissionsGranted()) {
+
+                        } else {
+//                            showDialogCheckPermissionAgain();
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
+
+                    }
+                }).onSameThread().check();
     }
 }

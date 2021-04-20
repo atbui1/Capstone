@@ -25,9 +25,9 @@ public class GetDescriptionByWikiPresenter {
     }
 
     public void getDescriptionByWiki(String searchValue, String token) {
-        mCapstoneRepository.getDescriptionWiki(mContext, searchValue, token, new CallBackData<List<WikiData>>() {
+        mCapstoneRepository.getDescriptionWiki(mContext, searchValue, token, new CallBackData<WikiData>() {
             @Override
-            public void onSuccess(List<WikiData> wikiData) {
+            public void onSuccess(WikiData wikiData) {
                 mGetDescriptionByWikiView.getDescriptionByWikiSuccess(wikiData);
             }
 

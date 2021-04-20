@@ -5,6 +5,6 @@ import com.example.democ.model.WikiData;
 import java.util.List;
 
 public interface GetDescriptionByWikiView {
-    void getDescriptionByWikiSuccess(List<WikiData> wikiData);
+    void getDescriptionByWikiSuccess(WikiData wikiData);
     void getDescriptionByWikiFail();
 }

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.democ.R;
 import com.example.democ.adapter.ListTextWikiAdapter;
 import com.example.democ.iclick.IClickListTextWiki;
+import com.example.democ.model.WikiData;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 

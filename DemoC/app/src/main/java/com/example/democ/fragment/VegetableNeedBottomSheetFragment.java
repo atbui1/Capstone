@@ -39,8 +39,8 @@ public class VegetableNeedBottomSheetFragment extends BottomSheetDialogFragment 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.lnl_vegetable_need_delete:
-                mVegetableNeedPostAdapter.deleteSelected();
-                mBottomSheetDialog.dismiss();
+//                mVegetableNeedPostAdapter.deleteSelected();
+//                mBottomSheetDialog.dismiss();
                 break;
         }
     }

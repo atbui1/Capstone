@@ -3,7 +3,9 @@ package com.example.democ.activity;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -35,6 +37,7 @@ import com.example.democ.model.VegetableDescription;
 import com.example.democ.model.WikiData;
 import com.example.democ.model.WikiDataTitle;
 import com.example.democ.presenters.CreateVegetablePresenter;
+import com.example.democ.presenters.PersonalPresenter;
 import com.example.democ.presenters.SearchByDescriptionPresenter;
 import com.example.democ.presenters.SearchByKeywordPresenter;
 import com.example.democ.presenters.SearchByNamePresenter;
@@ -44,10 +47,19 @@ import com.example.democ.presenters.UploadImagePresenter;
 import com.example.democ.room.entities.User;
 import com.example.democ.room.managements.UserManagement;
 import com.example.democ.views.CreateVegetableView;
+import com.example.democ.views.PersonalView;
 import com.example.democ.views.SearchByNameView;
 import com.example.democ.views.SearchByWikiTitleView;
 import com.example.democ.views.GetDescriptionByWikiView;
 import com.example.democ.views.UploadImageView;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -67,20 +79,18 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 public class CreateVegetableActivity extends AppCompatActivity implements View.OnClickListener, CreateVegetableView, UploadImageView,
-        SearchByNameView, GetDescriptionByWikiView, SearchByWikiTitleView {//, SearchByDescriptionView, SearchByKeywordView {
+        SearchByNameView, PersonalView,
+        SearchByNameBottomSheetFragment.IGetDataSearchWikiListener,
+        SearchByNameBottomSheetFragment.IGetDataSearchWikiTitleListener {
 
     private ImageView mImgCreateVegetable;
     private EditText mEdtVegetableName, mEdtVegetableDescription, mEdtVegetableFeature, mEdtVegetableQuantity;
     private Button mBtnCreateVegetable;
 
-    //btn_edit_true
-    private Button mBtnEditTrue;
-
-
     static int mGardenId;
     static String mGardenName, mGardenAddress, mToken;
     private User mUser;
-    private UserManagement mUserManagement;
+    private PersonalPresenter mPersonalPresenter;
     private CreateVegetablePresenter mCreateVegetablePresenter;
     //list part image
     private List<MultipartBody.Part> mListImagePart;
@@ -89,34 +99,21 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
     private MultipartBody.Part mRequestImage = null;
     private static final int CAMERA_REQUEST = 0;
     private static int request_code_image = 123;
-    private String mMediaPath;
-    private Uri outputFileUri;
 
     //new seacrh
     private EditText mEdtSearchValue;
-    private TextView mTxtOptionSearch;
-    private LinearLayout mLnlOptionSearch, mLnlSearch;
+    private LinearLayout mLnlSearch, mLnlBack;
     private String mStrSearchValue = "";
-    private String mStrSearchOption = "";
-    private final static String SEARCH_NAME = "Tìm kiếm theo tên";
-    private final static String SEARCH_DESCRIPTION = "Tìm kiếm theo mô tả";
-    private final static String SEARCH_KEYWORD = "Tìm kiếm theo từ khóa";
-    private final static String SEARCH_WIKI = "Tìm kiếm từ wikipedia";
+//    private final static String SEARCH_NAME = "Tìm kiếm theo tên";
+    private final static String KEY_VEGETABLE_CREATE = "KEY_VEGETABLE_CREATE";
     private ArrayList<VegetableData> mListVegetable;
-    private ArrayList<VegetableDescription> mListVegetableSearchDescription;
-    private ArrayList<WikiData> mListWiki;
-    private ArrayList<WikiDataTitle> mListWikiTitle;
     private SearchByNamePresenter mSearchByNamePresenter;
-    private SearchByDescriptionPresenter mSearchByDescriptionPresenter;
-    private SearchByKeywordPresenter mSearchByKeywordPresenter;
-    private GetDescriptionByWikiPresenter mGetDescriptionByWikiPresenter;
-    private SearchByWikiTitlePresenter mSearchByWikiTitlePresenter;
-    private String mStrUrl = null;
     private String mStrNameSearch = "", mStrSynonymOfFeature = "", mStrIdDescription = "";
     private boolean mBlIsFixed = false;
     private static String URL_SEARCH_NAME = "url_search_name";
-    private static String URL_SEARCH_WIKI = "url_search_wiki";
     private static String URL_TELEPHONE = "url_telephone";
+    private String mMediaPath, mStrLinkUrl = "", mStrUrl = "";
+    private SearchByNameBottomSheetFragment mSearchByNameBottomSheetFragment;
 
 
     @Override
@@ -129,7 +126,8 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
     }
 
     private void initialView() {
-//        mListVegetable = new ArrayList<>();
+
+        checkPermission();
 
         mImgCreateVegetable = (ImageView) findViewById(R.id.img_create_vegetable);
         mImgCreateVegetable.setOnClickListener(this);
@@ -137,29 +135,23 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
         mEdtVegetableDescription = (EditText) findViewById(R.id.edt_vegetable_description);
         mEdtVegetableFeature = (EditText) findViewById(R.id.edt_vegetable_feature);
         mEdtVegetableQuantity = (EditText) findViewById(R.id.edt_vegetable_quantity);
+        mLnlBack = (LinearLayout) findViewById(R.id.lnl_back);
+        mLnlBack.setOnClickListener(this);
         mBtnCreateVegetable = (Button) findViewById(R.id.btn_create_vegetable);
         mBtnCreateVegetable.setOnClickListener(this);
 
         mCreateVegetablePresenter = new CreateVegetablePresenter(getApplication(), this, this);
+        mPersonalPresenter = new PersonalPresenter(getApplicationContext(), this);
+        mPersonalPresenter.getInfoPersonal();
         mUploadImagePresenter = new UploadImagePresenter(getApplication(), this, this);
 
-        //new
-        mStrSearchOption = SEARCH_NAME;
         mEdtSearchValue = (EditText) findViewById(R.id.edt_search_value);
         mStrSearchValue = mEdtSearchValue.getText().toString().trim();
-        mTxtOptionSearch = (TextView) findViewById(R.id.txt_option_search);
-        mTxtOptionSearch.setText(mStrSearchOption);
-        mLnlOptionSearch = (LinearLayout) findViewById(R.id.lnl_option_search);
+
         mLnlSearch = (LinearLayout) findViewById(R.id.lnl_search);
-        mLnlOptionSearch.setOnClickListener(this);
         mLnlSearch.setOnClickListener(this);
         mSearchByNamePresenter = new SearchByNamePresenter(getApplication(), this, this);
-        /*
-        mSearchByDescriptionPresenter = new SearchByDescriptionPresenter(getApplication(), this,this);
-        mSearchByKeywordPresenter = new SearchByKeywordPresenter(getApplication(), this, this);
-        */
-        mGetDescriptionByWikiPresenter = new GetDescriptionByWikiPresenter(getApplication(), this, this);
-        mSearchByWikiTitlePresenter = new SearchByWikiTitlePresenter(getApplication(), this, this);
+
     }
 
     private void initialData() {
@@ -170,29 +162,13 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
             mGardenName = bundle.getString("GARDEN_NAME");
             mGardenAddress = bundle.getString("GARDEN_ADDRESS");
         }
-        mUserManagement = new UserManagement(getApplication());
-        mUserManagement.getmUserInfo(new UserManagement.OnDataCallBackUser() {
-            @Override
-            public void onDataSuccess(User user) {
-                mUser = user;
-                mToken = user.getToken();
-                System.out.println("****************************************************");
-                System.out.println(mToken);
-//                mSearchByNamePresenter.searchByName(mStrSearchValue, mToken);
-                System.out.println("****************************************************");
-            }
-
-            @Override
-            public void onDataFail() {
-
-            }
-        });
 
         mListImageVegetable = new ArrayList<>();
         mStrSearchValue = mEdtSearchValue.getText().toString().trim();
 
     }
 
+    /*number quantity err*/
     private  void showDialogQuantityErr() {
         final Dialog dialog = new Dialog(CreateVegetableActivity.this);
         dialog.setContentView(R.layout.dialog_login_fail);
@@ -204,6 +180,26 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
         txtDetail = (TextView) dialog.findViewById(R.id.txt_detail_err);
         btnOk = (Button) dialog.findViewById(R.id.btn_close);
         txtDetail.setText("Vui lòng nhập số lượng");
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+    /*incomplete information*/
+    private  void showDialogInputInfoyErr() {
+        final Dialog dialog = new Dialog(CreateVegetableActivity.this);
+        dialog.setContentView(R.layout.dialog_login_fail);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCanceledOnTouchOutside(false);
+
+        TextView txtDetail;
+        Button btnOk;
+        txtDetail = (TextView) dialog.findViewById(R.id.txt_detail_err);
+        btnOk = (Button) dialog.findViewById(R.id.btn_close);
+        txtDetail.setText("Vui lòng điền đủ thông tin");
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -233,7 +229,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
         dialog.show();
     }
 
-    //take a image
+    /*open album or camera*/
     private void showDialogTakeOfImage() {
         final Dialog dialog = new Dialog(CreateVegetableActivity.this);
         dialog.setContentView(R.layout.dialog_take_of_image);
@@ -281,14 +277,18 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
         try {
             mQuantity = Integer.parseInt(mEdtVegetableQuantity.getText().toString());
         } catch (NumberFormatException ex) {
-            Toast.makeText(getApplicationContext(), "khong covert dc quantity", Toast.LENGTH_SHORT).show();
         }
 
         if (mQuantity == 0) {
             showDialogQuantityErr();
             return;
+        } else if (mName.equals("") || mDescription.equals("") || mFeature.equals("")) {
+            showDialogInputInfoyErr();
+            return;
         }
         //new
+        RequestBody requestLinkImage = null;
+
         if (mStrUrl.equals(URL_TELEPHONE)) {
             //image
             mListImagePart = new ArrayList<>();
@@ -297,33 +297,28 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
             String[] file_path_arr = file_path.split("\\.");
             file_path = file_path_arr[0] + System.currentTimeMillis() + "." + file_path_arr[1];
             RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-            System.out.println("cat chuoi thay doi ten file path");
-            System.out.println("file_path: " + file_path);
-            System.out.println("cat chuoi thay doi ten file path");
+
             mRequestImage = MultipartBody.Part.createFormData("NewImages", file_path, requestBody);
             mListImagePart.add(mRequestImage);
             System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             System.out.println("chay vao if");
-            System.out.println("media path if: " + mMediaPath);
+            System.out.println("media path if: " + file_path);
+            mStrLinkUrl = "";
+            System.out.println("link anh: " + mStrLinkUrl);
             System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
-        } else if(mStrUrl.equals(URL_SEARCH_NAME)) {
-            mRequestImage = null;
+            requestLinkImage = RequestBody.create(MediaType.parse("text/plain"), mStrLinkUrl);
 
-//            idDetail
-            mStrSearchValue = "";
-            mStrSynonymOfFeature = "";
-            showDialogChoiceImage();
-            System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-            System.out.println("chay vao elsse if URL_SEARCH_NAME");
-            System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-        } else if(mStrUrl.equals(URL_SEARCH_WIKI)) {
+
+        } else {
             mRequestImage = null;
             mStrIdDescription = "";
-            showDialogChoiceImage();
-            System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
-            System.out.println("chay vao elsse if URL_SEARCH_WIKI");
-            System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
+            mStrSearchValue = "";
+            mStrSynonymOfFeature = "";
+            requestLinkImage = RequestBody.create(MediaType.parse("text/plain"), mStrLinkUrl);
+            System.out.println("HHHHHHHHHHHHHHHH    chay vao else (url tu search) HHHHHHHHHHHHHHHHHHHHHHhh");
+            System.out.println("link image: " + mStrLinkUrl);
+            System.out.println("HHHHHHHHHHHHHHHH    chay vao else (url tu search) HHHHHHHHHHHHHHHHHHHHHHhh");
         }
 
         RequestBody requestTitle = RequestBody.create(MediaType.parse("text/plain"), mName);
@@ -336,6 +331,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
         RequestBody requestNameSearch = RequestBody.create(MediaType.parse("text/plain"), mStrNameSearch);
         RequestBody requestSynonymOfFeature = RequestBody.create(MediaType.parse("text/plain"), mStrSynonymOfFeature);
 
+
         System.out.println("------------------------------------------------------------------------");
         System.out.println("mStrUrl: " + mStrUrl);
         System.out.println("requestTitle: " + requestTitle);
@@ -347,44 +343,17 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
         System.out.println("requestIsFixed: " + requestIsFixed);
         System.out.println("requestNameSearch: " + requestNameSearch);
         System.out.println("requestSynonymOfFeature: " + requestSynonymOfFeature);
+        System.out.println("requestlinkUrl: " + requestLinkImage);
+        System.out.println("link anh: " + mStrLinkUrl);
         System.out.println("requestImage: " + mRequestImage);
         System.out.println("mToken: " + mToken);
         System.out.println("------------------------------------------------------------------------");
 
-        if (mStrUrl.equals(URL_TELEPHONE)) {
-            System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
-            System.out.println("chay api");
-            System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
-            mCreateVegetablePresenter.createVegetable(requestTitle, requestDescription, requestFeature, requestQuantity,
-                requestGardenId, requestIdDescription, requestIsFixed, requestNameSearch, requestSynonymOfFeature,
-                    mRequestImage, mToken);
-        } else {
-            System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG");
-            System.out.println("khong chay api");
-            System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG");
-        }
+        System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD chay api tao rau DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
 
-//        mCreateVegetablePresenter.createVegetable(requestTitle, requestDescription, requestFeature, requestQuantity, requestGardenId, requestImage, mToken);
-
-//        mCreateVegetablePresenter.createVegetable(requestTitle, requestDescription, requestFeature, requestQuantity,
-//                requestGardenId, requestIdDescription, requestIsFixed, requestNameSearch, requestSynonymOfFeature,
-//                requestImage, mToken);
-    }
-
-    public void uploadImage() {
-
-        mListImagePart = new ArrayList<>();
-
-        File file = new File(mMediaPath);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
-        mRequestImage = MultipartBody.Part.createFormData("newItem", file.getName(), requestBody);
-        mListImagePart.add(mRequestImage);
-
-        System.out.println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
-        System.out.println(mListImagePart);
-        System.out.println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
-
-        mUploadImagePresenter.uploadImage(mListImagePart, mUser.getToken());
+        mCreateVegetablePresenter.createVegetable(requestTitle, requestDescription, requestFeature, requestQuantity,
+                requestGardenId, requestIdDescription, requestIsFixed, requestNameSearch, requestSynonymOfFeature, requestLinkImage,
+                mRequestImage, mToken);
 
 
     }
@@ -398,97 +367,95 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
             case R.id.btn_create_vegetable:
                 createVegetable();
                 break;
-                //new
-            case R.id.lnl_option_search:
-                showDialogOptionSearch();
-                break;
             case R.id.lnl_search:
                 clickOpenBottomSheet();
                 break;
+            case R.id.lnl_back:
+                finish();
+                break;
         }
     }
 
-    private void showDialogOptionSearch() {
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.dialog_option_search);
-        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
-        //anh xa
-        TextView txtSearchName, txtSearchWiki;//, txtSearchDescription, txtSearchKeyword
-        Button btnClose;
-        txtSearchName = (TextView) dialog.findViewById(R.id.txt_search_name);
-        /*
-        txtSearchDescription = (TextView) dialog.findViewById(R.id.txt_search_description);
-        txtSearchKeyword = (TextView) dialog.findViewById(R.id.txt_search_keyword);
-        */
-        txtSearchWiki = (TextView) dialog.findViewById(R.id.txt_search_wiki);
-        btnClose = (Button) dialog.findViewById(R.id.btn_close);
-        //onclick
-        txtSearchName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mStrSearchOption = SEARCH_NAME;
-                mTxtOptionSearch.setText(mStrSearchOption);
-                dialog.dismiss();
-            }
-        });
-
-        /* comment */
-//        txtSearchDescription.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mStrSearchOption = SEARCH_DESCRIPTION;
-//                mTxtOptionSearch.setText(mStrSearchOption);
-//                dialog.dismiss();
-//            }
-//        });
-//        txtSearchKeyword.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mStrSearchOption = SEARCH_KEYWORD;
-//                mTxtOptionSearch.setText(mStrSearchOption);
-//                dialog.dismiss();
-//            }
-//        });
-
-        txtSearchWiki.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mStrSearchOption = SEARCH_WIKI;
-                mTxtOptionSearch.setText(mStrSearchOption);
-                dialog.dismiss();
-            }
-        });
-        btnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-    }
     //open bottom sheet
     private void clickOpenBottomSheet() {
         mStrSearchValue = mEdtSearchValue.getText().toString();
-        if (mStrSearchOption == SEARCH_NAME) {
-            Toast.makeText(getApplicationContext(), "search name", Toast.LENGTH_SHORT).show();
-            mSearchByNamePresenter.searchByName(mStrSearchValue, mToken);
-        }
-        /*comment*/
-//        else if(mStrSearchOption == SEARCH_DESCRIPTION) {
-//            Toast.makeText(getApplicationContext(), "search description", Toast.LENGTH_SHORT).show();
-//            mSearchByDescriptionPresenter.searchByDescription(mStrSearchValue, mToken);
-//        } else if (mStrSearchOption == SEARCH_KEYWORD) {
-//            Toast.makeText(getApplicationContext(), "search keyword", Toast.LENGTH_SHORT).show();
-//            mSearchByKeywordPresenter.searchByKeyword(mStrSearchValue, mToken);
+//        mStrSearchOption = SEARCH_NAME;
+        mSearchByNamePresenter.searchByName(mStrSearchValue, mToken);
+//        if (mStrSearchOption == SEARCH_NAME) {
+//            Toast.makeText(getApplicationContext(), "search name", Toast.LENGTH_SHORT).show();
+//            mSearchByNamePresenter.searchByName(mStrSearchValue, mToken);
+//        } else if (mStrSearchOption == SEARCH_WIKI) {
+//            Toast.makeText(getApplicationContext(), "search wiki", Toast.LENGTH_SHORT).show();
+//            mSearchByWikiTitlePresenter.searchByWikiTitle(mStrSearchValue, mToken);
 //        }
-        else if (mStrSearchOption == SEARCH_WIKI) {
-            Toast.makeText(getApplicationContext(), "search wiki", Toast.LENGTH_SHORT).show();
-//            mGetDescriptionByWikiPresenter.searchByWiki(mStrSearchValue, mToken);
-            mSearchByWikiTitlePresenter.searchByWikiTitle(mStrSearchValue, mToken);
-        }
     }
 
+    /*dialog intro vegetable*/
+    private void showDialogIntroVegetable(final VegetableData vegetableData) {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_intro_vegetable);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+
+        /*anh xa view*/
+        TextView txtName, txtDescription, txtFeature, txtClose, txtAdmit;
+        ImageView imgVegetable;
+        Button btnClose, btnAdmit;
+        txtName = (TextView) dialog.findViewById(R.id.txt_vegetable_name);
+        txtDescription = (TextView) dialog.findViewById(R.id.txt_vegetable_description);
+        txtFeature = (TextView) dialog.findViewById(R.id.txt_vegetable_feature);
+        txtClose = (TextView) dialog.findViewById(R.id.txt_close);
+        txtAdmit = (TextView) dialog.findViewById(R.id.txt_admit);
+        imgVegetable = (ImageView) dialog.findViewById(R.id.img_create_vegetable);
+        /**/
+        txtName.setText(vegetableData.getName());
+        txtDescription.setText(vegetableData.getFeature());
+        txtFeature.setText(vegetableData.getFeature());
+        if (vegetableData.getImageVegetables().size() > 0) {
+            int maxSize = vegetableData.getImageVegetables().size() - 1;
+            String imageDialog = vegetableData.getImageVegetables().get(maxSize).getUrl().toString().trim();
+            if (imageDialog.equals("")) {
+                imgVegetable.setImageResource(R.mipmap.addimage64);
+            } else {
+                Picasso.with(getApplicationContext()).load(imageDialog)
+                        .placeholder(R.drawable.ic_launcher_background)
+                        .error(R.drawable.caybacha)
+                        .into(imgVegetable);
+            }
+        }
+        txtAdmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mEdtVegetableName.setText(vegetableData.getName());
+                mEdtVegetableDescription.setText(vegetableData.getDescription());
+                mEdtVegetableFeature.setText(vegetableData.getFeature());
+                if (vegetableData.getImageVegetables().size() > 0) {
+                    int maxSize = vegetableData.getImageVegetables().size() - 1;
+                    String imageDialog = vegetableData.getImageVegetables().get(maxSize).getUrl().toString().trim();
+                    if (imageDialog.equals("")) {
+                        mImgCreateVegetable.setImageResource(R.mipmap.addimage64);
+                    } else {
+                        Picasso.with(getApplicationContext()).load(imageDialog)
+                                .placeholder(R.drawable.ic_launcher_background)
+                                .error(R.drawable.caybacha)
+                                .into(mImgCreateVegetable);
+                    }
+                    mStrLinkUrl = imageDialog;
+                }
+                mStrUrl = URL_SEARCH_NAME;
+                mSearchByNameBottomSheetFragment.dismiss();
+                dialog.dismiss();
+            }
+        });
+        txtClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -533,12 +500,18 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
 
 
                     String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-                    File destination = new File(Environment.getExternalStorageDirectory() + "/" +
-                            getString(R.string.app_name), "IMG_" + timeStamp + ".jpg");
+//                    File destination = new File(Environment.getExternalStorageDirectory() + "/" +
+//                            getString(R.string.app_name), "IMG_" + timeStamp + ".jpg");
+                    File path = Environment.getExternalStoragePublicDirectory(
+                            Environment.DIRECTORY_PICTURES);
+                    File file = new File(path, timeStamp + ".jpg");
                     FileOutputStream fo;
                     try {
-                        destination.createNewFile();
-                        fo = new FileOutputStream(destination);
+//                        destination.mkdirs();
+//                        destination.createNewFile();
+//                        fo = new FileOutputStream(destination);
+                        path.mkdirs();
+                        fo = new FileOutputStream(file);
                         fo.write(bytes.toByteArray());
                         fo.close();
                     } catch (FileNotFoundException e) {
@@ -547,7 +520,8 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
                         e.printStackTrace();
                     }
 
-                    mMediaPath = destination.getAbsolutePath();
+//                    mMediaPath = destination.getAbsolutePath();
+                    mMediaPath = file.getAbsolutePath();
                     System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
                     System.out.println("link came ra");
                     System.out.println("*************");
@@ -560,47 +534,97 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
                     e.printStackTrace();
                 }
             }
-            /*comment*/
-//            else {
-//                int width = mImgCreateVegetable.getMaxWidth();
-//                int height = mImgCreateVegetable.getMaxHeight();
-//                BitmapFactory.Options factoryOptions = new BitmapFactory.Options();
-//                factoryOptions.inJustDecodeBounds = true;
-//                BitmapFactory.decodeFile(outputFileUri.getPath(), factoryOptions);
-//                int imageWidth = factoryOptions.outWidth;
-//                int imageHeight = factoryOptions.outHeight;
-//                int scaleFator = Math.min(imageWidth / width, imageHeight / height);
-//                factoryOptions.inJustDecodeBounds = false;
-//                factoryOptions.inSampleSize = scaleFator;
-//                factoryOptions.inPurgeable = true;
-//                Bitmap bitmap = BitmapFactory.decodeFile(outputFileUri.getPath(), factoryOptions);
-//                Toast.makeText(this, "File has already store", Toast.LENGTH_LONG).show();
-//                mImgCreateVegetable.setImageBitmap(bitmap);
-//
-//                System.out.println("----------- **************** ---------------------");
-//                System.out.println("link anh camera");
-//                System.out.println("outputFileUri: " + outputFileUri);
-//                System.out.println("bitmap: " + bitmap);
-//                System.out.println("medipath: " + mediaPath);
-//                System.out.println("----------- **************** ---------------------");
-//            }
+
         } catch (Exception ex) {
             Toast.makeText(this, "upload image 22222222222", Toast.LENGTH_SHORT).show();
         }
     }
 
 
+    /*get data user*/
+    @Override
+    public void showInfoPersonal(User user) {
+        mUser = user;
+        mToken = user.getToken();
+    }
+
+    /*get data search vegetable from system*/
+    @Override
+    public void searchByNameSuccess(List<VegetableData> vegetableData) {
+        this.mListVegetable = (ArrayList<VegetableData>) vegetableData;
+        System.out.println(mListVegetable.size());
+        mSearchByNameBottomSheetFragment =
+                new SearchByNameBottomSheetFragment(mListVegetable, mStrSearchValue, new IClickVegetable() {
+                    @Override
+                    public void clickVegetable(VegetableData vegetableData) {
+                        showDialogIntroVegetable(vegetableData);
+                    }
+                });
+        mSearchByNameBottomSheetFragment.setCancelable(false);
+        mSearchByNameBottomSheetFragment.show(getSupportFragmentManager(), mSearchByNameBottomSheetFragment.getTag());
+    }
+
+    @Override
+    public void searchByNameFail() {
+
+    }
+
+    /*get data search wiki full*/
+    @Override
+    public void getDataSearchWiki(String vegName, String vegDescription, String vegFeature, String vegLinkUrl) {
+        mEdtVegetableName.setText(vegName);
+        mEdtVegetableDescription.setText(vegDescription);
+        mEdtVegetableFeature.setText(vegFeature);
+        if (vegLinkUrl.equals("")) {
+            mImgCreateVegetable.setImageResource(R.mipmap.addimage64);
+        } else {
+            Picasso.with(getApplicationContext()).load("https:" + vegLinkUrl)
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.caybacha)
+                    .into(mImgCreateVegetable);
+        }
+        mStrLinkUrl = "https:" + vegLinkUrl.trim();
+        System.out.println("HHHHHHHHHHHHHHHHhh  getDataSearchWiki full  HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHhh");
+        System.out.println("name: " + vegName);
+        System.out.println("des: " + vegDescription);
+        System.out.println("feature: " + vegFeature);
+        System.out.println("link url image: " + vegLinkUrl);
+        System.out.println("HHHHHHHHHHHHHHHHhh  getDataSearchWiki dialog full HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHhh");
+    }
+
+    /*get data search wiki title*/
+    @Override
+    public void getDataSearchWikiTitle(String vegName, String vegLinkUrl) {
+        mEdtVegetableName.setText(vegName);
+        mEdtVegetableDescription.setText("");
+        mEdtVegetableFeature.setText("");
+        if (vegLinkUrl.equals("")) {
+            mImgCreateVegetable.setImageResource(R.mipmap.addimage64);
+        } else {
+            Picasso.with(getApplicationContext()).load("https:" + vegLinkUrl)
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.caybacha)
+                    .into(mImgCreateVegetable);
+        }
+        mStrLinkUrl = "https:" + vegLinkUrl.trim();
+        System.out.println("HHHHHHHHHHHHHHHHhh  getDataSearchWiki title full  HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHhh");
+        System.out.println("name: " + vegName);
+        System.out.println("link url image: " + vegLinkUrl);
+        System.out.println("HHHHHHHHHHHHHHHHhh  getDataSearchWiki dialog title full HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHhh");
+    }
+
+    /*receive data from the server*/
     @Override
     public void createVegetableSuccess() {
         System.out.println("************************ 5555555555555555 **************************************");
         System.out.println("createVegetableView Success");
         System.out.println("************************ 5555555555555555 **************************************");
-        Intent intent = new Intent(CreateVegetableActivity.this, MainActivity.class);
-//        Bundle bundle = new Bundle();
-//        bundle.putString("GARDEN_NAME", mGardenName);
-//        bundle.putString("GARDEN_ADdRESS", mGardenAddress);
-////        intent.putExtras(bundle);
-//        intent.putExtra("infoGarden", bundle);
+        Intent intent = new Intent(CreateVegetableActivity.this, GardenActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("GARDEN_ID", mGardenId);
+        bundle.putString("GARDEN_NAME", mGardenName);
+        bundle.putString("GARDEN_ADDRESS", mGardenAddress);
+        intent.putExtra(KEY_VEGETABLE_CREATE, bundle);
         startActivity(intent);
     }
 
@@ -612,6 +636,24 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
         System.out.println("FFFFFFFFFFF FFFFFFFFFFF         FFFFFFFFFFFFFF      FFFFFFFFF");
     }
 
+    /*upload image only*/
+    public void uploadImage() {
+
+        mListImagePart = new ArrayList<>();
+
+        File file = new File(mMediaPath);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
+        mRequestImage = MultipartBody.Part.createFormData("newItem", file.getName(), requestBody);
+        mListImagePart.add(mRequestImage);
+
+        System.out.println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+        System.out.println(mListImagePart);
+        System.out.println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+
+        mUploadImagePresenter.uploadImage(mListImagePart, mUser.getToken());
+
+
+    }
     @Override
     public void uploadImageSuccess(ImageVegetable imageVegetables) {
         System.out.println("--------------- ****************-----------------");
@@ -631,116 +673,78 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
 
     }
 
-    @Override
-    public void searchByNameSuccess(List<VegetableData> vegetableData) {
-        this.mListVegetable = (ArrayList<VegetableData>) vegetableData;
-        System.out.println(mListVegetable.size());
-        SearchByNameBottomSheetFragment searchByNameBottomSheetFragment =
-                new SearchByNameBottomSheetFragment(mListVegetable, new IClickVegetable() {
+
+    /*check permission*/
+    private void checkPermission() {
+        Dexter.withContext(CreateVegetableActivity.this)
+                .withPermissions(Manifest.permission.CAMERA,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .withListener(new MultiplePermissionsListener() {
                     @Override
-                    public void clickVegetable(VegetableData vegetableData) {
-                        mStrIdDescription = vegetableData.getIdDescription();
-                        mEdtVegetableName.setText(vegetableData.getName());
-                        mEdtVegetableDescription.setText(vegetableData.getDescription());
-                        mEdtVegetableFeature.setText(vegetableData.getFeature());
-                        mStrUrl = URL_SEARCH_NAME;
-                        int maxSize = vegetableData.getImageVegetables().size() - 1;
-                        if (vegetableData.getImageVegetables().size() > 0) {
-                            Picasso.with(getApplication()).load(vegetableData.getImageVegetables().get(maxSize).getUrl())
-                                    .placeholder(R.drawable.ic_launcher_background)
-                                    .error(R.drawable.caybacha)
-                                    .into(mImgCreateVegetable);
+                    public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
+                        if (multiplePermissionsReport.areAllPermissionsGranted()) {
+
                         } else {
-                            mImgCreateVegetable.setImageResource(R.mipmap.addimage64);
+//                            showDialogCheckPermissionAgain();
                         }
                     }
-                });
-        searchByNameBottomSheetFragment.show(getSupportFragmentManager(), searchByNameBottomSheetFragment.getTag());
-    }
 
-    @Override
-    public void searchByNameFail() {
-
-    }
-
-    public void clickOpenListText(final List<String> listText) {
-        ListTextWikiBottomSheetFragment listTextWikiBottomSheetFragment = new ListTextWikiBottomSheetFragment(listText,
-                new IClickListTextWiki() {
                     @Override
-                    public void clickListText(String msg, int pos) {
-                        mEdtVegetableFeature.setText(listText.get(pos));
-                        String featurePosition = listText.get(pos);
-                        List<String> subMtp = Arrays.asList(featurePosition.split("\n\r"));
-                        for(String w:subMtp){
-                            System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
-                            System.out.println(w);
-                            System.out.println("vi tri dau tien khi cat");
-                            String a = subMtp.get(0);
-                            System.out.println(a);
-                            System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
-                        }
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
+
                     }
-                });
-        listTextWikiBottomSheetFragment.show(getSupportFragmentManager(), listTextWikiBottomSheetFragment.getTag());
+                }).onSameThread().check();
     }
+    /*check permission again*/
+    private void showDialogCheckPermissionAgain() {
+        final Dialog dialog = new Dialog(CreateVegetableActivity.this);
+        dialog.setContentView(R.layout.dialog_delete_garden);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtQuantity;
+        Button btnClose, btnDelete;
+        btnClose = (Button) dialog.findViewById(R.id.btn_delete_no);
+        btnDelete = (Button) dialog.findViewById(R.id.btn_delete_yes);
+        btnDelete.setText("Tiếp tục");
+        txtQuantity = (TextView) dialog.findViewById(R.id.txt_content_delete);
+        txtQuantity.setText("Vui lòng cấp quyền cho ứng dụng để tiếp tục sử dụng ");
 
-    @Override
-    public void searchByWikiTitleSuccess(List<WikiDataTitle> wikiDataTitles) {
-        mListWikiTitle = (ArrayList<WikiDataTitle>) wikiDataTitles;
-        SearchByWikiBottomSheetFragment searchByWikiBottomSheetFragment =
-                new SearchByWikiBottomSheetFragment(mListWikiTitle, new IClickWikiTitle() {
-                    @Override
-                    public void clickWikiTitle(WikiDataTitle wikiDataTitle) {
-                        System.out.println("NNNNNNNNNNNNNNNNNNNN wiki search titile NNNNNNNNNNNNNNNNNNNNNN");
-                        System.out.println("NNNNNNNNNNNNNNNNNNNN wiki search titile NNNNNNNNNNNNNNNNNNNNNN");
-                        System.out.println("title: " + wikiDataTitle.getTitle());
-                        System.out.println("url: " + wikiDataTitle.getImage());
-                        System.out.println("NNNNNNNNNNNNNNNNNNNN wiki search titile NNNNNNNNNNNNNNNNNNNNNN");
-                        System.out.println("NNNNNNNNNNNNNNNNNNNN wiki search titile NNNNNNNNNNNNNNNNNNNNNN");
-                        if (wikiDataTitle.getImage().equals("")) {
-                            mImgCreateVegetable.setImageResource(R.mipmap.addimage64);
-                        } else {
-                            Picasso.with(getApplicationContext()).load("https:" + wikiDataTitle.getImage())
-                                    .placeholder(R.drawable.ic_launcher_background)
-                                    .error(R.drawable.caybacha)
-                                    .fit()
-                                    .centerInside()
-                                    .into(mImgCreateVegetable);
-                        }
-                        mGetDescriptionByWikiPresenter.getDescriptionByWiki(wikiDataTitle.getTitle(), mToken);
-                    }
-                });
-        searchByWikiBottomSheetFragment.show(getSupportFragmentManager(), searchByWikiBottomSheetFragment.getTag());
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                Intent intent = new Intent(CreateVegetableActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkPermission();
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
-
-    @Override
-    public void searchByWikiTitleFail() {
-
-    }
-
-    @Override
-    public void getDescriptionByWikiSuccess(List<WikiData> wikiData) {
-        System.out.println("AAAAAAAAAAAAgetDescriptionByWikiSuccessAAAAAAAAAAAAAAAAAAAAAAAAA");
-        System.out.println("AAAAAAAAAAAAgetDescriptionByWikiSuccessAAAAAAAAAAAAAAAAAAAAAAAAA");
-        mEdtVegetableDescription.setText(wikiData.get(0).getDescription());
-        mEdtVegetableName.setText(wikiData.get(0).getName());
-        List<String> listTextWikis = wikiData.get(0).getListText();
-        for (int i =0; i < listTextWikis.size(); i++) {
-            System.out.println("111 **** 1111");
-            System.out.println(i);
-            System.out.println(listTextWikis.get(i));
-            System.out.println("222 *** 222");
-        }
-        clickOpenListText(listTextWikis);
-    }
-
-    @Override
-    public void getDescriptionByWikiFail() {
-
-    }
-
-
     /*comment*/
+//    @Override
+//    public void getDescriptionByWikiSuccess(List<WikiData> wikiData) {
+//        System.out.println("AAAAAAAAAAAAgetDescriptionByWikiSuccessAAAAAAAAAAAAAAAAAAAAAAAAA");
+//        System.out.println("AAAAAAAAAAAAgetDescriptionByWikiSuccessAAAAAAAAAAAAAAAAAAAAAAAAA");
+//        mEdtVegetableDescription.setText(wikiData.get(0).getDescription());
+//        mEdtVegetableName.setText(wikiData.get(0).getName());
+//        List<String> listTextWikis = wikiData.get(0).getListText();
+//        for (int i =0; i < listTextWikis.size(); i++) {
+//            System.out.println("111 **** 1111");
+//            System.out.println(i);
+//            System.out.println(listTextWikis.get(i));
+//            System.out.println("222 *** 222");
+//        }
+//        clickOpenListText(listTextWikis);
+//    }
+
 //    @Override
 //    @Override
 //    public void SearchByDescriptionSuccess(List<VegetableData> vegetableData) {

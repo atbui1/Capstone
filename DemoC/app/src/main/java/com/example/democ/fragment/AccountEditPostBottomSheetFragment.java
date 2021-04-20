@@ -80,6 +80,7 @@ public class AccountEditPostBottomSheetFragment extends BottomSheetDialogFragmen
         return mBottomSheetDialog;
     }
 
+    /*event delete share handle*/
     private void showDialogDeletePost() {
         final Dialog dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.dialog_delete_garden);
@@ -90,6 +91,19 @@ public class AccountEditPostBottomSheetFragment extends BottomSheetDialogFragmen
         btnDeleteNo = (Button) dialog.findViewById(R.id.btn_delete_no);
         txtContentDelete = (TextView) dialog.findViewById(R.id.txt_content_delete);
         txtContentDelete.setText("Bạn có muốn xóa bài đăng này không");
+
+        String shareId = "";
+        if (mPostData != null) {
+            shareId = mPostData.getId().trim();
+        } else if (mPostSearchName != null) {
+            shareId = mPostSearchName.getId().trim();
+        } else if (mPostSearchDescription != null) {
+            shareId = mPostSearchDescription.getId().trim();
+        } else if (mPostSearchKeyword != null) {
+            shareId = mPostSearchKeyword.getId();
+        }
+        final String finalShareId = shareId;
+
         btnDeleteNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,11 +116,9 @@ public class AccountEditPostBottomSheetFragment extends BottomSheetDialogFragmen
                 System.out.println("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
                 System.out.println("goi api xoa bai post");
                 System.out.println("token: " + mToken);
-//                new PersonalFragment();
-//                Fragment fragment = new PersonalFragment();
-//                loadFragment(fragment);
+                System.out.println("shareId: " + finalShareId);
                 System.out.println("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
-//                mDeleteSharePresenter.deleteShare(mPostData.getId(), mToken);
+                mDeleteSharePresenter.deleteShare(finalShareId, mToken);
                 dialog.dismiss();
             }
         });
@@ -121,32 +133,110 @@ public class AccountEditPostBottomSheetFragment extends BottomSheetDialogFragmen
         transaction.commit();
     }
 
+    /*event update*/
     public void clickOpenUpdatePost() {
-        int maxSize = mPostData.getImageVegetablesList().size() -1;
-        String urlImage = "";
+        int maxSize = 0, quantity = 0;
+        String urlImage = "", postContent = "";
+        if (mPostData != null) {
+            maxSize = mPostData.getImageVegetablesList().size() -1;
+            quantity = mPostData.getQuantity();
+            postContent = mPostData.getContent();
+            try {
+                if (mPostData.getImageVegetablesList().size() == 0) {
+                    urlImage = "";
+                } else {
+                    urlImage = mPostData.getImageVegetablesList().get(maxSize).getUrl();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } else if (mPostSearchName != null) {
+            maxSize = mPostSearchName.getImageVegetablesList().size() -1;
+            quantity = mPostSearchName.getQuantity();
+            postContent = mPostSearchName.getContent();
+            try {
+                if (mPostSearchName.getImageVegetablesList().size() == 0) {
+                    urlImage = "";
+                } else {
+                    urlImage = mPostSearchName.getImageVegetablesList().get(maxSize).getUrl();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } else if (mPostSearchDescription != null) {
+            maxSize = mPostSearchDescription.getImageVegetablesList().size() -1;
+            quantity = mPostSearchDescription.getQuantity();
+            postContent = mPostSearchDescription.getContent();
+            try {
+                if (mPostSearchDescription.getImageVegetablesList().size() == 0) {
+                    urlImage = "";
+                } else {
+                    urlImage = mPostSearchDescription.getImageVegetablesList().get(maxSize).getUrl();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } else if (mPostSearchKeyword != null) {
+            maxSize = mPostSearchKeyword.getImageVegetablesList().size() -1;
+            quantity = mPostSearchKeyword.getQuantity();
+            postContent = mPostSearchKeyword.getContent();
+            try {
+                if (mPostSearchKeyword.getImageVegetablesList().size() == 0) {
+                    urlImage = "";
+                } else {
+                    urlImage = mPostSearchKeyword.getImageVegetablesList().get(maxSize).getUrl();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+
 
         Intent intent = new Intent(getActivity(), UpdatePostActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
         Bundle bundle = new Bundle();
-        bundle.putString("POST_CONTENT", mPostData.getContent());
-        if (mPostData.getImageVegetablesList().size() == 0) {
-            urlImage = "";
-        } else {
-            urlImage = mPostData.getImageVegetablesList().get(maxSize).getUrl();
-        }
+        bundle.putString("POST_CONTENT", postContent);
+//        if (mPostData.getImageVegetablesList().size() == 0) {
+//            urlImage = "";
+//        } else {
+//            urlImage = mPostData.getImageVegetablesList().get(maxSize).getUrl();
+//        }
         bundle.putString("POST_IMAGE", urlImage);
-        bundle.putInt("POST_QUANTITY", mPostData.getQuantity());
+        bundle.putInt("POST_QUANTITY", quantity);
         intent.putExtras(bundle);
         startActivity(intent);
     }
 
+    /*delete share err*/
+    private void showDialogDeleteErr() {
+        final Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_exchange_quantity_err);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtQuantity;
+        Button btnClose;
+        btnClose = (Button) dialog.findViewById(R.id.btn_close);
+        txtQuantity = (TextView) dialog.findViewById(R.id.txt_exchange_quantity);
+        txtQuantity.setText("Bài đăng đang có yêu cầu nhận rau");
+
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                mBottomSheetDialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.lnl_post_edit:
                 System.out.println("AAAAAAAAAA AccountEditPostBottomSheetFragment AAAAAAAAAAAAAAA");
-                System.out.println("post content: " + mPostData.getContent());
-                System.out.println("post id: " + mPostData.getId());
+//                System.out.println("post content: " + mPostData.getContent());
+//                System.out.println("post id: " + mPostData.getId());
                 mBottomSheetDialog.dismiss();
                 clickOpenUpdatePost();
                 break;
@@ -155,7 +245,7 @@ public class AccountEditPostBottomSheetFragment extends BottomSheetDialogFragmen
                 System.out.println("click dele post");
                 System.out.println("BBBBBBBBBBBBB   AccountEditPostBottomSheetFragment  BBBBBBBBBBBBBBBBBBBBBBB");
 
-                mBottomSheetDialog.dismiss();
+//                mBottomSheetDialog.dismiss();
                 showDialogDeletePost();
                 break;
         }
@@ -163,14 +253,13 @@ public class AccountEditPostBottomSheetFragment extends BottomSheetDialogFragmen
 
     @Override
     public void deleteShareSuccess() {
-        new PersonalFragment();
-        System.out.println("DDDDDDDDDDDDDDDD   AccountEditPostBottomSheetFragment  DDDDDDDDDDDDDDDDDDDDDDD");
-        System.out.println("delete post success");
-        System.out.println("DDDDDDDDDDDDDDDD   AccountEditPostBottomSheetFragment  DDDDDDDDDDDDDDDDDDDDDDD");
+        mBottomSheetDialog.dismiss();
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        startActivity(intent);
     }
 
     @Override
     public void deleteShareFail() {
-
+        showDialogDeleteErr();
     }
 }

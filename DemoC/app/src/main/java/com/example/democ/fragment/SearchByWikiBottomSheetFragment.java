@@ -48,7 +48,7 @@ public class SearchByWikiBottomSheetFragment extends BottomSheetDialogFragment {
             @Override
             public void clickWikiTitle(WikiDataTitle wikiDataTitle) {
                 mIClickWikiTitle.clickWikiTitle(wikiDataTitle);
-                mBottomSheetDialog.dismiss();
+//                mBottomSheetDialog.dismiss();
             }
         });
 

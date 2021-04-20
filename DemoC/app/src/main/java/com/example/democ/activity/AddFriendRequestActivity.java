@@ -14,20 +14,24 @@ import android.widget.LinearLayout;
 
 import com.example.democ.R;
 import com.example.democ.adapter.AddFriendAdapter;
+import com.example.democ.iclick.IClickAddFriend;
 import com.example.democ.model.Account;
 import com.example.democ.model.AddFriendRequest;
 import com.example.democ.presenters.GetAddFriendRequestPresenter;
 import com.example.democ.presenters.GetInfoAccountPresenter;
 import com.example.democ.presenters.PersonalPresenter;
+import com.example.democ.presenters.ReplyFriendRequestPresenter;
 import com.example.democ.room.entities.User;
 import com.example.democ.views.GetAddFriendRequestView;
 import com.example.democ.views.GetInfoAccountView;
 import com.example.democ.views.PersonalView;
+import com.example.democ.views.ReplyFriendRequestView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddFriendRequestActivity extends AppCompatActivity implements View.OnClickListener, PersonalView, GetAddFriendRequestView {
+public class AddFriendRequestActivity extends AppCompatActivity implements View.OnClickListener, PersonalView, GetAddFriendRequestView,
+        IClickAddFriend, ReplyFriendRequestView {
 
     private LinearLayout mLnlBack;
     private RecyclerView mRecyclerView;
@@ -35,6 +39,9 @@ public class AddFriendRequestActivity extends AppCompatActivity implements View.
     private ArrayList<AddFriendRequest> mListAddFriend;
     private GetAddFriendRequestPresenter mGetAddFriendRequestPresenter;
     private PersonalPresenter mPersonalPresenter;
+    private ReplyFriendRequestPresenter mReplyFriendRequestPresenter;
+    private User mUser;
+    private static int mIntPosition = 0;
 
 
     @Override
@@ -60,6 +67,7 @@ public class AddFriendRequestActivity extends AppCompatActivity implements View.
         mPersonalPresenter = new PersonalPresenter(getApplicationContext(), this);
         mPersonalPresenter.getInfoPersonal();
         mGetAddFriendRequestPresenter = new GetAddFriendRequestPresenter(getApplication(), getApplicationContext(), this);
+        mReplyFriendRequestPresenter = new ReplyFriendRequestPresenter(getApplication(), getApplicationContext(), this);
 
     }
 
@@ -69,7 +77,7 @@ public class AddFriendRequestActivity extends AppCompatActivity implements View.
 
     public void updateUI() {
         if (mAddFriendAdapter == null) {
-            mAddFriendAdapter = new AddFriendAdapter(mListAddFriend, getApplicationContext());
+            mAddFriendAdapter = new AddFriendAdapter(mListAddFriend, this);
             mRecyclerView.setAdapter(mAddFriendAdapter);
         } else {
             mAddFriendAdapter.notifyDataSetChanged();
@@ -110,6 +118,7 @@ public class AddFriendRequestActivity extends AppCompatActivity implements View.
 
     @Override
     public void showInfoPersonal(User user) {
+        mUser = user;
         mGetAddFriendRequestPresenter.getAddFriendRequest(user.getToken());
     }
 
@@ -128,4 +137,26 @@ public class AddFriendRequestActivity extends AppCompatActivity implements View.
 
     }
 
+    @Override
+    public void clickFriendAdmit(AddFriendRequest addFriendRequest, int position) {
+        mIntPosition = position;
+        mReplyFriendRequestPresenter.replyFriendRequest(addFriendRequest.getId(), 2, mUser.getToken());
+    }
+
+    @Override
+    public void clickFriendReject(AddFriendRequest addFriendRequest, int position) {
+        mIntPosition = position;
+        mReplyFriendRequestPresenter.replyFriendRequest(addFriendRequest.getId(), 3, mUser.getToken());
+    }
+
+    @Override
+    public void replyFriendRequestSuccess() {
+        mListAddFriend.remove(mIntPosition);
+        mAddFriendAdapter.notifyItemRemoved(mIntPosition);
+    }
+
+    @Override
+    public void replyFriendRequestFail() {
+
+    }
 }

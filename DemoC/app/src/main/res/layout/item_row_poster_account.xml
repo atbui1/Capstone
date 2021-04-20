@@ -111,6 +111,7 @@
                 android:id="@+id/txt_post_vegetable_quantity"
                 android:paddingLeft="@dimen/dp8"
                 android:text="Thanh long không hạt"
+                android:textColor="@color/red"
                 android:textSize="@dimen/sp15"
                 android:paddingTop="@dimen/dp8"
                 android:paddingBottom="@dimen/dp8"
@@ -119,7 +120,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
-        <!--hinh anh-->
+        <!--phone number-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/txt_post_phone_number"
+                android:paddingLeft="@dimen/dp8"
+                android:text="0945217935"
+                android:textColor="@color/sick_green"
+                android:textSize="@dimen/sp15"
+                android:paddingTop="@dimen/dp8"
+                android:paddingBottom="@dimen/dp8"
+                android:inputType="textMultiLine|textAutoComplete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <!--btn exchange -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp50">
@@ -132,6 +149,7 @@
                 android:layout_width="@dimen/dp150"
                 android:layout_height="@dimen/dp50" />
         </LinearLayout>
+        <!--hinh anh-->
         <LinearLayout
             android:layout_marginTop="@dimen/dp2"
             android:layout_width="match_parent"

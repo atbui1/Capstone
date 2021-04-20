@@ -148,7 +148,7 @@ public class CreateGardenActivity extends AppCompatActivity implements View.OnCl
             System.out.println("goi request api");
 
 //            send request to api
-//            mCreateGardenPresenter.createGarden(garden, token);
+            mCreateGardenPresenter.createGarden(garden, token);
         }
     }
 

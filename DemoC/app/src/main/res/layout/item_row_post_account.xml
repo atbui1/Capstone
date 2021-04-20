@@ -111,6 +111,7 @@
                 android:id="@+id/txt_post_vegetable_quantity"
                 android:paddingLeft="@dimen/dp8"
                 android:text="Thanh long không hạt"
+                android:textColor="@color/red"
                 android:textSize="@dimen/sp15"
                 android:paddingTop="@dimen/dp8"
                 android:paddingBottom="@dimen/dp8"

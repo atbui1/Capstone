@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -42,6 +43,8 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
 
     private final static String KEY_VEGETABLE = "KEY_VEGETABLE";
     private final static String KEY_VEGETABLE_DELETE = "KEY_VEGETABLE_DELETE";
+    private final static String KEY_VEGETABLE_CREATE = "KEY_VEGETABLE_CREATE";
+    private final static String KEY_VEGETABLE_UPDATE = "KEY_VEGETABLE_UPDATE";
     private RecyclerView mRecyclerVegetable;
     private List<Vegetable> mVegetablesList;
     private VegetableAdapter mVegetableAdapter;
@@ -104,13 +107,21 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
         mTxtGardenName = (TextView) findViewById(R.id.txt_garden_name);
         mTxtGardenAddress = (TextView) findViewById(R.id.txt_garden_address);
 
+        getData();
 
+    }
+
+    private void getData() {
         Intent intent = getIntent();
-//        Bundle bundleGardenAdapter = intentGardenAdapter.getExtras();
-        //bundle garden
+
+        /*bundle list garden*/
         Bundle bundleGardenAdapter = intent.getBundleExtra("infoGardenTo");
-        //bundle create vegetable
-        Bundle bundleCreateVegetable = intent.getBundleExtra("infoGarden");
+        /*bundle create vegetable*/
+        Bundle bundleCreateVegetable = intent.getBundleExtra(KEY_VEGETABLE_CREATE);
+        /*bundle delete vegetable*/
+        Bundle bundleDeleteVegetable = intent.getBundleExtra(KEY_VEGETABLE_DELETE);
+        /*bundle update vegetable*/
+        Bundle bundleUpdateVegetable = intent.getBundleExtra(KEY_VEGETABLE_UPDATE);
         if (bundleGardenAdapter != null) {
             mGardenName = bundleGardenAdapter.getString("GARDEN_NAME");
             mGardenAddress = bundleGardenAdapter.getString("GARDEN_ADDRESS");
@@ -127,41 +138,21 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
             mTxtGardenAddress.setText(mGardenAddress);
             System.out.println("chay bundleCreateVegetable **************************");
         }
-
-        //bundle frm
-//        mUserManagement = new UserManagement(getApplication());
-//        mUserManagement.getmUserInfo(new UserManagement.OnDataCallBackUser() {
-//            @Override
-//            public void onDataSuccess(User user) {
-//                mUser = user;
-//                //get all vegetable
-//                System.out.println("garden activity line 114");
-//                mAllVegetableByGardenIdPresenter.getAllVegetableByGardenId(mGardenId, mUser.getToken());
-//            }
-//
-//            @Override
-//            public void onDataFail() {
-//
-//            }
-//        });
-
-        getDataDeleteVegetable();
-        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-        System.out.println("chay xong initialview 111");
-        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-//        updateUI();
-    }
-
-    private void getDataDeleteVegetable() {
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        if (bundle != null) {
-            bundle.getBundle(KEY_VEGETABLE_DELETE);
-            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-            System.out.println("name: " + bundle.getString("GARDEN_NAME"));
-            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        if (bundleDeleteVegetable != null) {
+            mGardenName = bundleDeleteVegetable.getString("GARDEN_NAME");
+            mGardenAddress = bundleDeleteVegetable.getString("GARDEN_ADDRESS");
+            mGardenId = bundleDeleteVegetable.getInt("GARDEN_ID");
+            mTxtGardenName.setText(mGardenName);
+            mTxtGardenAddress.setText(mGardenAddress);
+            System.out.println("chay bundleDeleteVegetable **************************");
+        }
+        if (bundleUpdateVegetable != null) {
+            mGardenName = bundleUpdateVegetable.getString("GARDEN_NAME");
+            mGardenAddress = bundleUpdateVegetable.getString("GARDEN_ADDRESS");
+            mGardenId = bundleUpdateVegetable.getInt("GARDEN_ID");
+            mTxtGardenName.setText(mGardenName);
+            mTxtGardenAddress.setText(mGardenAddress);
+            System.out.println("chay bundleGardenAdapter ***************************************");
         }
     }
 
@@ -211,6 +202,7 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
 
     public void createVegetable() {
         Intent intentCreateVegetable = new Intent(GardenActivity.this, CreateVegetableActivity.class);
+        intentCreateVegetable.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
         Bundle bundle = new Bundle();
         bundle.putInt("GARDEN_ID", mGardenId);
         bundle.putString("GARDEN_NAME", mGardenName);
@@ -220,10 +212,25 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
         startActivity(intentCreateVegetable);
     }
 
-//    public void getAllVegetableByGardenId() {
-//        String token = mUser.getToken();
-//        mAllVegetableByGardenIdPresenter.getAllVegetableByGardenId(mGardenId, token);
-//    }
+    private void showDialogDeleteGardenErr() {
+        final Dialog dialog = new Dialog(GardenActivity.this);
+        dialog.setContentView(R.layout.dialog_exchange_quantity_err);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtQuantity;
+        Button btnClose;
+        btnClose = (Button) dialog.findViewById(R.id.btn_close);
+        txtQuantity = (TextView) dialog.findViewById(R.id.txt_exchange_quantity);
+        txtQuantity.setText("Vui lòng xóa cây hiện có trong vườn trước");
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
 
     @Override
     public void onClick(View view) {
@@ -236,8 +243,8 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
                 createVegetable();
                 break;
             case R.id.lnl_back:
-                Intent intentHome = new Intent(GardenActivity.this, MainActivity.class);
-                startActivity(intentHome);
+//                Intent intentHome = new Intent(GardenActivity.this, MainActivity.class);
+//                startActivity(intentHome);
                 finish();
                 break;
             case R.id.txt_update_garden:
@@ -266,7 +273,7 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void deleteGardenFail() {
-
+        showDialogDeleteGardenErr();
     }
 
     @Override
@@ -301,33 +308,6 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
     public void clickVegetable(VegetableData vegetableData) {
         Intent intent = new Intent(GardenActivity.this, VegetableActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-//        Bundle bundle = new Bundle();
-//        bundle.putString("VEGETABLE_ID", vegetableData.getId());
-//        bundle.putString("VEGETABLE_NAME", vegetableData.getName());
-//        bundle.putString("VEGETABLE_DESCRIPTION", vegetableData.getDescription());
-//        bundle.putString("VEGETABLE_FEATURE", vegetableData.getFeature());
-//        bundle.putInt("VEGETABLE_QUANTITY", vegetableData.getQuantity());
-//        String linkUrl = "";
-//
-//        if (vegetableData.getImageVegetables().size() > 0) {
-//            int maxSize = vegetableData.getImageVegetables().size() - 1;
-//            linkUrl = vegetableData.getImageVegetables().get(maxSize).getUrl();
-//        } else {
-//            linkUrl = "";
-//        }
-//        bundle.putString("VEGETABLE_IMAGE", linkUrl);
-//        bundle.putString("VEGETABLE_DES_ID", vegetableData.getIdDescription());
-//        bundle.putString("VEGETABLE_NAME_SEARCH", vegetableData.getNameSearch());
-//        bundle.putString("VEGETABLE_SYNONYM", vegetableData.getSynonymOfFeature());
-//        bundle.putBoolean("IS_FIXED", vegetableData.isFixed());
-//        bundle.putInt("GARDEN_ID", mGardenId);
-//        bundle.putString("GARDEN_NAME", mGardenName);
-//        bundle.putString("GARDEN_ADDRESS", mGardenAddress);
-//        intent.putExtras(bundle);
-//        Toast.makeText(getApplication(), "gardenId: " + mGardenId + "\n iDVeg: " + vegetableData.getId(), Toast.LENGTH_SHORT).show();
-//        startActivity(intent);
-//        startActivityForResult(intent, CREATE_VEGETABLE);
-
         /*      send new                  */
         Bundle bundle = new Bundle();
         VegetableData vegetable = vegetableData;
@@ -349,19 +329,4 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
         System.out.println("chay showInfoPersonal ***************************");
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (data == null) {
-//            return;
-//        }
-//        if (requestCode == CREATE_VEGETABLE) {
-//            Bundle bundle = data.getBundleExtra("infoGarden");
-//            mGardenName = bundle.getString("GARDEN_NAME");
-//            mGardenAddress = bundle.getString("GARDEN_ADDRESS");
-//            mGardenId = bundle.getInt("GARDEN_ID");
-//            mTxtGardenName.setText(mGardenName);
-//            mTxtGardenAddress.setText(mGardenAddress);
-//        }
-//    }
 }

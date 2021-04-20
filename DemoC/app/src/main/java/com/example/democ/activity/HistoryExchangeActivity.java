@@ -17,9 +17,11 @@ import com.example.democ.R;
 import com.example.democ.adapter.HistoryExchangeAdapter;
 import com.example.democ.iclick.IClickExChange;
 import com.example.democ.model.ExchangeData;
+import com.example.democ.presenters.DeleteHistoryExchangePresenter;
 import com.example.democ.presenters.GetHistoryExchangePresenter;
 import com.example.democ.presenters.PersonalPresenter;
 import com.example.democ.room.entities.User;
+import com.example.democ.views.DeleteHistoryExchangeView;
 import com.example.democ.views.GetHistoryExchangeView;
 import com.example.democ.views.PersonalView;
 
@@ -27,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HistoryExchangeActivity extends AppCompatActivity implements IClickExChange, GetHistoryExchangeView, PersonalView,
-        View.OnClickListener {
+        View.OnClickListener, DeleteHistoryExchangeView {
 
     private final static String KEY_QR_CODE = "key_qr_code";
     private RecyclerView mRecyclerView;
@@ -35,9 +37,11 @@ public class HistoryExchangeActivity extends AppCompatActivity implements IClick
     private List<ExchangeData> mListHistory;
     private HistoryExchangeAdapter mHistoryExchangeAdapter;
     private GetHistoryExchangePresenter mGetHistoryExchangePresenter;
+    private DeleteHistoryExchangePresenter mDeleteHistoryExchangePresenter;
     private PersonalPresenter mPersonalPresenter;
 
     private String mAccessToken;
+    private static int mIntPositionRemove = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,7 @@ public class HistoryExchangeActivity extends AppCompatActivity implements IClick
         mPersonalPresenter.getInfoPersonal();
 
         mGetHistoryExchangePresenter = new GetHistoryExchangePresenter(getApplication(), getApplicationContext(), this);
+        mDeleteHistoryExchangePresenter = new DeleteHistoryExchangePresenter(getApplication(), getApplicationContext(), this);
         mListHistory = new ArrayList<>();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_history);
@@ -97,6 +102,35 @@ public class HistoryExchangeActivity extends AppCompatActivity implements IClick
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
+    /*dialog delete*/
+    private void showDialogDelete(final String exchangeId) {
+        final Dialog dialog = new Dialog(HistoryExchangeActivity.this);
+        dialog.setContentView(R.layout.dialog_delete_garden);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtQuantity;
+        Button btnClose, btnDelete;
+        btnClose = (Button) dialog.findViewById(R.id.btn_delete_no);
+        btnDelete = (Button) dialog.findViewById(R.id.btn_delete_yes);
+        txtQuantity = (TextView) dialog.findViewById(R.id.txt_content_delete);
+        txtQuantity.setText("Bạn có muốn xóa lịch sữ này không?");
+
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDeleteHistoryExchangePresenter.deleteHistoryExchange(exchangeId, mAccessToken);
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
 
     @Override
     public void onClick(View view) {
@@ -122,9 +156,39 @@ public class HistoryExchangeActivity extends AppCompatActivity implements IClick
         }
     }
 
+    private void showDialogHistoryNoDelete() {
+        final Dialog dialog = new Dialog(HistoryExchangeActivity.this);
+        dialog.setContentView(R.layout.dialog_exchange_quantity_err);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtQuantity;
+        Button btnClose;
+        btnClose = (Button) dialog.findViewById(R.id.btn_close);
+        txtQuantity = (TextView) dialog.findViewById(R.id.txt_exchange_quantity);
+        txtQuantity.setText("Bạn không thể xóa \n Yêu cầu chưa sữ lý");
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
     @Override
     public void clickExchangeRemove(ExchangeData exchangeData, int positionClick) {
-        //no event
+        String exchangeId = exchangeData.getId();
+        mIntPositionRemove = positionClick;
+        if (exchangeData.getStatus() == 2) {
+            System.out.println("khg dc xoa");
+            showDialogHistoryNoDelete();
+        } else {
+            System.out.println("xoa lich su");
+            showDialogDelete(exchangeId);
+
+        }
+
+        System.out.println("exchange id: " + exchangeId);
     }
 
     @Override
@@ -146,5 +210,16 @@ public class HistoryExchangeActivity extends AppCompatActivity implements IClick
     public void showInfoPersonal(User user) {
         mAccessToken = user.getToken();
         mGetHistoryExchangePresenter.getHistoryExchange(user.getToken());
+    }
+
+    @Override
+    public void deleteHistoryExchangeSuccess() {
+        mListHistory.remove(mIntPositionRemove);
+        mHistoryExchangeAdapter.notifyItemRemoved(mIntPositionRemove);
+    }
+
+    @Override
+    public void deleteHistoryExchangeFail() {
+
     }
 }

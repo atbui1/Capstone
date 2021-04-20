@@ -7,4 +7,5 @@ public interface IClickPost {
     void clickPosterUser(PostData shareData);
     void clickReportPost(PostData shareData);
     void clickPostDetail(PostData shareData);
+    void clickCallPhone(PostData postData);
 }

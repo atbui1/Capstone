@@ -5,12 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class VegetableShare implements Serializable {
-//    @SerializedName("id")
-//    private int id;
-//    @SerializedName("vegetableDesciptionId")
-//    private String vegetableDesciptionId;
-//    @SerializedName("shareDetailId")
-//    private String shareDetailId;
+
     @SerializedName("vegetableShareId")
     private String vegetableShareId;
     @SerializedName("vegetableShareName")

@@ -39,10 +39,18 @@ public interface CapstoneService {
     Call<ResponseBody> getInfoAccount(@Header("Authorization") String token);
     @PUT(ConfigApi.Api.ACCOUNT_UPDATE)
     Call<ResponseBody> updateAccount(@Body RequestBody body, @Header("Authorization") String token);
+    /*Friend*/
+    @GET(ConfigApi.Api.ACCOUNT_FRIEND)
+    Call<ResponseBody> getAllFriend(@Header("Authorization") String token);
     @GET(ConfigApi.Api.ACCOUNT_ADD_FRIEND)
     Call<ResponseBody> getAddFriendRequest(@Header("Authorization") String token);
     @POST(ConfigApi.Api.ACCOUNT_SEND_ADD_FRIEND)
     Call<ResponseBody> sendAddFriend(@Body RequestBody body, @Header("Authorization") String token);
+    @PUT(ConfigApi.Api.ACCOUNT_SEND_ADD_FRIEND)
+    Call<ResponseBody> replyFriendRequest(@Query("Id") int idRequest, @Query("status") int status, @Header("Authorization") String token);
+    @PUT(ConfigApi.Api.ACCOUNT_DELETE_FRIEND)
+    Call<ResponseBody> deleteFriend(@Query("Id") int idFriend, @Header("Authorization") String token);
+
     @GET(ConfigApi.Api.ACCOUNT_SEARCH_NAME)
     Call<ResponseBody> searchAccountByName(@Query("searchValue") String searchValue, @Header("Authorization") String token);
 
@@ -70,6 +78,7 @@ public interface CapstoneService {
                                        @Part("IsFixed") RequestBody IsFixed,
                                        @Part("NameSearch") RequestBody NameSearch,
                                        @Part("SynonymOfFeature") RequestBody SynonymOfFeature,
+                                       @Part("Images") RequestBody Images,
                                        @Part MultipartBody.Part newImages,
                                        @Header("Authorization") String token);
 
@@ -78,18 +87,19 @@ public interface CapstoneService {
     Call<ResponseBody> getAllVegetableByGardenId(@Query("GardenId") int gardenId, @Header("Authorization") String token);
     @DELETE(ConfigApi.Api.VEGETABLE)
     Call<ResponseBody> deleteVegetable(@Query("Id") String Id, @Header("Authorization") String token);
-//    @Multipart
-//    @PUT(ConfigApi.Api.VEGETABLE)
-//    Call<ResponseBody> updateVegetable(@Part("id") String IdVeg,
-//                                       @Part("title") String title,
-//                                       @Part("description") String description,
-//                                       @Part("featture") String featture,
-//                                       @Part("quantity") int quantity,
-//                                       @Part("gardenId") int gardenId,
-//                                       @Part List<MultipartBody.Part> newImages,
-//                                       @Header("Authorization") String token);
+
+    @Multipart
     @PUT(ConfigApi.Api.VEGETABLE)
-    Call<ResponseBody> updateVegetable(@Body RequestBody body, @Header("Authorization") String token);
+    Call<ResponseBody> updateVegetable(@Part("Id") RequestBody IdVeg,
+                                       @Part("Title") RequestBody title,
+                                       @Part("Description") RequestBody description,
+                                       @Part("Featture") RequestBody featture,
+                                       @Part("Quantity") RequestBody quantity,
+                                       @Part("GardenId") RequestBody gardenId,
+                                       @Part("Images") RequestBody Images,
+                                       @Part MultipartBody.Part newImages,
+                                       @Header("Authorization") String token);
+
     @GET(ConfigApi.Api.VEGETABLE_NEED_ALL)
     Call<ResponseBody> getAllVegetableNeed(@Header("Authorization") String token);
     @GET(ConfigApi.Api.VEGETABLE_CHECK)
@@ -134,11 +144,11 @@ public interface CapstoneService {
     @GET(ConfigApi.Api.EXCHANGE_ALL)
     Call<ResponseBody> getAllExchange(@Header("Authorization") String token);
     @PUT(ConfigApi.Api.EXCHANGE_IS_ACCEPT)
-    Call<ResponseBody> isAcceptExchange(@Query("Id") String Id, @Query("Status") int Status, @Header("Authorization") String token);
-    @DELETE(ConfigApi.Api.EXCHANGE_DELETE_REQUEST)
-    Call<ResponseBody> deleteExchangeRequest(@Query("Id") String exchangeId, @Header("Authorization") String token);
+    Call<ResponseBody> replyExchangeRequest(@Query("Id") String exchangeId, @Query("Status") int Status, @Header("Authorization") String token);
     @GET(ConfigApi.Api.EXCHANGE_HISTORY)
     Call<ResponseBody> getHistoryExchange(@Header("Authorization") String token);
+    @DELETE(ConfigApi.Api.EXCHANGE_DELETE_HISTORY)
+    Call<ResponseBody> deleteHistoryExchange(@Query("Id") String exchangeId, @Header("Authorization") String token);
 
 //    upload image
     @Multipart
@@ -159,5 +169,9 @@ public interface CapstoneService {
     //QRCode
     @GET(ConfigApi.Api.QR_CODE)
     Call<ResponseBody> getQRCode(@Query("ExchangeId") String ExchangeId, @Header("Authorization") String token);
+    @POST(ConfigApi.Api.QR_CODE)
+    Call<ResponseBody> confirmExchangeFinish(@Query("ExchangeId") String exchangeId, @Header("Authorization") String token);
+
+
 
 }

@@ -8,6 +8,7 @@
     tools:context=".activity.HistoryExchangeActivity">
 
     <LinearLayout
+        android:background="@color/sick_green"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp50">
@@ -25,7 +26,16 @@
         <LinearLayout
             android:layout_weight="4"
             android:layout_width="@dimen/dp0"
-            android:layout_height="match_parent"></LinearLayout>
+            android:layout_height="match_parent">
+            <TextView
+                android:text="Lịch sữ"
+                android:textSize="@dimen/sp20"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
         <LinearLayout
             android:layout_weight="1"
             android:layout_width="@dimen/dp0"
