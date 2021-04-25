@@ -50,15 +50,15 @@ public class RequestExchangeAdapter extends RecyclerView.Adapter<RequestExchange
         if (exchangeData == null) {
             return;
         }
-//        holder.mTxtRequestName.setText("Bạn " + mListExchange.get(position).getFullNameReceiver());
-//        holder.mTxtRequestContent.setText("Muốn nhận " + mListExchange.get(position).getQuantity()
-//                + " " + mListExchange.get(position).getVegNameReceive() + " từ bạn");
         holder.mTxtRequestContent.setText(mListExchange.get(position).getFullNameReceiver()
-        + " Muốn nhận "
+        + " muốn nhận "
         + mListExchange.get(position).getQuantity()
         + " "
         + mListExchange.get(position).getVegNameReceive()
-        + " từ bạn");
+        + " từ bạn và gửi lại "
+        + mListExchange.get(position).getQuantityReceiveExchangeResponse()
+        +" " + mListExchange.get(position).getVegNameReceiveExchangeResponse()
+        + " cho bạn");
 
         holder.mLnlImgRequestAgree.setOnClickListener(new View.OnClickListener() {
             @Override

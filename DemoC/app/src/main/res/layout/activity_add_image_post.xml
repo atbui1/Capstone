@@ -25,9 +25,9 @@
                 android:layout_width="@dimen/dp0"
                 android:layout_height="match_parent">
                 <ImageView
-                    android:src="@mipmap/leftarrow3"
-                    android:layout_width="@dimen/dp40"
-                    android:layout_height="@dimen/dp40" />
+                    android:src="@drawable/arrow_left_v"
+                    android:layout_width="@dimen/dp30"
+                    android:layout_height="@dimen/dp30" />
             </LinearLayout>
             <!--menu title-->
             <LinearLayout

@@ -56,24 +56,9 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_marginTop="@dimen/dp50"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp50">
-        <Button
-            android:id="@+id/btn_create_post"
-
-            android:textSize="@dimen/dp20"
-            android:background="@color/white"
-            android:textColor="@color/sick_green"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_diary"
-        android:layout_marginTop="@dimen/dp100"
+        android:layout_marginTop="@dimen/dp50"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

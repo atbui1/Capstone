@@ -6,16 +6,16 @@ public class ConfigApi {
     public interface Api {
 
         String ACCOUNT_LOGIN = "api/Login/MobileLogin";
-        String ACCOUNT_REGISTER = "api/Account/Registration";
-        String ACCOUNT_GET_INFO = "api/Account/GetAccountDetailByPhoneNumber";
-        String ACCOUNT_UPDATE = "api/Account/Update";
+        String ACCOUNT_REGISTER = "api/AccountData/Registration";
+        String ACCOUNT_GET_INFO = "/api/AccountDetail/GetAccountDetailByPhoneNumber";
+        String ACCOUNT_UPDATE = "api/AccountData/Update";
         //Friend
         String ACCOUNT_FRIEND = "/api/AccountFriend";
         String ACCOUNT_ADD_FRIEND = "api/AccountRequest/GetAccountRequest";
         String ACCOUNT_SEND_ADD_FRIEND = "api/AccountRequest";
         String ACCOUNT_DELETE_FRIEND = "api/AccountFriend";
 
-        String ACCOUNT_SEARCH_NAME = "api/Account/SearchAccount";
+        String ACCOUNT_SEARCH_NAME = "api/AccountDetail/SearchAccount";
 
         String CREATE_GARDEN = "api/Garden";
         String GET_ALL_GARDEN = "api/Garden/GetByAccountId";
@@ -49,7 +49,7 @@ public class ConfigApi {
         String EXCHANGE_HISTORY = "api/ExchangeDetail/GetByAccountId";
 
         //upload image
-        String UPLOAD_IMAGE = "api/Vegetable/Image";
+        String UPLOAD_AVATAR = "/api/AccountDetail/UploadAvata";
 
         //Address
         String PROVINCE = "api/Province";

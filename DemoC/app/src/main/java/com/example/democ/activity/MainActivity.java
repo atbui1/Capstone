@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import com.example.democ.DiaryFragment;
 import com.example.democ.MessageFragment;
 import com.example.democ.PersonalFragment;
 import com.example.democ.SearchFragment;
+import com.example.democ.model.AccountSearchByName;
 import com.example.democ.model.ExchangeData;
 import com.example.democ.model.GardenResult;
 import com.example.democ.model.PostData;
@@ -57,6 +59,11 @@ public class MainActivity extends AppCompatActivity {//} implements AllGardenVie
     private AllSharePresenter mAllSharePresenter;
     private AllExchangePresenter mAllExchangePresenter;
     private PersonalPresenter mPersonalPresenter;
+
+    private final static String SEARCH_ACCOUNT = "SearchAccount";
+    private final static String KEY_FLAG = "KEY_FLAG";
+    private static int mIntCheckFlag = 1;
+
     /*Back 2 tap exit app*/
     private long mBackPressTime;
 
@@ -88,6 +95,7 @@ public class MainActivity extends AppCompatActivity {//} implements AllGardenVie
         initialData();
     }
 
+
     @Override
     public void onBackPressed() {
         if (mBackPressTime + 2000 > System.currentTimeMillis()) {
@@ -100,11 +108,22 @@ public class MainActivity extends AppCompatActivity {//} implements AllGardenVie
     }
 
     private void initialView() {
+        mIntCheckFlag = 1;
+        getDataSearchAccount();
         mBottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         mBottomNavigationView.setOnNavigationItemSelectedListener(navListener);
 
         Fragment selectedFragment = null;
-
+//
+//        if (mIntCheckFlag == 1) {
+//            selectedFragment = new DiaryFragment();
+//        } else if (mIntCheckFlag == 2) {
+//            selectedFragment = new GardenFragment();
+//        } else if (mIntCheckFlag == 3) {
+//            selectedFragment = new RequestExchangeFragment();
+//        } else if (mIntCheckFlag == 4) {
+//            selectedFragment = new PersonalFragment();
+//        }
         selectedFragment = new DiaryFragment();
         getSupportFragmentManager().beginTransaction().add(R.id.frame_container, selectedFragment).commit();
 
@@ -116,11 +135,22 @@ public class MainActivity extends AppCompatActivity {//} implements AllGardenVie
 //        mAllExchangePresenter = new AllExchangePresenter(getApplication(), this, this);
 //        mPersonalPresenter = new PersonalPresenter(getApplicationContext(), this);
 //        mPersonalPresenter.getInfoPersonal();
+//        mListAllGarden = new ArrayList<>();
+//        mListAllPost = new ArrayList<>();
+//        mListAllExchange = new ArrayList<>();
+    }
 
+    private void getDataSearchAccount() {
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
+            mIntCheckFlag = bundle.getInt(KEY_FLAG);
 
-        mListAllGarden = new ArrayList<>();
-        mListAllPost = new ArrayList<>();
-        mListAllExchange = new ArrayList<>();
+            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            System.out.println("flag: " + mIntCheckFlag);
+            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        }
+
     }
 
     private void loadFragment(Fragment fragment) {
@@ -140,19 +170,20 @@ public class MainActivity extends AppCompatActivity {//} implements AllGardenVie
 //                        case R.id.nav_search:
 //                            selectFragment = new SearchFragment();
 //                            break;
-                        case R.id.nav_request_exchange:
-//                            selectFragment = new RequestExchangeFragment((ArrayList<ExchangeData>) mListAllExchange);
-                            selectFragment = new RequestExchangeFragment();
-                            break;
                         case R.id.nav_diary:
-//                            selectFragment = new DiaryFragment((ArrayList<PostData>) mListAllPost, mAccessToken, mUser);
+//                            mIntCheckFlag = 1;
                             selectFragment = new DiaryFragment();
                             break;
                         case R.id.nav_garden:
-//                            selectFragment = new GardenFragment((ArrayList<GardenResult>) mListAllGarden, mAccessToken);
+//                            mIntCheckFlag = 2;
                             selectFragment = new GardenFragment();
                             break;
+                        case R.id.nav_request_exchange:
+//                            mIntCheckFlag = 3;
+                            selectFragment = new RequestExchangeFragment();
+                            break;
                         case R.id.nav_personal:
+//                            mIntCheckFlag = 4;
                             selectFragment = new PersonalFragment();
                             break;
                     }

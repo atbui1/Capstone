@@ -9,6 +9,7 @@
 
     <!--toolo bar-->
     <LinearLayout
+        android:background="@color/sick_green"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp50">
@@ -19,14 +20,23 @@
             android:layout_width="@dimen/dp0"
             android:layout_height="match_parent">
             <ImageView
-                android:src="@mipmap/leftarrow"
-                android:layout_width="@dimen/dp20"
-                android:layout_height="@dimen/dp20" />
+                android:src="@drawable/arrow_left_v"
+                android:layout_width="@dimen/dp30"
+                android:layout_height="@dimen/dp30" />
         </LinearLayout>
         <LinearLayout
             android:layout_weight="4"
             android:layout_width="@dimen/dp0"
-            android:layout_height="match_parent"></LinearLayout>
+            android:layout_height="match_parent">
+            <TextView
+                android:text="Cập nhật vườn rau"
+                android:textSize="@dimen/sp20"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
         <LinearLayout
             android:layout_weight="1"
             android:layout_width="@dimen/dp0"

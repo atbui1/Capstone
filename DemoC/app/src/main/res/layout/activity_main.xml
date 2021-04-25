@@ -7,19 +7,14 @@
     android:orientation="vertical"
     tools:context=".activity.MainActivity">
 
-    <!--<LinearLayout-->
-        <!--android:id="@+id/tl_top"-->
-        <!--android:orientation="vertical"-->
-        <!--android:background="@color/sick_green"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="@dimen/dp50"></LinearLayout>-->
-    <!--android:layout_below="@+id/tl_top"-->
+
     <FrameLayout
         android:id="@+id/frame_container"
         android:background="@color/white"
         android:layout_above="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></FrameLayout>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"

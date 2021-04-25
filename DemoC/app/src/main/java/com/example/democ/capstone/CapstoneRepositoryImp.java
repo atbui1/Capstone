@@ -2,8 +2,7 @@ package com.example.democ.capstone;
 
 import android.content.Context;
 
-import com.example.democ.activity.UpdateVegetableActivity;
-import com.example.democ.model.Account;
+import com.example.democ.model.AccountData;
 import com.example.democ.model.AccountSearchByName;
 import com.example.democ.model.AddFriendRequest;
 import com.example.democ.model.DistrictData;
@@ -112,10 +111,10 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
     }
 
     @Override
-    public void register(final Context context, Account account, final CallBackData<Account> callBackData) {
+    public void register(final Context context, AccountData accountData, final CallBackData<AccountData> callBackData) {
         ClientApi clientApi = new ClientApi();
         final Gson gson = new Gson();
-        String json = gson.toJson(account);
+        String json = gson.toJson(accountData);
         RequestBody requestBody = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), json);
         Call<ResponseBody> serviceCall = clientApi.capstoneService().register(requestBody);
         serviceCall.enqueue(new Callback<ResponseBody>() {
@@ -124,9 +123,9 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
                 if (response.code() == 200 && response.body() != null) {
                     try {
                         String result = response.body().string();
-                        Account accountResult = gson.fromJson(result, Account.class);
-                        if (accountResult != null) {
-                            callBackData.onSuccess(accountResult);
+                        AccountData accountDataResult = gson.fromJson(result, AccountData.class);
+                        if (accountDataResult != null) {
+                            callBackData.onSuccess(accountDataResult);
                         } else {
                             callBackData.onFail("");
                         }
@@ -146,9 +145,9 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
     }
 
     @Override
-    public void getInfoAccount(Context context, String token, final CallBackData<Account> callBackData) {
+    public void getInfoAccount(Context context, String accountId, String token, final CallBackData<AccountData> callBackData) {
         ClientApi clientApi = new ClientApi();
-        Call<ResponseBody> serviceCall = clientApi.capstoneService().getInfoAccount("Bearer " + token);
+        Call<ResponseBody> serviceCall = clientApi.capstoneService().getInfoAccount(accountId,"Bearer " + token);
         serviceCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -156,11 +155,11 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
                     try {
                         String result = response.body().string();
                         JSONObject jsonObject = new JSONObject(result);
-                        Account account = new Gson().fromJson(jsonObject.toString(), Account.class);
-                        if (account == null) {
+                        AccountData accountData = new Gson().fromJson(jsonObject.toString(), AccountData.class);
+                        if (accountData == null) {
                             callBackData.onFail("");
                         } else {
-                            callBackData.onSuccess(account);
+                            callBackData.onSuccess(accountData);
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -178,12 +177,12 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
         });
 
     }
-/*update info account*/
+/*update info accountData*/
     @Override
-    public void updateAccount(Context context, Account account, String token, final CallBackData<Account> callBackData) {
+    public void updateAccount(Context context, AccountData accountData, String token, final CallBackData<AccountData> callBackData) {
         ClientApi clientApi = new ClientApi();
         final Gson gson = new Gson();
-        String json = gson.toJson(account);
+        String json = gson.toJson(accountData);
         final RequestBody requestBody = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), json);
         Call<ResponseBody> serviceCall = clientApi.capstoneService().updateAccount(requestBody, "Bearer " + token);
         serviceCall.enqueue(new Callback<ResponseBody>() {
@@ -192,11 +191,11 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
                 if (response.code() == 200 && response.body() != null) {
                     try {
                         String result = response.body().string();
-                        Account accountResponse = gson.fromJson(result, Account.class);
-                        if (accountResponse == null) {
+                        AccountData accountDataResponse = gson.fromJson(result, AccountData.class);
+                        if (accountDataResponse == null) {
                             callBackData.onFail("");
                         } else {
-                            callBackData.onSuccess(accountResponse);
+                            callBackData.onSuccess(accountDataResponse);
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -1186,6 +1185,46 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
     }
 
     @Override
+    public void updatePost(Context context, final ShareRequest shareRequest, String token, final CallBackData<ShareDetail> callBackData) {
+        ClientApi clientApi = new ClientApi();
+        final Gson gson = new Gson();
+        String json = gson.toJson(shareRequest);
+        final RequestBody requestBody = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), json);
+        Call<ResponseBody> serviceCall = clientApi.capstoneService().updatePost(requestBody, "Bearer " + token);
+        serviceCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.code() == 200 && response.body() != null) {
+                    try {
+                        String result = response.body().string();
+                        JSONObject jsonObject = new JSONObject(result);
+                        ShareDetail shareDetail = gson.fromJson(jsonObject.toString(), ShareDetail.class);
+                        if (shareDetail == null) {
+                            callBackData.onFail(response.message());
+                            System.out.println("FFFFFFFFFFFFFFFF update post fail FFFFFFFFFFFFFFFFFF");
+                        } else {
+                            callBackData.onSuccess(shareDetail);
+                            System.out.println("SSSSSSSSSSSSSSSSSSS update post success SSSSSSSSSSSSSSSSSSSSS");
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                } else {
+                    callBackData.onFail(response.message());
+                    System.out.println("FFFFFFFFFFFFFFFFFFFF  update post fail ngoai if FFFFFFFFFFFFFFFFFFFFff");
+                    System.out.println("code: " + response.code());
+                    System.out.println("FFFFFFFFFFFFFFFFFFFF  update post fail ngoai if FFFFFFFFFFFFFFFFFFFFff");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                System.out.println("FFFFFFFFFFFFFFFFFFFF  update post fail loi server FFFFFFFFFFFFFFFFFFFFff");
+            }
+        });
+    }
+
+    @Override
     public void deleteShare(Context context, String shareId, String token, final CallBackData<String> callBackData) {
         ClientApi clientApi = new ClientApi();
         Call<ResponseBody> serviceCall = clientApi.capstoneService().deleteShare(shareId, "Bearer " + token);
@@ -1516,34 +1555,42 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
 
     //        upload image
     @Override
-    public void uploadImage(Context context, List<MultipartBody.Part> newItem, String token, final CallBackData<ImageVegetable> callBackData) {
+    public void uploadAvatar(Context context, MultipartBody.Part newItem, String token, final CallBackData<String> callBackData) {
         ClientApi clientApi = new ClientApi();
-        Call<ResponseBody> serviceCall = clientApi.capstoneService().uploadImage(newItem, "Bearer " + token);
+        Call<ResponseBody> serviceCall = clientApi.capstoneService().uploadAvatar(newItem, "Bearer " + token);
         System.out.println("11111111111111111111111111111111111111111111111");
         serviceCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.code() == 200 && response.body() != null) {
+                if (response.code() == 200) {
                     try {
-                        String result = response.body().string();
-                        JSONObject jsonObject = new JSONObject(result);
-                        ImageVegetable imageVegetable = new Gson().fromJson(jsonObject.toString(), ImageVegetable.class);
-                        if (imageVegetable == null) {
-                            callBackData.onFail("");
-                        } else {
-                            callBackData.onSuccess(imageVegetable);
-                        }
+//                        String result = response.body().string();
+//                        JSONObject jsonObject = new JSONObject(result);
+//                        ImageVegetable imageVegetable = new Gson().fromJson(jsonObject.toString(), ImageVegetable.class);
+//                        if (imageVegetable == null) {
+//                            callBackData.onFail("");
+//                            System.out.println("FFFFFFFFFFFFFFFFF upload avatar fail FFFFFFFFFFFFFFFFF");
+//                        } else {
+//                            callBackData.onSuccess("");
+//                            System.out.println("SSSSSSSSSSSSSSSS upload avatar success SSSSSSSSSSSSSSSSSSSSS");
+//                        }
+                        callBackData.onSuccess("");
+                        System.out.println("SSSSSSSSSSSSSSSS upload avatar success SSSSSSSSSSSSSSSSSSSSS");
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 } else {
                     callBackData.onFail("");
+                    System.out.println("FFFFFFFFFFFFFFFFF upload avatar fail ngoai if FFFFFFFFFFFFFFFFFFFFFFFFF");
+                    System.out.println("code: " +response.code());
+                    System.out.println("FFFFFFFFFFFFFFFFF upload avatar fail ngoai if FFFFFFFFFFFFFFFFFFFFFFFFF");
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 callBackData.onFail("");
+                System.out.println("FFFFFFFFFFFFFFFF upload avatar loi sever FFFFFFFFFFFFFFFFFFFFFFFFFFF");
             }
         });
     }

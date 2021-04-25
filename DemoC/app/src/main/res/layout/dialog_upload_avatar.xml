@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@drawable/bg_edt_white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@drawable/bg_edt_white"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp100">
+        <TextView
+            android:id="@+id/txt_upload_avatar"
+            android:text="Đổi ảnh đại diện"
+            android:gravity="center"
+            android:textSize="@dimen/sp20"
+            android:paddingLeft="@dimen/sp20"
+            android:paddingRight="@dimen/sp20"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50" />
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <Button
+                android:id="@+id/btn_close"
+                android:background="@drawable/bg_edt_red"
+                android:text="Đóng"
+                android:textColor="@color/red"
+                android:paddingLeft="@dimen/dp50"
+                android:paddingRight="@dimen/dp50"
+                android:layout_marginTop="@dimen/dp5"
+                android:layout_marginBottom="@dimen/dp5"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

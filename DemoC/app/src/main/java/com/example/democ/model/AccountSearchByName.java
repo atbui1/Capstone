@@ -10,10 +10,13 @@ public class AccountSearchByName implements Serializable {
     private String accountId;
     @SerializedName("text")
     private String accountName;
+    @SerializedName("avatar")
+    private String avatar;
 
-    public AccountSearchByName(String accountId, String accountName) {
+    public AccountSearchByName(String accountId, String accountName, String avatar) {
         this.accountId = accountId;
         this.accountName = accountName;
+        this.avatar = avatar;
     }
 
     public String getAccountId() {
@@ -30,5 +33,13 @@ public class AccountSearchByName implements Serializable {
 
     public void setAccountName(String accountName) {
         this.accountName = accountName;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

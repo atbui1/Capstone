@@ -21,7 +21,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.QRCodeScannerActivity"></activity>
+        <activity android:name=".activity.ChangePasswordActivity"></activity>
+        <activity android:name=".activity.SearchAccountActivity" />
+        <activity android:name=".activity.UploadAvatarActivity" />
+        <activity android:name=".activity.QRCodeScannerActivity" />
         <activity android:name=".activity.FriendActivity" />
         <activity android:name=".activity.CreatePostExchangeActivity" />
         <activity android:name=".activity.CreatePostShareActivity" />

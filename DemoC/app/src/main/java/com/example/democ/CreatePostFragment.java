@@ -22,12 +22,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.democ.adapter.GardenAdapter;
+import com.example.democ.iclick.IClickGardenFull;
 import com.example.democ.model.GardenResult;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreatePostFragment extends Fragment implements View.OnClickListener {
+public class CreatePostFragment extends Fragment implements View.OnClickListener, IClickGardenFull {
    private View mView;
    private Button mBtnCreatePost;
    private EditText mEdtPostContent, mEdtPostVegetableQuantity;
@@ -69,7 +70,7 @@ public class CreatePostFragment extends Fragment implements View.OnClickListener
 
     public void showGardenDialog(Context context, ArrayList<GardenResult> gardenResults) {
         final Dialog dialog = new Dialog(context);
-        GardenAdapter gardenAdapter = new GardenAdapter(gardenResults, context);
+        GardenAdapter gardenAdapter = new GardenAdapter(gardenResults, context, this);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_login_fail);
@@ -99,5 +100,20 @@ public class CreatePostFragment extends Fragment implements View.OnClickListener
                 }
                 break;
         }
+    }
+
+    @Override
+    public void clickGarden(GardenResult gardenResult) {
+
+    }
+
+    @Override
+    public void clickGardenDelete(GardenResult gardenResult, int position) {
+
+    }
+
+    @Override
+    public void clickGardenUpdate(GardenResult gardenResult) {
+
     }
 }

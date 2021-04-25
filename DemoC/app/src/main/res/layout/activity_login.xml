@@ -12,10 +12,17 @@
     <LinearLayout
         android:background="@color/transparent"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp150"></LinearLayout>
+        android:layout_height="@dimen/dp200">
+        <ImageView
+            android:src="@drawable/logov"
+            android:scaleType="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
     <!--email-->
     <LinearLayout
+        android:layout_marginTop="@dimen/dp10"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp50">
         <EditText

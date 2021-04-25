@@ -17,12 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.democ.R;
-import com.example.democ.model.Account;
+import com.example.democ.model.AccountData;
 import com.example.democ.presenters.GetInfoAccountPresenter;
 import com.example.democ.presenters.PersonalPresenter;
 import com.example.democ.presenters.UpdateAccountPresenter;
 import com.example.democ.room.entities.User;
-import com.example.democ.room.managements.UserManagement;
 import com.example.democ.views.GetInfoAccountView;
 import com.example.democ.views.PersonalView;
 import com.example.democ.views.UpdateAccountView;
@@ -32,7 +31,7 @@ import java.util.Calendar;
 public class UpdateAccountActivity extends AppCompatActivity implements View.OnClickListener, PersonalView,
         GetInfoAccountView, UpdateAccountView {
 
-    private EditText mEdtPassword, mEdtPasswordConfirm, mEdtFullName, mEdtEmail;
+    private EditText mEdtFullName, mEdtEmail;
     private TextView mTxtYOB, mTxtSex;
     private Button mBtnUpdateAccount;
     private LinearLayout mLnlBack;
@@ -68,8 +67,6 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
     }
 
     private void initialView() {
-        mEdtPassword = (EditText) findViewById(R.id.edt_password);
-        mEdtPasswordConfirm = (EditText) findViewById(R.id.edt_password_confirm);
         mEdtFullName = (EditText) findViewById(R.id.edt_full_name);
         mEdtEmail = (EditText) findViewById(R.id.edt_email);
         mTxtYOB = (TextView) findViewById(R.id.txt_yob);
@@ -90,8 +87,7 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
     }
 
     private void initialData() {
-        password = mEdtPassword.getText().toString().trim();
-        passwordConfirm = mEdtPasswordConfirm.getText().toString().trim();
+
         fullName = mEdtFullName.getText().toString().trim();
         email = mEdtEmail.getText().toString().trim();
         yob = mTxtYOB.getText().toString().trim();
@@ -106,8 +102,7 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
     }
 
     private void updateAccount() {
-        password = mEdtPassword.getText().toString().trim();
-        passwordConfirm = mEdtPasswordConfirm.getText().toString().trim();
+
         fullName = mEdtFullName.getText().toString().trim();
         email = mEdtEmail.getText().toString().trim();
         yob = mTxtYOB.getText().toString().trim();
@@ -130,8 +125,8 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
             Toast.makeText(getApplicationContext(), "vui long xac nhan mk", Toast.LENGTH_SHORT).show();
         } else {
             //chay update
-            Account account = new Account(accountId,phone, password, fullName, yob, sex, email);
-            mUpdateAccountPresenter.updateAccount(account, mAccessToken);
+            AccountData accountData = new AccountData(accountId,phone, password, fullName, yob, sex, email);
+            mUpdateAccountPresenter.updateAccount(accountData, mAccessToken);
         }
         System.out.println("lllllllllllllllllllllllllllllllll");
     }
@@ -205,18 +200,18 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
         System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
         System.out.println(mAccessToken);
         System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
-        mGetInfoAccountPresenter.getInfoAccount(mAccessToken);
+        mGetInfoAccountPresenter.getInfoAccount(user.getAccountId(), mAccessToken);
     }
 
     @Override
-    public void getInfoAccountSuccess(Account account) {
-        phone = account.getPhone();
-        password = account.getPassword();
-        fullName = account.getFullName();
-        yob = account.getYOB();
-        sex = account.getSex();
-        email = account.getEmail();
-        accountId = account.getId();
+    public void getInfoAccountSuccess(AccountData accountData) {
+        phone = accountData.getPhone();
+        password = accountData.getPassword();
+        fullName = accountData.getFullName();
+        yob = accountData.getYOB().substring(0,10);
+        sex = accountData.getSex();
+        email = accountData.getEmail();
+        accountId = accountData.getId();
 
 
         System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
@@ -229,7 +224,7 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
         System.out.println(accountId);
         System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
 
-        mEdtPassword.setText(password);
+
         mEdtFullName.setText(fullName);
         if (sex == 1) {
             mTxtSex.setText("Nam");
@@ -248,7 +243,7 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
     }
 
     @Override
-    public void updateAccountSuccess(Account account) {
+    public void updateAccountSuccess(AccountData accountData) {
         Intent intent = new Intent(UpdateAccountActivity.this, MainActivity.class);
         startActivity(intent);
     }

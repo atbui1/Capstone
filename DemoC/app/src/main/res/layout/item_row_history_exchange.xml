@@ -12,7 +12,7 @@
             android:layout_weight="8"
             android:orientation="vertical"
             android:layout_width="@dimen/dp0"
-            android:layout_height="@dimen/dp150">
+            android:layout_height="@dimen/dp200">
             <TextView
                 android:id="@+id/txt_exchange_info"
                 android:gravity="center_vertical"
@@ -27,6 +27,12 @@
                 android:layout_height="@dimen/dp40" />
             <TextView
                 android:id="@+id/txt_exchange_status"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp40" />
+            <TextView
+                android:id="@+id/txt_exchange_type"
                 android:gravity="center_vertical"
                 android:paddingLeft="@dimen/dp10"
                 android:layout_width="match_parent"

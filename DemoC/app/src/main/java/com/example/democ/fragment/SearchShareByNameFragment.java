@@ -53,12 +53,9 @@ public class SearchShareByNameFragment extends Fragment implements IClickSearchP
 
         mSearchActivity = (SearchActivity) getActivity();
         searchValue = mSearchActivity.getmSearchValue();
-        if (!searchValue.equals("")) {
-            mTxtSearchValue.setText(searchValue);
-        }
         //nhan list vegetable tu search activity
         mList = mSearchActivity.getmListSearchName();
-        if (mList == null) {
+        if (mList.size() == 0 || mList == null) {
             mTxtSearchValue.setText("Không có: " + searchValue);
         }
         mRecyclerView = mView.findViewById(R.id.recycler_search_name);

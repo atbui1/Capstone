@@ -26,6 +26,7 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.DialogOnDeniedPermissionListener;
 import com.karumi.dexter.listener.single.PermissionListener;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
@@ -80,6 +81,14 @@ public class QRCodeScannerActivity extends AppCompatActivity implements ZXingSca
                         permissionToken.continuePermissionRequest();
                     }
                 }).check();
+        PermissionListener dialogPermissionListener =
+                DialogOnDeniedPermissionListener.Builder
+                        .withContext(getApplicationContext())
+                        .withTitle("Camera permission")
+                        .withMessage("Camera permission is needed to take pictures of your cat")
+                        .withButtonText(android.R.string.ok)
+                        .withIcon(R.mipmap.clock)
+                        .build();
     }
 
     private void initialData() {

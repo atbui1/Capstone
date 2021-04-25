@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.UploadAvatarActivity">
+
+    <!--toolbar-->
+    <LinearLayout
+        android:background="@color/sick_green"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp50">
+        <LinearLayout
+            android:id="@+id/lnl_back"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
+            <ImageView
+                android:src="@drawable/arrow_left_v"
+                android:layout_width="@dimen/dp30"
+                android:layout_height="@dimen/dp30" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="4"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
+            <TextView
+                android:text="Đổi ảnh đại diện"
+                android:gravity="center"
+                android:textSize="@dimen/sp20"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent"></LinearLayout>
+    </LinearLayout>
+    <!--avatar-->
+    <LinearLayout
+        android:id="@+id/lnl_avatar"
+        android:layout_marginTop="@dimen/dp20"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp300">
+        <ImageView
+            android:id="@+id/img_upload_avatar"
+            android:src="@drawable/avatardefault"
+            android:scaleType="fitStart"
+            android:adjustViewBounds="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <!--event upload-->
+    <LinearLayout
+        android:layout_marginTop="@dimen/dp20"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp50">
+        <Button
+            android:id="@+id/btn_upload_avatar"
+            android:background="@drawable/bg_btn_login"
+            android:text="Cập nhật"
+            android:paddingLeft="@dimen/dp30"
+            android:paddingRight="@dimen/dp30"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+</LinearLayout>

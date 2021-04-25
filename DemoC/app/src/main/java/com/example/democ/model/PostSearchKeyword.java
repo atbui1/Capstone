@@ -28,6 +28,8 @@ public class PostSearchKeyword implements Serializable {
     private String accountId;
     @SerializedName("fullName")
     private String fullName;
+    @SerializedName("avatar")
+    private String avatar;
     @SerializedName("phoneNumber")
     private String phoneNumber;
     @SerializedName("images")
@@ -36,7 +38,7 @@ public class PostSearchKeyword implements Serializable {
     //CST GetAllShareById - 12 element
     public PostSearchKeyword(String id, String vegName, String vegDescription, String vegFeature, int quantity, int statius,
                           String content, List<VegetableShare> vegetableShareList, String createdDate, String accountId,
-                          String fullName, String phoneNumber, List<ImageVegetable> imageVegetablesList) {
+                          String fullName, String avatar, String phoneNumber, List<ImageVegetable> imageVegetablesList) {
         this.id = id;
         this.vegName = vegName;
         this.vegDescription = vegDescription;
@@ -48,6 +50,7 @@ public class PostSearchKeyword implements Serializable {
         this.createdDate = createdDate;
         this.accountId = accountId;
         this.fullName = fullName;
+        this.avatar = avatar;
         this.phoneNumber = phoneNumber;
         this.imageVegetablesList = imageVegetablesList;
     }
@@ -138,6 +141,14 @@ public class PostSearchKeyword implements Serializable {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getPhoneNumber() {

@@ -13,17 +13,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.democ.R;
 import com.example.democ.iclick.IClickAccountName;
 import com.example.democ.model.AccountSearchByName;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class SearchAccountByNameAdapter extends RecyclerView.Adapter<SearchAccountByNameAdapter.ViewHolder> {
 
-    ArrayList<AccountSearchByName> mListAccount;
+    List<AccountSearchByName> mListAccount;
     Context mContext;
     IClickAccountName mIClickAccountName;
 
-    public SearchAccountByNameAdapter(ArrayList<AccountSearchByName> mListAccount, IClickAccountName mIClickAccountName) {
+    public SearchAccountByNameAdapter(List<AccountSearchByName> mListAccount, IClickAccountName mIClickAccountName) {
         this.mListAccount = mListAccount;
         this.mIClickAccountName = mIClickAccountName;
     }
@@ -43,6 +46,16 @@ public class SearchAccountByNameAdapter extends RecyclerView.Adapter<SearchAccou
             return;
         }
         holder.mTxtAccountName.setText(accountSearchByName.getAccountName());
+        if (mListAccount.get(position).getAvatar() == null) {
+            holder.mImgAvatar.setImageResource(R.drawable.avatardefault);
+        } else {
+            Picasso.with(mContext).load(mListAccount.get(position).getAvatar())
+                    .placeholder(R.drawable.avatardefault)
+                    .error(R.drawable.avatardefault)
+                    .into(holder.mImgAvatar);
+        }
+
+        /*click root*/
         holder.mLnlRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,10 +74,12 @@ public class SearchAccountByNameAdapter extends RecyclerView.Adapter<SearchAccou
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView mTxtAccountName;
+        CircleImageView mImgAvatar;
         LinearLayout mLnlRoot;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mTxtAccountName = (TextView) itemView.findViewById(R.id.txt_account_name);
+            mImgAvatar = (CircleImageView) itemView.findViewById(R.id.img_avatar);
             mLnlRoot = (LinearLayout) itemView.findViewById(R.id.lnl_root);
         }
     }

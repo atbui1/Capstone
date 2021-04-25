@@ -58,13 +58,8 @@ public class CreateGardenActivity extends AppCompatActivity implements View.OnCl
     private ArrayList<ProvinceData> mListProvince;
     private ArrayList<DistrictData> mListDistrict;
     private ArrayList<WardData> mListWard;
-    private static int mIntDistrictId = 0;
-    private static int mIdWard = 0;
-    private static String mStrProvince = null;
-    private static String mStrDistrict = null;
-    private static String mStrWard = "";
-    private static String mStrSubAddress;
-    private static String mStrAddress = "";
+    private  int mIntDistrictId = 0, mIdWard = 0;
+    private  String mStrProvince = "", mStrDistrict = "", mStrWard = "", mStrSubAddress ="", mStrAddress = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,11 +73,10 @@ public class CreateGardenActivity extends AppCompatActivity implements View.OnCl
     private void initialView() {
 
         mPersonalPresenter = new PersonalPresenter(getApplicationContext(), this);
-
         mPersonalPresenter.getInfoPersonal();
 
         mEdtGardenName = (EditText) findViewById(R.id.edt_garden_name);
-        mEdtGardenAddress = (EditText) findViewById(R.id.edt_garden_address);
+        mEdtGardenAddress = (EditText) findViewById(R.id.edt_sub_address);
 
         mBtnCreateGarden = (Button) findViewById(R.id.btn_create_garden);
         mBtnCreateGarden.setOnClickListener(this);
@@ -96,22 +90,12 @@ public class CreateGardenActivity extends AppCompatActivity implements View.OnCl
         mTxtDistrict.setOnClickListener(this);
         mTxtWard.setOnClickListener(this);
 
-        mTxtProvince.setText("thanh pho 1");
-        mTxtDistrict.setText("quan 1");
-        mTxtWard.setText("phuong 1");
-        mEdtGardenAddress.setText("chi tiet 1");
 
         mStrProvince = mTxtProvince.getText().toString();
         mStrDistrict = mTxtDistrict.getText().toString();
         mStrWard = mTxtWard.getText().toString();
         mStrSubAddress = mEdtGardenAddress.getText().toString();
 
-        System.out.println("AAAAAAAAAAAAAA");
-        System.out.println(mStrProvince);
-        System.out.println(mStrDistrict);
-        System.out.println(mStrWard);
-        System.out.println(mStrSubAddress);
-        System.out.println("AAAAAAAAAAAAAA");
 
         mProvincePresenter = new ProvincePresenter(getApplication(), getApplicationContext(), this);
         mDistrictPresenter = new DistrictPresenter(getApplication(), getApplicationContext(), this);
@@ -123,11 +107,12 @@ public class CreateGardenActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void createGarden() {
-        String gardenName = mEdtGardenName.getText().toString();
-        mStrSubAddress = mEdtGardenAddress.getText().toString();
-        String token = mUser.getToken();
+        String gardenName = mEdtGardenName.getText().toString().trim();
+        String subAddressTmp = mEdtGardenAddress.getText().toString().trim();
 
-        mStrAddress = mStrProvince + ", " + mStrDistrict + ", " + mStrWard + ", " + mStrSubAddress;
+        mStrSubAddress = subAddressTmp.replaceAll("\\,","");
+
+        mStrAddress = mStrSubAddress + ", " + mStrWard + ", " + mStrDistrict + ", " + mStrProvince;
 
         Garden garden = new Garden(gardenName, mStrAddress);
 
@@ -137,18 +122,21 @@ public class CreateGardenActivity extends AppCompatActivity implements View.OnCl
         System.out.println("district: " + mStrDistrict);
         System.out.println("ward: " + mStrWard);
         System.out.println("subAddress: " + mStrSubAddress);
-        System.out.println("token: " + token);
         System.out.println(mStrAddress);
         System.out.println("cretea garden 114");
 
-        if (mStrDistrict == "" || mStrWard == "" || mStrSubAddress == "") {
+        if (gardenName.equals("")) {
+            showDialogNameErr();
+            return;
+        } else if (mStrProvince.equals("") || mStrDistrict.equals("") || mStrWard.equals("") || mStrSubAddress.equals("")) {
             System.out.println("show dia log err distric null or ward null");
             showDialogAddressErr();
+            return;
         } else {
             System.out.println("goi request api");
 
 //            send request to api
-            mCreateGardenPresenter.createGarden(garden, token);
+            mCreateGardenPresenter.createGarden(garden, mUser.getToken());
         }
     }
 
@@ -200,6 +188,24 @@ public class CreateGardenActivity extends AppCompatActivity implements View.OnCl
         wardBottomSheetFragment.show(getSupportFragmentManager(), wardBottomSheetFragment.getTag());
     }
 
+    private void showDialogNameErr() {
+        final Dialog dialog = new Dialog(CreateGardenActivity.this);
+        dialog.setContentView(R.layout.dialog_login_fail);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtErr;
+        Button btnClose;
+        txtErr = (TextView) dialog.findViewById(R.id.txt_detail_err);
+        btnClose = (Button) dialog.findViewById(R.id.btn_close);
+        txtErr.setText("vui lòng nhập tên vườn rau");
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
     private void showDialogAddressErr() {
         final Dialog dialog = new Dialog(CreateGardenActivity.this);
         dialog.setContentView(R.layout.dialog_login_fail);
@@ -208,7 +214,7 @@ public class CreateGardenActivity extends AppCompatActivity implements View.OnCl
         Button btnClose;
         txtErr = (TextView) dialog.findViewById(R.id.txt_detail_err);
         btnClose = (Button) dialog.findViewById(R.id.btn_close);
-        txtErr.setText("vui lòng điền đầy đủ thông tin");
+        txtErr.setText("vui lòng nhập đầy đủ thông tin");
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

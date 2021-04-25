@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -25,41 +24,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.democ.R;
-import com.example.democ.fragment.ListTextWikiBottomSheetFragment;
 import com.example.democ.fragment.SearchByNameBottomSheetFragment;
-import com.example.democ.fragment.SearchByWikiBottomSheetFragment;
-import com.example.democ.iclick.IClickListTextWiki;
 import com.example.democ.iclick.IClickVegetable;
-import com.example.democ.iclick.IClickWikiTitle;
 import com.example.democ.model.ImageVegetable;
 import com.example.democ.model.VegetableData;
-import com.example.democ.model.VegetableDescription;
-import com.example.democ.model.WikiData;
-import com.example.democ.model.WikiDataTitle;
 import com.example.democ.presenters.CreateVegetablePresenter;
 import com.example.democ.presenters.PersonalPresenter;
-import com.example.democ.presenters.SearchByDescriptionPresenter;
-import com.example.democ.presenters.SearchByKeywordPresenter;
 import com.example.democ.presenters.SearchByNamePresenter;
-import com.example.democ.presenters.GetDescriptionByWikiPresenter;
-import com.example.democ.presenters.SearchByWikiTitlePresenter;
-import com.example.democ.presenters.UploadImagePresenter;
 import com.example.democ.room.entities.User;
-import com.example.democ.room.managements.UserManagement;
 import com.example.democ.views.CreateVegetableView;
 import com.example.democ.views.PersonalView;
 import com.example.democ.views.SearchByNameView;
-import com.example.democ.views.SearchByWikiTitleView;
-import com.example.democ.views.GetDescriptionByWikiView;
-import com.example.democ.views.UploadImageView;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-import com.karumi.dexter.listener.single.PermissionListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -69,7 +49,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -78,7 +57,7 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-public class CreateVegetableActivity extends AppCompatActivity implements View.OnClickListener, CreateVegetableView, UploadImageView,
+public class CreateVegetableActivity extends AppCompatActivity implements View.OnClickListener, CreateVegetableView,
         SearchByNameView, PersonalView,
         SearchByNameBottomSheetFragment.IGetDataSearchWikiListener,
         SearchByNameBottomSheetFragment.IGetDataSearchWikiTitleListener {
@@ -95,7 +74,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
     //list part image
     private List<MultipartBody.Part> mListImagePart;
     private List<ImageVegetable> mListImageVegetable;
-    private UploadImagePresenter mUploadImagePresenter;
+
     private MultipartBody.Part mRequestImage = null;
     private static final int CAMERA_REQUEST = 0;
     private static int request_code_image = 123;
@@ -143,7 +122,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
         mCreateVegetablePresenter = new CreateVegetablePresenter(getApplication(), this, this);
         mPersonalPresenter = new PersonalPresenter(getApplicationContext(), this);
         mPersonalPresenter.getInfoPersonal();
-        mUploadImagePresenter = new UploadImagePresenter(getApplication(), this, this);
+
 
         mEdtSearchValue = (EditText) findViewById(R.id.edt_search_value);
         mStrSearchValue = mEdtSearchValue.getText().toString().trim();
@@ -268,7 +247,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
 
         dialog.show();
     }
-
+    /*create vegetable*/
     public void createVegetable() {
         String mName = mEdtVegetableName.getText().toString();
         String mDescription = mEdtVegetableDescription.getText().toString();
@@ -378,16 +357,10 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
 
     //open bottom sheet
     private void clickOpenBottomSheet() {
-        mStrSearchValue = mEdtSearchValue.getText().toString();
+        mStrSearchValue = mEdtSearchValue.getText().toString().trim();
 //        mStrSearchOption = SEARCH_NAME;
         mSearchByNamePresenter.searchByName(mStrSearchValue, mToken);
-//        if (mStrSearchOption == SEARCH_NAME) {
-//            Toast.makeText(getApplicationContext(), "search name", Toast.LENGTH_SHORT).show();
-//            mSearchByNamePresenter.searchByName(mStrSearchValue, mToken);
-//        } else if (mStrSearchOption == SEARCH_WIKI) {
-//            Toast.makeText(getApplicationContext(), "search wiki", Toast.LENGTH_SHORT).show();
-//            mSearchByWikiTitlePresenter.searchByWikiTitle(mStrSearchValue, mToken);
-//        }
+
     }
 
     /*dialog intro vegetable*/
@@ -594,10 +567,10 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
 
     /*get data search wiki title*/
     @Override
-    public void getDataSearchWikiTitle(String vegName, String vegLinkUrl) {
+    public void getDataSearchWikiTitle(String vegName, String vegLinkUrl, String vegDescription, String vegFeature) {
         mEdtVegetableName.setText(vegName);
-        mEdtVegetableDescription.setText("");
-        mEdtVegetableFeature.setText("");
+        mEdtVegetableDescription.setText(vegDescription);
+        mEdtVegetableFeature.setText(vegFeature);
         if (vegLinkUrl.equals("")) {
             mImgCreateVegetable.setImageResource(R.mipmap.addimage64);
         } else {
@@ -650,29 +623,9 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
         System.out.println(mListImagePart);
         System.out.println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
 
-        mUploadImagePresenter.uploadImage(mListImagePart, mUser.getToken());
 
 
     }
-    @Override
-    public void uploadImageSuccess(ImageVegetable imageVegetables) {
-        System.out.println("--------------- ****************-----------------");
-        System.out.println("upload image view success");
-        System.out.println("chay create vegetable");
-        System.out.println(imageVegetables.getLocalUrl());
-        System.out.println(imageVegetables.getUrl());
-        System.out.println(imageVegetables.getThumbnail());
-
-//        createVegetable();
-
-        System.out.println("-----------------********* ket thuc upload image view success ********* -----------------------");
-    }
-
-    @Override
-    public void uploadImageFail() {
-
-    }
-
 
     /*check permission*/
     private void checkPermission() {
@@ -692,7 +645,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
 
                     @Override
                     public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
-
+                        permissionToken.continuePermissionRequest();
                     }
                 }).onSameThread().check();
     }

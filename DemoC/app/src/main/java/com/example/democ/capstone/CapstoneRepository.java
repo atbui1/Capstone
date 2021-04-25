@@ -2,7 +2,7 @@ package com.example.democ.capstone;
 
 import android.content.Context;
 
-import com.example.democ.model.Account;
+import com.example.democ.model.AccountData;
 import com.example.democ.model.AccountSearchByName;
 import com.example.democ.model.AddFriendRequest;
 import com.example.democ.model.DistrictData;
@@ -34,14 +34,13 @@ import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import retrofit2.Call;
 
 public interface CapstoneRepository {
 
     void login(Context context, String userName, String password, String deviceToken, CallBackData<User> callBackData);
-    void register(Context context, Account account, CallBackData<Account> callBackData);
-    void getInfoAccount(Context context, String token, CallBackData<Account> callBackData);
-    void updateAccount(Context context, Account account, String token, CallBackData<Account> callBackData);
+    void register(Context context, AccountData accountData, CallBackData<AccountData> callBackData);
+    void getInfoAccount(Context context, String accountId, String token, CallBackData<AccountData> callBackData);
+    void updateAccount(Context context, AccountData accountData, String token, CallBackData<AccountData> callBackData);
     //Friend
     void getAllFriend(Context context, String token, CallBackData<List<FriendData>> callBackData);
     void getAddFriendRequest(Context context, String token, CallBackData<List<AddFriendRequest>> callBackData);
@@ -83,6 +82,7 @@ public interface CapstoneRepository {
     void getAllShare(Context context, String token, CallBackData<List<PostData>> callBackData);
     void getAllShareById(Context context, String id, String token, CallBackData<List<PostData>> callBackData);
     void createPostShare(Context context, ShareRequest shareRequest, String token, CallBackData<ShareDetail> callBackData);
+    void updatePost(Context context, ShareRequest shareRequest, String token, CallBackData<ShareDetail> callBackData);
     void deleteShare(Context context, String shareId, String token, CallBackData<String> callBackData);
     void searchShareByDescription(Context context, String valueSearch, String token, CallBackData<List<PostSearchDescription>> callBackData);
     void searchShareByName(Context context, String valueSearch, String token, CallBackData<List<PostSearchName>> callBackData);
@@ -95,7 +95,7 @@ public interface CapstoneRepository {
     void getHistoryExchange(Context context, String token, CallBackData<List<ExchangeData>> callBackData);
     void deleteHistoryExchange(Context context, String exchangeId, String token, CallBackData<String> callBackData);
 //    upload image
-    void uploadImage(Context context, List<MultipartBody.Part> newItem, String token, CallBackData<ImageVegetable> callBackData);
+    void uploadAvatar(Context context, MultipartBody.Part newItem, String token, CallBackData<String> callBackData);
 
     //address
     void getAllProvince(Context context, String token, CallBackData<List<ProvinceData>> callBackData);

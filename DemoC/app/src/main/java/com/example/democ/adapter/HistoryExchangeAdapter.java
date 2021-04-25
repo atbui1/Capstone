@@ -20,16 +20,13 @@ import java.util.List;
 public class HistoryExchangeAdapter extends RecyclerView.Adapter<HistoryExchangeAdapter.ViewHolder> {
     List<ExchangeData> mListHistory;
     Context mContext;
+    String mStrAccountId;
     IClickExChange mIClickExChange;
 
-    public HistoryExchangeAdapter(List<ExchangeData> mListHistory, IClickExChange mIClickExChange) {
-        this.mListHistory = mListHistory;
-        this.mIClickExChange = mIClickExChange;
-    }
-
-    public HistoryExchangeAdapter(List<ExchangeData> mListHistory, Context mContext, IClickExChange mIClickExChange) {
+    public HistoryExchangeAdapter(List<ExchangeData> mListHistory, Context mContext, String mStrAccountId, IClickExChange mIClickExChange) {
         this.mListHistory = mListHistory;
         this.mContext = mContext;
+        this.mStrAccountId = mStrAccountId;
         this.mIClickExChange = mIClickExChange;
     }
 
@@ -47,12 +44,28 @@ public class HistoryExchangeAdapter extends RecyclerView.Adapter<HistoryExchange
         if (exchangeData == null) {
             return;
         }
-        holder.mTxtInfoExchange.setText(" nhận " + exchangeData.getVegNameReceive() + " " + exchangeData.getFullNameHost());
+        if (mStrAccountId.equals(exchangeData.getReceiverId())) {
+            holder.mTxtInfoExchange.setText(" Bạn nhận "
+                    + exchangeData.getQuantity()
+                    + " "
+                    + exchangeData.getVegNameReceive()
+                    + " từ "
+                    + exchangeData.getFullNameHost());
+        } else {
+            holder.mTxtInfoExchange.setText(" Bạn cho "
+                    + exchangeData.getQuantity()
+                    + " "
+                    + exchangeData.getVegNameReceive()
+                    + " đến "
+                    + exchangeData.getFullNameReceiver());
+        }
+//        holder.mTxtInfoExchange.setText(" nhận " + exchangeData.getVegNameReceive() + " " + exchangeData.getFullNameHost());
+        /*Exchange time*/
         String postTime = mListHistory.get(position).getCreatedDate();
         String subTime = postTime.substring(0, 10);
         holder.mTxtExchangeTime.setText("Thời gian: " + subTime);
 
-
+        /* exchange status*/
         if (exchangeData.getStatus() == 1) {
             holder.mTxtExchangeStatus.setText("Trạng thái: Yêu cầu chưa sữ lý");
             holder.mTxtExchangeStatus.setTextColor(ContextCompat.getColor(mContext, R.color.sick_green));
@@ -66,6 +79,16 @@ public class HistoryExchangeAdapter extends RecyclerView.Adapter<HistoryExchange
             holder.mTxtExchangeStatus.setText("Trạng thái: Hoàn thành trao đổi");
             holder.mTxtExchangeStatus.setTextColor(ContextCompat.getColor(mContext, R.color.dark_sky_blue));
         }
+
+        /*Exchange type*/
+        if (exchangeData.getTypeShare() == 1) {
+            holder.mTxtExchangeType.setText("Bài viết: Chia sẽ");
+            holder.mTxtExchangeType.setTextColor(ContextCompat.getColor(mContext, R.color.sick_green));
+        } else if (exchangeData.getTypeShare() == 2) {
+            holder.mTxtExchangeType.setText("Bài viết: Trao đổi");
+            holder.mTxtExchangeType.setTextColor(ContextCompat.getColor(mContext, R.color.dark_yellow));
+        }
+
         holder.mLnlRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,7 +113,7 @@ public class HistoryExchangeAdapter extends RecyclerView.Adapter<HistoryExchange
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         LinearLayout mLnlRoot, mLnlHistoryDelete;
-        TextView mTxtInfoExchange, mTxtExchangeStatus, mTxtExchangeTime;
+        TextView mTxtInfoExchange, mTxtExchangeStatus, mTxtExchangeTime, mTxtExchangeType;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mLnlRoot = (LinearLayout) itemView.findViewById(R.id.lnl_root);
@@ -98,6 +121,7 @@ public class HistoryExchangeAdapter extends RecyclerView.Adapter<HistoryExchange
             mTxtInfoExchange = (TextView) itemView.findViewById(R.id.txt_exchange_info);
             mTxtExchangeStatus = (TextView) itemView.findViewById(R.id.txt_exchange_status);
             mTxtExchangeTime = (TextView) itemView.findViewById(R.id.txt_exchange_time);
+            mTxtExchangeType = (TextView) itemView.findViewById(R.id.txt_exchange_type);
         }
     }
 }

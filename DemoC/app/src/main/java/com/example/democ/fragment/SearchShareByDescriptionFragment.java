@@ -54,13 +54,9 @@ public class SearchShareByDescriptionFragment extends Fragment implements IClick
 
         mSearchActivity = (SearchActivity) getActivity();
         searchValue = mSearchActivity.getmSearchValue();
-        if (!searchValue.equals("")) {
-            mTxtSearchValue.setText(searchValue);
-        }
-
         //nhan list vegetable tu search activity
         mListDescription = (ArrayList<PostSearchDescription>) mSearchActivity.getmListSearchDescription();
-        if (mListDescription.size() == 0) {
+        if (mListDescription.size() == 0 || mListDescription == null) {
             mTxtSearchValue.setText("Không có: " + searchValue);
         }
         System.out.println("list vegetable search description");

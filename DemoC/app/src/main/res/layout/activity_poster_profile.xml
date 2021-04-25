@@ -23,9 +23,9 @@
             android:layout_width="@dimen/dp0"
             android:layout_height="match_parent">
             <ImageView
-                android:src="@mipmap/leftarrow3"
-                android:layout_width="@dimen/dp40"
-                android:layout_height="@dimen/dp40" />
+                android:src="@drawable/arrow_left_v"
+                android:layout_width="@dimen/dp30"
+                android:layout_height="@dimen/dp30" />
         </LinearLayout>
         <!--menu title-->
         <LinearLayout
@@ -72,6 +72,7 @@
                         android:layout_width="@dimen/dp100"
                         android:layout_height="@dimen/dp100">
                         <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/img_avatar"
                             android:src="@drawable/avatar1"
                             android:layout_width="@dimen/dp80"
                             android:layout_height="@dimen/dp80" />
@@ -90,144 +91,71 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <!--posts sum-->
                 <LinearLayout
-                    android:weightSum="10"
                     android:orientation="horizontal"
-                    android:layout_marginTop="@dimen/dp10"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp150">
-
-
-                    <!--right layout-->
+                    android:layout_height="@dimen/dp50">
+                    <!--title posts-->
                     <LinearLayout
-                        android:layout_weight="10"
-                        android:orientation="vertical"
+                        android:layout_weight="1"
                         android:layout_width="@dimen/dp0"
                         android:layout_height="match_parent">
-                        <!--sub right layout-->
-                        <LinearLayout
-                            android:layout_weight="2"
-                            android:orientation="horizontal"
+                        <TextView
+                            android:text="Số bài viết"
+                            android:textSize="@dimen/sp20"
+                            android:gravity="center|end"
+                            android:paddingRight="@dimen/dp20"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/dp0">
-                            <!--posts sum-->
-                            <LinearLayout
-                                android:layout_weight="1"
-                                android:orientation="vertical"
-                                android:layout_width="@dimen/dp0"
-                                android:layout_height="match_parent">
-                                <!--number posts-->
-                                <LinearLayout
-                                    android:layout_weight="1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/dp0">
-                                    <TextView
-                                        android:id="@+id/txt_total_posts"
-                                        android:gravity="center"
-                                        android:textSize="@dimen/sp25"
-                                        android:textStyle="bold"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent" />
-                                </LinearLayout>
-                                <!--title posts-->
-                                <LinearLayout
-                                    android:layout_weight="1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/dp0">
-                                    <TextView
-                                        android:text="posts"
-                                        android:textSize="@dimen/sp15"
-                                        android:gravity="center"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent" />
-                                </LinearLayout>
-                            </LinearLayout>
-                            <!--follow-->
-                            <LinearLayout
-                                android:layout_weight="1"
-                                android:orientation="vertical"
-                                android:layout_width="@dimen/dp0"
-                                android:layout_height="match_parent">
-                                <!--number follow-->
-                                <LinearLayout
-                                    android:layout_weight="1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/dp0">
-                                    <TextView
-                                        android:gravity="center"
-                                        android:text="3"
-                                        android:textSize="@dimen/sp25"
-                                        android:textStyle="bold"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent" />
-                                </LinearLayout>
-                                <!--title follow-->
-                                <LinearLayout
-                                    android:layout_weight="1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/dp0">
-                                    <TextView
-                                        android:text="followers"
-                                        android:textSize="@dimen/sp15"
-                                        android:gravity="center"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent" />
-                                </LinearLayout>
-                            </LinearLayout>
-                            <!--following-->
-                            <LinearLayout
-                                android:layout_weight="1"
-                                android:orientation="vertical"
-                                android:layout_width="@dimen/dp0"
-                                android:layout_height="match_parent">
-                                <!--number following-->
-                                <LinearLayout
-                                    android:layout_weight="1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/dp0">
-                                    <TextView
-                                        android:gravity="center"
-                                        android:text="4"
-                                        android:textSize="@dimen/sp25"
-                                        android:textStyle="bold"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent" />
-                                </LinearLayout>
-                                <!--title following-->
-                                <LinearLayout
-                                    android:layout_weight="1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/dp0">
-                                    <TextView
-                                        android:text="following"
-                                        android:textSize="@dimen/sp15"
-                                        android:gravity="center"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent" />
-                                </LinearLayout>
-                            </LinearLayout>
-                        </LinearLayout>
-                        <!--button follow-->
-                        <LinearLayout
-                            android:layout_weight="1"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/dp0">
-                            <Button
-                                android:id="@+id/btn_add_friend"
-                                android:background="@drawable/bg_btn_login"
-                                android:text="Kết bạn"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/sp20"
-                                android:textStyle="bold"
-                                android:layout_marginLeft="@dimen/dp80"
-                                android:layout_marginRight="@dimen/dp80"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="5dp"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
-                        </LinearLayout>
+                            android:layout_height="match_parent" />
                     </LinearLayout>
-
+                    <!--number posts-->
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="@dimen/dp0"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:id="@+id/txt_total_posts"
+                            android:textSize="@dimen/sp20"
+                            android:textStyle="bold"
+                            android:gravity="center|start"
+                            android:paddingLeft="@dimen/dp20"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+                </LinearLayout>
+                <!--button add friend-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp50">
+                    <Button
+                        android:id="@+id/btn_add_friend"
+                        android:background="@drawable/bg_btn_login"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp20"
+                        android:layout_marginLeft="@dimen/dp50"
+                        android:layout_marginRight="@dimen/dp50"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+                <!--button follow-->
+                <LinearLayout
+                    android:id="@+id/lnl_btn_remove_add_friend"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp50">
+                    <Button
+                        android:id="@+id/btn_remove_add_friend"
+                        android:background="@drawable/bg_btn_login"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp20"
+                        android:layout_marginLeft="@dimen/dp50"
+                        android:layout_marginRight="@dimen/dp50"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView

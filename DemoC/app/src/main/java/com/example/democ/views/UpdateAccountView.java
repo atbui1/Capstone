@@ -1,8 +1,8 @@
 package com.example.democ.views;
 
-import com.example.democ.model.Account;
+import com.example.democ.model.AccountData;
 
 public interface UpdateAccountView {
-    void updateAccountSuccess(Account account);
+    void updateAccountSuccess(AccountData accountData);
     void updateAccountFail();
 }

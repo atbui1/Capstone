@@ -5,7 +5,7 @@ import android.content.Context;
 
 import com.example.democ.capstone.CapstoneRepository;
 import com.example.democ.capstone.CapstoneRepositoryImp;
-import com.example.democ.model.Account;
+import com.example.democ.model.AccountData;
 import com.example.democ.utils.CallBackData;
 import com.example.democ.views.UpdateAccountView;
 
@@ -22,11 +22,11 @@ public class UpdateAccountPresenter {
         mCapstoneRepository = new CapstoneRepositoryImp();
     }
 
-    public void updateAccount(Account account, String token) {
-        mCapstoneRepository.updateAccount(mContext, account, token, new CallBackData<Account>() {
+    public void updateAccount(AccountData accountData, String token) {
+        mCapstoneRepository.updateAccount(mContext, accountData, token, new CallBackData<AccountData>() {
             @Override
-            public void onSuccess(Account account) {
-                mUpdateAccountView.updateAccountSuccess(account);
+            public void onSuccess(AccountData accountData) {
+                mUpdateAccountView.updateAccountSuccess(accountData);
             }
 
             @Override

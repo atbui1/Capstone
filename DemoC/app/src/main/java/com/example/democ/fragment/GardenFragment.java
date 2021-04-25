@@ -1,10 +1,17 @@
 package com.example.democ.fragment;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -13,20 +20,28 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.democ.R;
 import com.example.democ.activity.CreateGardenActivity;
+import com.example.democ.activity.GardenActivity;
 import com.example.democ.activity.UpdateAccountActivity;
+import com.example.democ.activity.UpdateGardenActivity;
 import com.example.democ.adapter.GardenAdapter;
+import com.example.democ.iclick.IClickGardenFull;
 import com.example.democ.model.GardenResult;
 import com.example.democ.presenters.AllGardenPresenter;
+import com.example.democ.presenters.DeleteGardenPresenter;
 import com.example.democ.presenters.PersonalPresenter;
 import com.example.democ.room.entities.User;
 import com.example.democ.views.AllGardenView;
+import com.example.democ.views.DeleteGardenView;
 import com.example.democ.views.PersonalView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GardenFragment extends Fragment implements View.OnClickListener, AllGardenView, PersonalView {
+public class GardenFragment extends Fragment implements View.OnClickListener, AllGardenView, PersonalView,
+        IClickGardenFull, DeleteGardenView {
+
+    private final static String KEY_GARDEN_SEND_UPDATE = "KEY_GARDEN_SEND_UPDATE";
 
     private View mView;
     //    Floating action
@@ -36,12 +51,9 @@ public class GardenFragment extends Fragment implements View.OnClickListener, Al
     private GardenAdapter mGardenAdapter;
     private PersonalPresenter mPersonalPresenter;
     private AllGardenPresenter mAllGardenPresenter;
+    private DeleteGardenPresenter mDeleteGardenPresenter;
     private User mUser;
-
-//    public GardenFragment(ArrayList<GardenResult> mGardenList, String mAccessToken) {
-//        this.mGardenList = mGardenList;
-//        this.mAccessToken = mAccessToken;
-//    }
+    private int mIntPosition = 0;
 
     @Nullable
     @Override
@@ -69,13 +81,14 @@ public class GardenFragment extends Fragment implements View.OnClickListener, Al
         mPersonalPresenter = new PersonalPresenter(getActivity().getApplication(), this);
         mPersonalPresenter.getInfoPersonal();
         mAllGardenPresenter = new AllGardenPresenter(getActivity().getApplication(), getActivity(), this);
+        mDeleteGardenPresenter = new DeleteGardenPresenter(getActivity().getApplication(), getActivity(), this);
 //        updateUI();
     }
 
     public void updateUI() {
         if (mGardenAdapter == null) {
             mGardenAdapter = new GardenAdapter((ArrayList<GardenResult>) mGardenList,
-                    getContext().getApplicationContext());
+                    getContext().getApplicationContext(), this);
             mRecyclerGarden.setAdapter(mGardenAdapter);
         } else {
             mGardenAdapter.notifyDataSetChanged();
@@ -113,5 +126,98 @@ public class GardenFragment extends Fragment implements View.OnClickListener, Al
     public void showInfoPersonal(User user) {
         mUser = user;
         mAllGardenPresenter.getAllGarden(user.getToken());
+    }
+
+    @Override
+    public void clickGarden(GardenResult gardenResult) {
+        Toast.makeText(getContext(), "garden name: " + gardenResult.getName(), Toast.LENGTH_SHORT).show();
+        Intent intentGarden = new Intent(getContext(), GardenActivity.class);
+        intentGarden.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        Bundle bundle = new Bundle();
+        bundle.putString("GARDEN_NAME", gardenResult.getName());
+        bundle.putString("GARDEN_ADDRESS", gardenResult.getAddress());
+        bundle.putInt("GARDEN_ID", gardenResult.getId());
+//                intentGarden.putExtras(bundle);
+        intentGarden.putExtra("infoGardenTo", bundle);
+        startActivity(intentGarden);
+    }
+
+    @Override
+    public void clickGardenDelete(GardenResult gardenResult, int position) {
+        mIntPosition = position;
+        showDialogDeleteGarden(gardenResult.getId());
+    }
+
+    public void showDialogDeleteGarden(final int gardenId) {
+        final Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_delete_garden);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCanceledOnTouchOutside(false);
+        Button mBtnYes, mBtnNo;
+        mBtnYes = (Button) dialog.findViewById(R.id.btn_delete_yes);
+        mBtnNo = (Button) dialog.findViewById(R.id.btn_delete_no);
+        mBtnNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        mBtnYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteGarden(gardenId);
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+    public void deleteGarden(int gardenId) {
+
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        System.out.println("token delete garden: " + mUser.getToken());
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        mDeleteGardenPresenter.deleteGarden(gardenId, mUser.getToken());
+    }
+    @Override
+    public void clickGardenUpdate(GardenResult gardenResult) {
+        Toast.makeText(getContext(), "update garden: " + gardenResult.getId(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getContext(), UpdateGardenActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(KEY_GARDEN_SEND_UPDATE, gardenResult);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    @Override
+    public void deleteGardenSuccess() {
+        mGardenList.remove(mIntPosition);
+        mGardenAdapter.notifyItemRemoved(mIntPosition);
+    }
+
+    @Override
+    public void deleteGardenFail() {
+        showDialogDeleteGardenErr();
+    }
+    private void showDialogDeleteGardenErr() {
+        final Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_exchange_quantity_err);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtQuantity;
+        Button btnClose;
+        btnClose = (Button) dialog.findViewById(R.id.btn_close);
+        txtQuantity = (TextView) dialog.findViewById(R.id.txt_exchange_quantity);
+        txtQuantity.setText("Vui lòng xóa cây hiện có trong vườn trước");
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 }

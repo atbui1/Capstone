@@ -53,6 +53,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class PostDetailActivity extends AppCompatActivity implements PersonalView, View.OnClickListener, CreateExchangeView,
         CheckVegetableOfAccountView, AllGardenView, AllVegetableByGardenIdView {
 
@@ -61,18 +63,20 @@ public class PostDetailActivity extends AppCompatActivity implements PersonalVie
     private final static String KEY_BUNDLE_KEYWORD = "KEY_BUNDLE_KEYWORD";
     private final static String KEY_BUNDLE_NAME = "KEY_BUNDLE_NAME";
     private final static String KEY_POST_DETAIL_SEND = "KEY_POST_DETAIL_SEND";
+    private final static String KEY_BUNDLE_POSTER_DETAIL = "KEY_BUNDLE_POSTER_DETAIL";
     private static String POST_SHARE = "Nhận rau";
     private static String POST_EXCHANGE = "Đổi rau";
 
     private TextView mTxtPostUser, mTxtPostTime, mTxtPostContent, mTxtPostQuantity, mTxtPhoneNumber,
             mTxtDetailName, mTxtDetailDescription, mTxtDetailFeature;
     private ImageView mImgPostImage;
+    private CircleImageView mImgPosterImage;
     private LinearLayout mLnlBtnExchange, mLnlLeftMenu, mLnlBack, mLnlRootPoster;
     private Button mBtnExchange;
 
     private PersonalPresenter mPersonalPresenter;
 
-    private String mStrPostUser = "", mStrPostTime = "", mStrPostContent = "", mStrPostImage = "",
+    private String mStrPostUser = "", mStrPostTime = "", mStrPostContent = "", mStrPostImage = "", mStrPosterImage = "",
             mStrAccountIdOfPost = "", mStrAccountId = "", mShareIdOfShare = "", mStrAccountShareId = ""
             , mStrPhoneNumber = "", mStrVegetableNeedId = "", mStrVegetableNeedName = "",
             mStrGardenNameDonate = "", mStrVegetableNameDonate = "",
@@ -128,12 +132,14 @@ public class PostDetailActivity extends AppCompatActivity implements PersonalVie
         getDataSearchDescription();
         getDataSearchKeyword();
         getDataSearchName();
+        getDataPosterProfile();
 
         mTxtPostUser = (TextView) findViewById(R.id.txt_post_username);
         mTxtPostTime = (TextView) findViewById(R.id.txt_post_time);
         mTxtPostContent = (TextView) findViewById(R.id.txt_post_content);
         mTxtPostQuantity = (TextView) findViewById(R.id.txt_post_vegetable_quantity);
         mImgPostImage = (ImageView) findViewById(R.id.img_post_content);
+        mImgPosterImage = (CircleImageView) findViewById(R.id.img_post_user);
         mLnlBtnExchange = (LinearLayout) findViewById(R.id.lnl_btn_exchange);
         mBtnExchange = (Button) findViewById(R.id.btn_exchange);
         mBtnExchange.setOnClickListener(this);
@@ -167,6 +173,15 @@ public class PostDetailActivity extends AppCompatActivity implements PersonalVie
                     .into(mImgPostImage);
         }
 
+        if (mStrPosterImage.equals("")) {
+            mImgPosterImage.setImageResource(R.drawable.avatardefault);
+        } else {
+            Picasso.with(this).load(mStrPosterImage)
+                    .placeholder(R.drawable.avatardefault)
+                    .error(R.drawable.avatardefault)
+                    .into(mImgPosterImage);
+        }
+
         if (mIntStatus == 1) {
             mBtnExchange.setText(POST_SHARE);
         } else if (mIntStatus == 2) {
@@ -181,7 +196,7 @@ public class PostDetailActivity extends AppCompatActivity implements PersonalVie
         System.out.println("JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ");
     }
 
-    /*get data from bundle with 4 types of cases*/
+    /*get data from bundle with 5 types of cases*/
     public void getDataHome() {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -190,7 +205,7 @@ public class PostDetailActivity extends AppCompatActivity implements PersonalVie
             PostData postData = mPostData;
             if (postData != null) {
                 mStrPostUser = postData.getFullName().trim();
-                mStrPostTime = postData.getCreatedDate().trim();
+                mStrPostTime = postData.getCreatedDate().trim().substring(0,10);
                 mStrPostContent = postData.getContent().trim();
                 mStrAccountIdOfPost = postData.getAccountId().trim();
                 mStrPhoneNumber = postData.getPhoneNumber().trim();
@@ -210,6 +225,12 @@ public class PostDetailActivity extends AppCompatActivity implements PersonalVie
                     mStrPostImage = "";
                 } else {
                     mStrPostImage = postData.getImageVegetablesList().get(maxSize).getUrl().trim();
+                }
+
+                if (postData.getAvatar() == null) {
+                    mStrPosterImage = "";
+                } else {
+                    mStrPosterImage = postData.getAvatar().trim();
                 }
             }
         }
@@ -222,7 +243,7 @@ public class PostDetailActivity extends AppCompatActivity implements PersonalVie
             PostSearchDescription postData = mPostSearchDescription;
             if (postData != null) {
                 mStrPostUser = postData.getFullName().trim();
-                mStrPostTime = postData.getCreatedDate().trim();
+                mStrPostTime = postData.getCreatedDate().trim().substring(0,10);
                 mStrPostContent = postData.getContent().trim();
                 mStrAccountIdOfPost = postData.getAccountId().trim();
                 mStrPhoneNumber = postData.getPhoneNumber().trim();
@@ -242,6 +263,12 @@ public class PostDetailActivity extends AppCompatActivity implements PersonalVie
                     mStrPostImage = "";
                 } else {
                     mStrPostImage = postData.getImageVegetablesList().get(maxSize).getUrl().trim();
+                }
+
+                if (postData.getAvatar() == null) {
+                    mStrPosterImage = "";
+                } else {
+                    mStrPosterImage = postData.getAvatar().trim();
                 }
             }
         }
@@ -254,7 +281,7 @@ public class PostDetailActivity extends AppCompatActivity implements PersonalVie
             PostSearchKeyword postData = mPostSearchKeyword;
             if (postData != null) {
                 mStrPostUser = postData.getFullName().trim();
-                mStrPostTime = postData.getCreatedDate().trim();
+                mStrPostTime = postData.getCreatedDate().trim().substring(0,10);
                 mStrPostContent = postData.getContent().trim();
                 mStrAccountIdOfPost = postData.getAccountId().trim();
                 mStrPhoneNumber = postData.getPhoneNumber().trim();
@@ -274,6 +301,12 @@ public class PostDetailActivity extends AppCompatActivity implements PersonalVie
                     mStrPostImage = "";
                 } else {
                     mStrPostImage = postData.getImageVegetablesList().get(maxSize).getUrl().trim();
+                }
+
+                if (postData.getAvatar() == null) {
+                    mStrPosterImage = "";
+                } else {
+                    mStrPosterImage = postData.getAvatar().trim();
                 }
             }
         }
@@ -286,7 +319,7 @@ public class PostDetailActivity extends AppCompatActivity implements PersonalVie
             PostSearchName postData = mPostSearchName;
             if (postData != null) {
                 mStrPostUser = postData.getFullName().trim();
-                mStrPostTime = postData.getCreatedDate().trim();
+                mStrPostTime = postData.getCreatedDate().trim().substring(0,10);
                 mStrPostContent = postData.getContent().trim();
                 mStrAccountIdOfPost = postData.getAccountId().trim();
                 mStrPhoneNumber = postData.getPhoneNumber().trim();
@@ -307,10 +340,54 @@ public class PostDetailActivity extends AppCompatActivity implements PersonalVie
                 } else {
                     mStrPostImage = postData.getImageVegetablesList().get(maxSize).getUrl().trim();
                 }
+
+                if (postData.getAvatar() == null) {
+                    mStrPosterImage = "";
+                } else {
+                    mStrPosterImage = postData.getAvatar().trim();
+                }
             }
         }
     }
-    /*end get data from bundle with 4 types of cases*/
+    public void getDataPosterProfile() {
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
+            mPostData = (PostData) bundle.getSerializable(KEY_BUNDLE_POSTER_DETAIL);
+            PostData postData = mPostData;
+            if (postData != null) {
+                mStrPostUser = postData.getFullName().trim();
+                mStrPostTime = postData.getCreatedDate().trim().substring(0,10);
+                mStrPostContent = postData.getContent().trim();
+                mStrAccountIdOfPost = postData.getAccountId().trim();
+                mStrPhoneNumber = postData.getPhoneNumber().trim();
+                mStrDetailName = postData.getVegName().trim();
+                mStrDetailDescription = postData.getVegDescription().trim();
+                mStrDetailFeature = postData.getVegFeature().trim();
+                mStrAccountShareId = postData.getAccountId().trim();
+                mIntCheck = 1;
+                mIntStatus = postData.getStatius();
+                mIntQuantityOfShare = postData.getQuantity();
+                mShareIdOfShare = postData.getId().trim();
+                mIntSizeListVegetableShare = postData.getVegetableShareList().size();
+                mListVegetableNeed = postData.getVegetableShareList();
+
+                int maxSize = postData.getImageVegetablesList().size() - 1;
+                if (postData.getImageVegetablesList() == null || postData.getImageVegetablesList().size() == 0) {
+                    mStrPostImage = "";
+                } else {
+                    mStrPostImage = postData.getImageVegetablesList().get(maxSize).getUrl().trim();
+                }
+
+                if (postData.getAvatar() == null) {
+                    mStrPosterImage = "";
+                } else {
+                    mStrPosterImage = postData.getAvatar().trim();
+                }
+            }
+        }
+    }
+    /*end get data from bundle with 5 types of cases*/
 
     /*open report dialog bottom sheet with 4 types of cases*/
     public void clickOpenReportBottomSheet(PostData postData) {

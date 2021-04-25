@@ -101,7 +101,6 @@ public class ReportPostBottomSheetFragment extends BottomSheetDialogFragment imp
         System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         ReportPost reportPost = new ReportPost(reportContent, mPostId, accountId);
         mReportPostPresenter.reportPost(reportPost, accessToken);
-        mBottomSheetDialog.dismiss();
     }
     private void reportContentErr() {
         String reportContent = R_CONTENT_ERR;
@@ -117,7 +116,6 @@ public class ReportPostBottomSheetFragment extends BottomSheetDialogFragment imp
 
         ReportPost reportPost = new ReportPost(reportContent, mPostId, accountId);
         mReportPostPresenter.reportPost(reportPost, accessToken);
-        mBottomSheetDialog.dismiss();
     }
     private void reportCheat() {
         String reportContent = R_CHEAT;
@@ -132,11 +130,10 @@ public class ReportPostBottomSheetFragment extends BottomSheetDialogFragment imp
         }
         ReportPost reportPost = new ReportPost(reportContent, mPostId, accountId);
         mReportPostPresenter.reportPost(reportPost, accessToken);
-        mBottomSheetDialog.dismiss();
     }
     private void showDialogReportSuccess() {
         final Dialog dialog = new Dialog(getActivity());
-        dialog.setContentView(R.layout.dialog_exchange_quantity_err);
+        dialog.setContentView(R.layout.dialog_report);
         dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
         TextView txtQuantity;
         Button btnClose;
@@ -147,6 +144,7 @@ public class ReportPostBottomSheetFragment extends BottomSheetDialogFragment imp
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
+                mBottomSheetDialog.dismiss();
             }
         });
         dialog.setCanceledOnTouchOutside(false);
@@ -169,11 +167,7 @@ public class ReportPostBottomSheetFragment extends BottomSheetDialogFragment imp
 
     @Override
     public void reportPostSuccess() {
-        System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDĐ");
-        System.out.println("Send report success");
-        System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDĐ");
-//        Toast.makeText(getActivity(), "Gửi báo cáo thành công", Toast.LENGTH_SHORT).show();
-//        showDialogReportSuccess();
+        showDialogReportSuccess();
     }
 
     @Override

@@ -36,6 +36,7 @@ import com.example.democ.views.CreateShareView;
 import com.example.democ.views.PersonalView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class CreatePostExchangeActivity extends AppCompatActivity implements View.OnClickListener, PersonalView, AllGardenView,
@@ -316,6 +317,8 @@ public class CreatePostExchangeActivity extends AppCompatActivity implements Vie
                 listNameTmp.add(vegetableName);
             }
             mTxtPostVegetableNeed.setText(String.valueOf(listNameTmp));
+
+
             listNameTmp.clear();
         }
     }

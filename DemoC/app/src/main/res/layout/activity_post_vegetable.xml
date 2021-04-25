@@ -12,7 +12,7 @@
         android:layout_height="@dimen/dp50">
         <TextView
             android:text="chọn loại rau"
-            android:textSize="@dimen/sp17"
+            android:textSize="@dimen/sp20"
             android:textStyle="bold"
             android:gravity="center"
             android:textColor="@color/sick_green"

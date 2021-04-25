@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:background="@drawable/bg_edt_white"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="Vui lòng xác thực số điện thoại"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginRight="@dimen/dp10"
+            android:textSize="@dimen/dp20"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp30" />
+        <TextView
+            android:text="Nhập mã xác nhận"
+            android:textSize="@dimen/sp15"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp30" />
+        <EditText
+            android:id="@+id/edt_code"
+            android:layout_marginLeft="@dimen/dp50"
+            android:layout_marginRight="@dimen/dp50"
+            android:background="@drawable/bg_edt"
+            android:hint="mã xác nhận"
+            android:paddingLeft="@dimen/dp10"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50" />
+        <LinearLayout
+            android:id="@+id/lnl_resend_code"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <LinearLayout
+                android:layout_weight="2"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <TextView
+                    android:gravity="end|center_vertical"
+                    android:text="Không nhận được?"
+                    android:textSize="@dimen/sp15"
+                    android:paddingRight="@dimen/dp5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <TextView
+                    android:gravity="start|center_vertical"
+                    android:text="Gửi lại"
+                    android:textSize="@dimen/sp15"
+                    android:textColor="@color/sick_green"
+                    android:textStyle="bold"
+                    android:paddingLeft="@dimen/dp5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <TextView
+                android:id="@+id/txt_send_confirm_code"
+                android:background="@drawable/bg_btn_login"
+                android:text="Xác thực"
+                android:textSize="@dimen/sp20"
+                android:paddingLeft="@dimen/dp30"
+                android:paddingRight="@dimen/dp30"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

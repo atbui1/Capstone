@@ -40,8 +40,10 @@ public class HistoryExchangeActivity extends AppCompatActivity implements IClick
     private DeleteHistoryExchangePresenter mDeleteHistoryExchangePresenter;
     private PersonalPresenter mPersonalPresenter;
 
+    private User mUser;
     private String mAccessToken;
     private static int mIntPositionRemove = 0;
+    private String mStrAccountId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,13 +78,14 @@ public class HistoryExchangeActivity extends AppCompatActivity implements IClick
     }
     private void updateUI() {
         if (mHistoryExchangeAdapter == null) {
-            mHistoryExchangeAdapter = new HistoryExchangeAdapter(mListHistory, getApplicationContext(), this);
+            mHistoryExchangeAdapter = new HistoryExchangeAdapter(mListHistory, getApplicationContext(), mStrAccountId, this);
             mRecyclerView.setAdapter(mHistoryExchangeAdapter);
         } else {
             mHistoryExchangeAdapter.notifyDataSetChanged();
         }
     }
 
+    /*Unprocessed request   status = 1*/
     private void showDialogNotification() {
         final Dialog dialog = new Dialog(HistoryExchangeActivity.this);
         dialog.setContentView(R.layout.dialog_login_fail);
@@ -91,6 +94,66 @@ public class HistoryExchangeActivity extends AppCompatActivity implements IClick
         Button btnClose;
         txtDetail = dialog.findViewById(R.id.txt_detail_err);
         txtDetail.setText("Chưa cho, nhận rau");
+        btnClose = dialog.findViewById(R.id.btn_close);
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+    /*the request was denied    status = 3*/
+    private void showDialogRequestDenied() {
+        final Dialog dialog = new Dialog(HistoryExchangeActivity.this);
+        dialog.setContentView(R.layout.dialog_login_fail);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtDetail;
+        Button btnClose;
+        txtDetail = dialog.findViewById(R.id.txt_detail_err);
+        txtDetail.setText("Yêu cầu đã bị từ chối");
+        btnClose = dialog.findViewById(R.id.btn_close);
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+    /*the exchange finish   status = 4*/
+    private void showDialogRequestFinish() {
+        final Dialog dialog = new Dialog(HistoryExchangeActivity.this);
+        dialog.setContentView(R.layout.dialog_login_fail);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtDetail;
+        Button btnClose;
+        txtDetail = dialog.findViewById(R.id.txt_detail_err);
+        txtDetail.setText("Trao đổi đã hoàn tất");
+        btnClose = dialog.findViewById(R.id.btn_close);
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+    /*request has been processed        status = 2 but not owner*/
+    private void showDialogOwner() {
+        final Dialog dialog = new Dialog(HistoryExchangeActivity.this);
+        dialog.setContentView(R.layout.dialog_login_fail);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtDetail;
+        Button btnClose;
+        txtDetail = dialog.findViewById(R.id.txt_detail_err);
+        txtDetail.setText("Bạn không phải người cho rau");
         btnClose = dialog.findViewById(R.id.btn_close);
 
         btnClose.setOnClickListener(new View.OnClickListener() {
@@ -147,12 +210,20 @@ public class HistoryExchangeActivity extends AppCompatActivity implements IClick
         if (exchangeData.getStatus() == 1) {
             showDialogNotification();
         } else if (exchangeData.getStatus() == 2) {
-            Intent intent = new Intent(HistoryExchangeActivity.this, QRCodeActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(KEY_QR_CODE, exchangeData);
-            intent.putExtras(bundle);
-            startActivity(intent);
+            if (exchangeData.getAccountHostId().equals(mUser.getAccountId())) {
+                Intent intent = new Intent(HistoryExchangeActivity.this, QRCodeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(KEY_QR_CODE, exchangeData);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            } else {
+                showDialogOwner();
+            }
+        } else if (exchangeData.getStatus() == 3) {
+            showDialogRequestDenied();
+        } else if (exchangeData.getStatus() == 4) {
+            showDialogRequestFinish();
         }
     }
 
@@ -208,7 +279,9 @@ public class HistoryExchangeActivity extends AppCompatActivity implements IClick
 
     @Override
     public void showInfoPersonal(User user) {
+        mUser = user;
         mAccessToken = user.getToken();
+        mStrAccountId = user.getAccountId();
         mGetHistoryExchangePresenter.getHistoryExchange(user.getToken());
     }
 

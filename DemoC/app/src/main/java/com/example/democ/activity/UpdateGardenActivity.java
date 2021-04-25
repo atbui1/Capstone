@@ -3,6 +3,7 @@ package com.example.democ.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
+import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import com.example.democ.iclick.IClickProvince;
 import com.example.democ.iclick.IClickWard;
 import com.example.democ.model.DistrictData;
 import com.example.democ.model.Garden;
+import com.example.democ.model.GardenResult;
 import com.example.democ.model.ProvinceData;
 import com.example.democ.model.WardData;
 import com.example.democ.presenters.DistrictPresenter;
@@ -43,7 +45,9 @@ import java.util.List;
 public class UpdateGardenActivity extends AppCompatActivity implements View.OnClickListener, UpdateGardenView,
         PersonalView, ProvinceView, DistrictView, WardView {
 
-    private EditText mEdtGardenName, mEdtGardenAddress;
+    private final static String KEY_GARDEN_SEND_UPDATE = "KEY_GARDEN_SEND_UPDATE";
+
+    private EditText mEdtGardenName, mEdtSubAddress;
     private TextView mTxtProvince, mTxtDistrict, mTxtWard;
     private Button mBtnUpdateGarden;
 
@@ -60,12 +64,8 @@ public class UpdateGardenActivity extends AppCompatActivity implements View.OnCl
     private ArrayList<ProvinceData> mListProvince;
     private ArrayList<DistrictData> mListDistrict;
     private ArrayList<WardData> mListWard;
-    private static int mIntDistrictId = 0;
-    private static int mIdWard = 0;
-    private static String mStrProvince = null;
-    private static String mStrDistrict = null;
-    private static String mStrWard = "";
-    private static String mStrAddress = "";
+    private  int mIntDistrictId = 0, mIdWard = 0;
+    private  String mStrProvince = "", mStrDistrict = "", mStrWard = "", mStrAddress = "", mStrSubAddress;
 
 
     @Override
@@ -85,7 +85,7 @@ public class UpdateGardenActivity extends AppCompatActivity implements View.OnCl
         mUser = new User();
 
         mEdtGardenName = (EditText) findViewById(R.id.edt_garden_update_name);
-        mEdtGardenAddress = (EditText) findViewById(R.id.edt_garden_update_address);
+        mEdtSubAddress = (EditText) findViewById(R.id.edt_garden_update_address);
         mTxtProvince = (TextView) findViewById(R.id.txt_province);
         mTxtDistrict = (TextView) findViewById(R.id.txt_district);
         mTxtWard = (TextView) findViewById(R.id.txt_ward);
@@ -105,30 +105,104 @@ public class UpdateGardenActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void initialData() {
-
+        getDataGarden();
         mUpdateGardenPresenter = new UpdateGardenPresenter(getApplication(), this, this);
-        Intent intentGardenAdapter = getIntent();
-        Bundle bundleGardenAdapter = intentGardenAdapter.getExtras();
-        if (bundleGardenAdapter != null) {
-            String gardenName = bundleGardenAdapter.getString("GARDEN_NAME");
-            String gardenAddress = bundleGardenAdapter.getString("GARDEN_ADDRESS");
-            mGardenId = bundleGardenAdapter.getInt("GARDEN_ID");
+
+    }
+    private void getDataGarden() {
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+
+        if (bundle != null) {
+            GardenResult gardenResult = (GardenResult) bundle.getSerializable(KEY_GARDEN_SEND_UPDATE);
+            String gardenName = gardenResult.getName();
+            String gardenAddress = gardenResult.getAddress();
+            mGardenId = gardenResult.getId();
+
+            String[] addressTmp = gardenAddress.split(",");
+            mStrSubAddress = addressTmp[0];
+            mStrWard = addressTmp[1];
+            mStrDistrict = addressTmp[2];
+            mStrProvince = addressTmp[3];
+
+            if (mStrSubAddress == null) {
+                mStrSubAddress = "";
+            }
+            if (mStrWard == null) {
+                mStrWard = "";
+            }
+            if (mStrDistrict == null) {
+                mStrDistrict = "";
+            }
+            if (mStrProvince == null) {
+                mStrProvince = "";
+            }
+
             mEdtGardenName.setText(gardenName);
-            mEdtGardenAddress.setText(gardenAddress);
+            mTxtProvince.setText(mStrProvince);
+            mTxtDistrict.setText(mStrDistrict);
+            mTxtWard.setText(mStrWard);
+            mEdtSubAddress.setText(mStrSubAddress);
+
             mStrAddress = gardenAddress;
+
+
         }
     }
 
+    /*name err*/
+    private void showDialogNameErr() {
+        final Dialog dialog = new Dialog(UpdateGardenActivity.this);
+        dialog.setContentView(R.layout.dialog_login_fail);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtErr;
+        Button btnClose;
+        txtErr = (TextView) dialog.findViewById(R.id.txt_detail_err);
+        btnClose = (Button) dialog.findViewById(R.id.btn_close);
+        txtErr.setText("vui lòng nhập tên vườn rau");
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+    /*address err*/
+    private void showDialogAddressErr() {
+        final Dialog dialog = new Dialog(UpdateGardenActivity.this);
+        dialog.setContentView(R.layout.dialog_login_fail);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtErr;
+        Button btnClose;
+        txtErr = (TextView) dialog.findViewById(R.id.txt_detail_err);
+        btnClose = (Button) dialog.findViewById(R.id.btn_close);
+        txtErr.setText("vui lòng nhập đầy địa chỉ");
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
     public void updateGarden() {
-        String gardenName = mEdtGardenName.getText().toString();
-//        String gardenAddress = mStrProvince + ", " + mStrDistrict + ", " + mStrWard + ", " + mEdtGardenAddress.getText().toString();
-        mStrAddress = mStrProvince + ", " + mStrDistrict + ", " + mStrWard + ", " + mEdtGardenAddress.getText().toString();
-        String token = mUser.getToken();
-        System.out.println("UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUu");
-        System.out.println("gardenId: " + mGardenId);
-        System.out.println("name: " + gardenName);
-        System.out.println("address: " + mStrAddress);
-        System.out.println("UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUu");
+        String gardenName = mEdtGardenName.getText().toString().trim();
+        String subAddressTmp = mEdtSubAddress.getText().toString().trim();
+
+        mStrSubAddress = subAddressTmp.replaceAll("\\,","");
+
+        mStrAddress = mStrSubAddress + ", " + mStrWard + ", " + mStrDistrict + ", " + mStrProvince;
+
+        if (gardenName.equals("")) {
+            showDialogNameErr();
+            return;
+        } else if (mStrSubAddress.equals("") || mStrWard.equals("") || mStrDistrict.equals("") || mStrProvince.equals("")) {
+            showDialogAddressErr();
+            return;
+        }
         Garden garden = new Garden(mGardenId, gardenName, mStrAddress);
         mUpdateGardenPresenter.updateGarden(garden, mUser.getToken());
     }
@@ -141,6 +215,11 @@ public class UpdateGardenActivity extends AppCompatActivity implements View.OnCl
                 mTxtProvince.setText(provinceData.getName());
                 mIntDistrictId = provinceData.getId();
                 mStrProvince = provinceData.getName();
+
+                mStrWard = "";
+                mStrDistrict = "";
+                mTxtWard.setText(mStrWard);
+                mTxtDistrict.setText(mStrDistrict);
                 //
                 mDistrictPresenter.getDistrictById(mIntDistrictId, mUser.getToken());
             }
@@ -156,6 +235,10 @@ public class UpdateGardenActivity extends AppCompatActivity implements View.OnCl
                 mTxtDistrict.setText(districtData.getName());
                 mIdWard = districtData.getId();
                 mStrDistrict = districtData.getName();
+
+                mStrWard = "";
+                mTxtWard.setText(mStrWard);
+
                 mWardPresenter.getWardById(mIdWard, mUser.getToken());
 
             }

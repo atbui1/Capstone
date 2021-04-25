@@ -11,6 +11,10 @@ public class ExchangeData implements Serializable {
     private String vegNameReceive;
     @SerializedName("quantity")
     private int quantity;
+    @SerializedName("vegNameReceiveExchangeResponse")
+    private String vegNameReceiveExchangeResponse;
+    @SerializedName("quantityReceiveExchangeResponse")
+    private int quantityReceiveExchangeResponse;
     @SerializedName("status")
     private int status;
     @SerializedName("createdDate")
@@ -26,11 +30,24 @@ public class ExchangeData implements Serializable {
     @SerializedName("shareDetailId")
     private String shareDetailId;
 
-    public ExchangeData(String id, String vegNameReceive, int quantity, int status, String createdDate, String fullNameHost,
+    /* new */
+    @SerializedName("receiverAddress")
+    private String receiverAddress;
+    @SerializedName("receiverPhoneNumber")
+    private String receiverPhoneNumber;
+    @SerializedName("qrCode")
+    private String qrCode;
+    @SerializedName("typeShare")
+    private int typeShare;
+
+    public ExchangeData(String id, String vegNameReceive, int quantity, String vegNameReceiveExchangeResponse,
+            int quantityReceiveExchangeResponse, int status, String createdDate, String fullNameHost,
                         String fullNameReceiver, String accountHostId, String receiverId, String shareDetailId) {
         this.id = id;
         this.vegNameReceive = vegNameReceive;
         this.quantity = quantity;
+        this.vegNameReceiveExchangeResponse = vegNameReceiveExchangeResponse;
+        this.quantityReceiveExchangeResponse = quantityReceiveExchangeResponse;
         this.status = status;
         this.createdDate = createdDate;
         this.fullNameHost = fullNameHost;
@@ -38,6 +55,29 @@ public class ExchangeData implements Serializable {
         this.accountHostId = accountHostId;
         this.receiverId = receiverId;
         this.shareDetailId = shareDetailId;
+    }
+
+    /*new*/
+    public ExchangeData(String id, String vegNameReceive, int quantity, String vegNameReceiveExchangeResponse,
+                        int quantityReceiveExchangeResponse, int status, String createdDate, String fullNameHost,
+                        String fullNameReceiver, String accountHostId, String receiverId, String shareDetailId,
+                        String receiverAddress, String receiverPhoneNumber, String qrCode, int typeShare) {
+        this.id = id;
+        this.vegNameReceive = vegNameReceive;
+        this.quantity = quantity;
+        this.vegNameReceiveExchangeResponse = vegNameReceiveExchangeResponse;
+        this.quantityReceiveExchangeResponse = quantityReceiveExchangeResponse;
+        this.status = status;
+        this.createdDate = createdDate;
+        this.fullNameHost = fullNameHost;
+        this.fullNameReceiver = fullNameReceiver;
+        this.accountHostId = accountHostId;
+        this.receiverId = receiverId;
+        this.shareDetailId = shareDetailId;
+        this.receiverAddress = receiverAddress;
+        this.receiverPhoneNumber = receiverPhoneNumber;
+        this.qrCode = qrCode;
+        this.typeShare = typeShare;
     }
 
     public String getId() {
@@ -62,6 +102,22 @@ public class ExchangeData implements Serializable {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getVegNameReceiveExchangeResponse() {
+        return vegNameReceiveExchangeResponse;
+    }
+
+    public void setVegNameReceiveExchangeResponse(String vegNameReceiveExchangeResponse) {
+        this.vegNameReceiveExchangeResponse = vegNameReceiveExchangeResponse;
+    }
+
+    public int getQuantityReceiveExchangeResponse() {
+        return quantityReceiveExchangeResponse;
+    }
+
+    public void setQuantityReceiveExchangeResponse(int quantityReceiveExchangeResponse) {
+        this.quantityReceiveExchangeResponse = quantityReceiveExchangeResponse;
     }
 
     public int getStatus() {
@@ -118,5 +174,37 @@ public class ExchangeData implements Serializable {
 
     public void setShareDetailId(String shareDetailId) {
         this.shareDetailId = shareDetailId;
+    }
+
+    public String getReceiverAddress() {
+        return receiverAddress;
+    }
+
+    public void setReceiverAddress(String receiverAddress) {
+        this.receiverAddress = receiverAddress;
+    }
+
+    public String getReceiverPhoneNumber() {
+        return receiverPhoneNumber;
+    }
+
+    public void setReceiverPhoneNumber(String receiverPhoneNumber) {
+        this.receiverPhoneNumber = receiverPhoneNumber;
+    }
+
+    public String getQrCode() {
+        return qrCode;
+    }
+
+    public void setQrCode(String qrCode) {
+        this.qrCode = qrCode;
+    }
+
+    public int getTypeShare() {
+        return typeShare;
+    }
+
+    public void setTypeShare(int typeShare) {
+        this.typeShare = typeShare;
     }
 }

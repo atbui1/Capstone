@@ -5,7 +5,7 @@ import android.content.Context;
 
 import com.example.democ.capstone.CapstoneRepository;
 import com.example.democ.capstone.CapstoneRepositoryImp;
-import com.example.democ.model.Account;
+import com.example.democ.model.AccountData;
 import com.example.democ.utils.CallBackData;
 import com.example.democ.views.GetInfoAccountView;
 
@@ -22,11 +22,11 @@ public class GetInfoAccountPresenter {
         mCapstoneRepository = new CapstoneRepositoryImp();
     }
 
-    public void getInfoAccount(String token) {
-        mCapstoneRepository.getInfoAccount(mContext, token, new CallBackData<Account>() {
+    public void getInfoAccount(String accountId, String token) {
+        mCapstoneRepository.getInfoAccount(mContext, accountId, token, new CallBackData<AccountData>() {
             @Override
-            public void onSuccess(Account account) {
-                mGetInfoAccountView.getInfoAccountSuccess(account);
+            public void onSuccess(AccountData accountData) {
+                mGetInfoAccountView.getInfoAccountSuccess(accountData);
             }
 
             @Override

@@ -42,12 +42,7 @@ public class RequestExchangeFragment extends Fragment implements  IClickExChange
 
     private static int mIntPosition = 0;
 
-
     private SwipeRefreshLayout mSwipeRefreshLayout;
-
-//    public RequestExchangeFragment(ArrayList<ExchangeData> mListExchange) {
-//        this.mListExchange = mListExchange;
-//    }
 
     @Nullable
     @Override

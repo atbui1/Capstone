@@ -27,7 +27,8 @@
                 android:layout_width="@dimen/dp0"
                 android:layout_height="match_parent">
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:src="@drawable/avatar1"
+                    android:id="@+id/img_avatar"
+                    android:src="@drawable/avatardefault"
                     android:layout_width="@dimen/dp50"
                     android:layout_height="@dimen/dp50" />
             </LinearLayout>

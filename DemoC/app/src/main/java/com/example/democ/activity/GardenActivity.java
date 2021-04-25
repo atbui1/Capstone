@@ -50,10 +50,10 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
     private VegetableAdapter mVegetableAdapter;
 
     static int mGardenId;
-    static String mGardenName, mGardenAddress;
+    static String mGardenName = "", mGardenAddress = "";
     private List<VegetableData> mVegetableDataList;
 
-    private TextView mTxtGardenName, mTxtGardenAddress, mTxtUpdateGarden, mTxtDeleteGarden;
+    private TextView mTxtTitle;
 //    private FloatingActionButton mFabAddVegetable;
     private LinearLayout mLnlAddVegetable, mLnlBack;
     private UpdateGardenPresenter mUpdateGardenPresenter;
@@ -80,12 +80,7 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
         mDeleteGardenPresenter = new DeleteGardenPresenter(getApplication(), this, this);
         mAllVegetableByGardenIdPresenter = new AllVegetableByGardenIdPresenter(getApplication(), this, this);
 
-//        mVegetableDataList = new ArrayList<>();
-
-        mTxtUpdateGarden = (TextView) findViewById(R.id.txt_update_garden);
-        mTxtUpdateGarden.setOnClickListener(this);
-        mTxtDeleteGarden = (TextView) findViewById(R.id.txt_delete_garden);
-        mTxtDeleteGarden.setOnClickListener(this);
+        mTxtTitle = (TextView) findViewById(R.id.txt_title);
 
         mLnlAddVegetable = (LinearLayout) findViewById(R.id.lnl_add_vegetable);
         mLnlAddVegetable.setOnClickListener(this);
@@ -99,16 +94,11 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
 
         mRecyclerVegetable = (RecyclerView) findViewById(R.id.recycler_vegetable);
         mRecyclerVegetable.setHasFixedSize(true);
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-//        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerVegetable.setLayoutManager(layoutManager);
 
-        mTxtGardenName = (TextView) findViewById(R.id.txt_garden_name);
-        mTxtGardenAddress = (TextView) findViewById(R.id.txt_garden_address);
-
         getData();
-
+        mTxtTitle.setText(mGardenName);
     }
 
     private void getData() {
@@ -126,32 +116,24 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
             mGardenName = bundleGardenAdapter.getString("GARDEN_NAME");
             mGardenAddress = bundleGardenAdapter.getString("GARDEN_ADDRESS");
             mGardenId = bundleGardenAdapter.getInt("GARDEN_ID");
-            mTxtGardenName.setText(mGardenName);
-            mTxtGardenAddress.setText(mGardenAddress);
             System.out.println("chay bundleGardenAdapter ***************************************");
         }
         if (bundleCreateVegetable != null) {
             mGardenName = bundleCreateVegetable.getString("GARDEN_NAME");
             mGardenAddress = bundleCreateVegetable.getString("GARDEN_ADDRESS");
             mGardenId = bundleCreateVegetable.getInt("GARDEN_ID");
-            mTxtGardenName.setText(mGardenName);
-            mTxtGardenAddress.setText(mGardenAddress);
             System.out.println("chay bundleCreateVegetable **************************");
         }
         if (bundleDeleteVegetable != null) {
             mGardenName = bundleDeleteVegetable.getString("GARDEN_NAME");
             mGardenAddress = bundleDeleteVegetable.getString("GARDEN_ADDRESS");
             mGardenId = bundleDeleteVegetable.getInt("GARDEN_ID");
-            mTxtGardenName.setText(mGardenName);
-            mTxtGardenAddress.setText(mGardenAddress);
             System.out.println("chay bundleDeleteVegetable **************************");
         }
         if (bundleUpdateVegetable != null) {
             mGardenName = bundleUpdateVegetable.getString("GARDEN_NAME");
             mGardenAddress = bundleUpdateVegetable.getString("GARDEN_ADDRESS");
             mGardenId = bundleUpdateVegetable.getInt("GARDEN_ID");
-            mTxtGardenName.setText(mGardenName);
-            mTxtGardenAddress.setText(mGardenAddress);
             System.out.println("chay bundleGardenAdapter ***************************************");
         }
     }
@@ -235,31 +217,11 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-//            case R.id.fab_add_vegetable:
-//                break;
             case R.id.lnl_add_vegetable:
-//                Intent intentCreateVegetable = new Intent(GardenActivity.this, CreateVegetableActivity.class);
-//                startActivity(intentCreateVegetable);
                 createVegetable();
                 break;
             case R.id.lnl_back:
-//                Intent intentHome = new Intent(GardenActivity.this, MainActivity.class);
-//                startActivity(intentHome);
                 finish();
-                break;
-            case R.id.txt_update_garden:
-                Toast.makeText(this, "update garden: " + mGardenId, Toast.LENGTH_SHORT).show();
-                Intent intentUpdateGarden = new Intent(GardenActivity.this, UpdateGardenActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("GARDEN_NAME", mGardenName);
-                bundle.putString("GARDEN_ADDRESS", mGardenAddress);
-                bundle.putInt("GARDEN_ID", mGardenId);
-                intentUpdateGarden.putExtras(bundle);
-                startActivity(intentUpdateGarden);
-                break;
-            case R.id.txt_delete_garden:
-                Toast.makeText(this, "delete garden: " + mGardenId, Toast.LENGTH_SHORT).show();
-                showDialogDeleteGarden();
                 break;
         }
     }

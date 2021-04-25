@@ -9,6 +9,8 @@ public class PostData implements Serializable {
 
     @SerializedName("id")
     private String id;
+    @SerializedName("vegetableId")
+    private String vegetableId;
     @SerializedName("vegName")
     private String vegName;
     @SerializedName("vegDescription")
@@ -17,6 +19,8 @@ public class PostData implements Serializable {
     private String vegFeature;
     @SerializedName("quantity")
     private int quantity;
+    @SerializedName("quantityVeg")
+    private int quantityVeg;
     @SerializedName("statius")
     private int statius;
     @SerializedName("content")
@@ -29,26 +33,31 @@ public class PostData implements Serializable {
     private String accountId;
     @SerializedName("fullName")
     private String fullName;
+    @SerializedName("avatar")
+    private String avatar;
     @SerializedName("phoneNumber")
     private String phoneNumber;
     @SerializedName("images")
     private List<ImageVegetable> imageVegetablesList;
 
     //CST GetAllShareById - 12 element
-    public PostData(String id, String vegName, String vegDescription, String vegFeature, int quantity, int statius,
+    public PostData(String id, String vegetableId, String vegName, String vegDescription, String vegFeature, int quantity, int quantityVeg, int statius,
                     String content, List<VegetableShare> vegetableShareList, String createdDate, String accountId,
-                    String fullName, String phoneNumber, List<ImageVegetable> imageVegetablesList) {
+                    String fullName, String avatar, String phoneNumber, List<ImageVegetable> imageVegetablesList) {
         this.id = id;
+        this.vegetableId = vegetableId;
         this.vegName = vegName;
         this.vegDescription = vegDescription;
         this.vegFeature = vegFeature;
         this.quantity = quantity;
+        this.quantityVeg = quantityVeg;
         this.statius = statius;
         this.content = content;
         this.vegetableShareList = vegetableShareList;
         this.createdDate = createdDate;
         this.accountId = accountId;
         this.fullName = fullName;
+        this.avatar = avatar;
         this.phoneNumber = phoneNumber;
         this.imageVegetablesList = imageVegetablesList;
     }
@@ -59,6 +68,14 @@ public class PostData implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getVegetableId() {
+        return vegetableId;
+    }
+
+    public void setVegetableId(String vegetableId) {
+        this.vegetableId = vegetableId;
     }
 
     public String getVegName() {
@@ -91,6 +108,14 @@ public class PostData implements Serializable {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public int getQuantityVeg() {
+        return quantityVeg;
+    }
+
+    public void setQuantityVeg(int quantityVeg) {
+        this.quantityVeg = quantityVeg;
     }
 
     public int getStatius() {
@@ -139,6 +164,14 @@ public class PostData implements Serializable {
 
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public void setPhoneNumber(String phoneNumber) {

@@ -31,9 +31,8 @@ public class VegetableActivity extends AppCompatActivity implements View.OnClick
     private final static String KEY_VEGETABLE_SEND_UPDATE = "KEY_VEGETABLE_SEND_UPDATE";
     private final static String KEY_VEGETABLE_DELETE = "KEY_VEGETABLE_DELETE";
     private ImageView mImgVegetable;
-    private TextView mTxtVegetableName, mTxtVegetableDescription, mTxtVegetableFeature,
-            mTxtVegetableUpdate, mTxtVegetableDelete, mTxtVegetableQuantity, mTxtCreatePost;
-    private LinearLayout mLnlBack, mLnlCreatePostExchange, mLnlCreatePostShare;
+    private TextView mTxtVegetableName, mTxtVegetableDescription, mTxtVegetableFeature, mTxtVegetableQuantity;
+    private LinearLayout mLnlBack, mLnlVegetableDelete, mLnlVegetableUpdate, mLnlCreatePostShare, mLnlCreatePostExchange;
 
     private DeleteVegetablePresenter mDeleteVegetablePresenter;
     private UserManagement mUserManagement;
@@ -62,18 +61,16 @@ public class VegetableActivity extends AppCompatActivity implements View.OnClick
         mTxtVegetableDescription = (TextView) findViewById(R.id.txt_vegetable_description);
         mTxtVegetableFeature = (TextView) findViewById(R.id.txt_vegetable_feature);
         mTxtVegetableQuantity = (TextView) findViewById(R.id.txt_vegetable_quantity);
-        mTxtVegetableDelete = (TextView) findViewById(R.id.txt_vegetable_delete);
-        mTxtVegetableDelete.setOnClickListener(this);
-        mTxtVegetableUpdate = (TextView) findViewById(R.id.txt_vegetable_update);
-        mTxtVegetableUpdate.setOnClickListener(this);
-        mTxtCreatePost = (TextView) findViewById(R.id.txt_create_post);
-        mTxtCreatePost.setOnClickListener(this);
         mLnlBack = (LinearLayout) findViewById(R.id.lnl_back);
         mLnlBack.setOnClickListener(this);
-        mLnlCreatePostExchange = (LinearLayout) findViewById(R.id.lnl_create_post_exchange);
-        mLnlCreatePostExchange.setOnClickListener(this);
+        mLnlVegetableDelete = (LinearLayout) findViewById(R.id.lnl_vegetable_delete);
+        mLnlVegetableDelete.setOnClickListener(this);
+        mLnlVegetableUpdate = (LinearLayout) findViewById(R.id.lnl_vegetable_update);
+        mLnlVegetableUpdate.setOnClickListener(this);
         mLnlCreatePostShare = (LinearLayout) findViewById(R.id.lnl_create_post_share);
         mLnlCreatePostShare.setOnClickListener(this);
+        mLnlCreatePostExchange = (LinearLayout) findViewById(R.id.lnl_create_post_exchange);
+        mLnlCreatePostExchange.setOnClickListener(this);
 
         mDeleteVegetablePresenter = new DeleteVegetablePresenter(getApplication(), this, this);
         mUserManagement = new UserManagement(getApplication());
@@ -222,14 +219,11 @@ public class VegetableActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.txt_vegetable_delete:
+            case R.id.lnl_vegetable_delete:
                 deleteVegetable();
                 break;
-            case R.id.txt_vegetable_update:
+            case R.id.lnl_vegetable_update:
                 openUpdateVegetableActivity();
-                break;
-            case R.id.txt_create_post:
-                clickOpenCreatePost();
                 break;
             case R.id.lnl_back:
                 finish();

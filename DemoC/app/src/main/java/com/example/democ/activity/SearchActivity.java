@@ -110,7 +110,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 System.out.println(mSearchValue);
                 System.out.println("==================================================");
 
-                mSearchAccountByNamePresenter.searchAccountByName(mSearchValue, user.getToken());
+//                mSearchAccountByNamePresenter.searchAccountByName(mSearchValue, user.getToken());
                 mSearchShareByDescriptionPresenter.searchShareByDescription(mSearchValue, user.getToken());
                 mSearchShareByNamePresenter.searchShareByName(mSearchValue, user.getToken());
                 mSearchShareByKeywordPresenter.searchShareByKeyword(mSearchValue, user.getToken());

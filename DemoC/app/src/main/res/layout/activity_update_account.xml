@@ -1,117 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activity.UpdateAccountActivity">
 
+    <!--tool bar custom by linearLayout-->
     <LinearLayout
-        android:orientation="vertical"
+        android:background="@color/sick_green"
+        android:weightSum="10"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp50">
+        <!--arrow left item-->
+        <LinearLayout
+            android:id="@+id/lnl_back"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
+            <ImageView
+                android:src="@drawable/arrow_left_v"
+                android:layout_width="@dimen/dp30"
+                android:layout_height="@dimen/dp30" />
+        </LinearLayout>
+        <!--menu title-->
+        <LinearLayout
+            android:layout_weight="6"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
+            <TextView
+                android:text="Cập nhật thông tin"
+                android:gravity="center"
+                android:textSize="@dimen/sp20"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <!--menu right-->
+        <LinearLayout
+            android:layout_weight="2"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent"></LinearLayout>
+    </LinearLayout>
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <!--tool bar custom by linearLayout-->
-        <LinearLayout
-            android:weightSum="10"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp50">
-            <!--arrow left item-->
-            <LinearLayout
-                android:id="@+id/lnl_back"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:layout_width="@dimen/dp0"
-                android:layout_height="match_parent">
-                <ImageView
-                    android:src="@mipmap/leftarrow"
-                    android:layout_width="@dimen/dp20"
-                    android:layout_height="@dimen/dp20" />
-            </LinearLayout>
-            <!--menu title-->
-            <LinearLayout
-                android:layout_weight="6"
-                android:layout_width="@dimen/dp0"
-                android:layout_height="match_parent">
-                <TextView
-                    android:text="Cập nhật thông tin"
-                    android:gravity="center"
-                    android:textSize="@dimen/sp20"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
-            <!--menu right-->
-            <LinearLayout
-                android:layout_weight="2"
-                android:layout_width="@dimen/dp0"
-                android:layout_height="match_parent"></LinearLayout>
-        </LinearLayout>
         <LinearLayout
             android:paddingLeft="@dimen/dp16"
             android:paddingRight="@dimen/dp16"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <!--name user-->
-
-            <!--password-->
-            <LinearLayout
-                android:layout_marginTop="@dimen/dp10"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp50">
-                <TextView
-                    android:text="@string/txt_password"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/sp17"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="8dp"
-                    android:textColor="@color/sick_green"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
-            <LinearLayout
-                android:background="@drawable/bg_edt"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp50">
-                <EditText
-                    android:id="@+id/edt_password"
-                    android:background="@drawable/bg_edt"
-                    android:hint="@string/edt_password"
-                    android:inputType="text"
-                    android:paddingLeft="@dimen/dp8"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
-            <!--confirm password-->
-            <LinearLayout
-                android:layout_marginTop="@dimen/dp10"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp50">
-                <TextView
-                    android:text="@string/txt_confirm_password"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/sp17"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="8dp"
-                    android:textColor="@color/sick_green"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
-            <LinearLayout
-                android:background="@drawable/bg_edt"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp50">
-                <EditText
-                    android:id="@+id/edt_password_confirm"
-                    android:background="@drawable/bg_edt"
-                    android:hint="@string/edt_confirm_password"
-                    android:inputType="text"
-                    android:paddingLeft="@dimen/dp8"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
             <!--full name-->
             <LinearLayout
                 android:layout_marginTop="@dimen/dp10"
@@ -223,7 +166,124 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>
-            <!--btn register account-->
+            <!--address-->
+            <!--Province-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:text="Tỉnh/Thành phố"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/sp17"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:textColor="@color/sick_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:background="@drawable/bg_edt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:id="@+id/txt_province"
+                    android:background="@drawable/bg_edt"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dp8"
+                    android:inputType="text"
+                    android:textSize="@dimen/sp15"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--district-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:text="Quận/Huyện"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/sp17"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:textColor="@color/sick_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:background="@drawable/bg_edt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:id="@+id/txt_district"
+                    android:background="@drawable/bg_edt"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dp8"
+                    android:inputType="text"
+                    android:textSize="@dimen/sp15"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--Province-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:text="Phường/Xã"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/sp17"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:textColor="@color/sick_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:background="@drawable/bg_edt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:id="@+id/txt_ward"
+                    android:background="@drawable/bg_edt"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dp8"
+                    android:inputType="text"
+                    android:textSize="@dimen/sp15"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--address detail-->
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:text="Đại chỉ chi tiết"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/sp17"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="8dp"
+                    android:textColor="@color/sick_green"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:background="@drawable/bg_edt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <EditText
+                    android:id="@+id/edt_garden_address"
+                    android:background="@drawable/bg_edt"
+                    android:hint="Địa chỉ chi tiết"
+                    android:paddingLeft="@dimen/dp8"
+                    android:inputType="text"
+                    android:textSize="@dimen/sp15"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--btn register accountData-->
             <LinearLayout
                 android:layout_marginTop="@dimen/dp20"
                 android:layout_marginBottom="@dimen/dp20"
@@ -242,6 +302,6 @@
                     android:layout_height="match_parent" />
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-</ScrollView>
+</LinearLayout>

@@ -5,7 +5,7 @@ import android.content.Context;
 
 import com.example.democ.capstone.CapstoneRepository;
 import com.example.democ.capstone.CapstoneRepositoryImp;
-import com.example.democ.model.Account;
+import com.example.democ.model.AccountData;
 import com.example.democ.utils.CallBackData;
 import com.example.democ.views.RegisterAccountView;
 
@@ -23,10 +23,10 @@ public class RegisterAccountPresenter {
         mCapstoneRepository = new CapstoneRepositoryImp();
     }
 
-    public void registerAccount(Account account) {
-        mCapstoneRepository.register(mContext, account, new CallBackData<Account>() {
+    public void registerAccount(AccountData accountData) {
+        mCapstoneRepository.register(mContext, accountData, new CallBackData<AccountData>() {
             @Override
-            public void onSuccess(Account account) {
+            public void onSuccess(AccountData accountData) {
                 mRegisterAccountView.registerAccountSuccess();
                 System.out.println("************** register presenter 31");
             }

@@ -8,19 +8,37 @@
     tools:context=".CreatePostFragment">
 
     <LinearLayout
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:background="@color/sick_green"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dp50">
-    <TextView
-    android:text="Cho rau"
-    android:textStyle="bold"
-    android:textSize="@dimen/sp20"
-    android:gravity="center"
-    android:textColor="@color/white"
-    android:paddingBottom="@dimen/dp8"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+        <LinearLayout
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
+            <ImageView
+                android:src="@drawable/arrow_left_v"
+                android:layout_width="@dimen/dp30"
+                android:layout_height="@dimen/dp30" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="4"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
+            <TextView
+                android:text="Cho rau"
+                android:textStyle="bold"
+                android:textSize="@dimen/sp20"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent"></LinearLayout>
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView

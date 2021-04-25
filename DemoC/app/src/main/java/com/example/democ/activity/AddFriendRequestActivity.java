@@ -2,7 +2,6 @@ package com.example.democ.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,15 +14,12 @@ import android.widget.LinearLayout;
 import com.example.democ.R;
 import com.example.democ.adapter.AddFriendAdapter;
 import com.example.democ.iclick.IClickAddFriend;
-import com.example.democ.model.Account;
 import com.example.democ.model.AddFriendRequest;
 import com.example.democ.presenters.GetAddFriendRequestPresenter;
-import com.example.democ.presenters.GetInfoAccountPresenter;
 import com.example.democ.presenters.PersonalPresenter;
 import com.example.democ.presenters.ReplyFriendRequestPresenter;
 import com.example.democ.room.entities.User;
 import com.example.democ.views.GetAddFriendRequestView;
-import com.example.democ.views.GetInfoAccountView;
 import com.example.democ.views.PersonalView;
 import com.example.democ.views.ReplyFriendRequestView;
 

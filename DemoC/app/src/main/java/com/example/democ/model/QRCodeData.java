@@ -13,15 +13,12 @@ public class QRCodeData implements Serializable {
     private String url;
     @SerializedName("exchangeId")
     private String exchangeId;
-    @SerializedName("exchangeDetail")
-    private String exchangeDetail;
 
-    public QRCodeData(String id, String name, String url, String exchangeId, String exchangeDetail) {
+    public QRCodeData(String id, String name, String url, String exchangeId) {
         this.id = id;
         this.name = name;
         this.url = url;
         this.exchangeId = exchangeId;
-        this.exchangeDetail = exchangeDetail;
     }
 
     public String getId() {
@@ -56,11 +53,4 @@ public class QRCodeData implements Serializable {
         this.exchangeId = exchangeId;
     }
 
-    public String getExchangeDetail() {
-        return exchangeDetail;
-    }
-
-    public void setExchangeDetail(String exchangeDetail) {
-        this.exchangeDetail = exchangeDetail;
-    }
 }

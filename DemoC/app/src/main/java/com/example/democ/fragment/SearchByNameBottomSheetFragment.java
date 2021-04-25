@@ -58,13 +58,8 @@ public class SearchByNameBottomSheetFragment extends BottomSheetDialogFragment i
     private PersonalPresenter mPersonalPresenter;
     private SearchByWikiTitlePresenter mSearchByWikiTitlePresenter;
     private GetDescriptionByWikiPresenter mGetDescriptionByWikiPresenter;
-
     private WikiData WikiData;
 
-//    public SearchByNameBottomSheetFragment(ArrayList<VegetableData> mListVegetable, IClickVegetable mIClickVegetable) {
-//        this.mListVegetable = mListVegetable;
-//        this.mIClickVegetable = mIClickVegetable;
-//    }
 
 
     public SearchByNameBottomSheetFragment(ArrayList<VegetableData> mListVegetable, String mStrSearchValue, IClickVegetable mIClickVegetable) {
@@ -79,7 +74,7 @@ public class SearchByNameBottomSheetFragment extends BottomSheetDialogFragment i
         void getDataSearchWiki(String vegName, String vegDescription, String vegFeature, String vegLinkUrl);
     }
     public interface IGetDataSearchWikiTitleListener {
-        void getDataSearchWikiTitle(String vegName, String vegLinkUrl);
+        void getDataSearchWikiTitle(String vegName, String vegLinkUrl, String vegDescription, String vegFeature);
     }
 
     @Override
@@ -201,14 +196,18 @@ public class SearchByNameBottomSheetFragment extends BottomSheetDialogFragment i
         dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
 
         /*anh xa view*/
-        TextView txtName, txtClose, txtAdmit;
+        TextView txtName, txtDescription, txtFeature, txtClose, txtAdmit;
         ImageView imgVegetable;
         txtName = (TextView) dialog.findViewById(R.id.txt_vegetable_name);
+        txtDescription = (TextView) dialog.findViewById(R.id.txt_vegetable_description);
+        txtFeature = (TextView) dialog.findViewById(R.id.txt_vegetable_feature);
         txtClose = (TextView) dialog.findViewById(R.id.txt_close);
         txtAdmit = (TextView) dialog.findViewById(R.id.txt_admit);
         imgVegetable = (ImageView) dialog.findViewById(R.id.img_create_vegetable);
         /**/
         txtName.setText(mStrName);
+        txtDescription.setText(mStrDescription);
+        txtFeature.setText(mStrFeature);
         if (mStrLinkImage.equals("")) {
             imgVegetable.setImageResource(R.mipmap.addimage64);
             mStrLinkImage = "";
@@ -223,7 +222,7 @@ public class SearchByNameBottomSheetFragment extends BottomSheetDialogFragment i
             @Override
             public void onClick(View view) {
 
-                mIGetDataSearchWikiTitleListener.getDataSearchWikiTitle(mStrName, mStrLinkImage);
+                mIGetDataSearchWikiTitleListener.getDataSearchWikiTitle(mStrName, mStrLinkImage, mStrDescription, mStrFeature);
                 mSearchByWikiBottomSheetFragment.dismiss();
                 mBottomSheetDialog.dismiss();
                 dialog.dismiss();
@@ -291,13 +290,13 @@ public class SearchByNameBottomSheetFragment extends BottomSheetDialogFragment i
     @Override
     public void getDescriptionByWikiSuccess(WikiData wikiData) {
 //        WikiData = wikiData;
-        if (wikiData == null) {
-            System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
+        if (wikiData.getListText().size() == 0) {
             System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
             System.out.println("show dialog name and image");
             System.out.println("link image wiki: " + mStrLinkImage);
+            mStrDescription = wikiData.getDescription();
+            mStrFeature = wikiData.getFeature();
             showDialogIntroVegetableWikiTitle();
-            System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
             System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
         } else {
             mStrDescription = wikiData.getDescription();
@@ -305,10 +304,8 @@ public class SearchByNameBottomSheetFragment extends BottomSheetDialogFragment i
             clickOpenListText(listTextWikis);
 
             System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
-            System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
             System.out.println("show bottom sheet search full wiki");
             System.out.println("link image wiki: " + mStrLinkImage);
-            System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
             System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
         }
     }

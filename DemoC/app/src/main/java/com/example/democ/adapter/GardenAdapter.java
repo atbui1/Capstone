@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.democ.R;
 import com.example.democ.activity.GardenActivity;
+import com.example.democ.iclick.IClickGardenFull;
 import com.example.democ.model.GardenResult;
 
 import java.util.ArrayList;
@@ -21,11 +22,12 @@ public class GardenAdapter extends RecyclerView.Adapter<GardenAdapter.ViewHolder
 
     ArrayList<GardenResult> mGardenList;
     Context context;
-    OnClickListener mOnClickListener;
+    IClickGardenFull mIClickGardenFull;
 
-    public GardenAdapter(ArrayList<GardenResult> mGardenList, Context context) {
+    public GardenAdapter(ArrayList<GardenResult> mGardenList, Context context, IClickGardenFull mIClickGardenFull) {
         this.mGardenList = mGardenList;
         this.context = context;
+        this.mIClickGardenFull = mIClickGardenFull;
     }
 
     @NonNull
@@ -37,44 +39,65 @@ public class GardenAdapter extends RecyclerView.Adapter<GardenAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull GardenAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final GardenAdapter.ViewHolder holder, final int position) {
+
+        final GardenResult gardenResult = mGardenList.get(position);
+        if (gardenResult == null) {
+            return;
+        }
+
         holder.mTxtGardenName.setText(mGardenList.get(position).getName());
         holder.mTxtGardenAddress.setText(mGardenList.get(position).getAddress());
 
 
+//        holder.mLnlGardenRoot.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(view.getContext(), "garden name: " + mGardenList.get(position).getId(), Toast.LENGTH_SHORT).show();
+//                Intent intentGarden = new Intent(context.getApplicationContext(), GardenActivity.class);
+//                intentGarden.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("GARDEN_NAME", mGardenList.get(position).getName());
+//                bundle.putString("GARDEN_ADDRESS", mGardenList.get(position).getAddress());
+//                bundle.putInt("GARDEN_ID", mGardenList.get(position).getId());
+////                intentGarden.putExtras(bundle);
+//                intentGarden.putExtra("infoGardenTo", bundle);
+//                context.startActivity(intentGarden);
+//            }
+//        });
+
         holder.mLnlGardenRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(), "garden name: " + mGardenList.get(position).getId(), Toast.LENGTH_SHORT).show();
-                Intent intentGarden = new Intent(context.getApplicationContext(), GardenActivity.class);
-                intentGarden.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-                Bundle bundle = new Bundle();
-                bundle.putString("GARDEN_NAME", mGardenList.get(position).getName());
-                bundle.putString("GARDEN_ADDRESS", mGardenList.get(position).getAddress());
-                bundle.putInt("GARDEN_ID", mGardenList.get(position).getId());
-//                intentGarden.putExtras(bundle);
-                intentGarden.putExtra("infoGardenTo", bundle);
-                context.startActivity(intentGarden);
+                mIClickGardenFull.clickGarden(gardenResult);
+            }
+        });
+        holder.mTxtUpdateGarden.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mIClickGardenFull.clickGardenUpdate(gardenResult);
+            }
+        });
+        holder.mTxtDeleteGarden.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mIClickGardenFull.clickGardenDelete(gardenResult, holder.getAdapterPosition());
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        int count = (mGardenList != null) ? mGardenList.size() : 0;
-        return count;
+        if (mGardenList != null) {
+            return mGardenList.size();
+        }
+        return 0;
     }
 
-    public interface OnClickListener {
-        void onClickListener(int position, View view);
-    }
-    public void getPosition(OnClickListener mOnClickListener) {
-        this.mOnClickListener = mOnClickListener;
-    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         LinearLayout mLnlGardenRoot;
-        TextView mTxtGardenName, mTxtGardenAddress;
+        TextView mTxtGardenName, mTxtGardenAddress, mTxtDeleteGarden, mTxtUpdateGarden;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -82,6 +105,8 @@ public class GardenAdapter extends RecyclerView.Adapter<GardenAdapter.ViewHolder
             mTxtGardenName = (TextView) itemView.findViewById(R.id.txt_garden_name);
             mTxtGardenAddress = (TextView) itemView.findViewById(R.id.txt_garden_address);
             mLnlGardenRoot = (LinearLayout) itemView.findViewById(R.id.lnl_garden_root);
+            mTxtDeleteGarden = (TextView) itemView.findViewById(R.id.txt_delete_garden);
+            mTxtUpdateGarden = (TextView) itemView.findViewById(R.id.txt_update_garden);
 
         }
     }

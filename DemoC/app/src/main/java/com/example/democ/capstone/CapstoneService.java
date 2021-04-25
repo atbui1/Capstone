@@ -36,7 +36,7 @@ public interface CapstoneService {
     @POST(ConfigApi.Api.ACCOUNT_REGISTER)
     Call<ResponseBody> register(@Body RequestBody body);
     @GET(ConfigApi.Api.ACCOUNT_GET_INFO)
-    Call<ResponseBody> getInfoAccount(@Header("Authorization") String token);
+    Call<ResponseBody> getInfoAccount(@Query("Id") String accountId, @Header("Authorization") String token);
     @PUT(ConfigApi.Api.ACCOUNT_UPDATE)
     Call<ResponseBody> updateAccount(@Body RequestBody body, @Header("Authorization") String token);
     /*Friend*/
@@ -129,6 +129,8 @@ public interface CapstoneService {
 //    tao bai post
     @POST(ConfigApi.Api.SHARE_CREATE_POST)
     Call<ResponseBody> createPostShare(@Body RequestBody body, @Header("Authorization") String token);
+    @PUT(ConfigApi.Api.SHARE_CREATE_POST)
+    Call<ResponseBody> updatePost(@Body RequestBody body, @Header("Authorization") String token);
     @DELETE(ConfigApi.Api.SHARE_DELETE)
     Call<ResponseBody> deleteShare(@Query("Id") String shareId, @Header("Authorization") String token);
     @GET(ConfigApi.Api.SHARE_SEARCH_DESCRIPTION)
@@ -152,8 +154,8 @@ public interface CapstoneService {
 
 //    upload image
     @Multipart
-    @POST(ConfigApi.Api.UPLOAD_IMAGE)
-    Call<ResponseBody> uploadImage(@Part List<MultipartBody.Part> newItem, @Header("Authorization") String token);
+    @PUT(ConfigApi.Api.UPLOAD_AVATAR)
+    Call<ResponseBody> uploadAvatar(@Part MultipartBody.Part newItem, @Header("Authorization") String token);
 
     //Address
     @GET(ConfigApi.Api.PROVINCE)

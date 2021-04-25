@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.SearchAccountActivity">
+
+    <!--toolbar-->
+    <LinearLayout
+        android:background="@color/sick_green"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp50">
+        <LinearLayout
+            android:id="@+id/lnl_back"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_width="@dimen/dp50"
+            android:layout_height="match_parent">
+            <ImageView
+                android:src="@drawable/arrow_left_v"
+                android:layout_width="@dimen/dp30"
+                android:layout_height="@dimen/dp30" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="4"
+            android:layout_width="@dimen/dp50"
+            android:layout_height="match_parent">
+            <TextView
+                android:text="Tìm kiếm"
+                android:gravity="center"
+                android:textSize="@dimen/dp20"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="@dimen/dp50"
+            android:layout_height="match_parent"></LinearLayout>
+    </LinearLayout>
+    <!--search edt-->
+    <LinearLayout
+        android:layout_marginTop="@dimen/dp5"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp50">
+        <LinearLayout
+            android:layout_weight="4"
+            android:layout_marginTop="@dimen/dp5"
+            android:layout_marginBottom="@dimen/dp5"
+            android:layout_marginLeft="@dimen/dp20"
+            android:layout_width="@dimen/dp50"
+            android:layout_height="match_parent">
+            <EditText
+                android:background="@drawable/bg_edt"
+                android:id="@+id/edt_search_value"
+                android:hint="Tìm kiếm"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/dp20"
+                android:paddingLeft="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/lnl_search_account"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_width="@dimen/dp50"
+            android:layout_height="match_parent">
+            <ImageView
+                android:src="@drawable/searchleft"
+                android:layout_width="@dimen/dp25"
+                android:layout_height="@dimen/dp25" />
+        </LinearLayout>
+    </LinearLayout>
+    <!--info result-->
+    <LinearLayout
+        android:id="@+id/lnl_search_result"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp50">
+        <TextView
+            android:id="@+id/txt_search_result"
+            android:gravity="center"
+            android:textSize="@dimen/sp17"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <!--recycle view-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_search_account"
+        android:layout_marginTop="@dimen/dp10"
+        android:layout_marginLeft="@dimen/dp16"
+        android:layout_marginRight="@dimen/dp16"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </androidx.recyclerview.widget.RecyclerView>
+</LinearLayout>

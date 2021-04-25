@@ -9,6 +9,7 @@
 
 
     <LinearLayout
+        android:background="@color/sick_green"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp50">
@@ -19,14 +20,23 @@
             android:layout_width="@dimen/dp0"
             android:layout_height="match_parent">
             <ImageView
-                android:src="@mipmap/leftarrow"
-                android:layout_width="@dimen/dp20"
-                android:layout_height="@dimen/dp20" />
+                android:src="@drawable/arrow_left_v"
+                android:layout_width="@dimen/dp30"
+                android:layout_height="@dimen/dp30" />
         </LinearLayout>
         <LinearLayout
             android:layout_weight="4"
             android:layout_width="@dimen/dp0"
-            android:layout_height="match_parent"></LinearLayout>
+            android:layout_height="match_parent">
+            <TextView
+                android:text="Chi tiết rau"
+                android:textStyle="bold"
+                android:textSize="@dimen/sp20"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
         <LinearLayout
             android:layout_weight="1"
             android:layout_width="@dimen/dp0"
@@ -34,96 +44,79 @@
     </LinearLayout>
     <!--button edit - delete-->
     <LinearLayout
+        android:orientation="horizontal"
         android:layout_marginTop="@dimen/dp5"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp50">
+        <!--delete-->
         <LinearLayout
+            android:id="@+id/lnl_vegetable_delete"
+            android:background="@drawable/bg_edt_red"
             android:layout_weight="1"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/dp5"
+            android:layout_marginBottom="@dimen/dp5"
             android:layout_marginLeft="@dimen/dp20"
             android:layout_marginRight="@dimen/dp20"
             android:layout_width="@dimen/dp0"
             android:layout_height="match_parent">
-            <TextView
-                android:id="@+id/txt_vegetable_update"
-                android:text="chỉnh sữa"
-                android:textSize="@dimen/sp20"
-                android:gravity="center"
-                android:textColor="@color/sick_green"
-                android:background="@drawable/bg_edt"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            <ImageView
+                android:src="@drawable/deletev"
+                android:layout_width="@dimen/dp20"
+                android:layout_height="@dimen/dp20" />
         </LinearLayout>
+        <!--edit-->
         <LinearLayout
+            android:id="@+id/lnl_vegetable_update"
+            android:background="@drawable/bg_edt"
             android:layout_weight="1"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/dp5"
+            android:layout_marginBottom="@dimen/dp5"
             android:layout_marginLeft="@dimen/dp20"
             android:layout_marginRight="@dimen/dp20"
             android:layout_width="@dimen/dp0"
             android:layout_height="match_parent">
-            <TextView
-                android:id="@+id/txt_vegetable_delete"
-                android:text="Xóa"
-                android:textSize="@dimen/sp20"
-                android:gravity="center"
-                android:textColor="@color/red"
-                android:background="@drawable/bg_edt_red"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            <ImageView
+                android:src="@drawable/editv"
+                android:layout_width="@dimen/dp20"
+                android:layout_height="@dimen/dp20" />
         </LinearLayout>
-        <LinearLayout
-            android:layout_weight="1"
-            android:layout_marginLeft="@dimen/dp20"
-            android:layout_marginRight="@dimen/dp20"
-            android:layout_width="@dimen/dp0"
-            android:layout_height="match_parent">
-            <TextView
-                android:id="@+id/txt_create_post"
-                android:text="Cho rau"
-                android:textSize="@dimen/sp20"
-                android:gravity="center"
-                android:textColor="@color/sick_green"
-                android:background="@drawable/bg_edt"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/dp10"
-        android:layout_marginBottom="@dimen/dp10"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp50">
-        <LinearLayout
-            android:id="@+id/lnl_create_post_exchange"
-            android:layout_weight="1"
-            android:layout_width="@dimen/dp0"
-            android:layout_height="match_parent">
-            <TextView
-                android:text="trao doi rau"
-                android:gravity="center"
-                android:background="@drawable/bg_edt_red"
-                android:layout_marginLeft="@dimen/dp20"
-                android:layout_marginRight="@dimen/dp20"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
+        <!--share-->
         <LinearLayout
             android:id="@+id/lnl_create_post_share"
+            android:background="@drawable/bg_edt"
             android:layout_weight="1"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/dp5"
+            android:layout_marginBottom="@dimen/dp5"
+            android:layout_marginLeft="@dimen/dp20"
+            android:layout_marginRight="@dimen/dp20"
             android:layout_width="@dimen/dp0"
             android:layout_height="match_parent">
-            <TextView
-                android:text="Cho rau"
-                android:gravity="center"
-                android:background="@drawable/bg_edt"
-                android:layout_marginLeft="@dimen/dp20"
-                android:layout_marginRight="@dimen/dp20"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            <ImageView
+                android:src="@drawable/sharev"
+                android:layout_width="@dimen/dp20"
+                android:layout_height="@dimen/dp20" />
+        </LinearLayout>
+        <!--exchange-->
+        <LinearLayout
+            android:id="@+id/lnl_create_post_exchange"
+            android:background="@drawable/bg_edt"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/dp5"
+            android:layout_marginBottom="@dimen/dp5"
+            android:layout_marginLeft="@dimen/dp20"
+            android:layout_marginRight="@dimen/dp20"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
+            <ImageView
+                android:src="@drawable/exchangev"
+                android:layout_width="@dimen/dp20"
+                android:layout_height="@dimen/dp20" />
         </LinearLayout>
     </LinearLayout>
-
 
     <!--NestedScrollView-->
     <androidx.core.widget.NestedScrollView

@@ -70,7 +70,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         PersonalView, AllGardenView, AllVegetableByGardenIdView, AllShareView {
 
     private final static String KEY_BUNDLE_HOME = "KEY_BUNDLE_HOME";
-    private Button mBtnCreatePost;
     private LinearLayout mLnlSearch, mLnlQRCode;
 
     private View mView;
@@ -98,14 +97,14 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
     private AllVegetableByGardenIdPresenter mAllVegetableByGardenIdPresenter;
 
     /* Spinner*/
-    private Spinner mSpGarden, mSpVegetable, mSpVegetableNedd;
+    private Spinner mSpVegetableNedd;
     private List<GardenResult> mListGarden;
     private List<VegetableData> mListVegetable;
     private List<VegetableShare> mListVegetableNeed;
     private Dialog mDlExchangeDetermineVegetable, mDlExchangeAnyVegetable;
     private TextView mTxtGardenName, mTxtVegetableName;
     private int mIntGardenId = 0;
-    private RecyclerView mRecyclerViewGarden, mRecyclerViewVegetable;
+    private RecyclerView mRecyclerViewGarden;
     private VegetablePostAdapter mVegetablePostAdapter;
     private GardenPostAdapter mGardenPostAdapter;
 
@@ -130,8 +129,6 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         mPersonalPresenter = new PersonalPresenter(getActivity(), this);
         mPersonalPresenter.getInfoPersonal();
 
-        mBtnCreatePost = (Button) mView.findViewById(R.id.btn_create_post);
-        mBtnCreatePost.setOnClickListener(this);
         mLnlSearch = (LinearLayout) mView.findViewById(R.id.lnl_search);
         mLnlSearch.setOnClickListener(this);
         mLnlQRCode = (LinearLayout) mView.findViewById(R.id.lnl_qr_code);
@@ -195,22 +192,19 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
 
                     if (edtQuantity.getText().toString().equals("")) {
                         mIntExchangeQuantityReceive = 0;
+                        showDialogInputReceiveZero();
+                        return;
                     } else {
                         mIntExchangeQuantityReceive = Integer.parseInt(edtQuantity.getText().toString());
                     }
-                    int status = 1;
 
                     if (mIntExchangeQuantityReceive > mIntQuantityOfShare || mIntExchangeQuantityReceive < 1) {
                         showDialogQuantityErr();
-                        System.out.println("chay vao if showDialogQuantityErr");
-                    } else {
-
-                        ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityReceive, 0, mShareIdOfShare, "");
-                        mCreateExchangePresenter.createExchange(exchangeRequest, mUser.getToken());
+                        return;
                     }
 
-                    System.out.println("showDialogQuantity XXXXXXXXXXXXXXXXXx showDialogQuantity");
-
+                    ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityReceive, 0, mShareIdOfShare, "");
+                    mCreateExchangePresenter.createExchange(exchangeRequest, mUser.getToken());
 
                 } catch (NumberFormatException ex) {
                     ex.printStackTrace();
@@ -643,13 +637,10 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btn_create_post:
-//                Intent intentCreatePost = new Intent(getActivity().getApplicationContext(), CreatePostActivity.class);
-//                startActivity(intentCreatePost);
-                break;
             case R.id.lnl_search:
-                Intent intentSearch1 = new Intent(getActivity().getApplicationContext(), SearchActivity.class);
-                startActivity(intentSearch1);
+                Intent intent = new Intent(getActivity().getApplicationContext(), SearchActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                startActivity(intent);
                 break;
             case R.id.lnl_qr_code:
                 openQRCodeScanner();

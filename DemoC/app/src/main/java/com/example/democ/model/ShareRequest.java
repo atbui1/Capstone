@@ -3,6 +3,7 @@ package com.example.democ.model;
 import java.util.List;
 
 public class ShareRequest {
+    private String id;
     private String content;
     private int quantity;
     private int status;
@@ -24,6 +25,24 @@ public class ShareRequest {
         this.status = status;
         this.vegetableId = vegetableId;
         this.vegetableNeedId = vegetableNeedId;
+    }
+
+    /*update post*/
+
+    public ShareRequest(String id, String content, int quantity, int status, String vegetableId) {
+        this.id = id;
+        this.content = content;
+        this.quantity = quantity;
+        this.status = status;
+        this.vegetableId = vegetableId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getContent() {

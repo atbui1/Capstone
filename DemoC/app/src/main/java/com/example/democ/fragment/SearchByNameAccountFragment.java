@@ -32,7 +32,7 @@ public class SearchByNameAccountFragment extends Fragment implements IClickAccou
 
     private SearchActivity mSearchActivity;
     private String searchValue = "";
-    private ArrayList<AccountSearchByName> mListAccount;
+    private List<AccountSearchByName> mListAccount;
     private SearchAccountByNameAdapter mSearchAccountByNameAdapter;
     private IClickAccountName mIClickAccountName;
 

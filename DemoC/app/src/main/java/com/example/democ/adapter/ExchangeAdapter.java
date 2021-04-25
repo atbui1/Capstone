@@ -73,10 +73,6 @@ public class ExchangeAdapter extends RecyclerView.Adapter<ExchangeAdapter.ViewHo
             mTxtPostTime = (TextView) itemView.findViewById(R.id.txt_post_time);
             mTxtPostContent = (TextView) itemView.findViewById(R.id.txt_post_content);
             mImgPostContent = (ImageView) itemView.findViewById(R.id.img_post_content);
-            mTxtPostNumberLike = (TextView) itemView.findViewById(R.id.txt_number_like_post);
-            mLnlPostLike = (LinearLayout) itemView.findViewById(R.id.lnl_post_like);
-            mLnlPostComment = (LinearLayout) itemView.findViewById(R.id.lnl_post_comment);
-            mImgPostLikeStatus = (ImageView) itemView.findViewById(R.id.img_post_like_status);
             mBtnPostExchange = (Button) itemView.findViewById(R.id.btn_exchange);
             mTxtVegetablePostNeed = (TextView) itemView.findViewById(R.id.txt_vegetable_need);
         }

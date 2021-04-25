@@ -7,6 +7,8 @@ import java.io.Serializable;
 public class ShareDetail implements Serializable {
     @SerializedName("id")
     private String id;
+    @SerializedName("content")
+    private String content;
     @SerializedName("shareContent")
     private String shareContent;
     @SerializedName("quantity")
@@ -24,6 +26,7 @@ public class ShareDetail implements Serializable {
     @SerializedName("appAccount")
     private AppAccount appAccount;
 
+    /*create post share - exchange*/
     public ShareDetail(String id, String shareContent, int quantity, int status, String dateShare,
                        String accountId, String vegetableId, AppAccount appAccount) {
         this.id = id;
@@ -35,6 +38,14 @@ public class ShareDetail implements Serializable {
         this.vegetableId = vegetableId;
         this.appAccount = appAccount;
     }
+    /*update post*/
+    public ShareDetail(String id, String content, int quantity, int status, String vegetableId) {
+        this.id = id;
+        this.content = content;
+        this.quantity = quantity;
+        this.status = status;
+        this.vegetableId = vegetableId;
+    }
 
     public String getId() {
         return id;
@@ -42,6 +53,14 @@ public class ShareDetail implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getShareContent() {

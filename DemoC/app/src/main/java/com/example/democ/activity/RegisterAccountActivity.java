@@ -1,5 +1,6 @@
 package com.example.democ.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
@@ -17,17 +18,42 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.example.democ.R;
-import com.example.democ.model.Account;
+import com.example.democ.fragment.DistrictBottomSheetFragment;
+import com.example.democ.fragment.ProvinceBottomSheetFragment;
+import com.example.democ.fragment.WardBottomSheetFragment;
+import com.example.democ.iclick.IClickDistrict;
+import com.example.democ.iclick.IClickProvince;
+import com.example.democ.iclick.IClickWard;
+import com.example.democ.model.AccountData;
+import com.example.democ.model.DistrictData;
+import com.example.democ.model.ProvinceData;
+import com.example.democ.model.WardData;
+import com.example.democ.presenters.DistrictPresenter;
+import com.example.democ.presenters.ProvincePresenter;
 import com.example.democ.presenters.RegisterAccountPresenter;
+import com.example.democ.presenters.WardPresenter;
+import com.example.democ.views.DistrictView;
+import com.example.democ.views.ProvinceView;
 import com.example.democ.views.RegisterAccountView;
+import com.example.democ.views.WardView;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthProvider;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
 
-public class RegisterAccountActivity extends AppCompatActivity implements View.OnClickListener, RegisterAccountView {
+public class RegisterAccountActivity extends AppCompatActivity implements View.OnClickListener, RegisterAccountView,
+        ProvinceView, DistrictView, WardView {
 
     private LinearLayout mLnlBackRegisterLogin;
     private EditText mEdtPhoneNumber, mEdtPassword, mEditPasswordConfirm, mEdtFullName, mEdtEmail;
@@ -36,9 +62,25 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
     private AwesomeValidation awesomeValidation;
     private RegisterAccountPresenter mRegisterAccountPresenter;
 
-    private static String phone = "", password = "", passwordConfirm = "", fullName = "", sexTmp = "", email = "", yob = "";
-    private int sex;
+    private static String mStrPhone = "", mStrPassword = "", mStrPasswordConfirm = "", mStrFullName = "", mStrSexTmp = "",
+            mStrEmail = "", mStrYOB = "";
+    private int mIntSex;
     private boolean active = true;
+
+    /*address*/
+    private ProvincePresenter mProvincePresenter;
+    private DistrictPresenter mDistrictPresenter;
+    private WardPresenter mWardPresenter;
+    private TextView mTxtProvince, mTxtDistrict, mTxtWard;
+    private EditText mEdtSubAddress;
+    private  int mIntDistrictId = 0, mIdWard = 0;
+    private String mStrProvince = "", mStrDistrict = "", mStrWard = "", mStrSubAddress = "";
+    private List<ProvinceData> mListProvince;
+    private List<DistrictData> mListDistrict;
+    private List<WardData> mListWard;
+
+    private FirebaseAuth mAuth;
+
 
     Calendar myCalendar = Calendar.getInstance();
     DatePickerDialog.OnDateSetListener d = new DatePickerDialog.OnDateSetListener() {
@@ -80,37 +122,65 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
         mTxtYOB.setOnClickListener(RegisterAccountActivity.this);
         mEdtFullName = (EditText) findViewById(R.id.edt_full_name);
         mEdtEmail = (EditText) findViewById(R.id.edt_email);
+
+        mTxtProvince = (TextView) findViewById(R.id.txt_province);
+        mTxtDistrict = (TextView) findViewById(R.id.txt_district);
+        mTxtWard = (TextView) findViewById(R.id.txt_ward);
+        mEdtSubAddress = (EditText) findViewById(R.id.edt_sub_address);
+        mTxtProvince.setOnClickListener(this);
+        mTxtDistrict.setOnClickListener(this);
+        mTxtWard.setOnClickListener(this);
+
+        mProvincePresenter = new ProvincePresenter(getApplication(), getApplicationContext(), this);
+        mDistrictPresenter = new DistrictPresenter(getApplication(), getApplicationContext(), this);
+        mWardPresenter = new WardPresenter(getApplication(),getApplicationContext(), this);
     }
 
     private void initialData() {
-        mEdtPhoneNumber.setText((phone.trim().length() > 0) ? phone : "");
-        mEdtPassword.setText((password.trim().length() > 0) ? password : "");
-        mEditPasswordConfirm.setText((passwordConfirm.trim().length() > 0) ? passwordConfirm : "");
-        mEdtFullName.setText((fullName.trim().length() > 0) ? fullName : "");
-        mEdtEmail.setText((email.trim().length() > 0) ? email : "");
-        mTxtSex.setText((sexTmp.trim().length() > 0) ? sexTmp : "");
-        mTxtYOB.setText((yob.trim().length() > 0) ? yob : "");
+        mEdtPhoneNumber.setText((mStrPhone.trim().length() > 0) ? mStrPhone : "");
+        mEdtPassword.setText((mStrPassword.trim().length() > 0) ? mStrPassword : "");
+        mEditPasswordConfirm.setText((mStrPasswordConfirm.trim().length() > 0) ? mStrPasswordConfirm : "");
+        mEdtFullName.setText((mStrFullName.trim().length() > 0) ? mStrFullName : "");
+        mEdtEmail.setText((mStrEmail.trim().length() > 0) ? mStrEmail : "");
+        mTxtSex.setText((mStrSexTmp.trim().length() > 0) ? mStrSexTmp : "");
+        mTxtYOB.setText((mStrYOB.trim().length() > 0) ? mStrYOB : "");
     }
 
     private void setData() {
-        phone = mEdtPhoneNumber.getText().toString();
-        password = mEdtPassword.getText().toString();
-        passwordConfirm = mEditPasswordConfirm.getText().toString();
-        fullName = mEdtFullName.getText().toString();
-        email = mEdtEmail.getText().toString();
-        sexTmp = mTxtSex.getText().toString();
-        yob = mTxtYOB.getText().toString();
+        mStrPhone = mEdtPhoneNumber.getText().toString();
+        mStrPassword = mEdtPassword.getText().toString();
+        mStrPasswordConfirm = mEditPasswordConfirm.getText().toString();
+        mStrFullName = mEdtFullName.getText().toString();
+        mStrEmail = mEdtEmail.getText().toString();
+        mStrSexTmp = mTxtSex.getText().toString();
+        mStrYOB = mTxtYOB.getText().toString();
         active = true;
 
-        if (sexTmp.equals("Nam")) {
-            sex = 1;
-        } else if (sexTmp.equals("Nữ")) {
-            sex = 2;
-        } else if (sexTmp.equals("Khác")) {
-            sex = 3;
+        if (mStrSexTmp.equals("Nam")) {
+            mIntSex = 1;
+        } else if (mStrSexTmp.equals("Nữ")) {
+            mIntSex = 2;
+        } else if (mStrSexTmp.equals("Khác")) {
+            mIntSex = 3;
         }
     }
 
+    private void confirmPhoneNumber(String mStrPhone) {
+        final Dialog dialog = new Dialog(RegisterAccountActivity.this);
+        dialog.setContentView(R.layout.dialog_confirm_phone_number);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtSendCode;
+        EditText edtCode;
+        LinearLayout lnlResendCode;
+        edtCode = (EditText) dialog.findViewById(R.id.edt_code);
+        txtSendCode = (TextView) dialog.findViewById(R.id.txt_send_confirm_code);
+        lnlResendCode = (LinearLayout) dialog.findViewById(R.id.lnl_resend_code);
+
+        String code = edtCode.getText().toString().trim();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+    /*register account*/
     private void registerAccount() {
         setData();
 //        password = mEdtPassword.getText().toString();
@@ -124,32 +194,106 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
 //        awesomeValidation.addValidation(this, R.id.txt_yob, RegexTemplate.NOT_EMPTY, R.string.empty_error);
 
         System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
-        System.out.println("password " + password);
-        System.out.println("confirm pass " + passwordConfirm);
+        System.out.println("password " + mStrPassword);
+        System.out.println("confirm pass " + mStrPasswordConfirm);
         System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+
+//        if (mStrProvince.equals("") || mStrDistrict.equals("") || mStrWard.equals("") || mStrSubAddress.equals("")) {
+//            System.out.println("show dia log err distric null or ward null");
+//            showDialogAddressErr();
+//            return;
+//        }
+
         if (awesomeValidation.validate()) {
-            if (password.equals(passwordConfirm)) {
+            if (mStrPassword.equals(mStrPasswordConfirm)) {
                 System.out.println("if pass = passconfirm 4444444444444444444444444444444444");
-                Account account = new Account(phone, password, fullName, yob, sex, email);
+                AccountData accountData = new AccountData(mStrPhone, mStrPassword, mStrFullName, mStrYOB, mIntSex, mStrEmail);
                 System.out.println("REGISTER 111111111111111111111111111111111111");
-                System.out.println("phone: " +phone);
-                System.out.println("password: " +password);
-                System.out.println("fullname: " +fullName);
-                System.out.println("birthday: " +yob);
-                System.out.println("sex: " + sex);
-                System.out.println("email: " + email);
+                System.out.println("phone: " +mStrPhone);
+                System.out.println("password: " +mStrPassword);
+                System.out.println("fullname: " +mStrFullName);
+                System.out.println("birthday: " +mStrYOB);
+                System.out.println("sex: " + mIntSex);
+                System.out.println("email: " + mStrEmail);
                 System.out.println("active: " + active);
                 System.out.println("REGISTER 22222222222222222222222222222222222222");
-                mRegisterAccountPresenter.registerAccount(account);
+
+                /*api register*/
+//                mRegisterAccountPresenter.registerAccount(accountData);
+                confirmPhoneNumber(mStrPhone);
 
             } else {
                 System.out.println("REGISTER ssssssssssssssssssssssssssssssssssss");
-                awesomeValidation.addValidation(this, R.id.edt_password_confirm, passwordConfirm, R.string.password_confirm_error);
+                awesomeValidation.addValidation(this, R.id.edt_password_confirm, mStrPasswordConfirm, R.string.password_confirm_error);
                 System.out.println("REGISTER xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
             }
         }
     }
 
+    // get province
+    private void clickOpenProvince() {
+        ProvinceBottomSheetFragment provinceBottomSheetFragment = new ProvinceBottomSheetFragment((ArrayList<ProvinceData>) mListProvince, new IClickProvince() {
+            @Override
+            public void clickProvince(ProvinceData provinceData) {
+                mTxtProvince.setText(provinceData.getName());
+                mIntDistrictId = provinceData.getId();
+                mStrProvince = provinceData.getName();
+                //
+                mTxtDistrict.setText("");
+                mTxtWard.setText("");
+                mEdtSubAddress.setText("");
+                mStrDistrict = "";
+                mStrWard = "";
+                mStrSubAddress = "";
+//                mDistrictPresenter.getDistrictById(mIntDistrictId, mUser.getToken());
+            }
+        });
+        provinceBottomSheetFragment.show(getSupportFragmentManager(), provinceBottomSheetFragment.getTag());
+        provinceBottomSheetFragment.setCancelable(false);
+    }
+    //get district by id
+    private void clickOpenDistrict() {
+        DistrictBottomSheetFragment districtBottomSheetFragment = new DistrictBottomSheetFragment((ArrayList<DistrictData>) mListDistrict, new IClickDistrict() {
+            @Override
+            public void clickDistrict(DistrictData districtData) {
+                mTxtDistrict.setText(districtData.getName());
+                mIdWard = districtData.getId();
+                mStrDistrict = districtData.getName();
+//                mWardPresenter.getWardById(mIdWard, mUser.getToken());
+
+            }
+        });
+        districtBottomSheetFragment.show(getSupportFragmentManager(), districtBottomSheetFragment.getTag());
+    }
+    //get ward by id
+    private void clickOpenWard() {
+        WardBottomSheetFragment wardBottomSheetFragment = new WardBottomSheetFragment((ArrayList<WardData>) mListWard, new IClickWard() {
+            @Override
+            public void clickWard(WardData wardData) {
+                mTxtWard.setText(wardData.getName());
+                mStrWard = wardData.getName();
+            }
+        });
+        wardBottomSheetFragment.show(getSupportFragmentManager(), wardBottomSheetFragment.getTag());
+    }
+    private void showDialogAddressErr() {
+        final Dialog dialog = new Dialog(RegisterAccountActivity.this);
+        dialog.setContentView(R.layout.dialog_login_fail);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtErr;
+        Button btnClose;
+        txtErr = (TextView) dialog.findViewById(R.id.txt_detail_err);
+        btnClose = (Button) dialog.findViewById(R.id.btn_close);
+        txtErr.setText("vui lòng nhập đầy đủ thông tin");
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -158,8 +302,8 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
                 startActivity(intentRegisterLogin);
                 break;
             case R.id.btn_register_account:
-                registerAccount();
-//                setData();
+//                registerAccount();
+                sendPhoneNumberToFirebase();
                 break;
             case R.id.txt_sex:
                 showSexDialog();
@@ -172,6 +316,23 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
                         myCalendar.get(Calendar.DAY_OF_MONTH));
                 datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 datePickerDialog.show();
+                break;
+            case R.id.txt_province:
+                clickOpenProvince();
+                break;
+            case R.id.txt_district:
+                if (mStrProvince == null) {
+                    Toast.makeText(getApplicationContext(), "vui long chon tinh/ thanh pho", Toast.LENGTH_SHORT).show();
+                } else {
+                    clickOpenDistrict();
+                }
+                break;
+            case R.id.txt_ward:
+                if (mStrProvince == null || mStrDistrict == null) {
+                    Toast.makeText(getApplicationContext(),"chua chon thanh pho hoac quan huyen", Toast.LENGTH_SHORT).show();
+                } else {
+                    clickOpenWard();
+                }
                 break;
         }
     }
@@ -221,5 +382,57 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
     @Override
     public void registerAccountFail() {
         Toast.makeText(this, "register fail", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void getProvinceSuccess(List<ProvinceData> provinceData) {
+        mListProvince = provinceData;
+    }
+
+    @Override
+    public void getProvinceFail() {
+
+    }
+
+    @Override
+    public void getDistrictSuccess(List<DistrictData> districtData) {
+        mListDistrict = districtData;
+    }
+
+    @Override
+    public void getDistrictFail() {
+
+    }
+
+    @Override
+    public void getWardSuccess(List<WardData> wardData) {
+        mListWard = wardData;
+    }
+
+    @Override
+    public void getWardFail() {
+
+    }
+
+    private void sendPhoneNumberToFirebase() {
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                "+84 123456789",
+                60, TimeUnit.SECONDS,
+                RegisterAccountActivity.this,
+                new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    @Override
+                    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                        System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+                        System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+                    }
+
+                    @Override
+                    public void onVerificationFailed(@NonNull FirebaseException e) {
+                        System.out.println("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+                        System.out.println("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+                    }
+                }
+        );
+
     }
 }
