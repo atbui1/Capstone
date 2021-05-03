@@ -98,7 +98,8 @@ public class GardenFragment extends Fragment implements View.OnClickListener, Al
 
     private void clickOpenCreateGarden() {
         Intent intent = new Intent(getContext().getApplicationContext(), CreateGardenActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
     @Override
@@ -132,7 +133,8 @@ public class GardenFragment extends Fragment implements View.OnClickListener, Al
     public void clickGarden(GardenResult gardenResult) {
         Toast.makeText(getContext(), "garden name: " + gardenResult.getName(), Toast.LENGTH_SHORT).show();
         Intent intentGarden = new Intent(getContext(), GardenActivity.class);
-        intentGarden.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+//        intentGarden.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        intentGarden.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Bundle bundle = new Bundle();
         bundle.putString("GARDEN_NAME", gardenResult.getName());
         bundle.putString("GARDEN_ADDRESS", gardenResult.getAddress());

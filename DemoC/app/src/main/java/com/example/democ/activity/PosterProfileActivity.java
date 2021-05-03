@@ -878,7 +878,7 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
             mBtnAddFriend.setText(ADD_FRIEND_4);
         }
 
-        if (accountData.getAvatarResponse() == null) {
+        if (accountData.getAvatarResponse() == null || accountData.getAvatarResponse().equals("")) {
             mImgAvatar.setImageResource(R.drawable.avatardefault);
         }else {
             Picasso.with(PosterProfileActivity.this).load(accountData.getAvatarResponse())

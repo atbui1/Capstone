@@ -126,26 +126,16 @@ public class QRCodeScannerActivity extends AppCompatActivity implements ZXingSca
     /*dialog delete*/
     private void showDialogSendQRCodeScanner(final String requestId) {
         final Dialog dialog = new Dialog(QRCodeScannerActivity.this);
-        dialog.setContentView(R.layout.dialog_delete_garden);
+        dialog.setContentView(R.layout.dialog_qrcode);
         dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
-        TextView txtQuantity;
-        Button btnClose, btnDelete;
-        btnClose = (Button) dialog.findViewById(R.id.btn_delete_no);
-        btnDelete = (Button) dialog.findViewById(R.id.btn_delete_yes);
-        btnDelete.setText("Xác nhận");
-        txtQuantity = (TextView) dialog.findViewById(R.id.txt_content_delete);
-        txtQuantity.setText("Xác nhận bạn đã nhận cây ");
+        TextView txtContent;
+        Button btnOk;
+        btnOk = (Button) dialog.findViewById(R.id.btn_ok);
+        btnOk.setText("Xác nhận");
+        txtContent = (TextView) dialog.findViewById(R.id.txt_content_qr_code);
+        txtContent.setText("Xác nhận bạn đã nhận cây ");
 
-
-        btnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-                Intent intent = new Intent(QRCodeScannerActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-        btnDelete.setOnClickListener(new View.OnClickListener() {
+        btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                mReplyExchangeRequestPresenter.replyExchangeRequest(requestId, 4, mUser.getToken());

@@ -380,9 +380,11 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         if (mIntExchangeQuantityReceive > mIntQuantityOfShare || mIntExchangeQuantityReceive < 1) {
             System.out.println("chay vao if mIntExchangeQuantityReceive > mIntQuantityOfShare");
             showDialogQuantityErr();
+            return;
         } else if (mIntExchangeQuantityDonate > mIntQuantityOfAccount || mIntExchangeQuantityDonate < 1) {
             System.out.println("chay vao else if mIntExchangeQuantityDonate > mIntQuantityOfAccount");
             showDialogQuantityExchangeErr();
+            return;
         } else {
             ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityReceive,
                     mIntExchangeQuantityDonate, mShareIdOfShare, mStrVegetableNeedId);
@@ -611,7 +613,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         Button btnClose;
         btnClose = (Button) dialog.findViewById(R.id.btn_close);
         txtQuantity = (TextView) dialog.findViewById(R.id.txt_exchange_quantity);
-        txtQuantity.setText("Trao đổi thành công" );
+        txtQuantity.setText("Gửi yêu cầu thành công" );
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

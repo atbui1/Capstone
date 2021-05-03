@@ -44,7 +44,7 @@ public class SearchByWikiBottomSheetFragment extends BottomSheetDialogFragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        SearchWikiTitleAdapter searchWikiTitleAdapter = new SearchWikiTitleAdapter(mListWiki, new IClickWikiTitle() {
+        SearchWikiTitleAdapter searchWikiTitleAdapter = new SearchWikiTitleAdapter(mListWiki,mBottomSheetDialog.getContext(), new IClickWikiTitle() {
             @Override
             public void clickWikiTitle(WikiDataTitle wikiDataTitle) {
                 mIClickWikiTitle.clickWikiTitle(wikiDataTitle);

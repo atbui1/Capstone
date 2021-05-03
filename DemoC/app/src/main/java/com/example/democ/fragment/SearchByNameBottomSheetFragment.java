@@ -3,6 +3,8 @@ package com.example.democ.fragment;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.democ.R;
+import com.example.democ.activity.CreateVegetableActivity;
 import com.example.democ.adapter.SearchNameAdapter;
 import com.example.democ.iclick.IClickListTextWiki;
 import com.example.democ.iclick.IClickVegetable;
@@ -238,7 +241,26 @@ public class SearchByNameBottomSheetFragment extends BottomSheetDialogFragment i
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
+    /*dialog search description err*/
+    private  void showDialogGetDescriptionErr() {
+        final Dialog dialog = new Dialog(mBottomSheetDialog.getContext());
+        dialog.setContentView(R.layout.dialog_login_fail);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCanceledOnTouchOutside(false);
 
+        TextView txtDetail;
+        Button btnOk;
+        txtDetail = (TextView) dialog.findViewById(R.id.txt_detail_err);
+        btnOk = (Button) dialog.findViewById(R.id.btn_close);
+        txtDetail.setText("Không tìm thấy thông tin, vui lòng thử lại");
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -279,7 +301,7 @@ public class SearchByNameBottomSheetFragment extends BottomSheetDialogFragment i
 
     @Override
     public void searchByWikiTitleFail() {
-
+        showDialogGetDescriptionErr();
     }
 
     @Override
@@ -312,6 +334,6 @@ public class SearchByNameBottomSheetFragment extends BottomSheetDialogFragment i
 
     @Override
     public void getDescriptionByWikiFail() {
-
+        showDialogGetDescriptionErr();
     }
 }

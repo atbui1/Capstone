@@ -67,7 +67,7 @@ public class HistoryExchangeAdapter extends RecyclerView.Adapter<HistoryExchange
 
         /* exchange status*/
         if (exchangeData.getStatus() == 1) {
-            holder.mTxtExchangeStatus.setText("Trạng thái: Yêu cầu chưa sữ lý");
+            holder.mTxtExchangeStatus.setText("Trạng thái: Yêu cầu chưa sử lý");
             holder.mTxtExchangeStatus.setTextColor(ContextCompat.getColor(mContext, R.color.sick_green));
         } else if (exchangeData.getStatus() == 2) {
             holder.mTxtExchangeStatus.setText("Trạng thái: Đã chấp thuận");
@@ -76,7 +76,7 @@ public class HistoryExchangeAdapter extends RecyclerView.Adapter<HistoryExchange
             holder.mTxtExchangeStatus.setText("Trạng thái: Yêu cầu bị Từ chối");
             holder.mTxtExchangeStatus.setTextColor(ContextCompat.getColor(mContext, R.color.red));
         } else if (exchangeData.getStatus() == 4) {
-            holder.mTxtExchangeStatus.setText("Trạng thái: Hoàn thành trao đổi");
+            holder.mTxtExchangeStatus.setText("Trạng thái: Hoàn thành");
             holder.mTxtExchangeStatus.setTextColor(ContextCompat.getColor(mContext, R.color.dark_sky_blue));
         }
 

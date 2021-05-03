@@ -156,7 +156,7 @@ public class CreateGardenActivity extends AppCompatActivity implements View.OnCl
                 mStrWard = "";
                 mStrSubAddress = "";
                 //
-                mDistrictPresenter.getDistrictById(mIntDistrictId, mUser.getToken());
+                mDistrictPresenter.getDistrictById(mIntDistrictId);
             }
         });
         provinceBottomSheetFragment.show(getSupportFragmentManager(), provinceBottomSheetFragment.getTag());
@@ -170,7 +170,7 @@ public class CreateGardenActivity extends AppCompatActivity implements View.OnCl
                 mTxtDistrict.setText(districtData.getName());
                 mIdWard = districtData.getId();
                 mStrDistrict = districtData.getName();
-                mWardPresenter.getWardById(mIdWard, mUser.getToken());
+                mWardPresenter.getWardById(mIdWard);
 
             }
         });
@@ -258,7 +258,7 @@ public class CreateGardenActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void showInfoPersonal(User user) {
         mUser = user;
-        mProvincePresenter.getAllProvince(user.getToken());
+        mProvincePresenter.getAllProvince();
     }
 
     @Override

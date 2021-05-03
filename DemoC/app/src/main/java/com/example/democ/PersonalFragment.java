@@ -160,38 +160,38 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
 
     public void clickOpenSearchAccount() {
         Intent intent = new Intent(getActivity(), SearchAccountActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
     public void clickOpenRequestAddFriend() {
         Intent intent = new Intent(getActivity(), AddFriendRequestActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
     public void clickOpenUpdateAccount() {
 //        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         Intent intent = new Intent(getActivity(), UpdateAccountActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
     public void clickOpenHistoryExchange() {
         Intent intent = new Intent(getActivity(), HistoryExchangeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
     public void clickOpenFriend() {
         Intent intent = new Intent(getActivity(), FriendActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
     public void clickOpenUpdateAvatar() {
         Intent intent = new Intent(getActivity(), UploadAvatarActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
     public void clickOpenChangePass() {
         Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
@@ -224,7 +224,8 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
         String urlImage = "";
 
         Intent intent = new Intent(getActivity(), UpdatePostActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Bundle bundle = new Bundle();
 
         if (postData.getImageVegetablesList().size() == 0) {
@@ -302,7 +303,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), UploadAvatarActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 dialog.dismiss();
             }
@@ -433,7 +434,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void getInfoAccountSuccess(AccountData accountData) {
-        if (accountData.getAvatarResponse() == null) {
+        if (accountData.getAvatarResponse() == null || accountData.getAvatarResponse().equals("")) {
             mImgAvatar.setImageResource(R.drawable.avatardefault);
         } else {
             Picasso.with(getContext()).load(accountData.getAvatarResponse())

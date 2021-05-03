@@ -123,9 +123,10 @@ public class AddFriendRequestActivity extends AppCompatActivity implements View.
         mListAddFriend = (ArrayList<AddFriendRequest>) addFriendRequests;
         if (mListAddFriend.size() > 0) {
             updateUI();
-        } else {
-            initialView();
         }
+//        else {
+//            initialView();
+//        }
     }
 
     @Override

@@ -33,8 +33,17 @@ public interface CapstoneService {
     Call<ResponseBody> login(@Body RequestBody body);
 
     //account
+//    @POST(ConfigApi.Api.ACCOUNT_REGISTER)
+//    Call<ResponseBody> register(@Body RequestBody body);
+    @Multipart
     @POST(ConfigApi.Api.ACCOUNT_REGISTER)
-    Call<ResponseBody> register(@Body RequestBody body);
+    Call<ResponseBody> register(@Part("PhoneNumber") RequestBody phoneNumber,
+                                @Part("Password") RequestBody password,
+                                @Part("FullName") RequestBody fullName,
+                                @Part("BirthDate") RequestBody birthDate,
+                                @Part("Sex") RequestBody sex,
+                                @Part("Address") RequestBody address,
+                                @Part("Email") RequestBody email);
     @GET(ConfigApi.Api.ACCOUNT_GET_INFO)
     Call<ResponseBody> getInfoAccount(@Query("Id") String accountId, @Header("Authorization") String token);
     @PUT(ConfigApi.Api.ACCOUNT_UPDATE)
@@ -159,11 +168,11 @@ public interface CapstoneService {
 
     //Address
     @GET(ConfigApi.Api.PROVINCE)
-    Call<ResponseBody> getAllProvince(@Header("Authorization") String token);
+    Call<ResponseBody> getAllProvince();
     @GET(ConfigApi.Api.DISTRICT)
-    Call<ResponseBody> getDistrictByID(@Query("Id") int id, @Header("Authorization") String token);
+    Call<ResponseBody> getDistrictByID(@Query("Id") int id);
     @GET(ConfigApi.Api.WARD)
-    Call<ResponseBody> getWardById(@Query("Id") int id, @Header("Authorization") String token);
+    Call<ResponseBody> getWardById(@Query("Id") int id);
 
     //report
     @POST(ConfigApi.Api.REPORT_POST)

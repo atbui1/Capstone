@@ -28,12 +28,14 @@ import com.example.democ.presenters.AllExchangePresenter;
 import com.example.democ.presenters.AllGardenPresenter;
 import com.example.democ.presenters.AllSharePresenter;
 import com.example.democ.presenters.LoginPresenter;
+import com.example.democ.presenters.LogoutPresenter;
 import com.example.democ.presenters.PersonalPresenter;
 import com.example.democ.room.entities.User;
 import com.example.democ.room.managements.UserManagement;
 import com.example.democ.views.AllExchangeView;
 import com.example.democ.views.AllGardenView;
 import com.example.democ.views.AllShareView;
+import com.example.democ.views.LogoutView;
 import com.example.democ.views.PersonalView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -45,7 +47,7 @@ import com.google.firebase.iid.InstanceIdResult;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {//} implements AllGardenView, AllShareView, AllExchangeView, PersonalView {
+public class MainActivity extends AppCompatActivity implements LogoutView {//} implements AllGardenView, AllShareView, AllExchangeView, PersonalView {
 
     private BottomNavigationView mBottomNavigationView;
 
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity {//} implements AllGardenVie
 
     /*Back 2 tap exit app*/
     private long mBackPressTime;
+    private LogoutPresenter mLogoutPresenter;
 
     //new
 
@@ -100,6 +103,7 @@ public class MainActivity extends AppCompatActivity {//} implements AllGardenVie
     public void onBackPressed() {
         if (mBackPressTime + 2000 > System.currentTimeMillis()) {
             super.onBackPressed();
+            mLogoutPresenter.deleteAccountRoom();
             return;
         } else {
             Toast.makeText(MainActivity.this, "Click BACK lần nữa để thoát ứng dụng", Toast.LENGTH_SHORT).show();
@@ -126,6 +130,8 @@ public class MainActivity extends AppCompatActivity {//} implements AllGardenVie
 //        }
         selectedFragment = new DiaryFragment();
         getSupportFragmentManager().beginTransaction().add(R.id.frame_container, selectedFragment).commit();
+
+        mLogoutPresenter = new LogoutPresenter(getApplication(), getApplicationContext(), this);
 
     }
 
@@ -191,6 +197,19 @@ public class MainActivity extends AppCompatActivity {//} implements AllGardenVie
                     return true;
                 }
             };
+
+    @Override
+    public void logoutSuccess() {
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//        intentLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void logoutFail() {
+
+    }
 
 //    @Override
 //    public void getAllGardenSuccess(List<GardenResult> listAllGarden) {

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -49,7 +50,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     private ViewPager mVpSearch;
     private EditText mEdtSearchValue;
-    private LinearLayout mLnlSearch;
+    private LinearLayout mLnlSearch, mLnlBack;
 
     private List<PostSearchDescription> mListSearchDescription;
     private List<PostSearchName> mListSearchName;
@@ -80,6 +81,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         mVpSearch.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT));
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tl_search);
         tabLayout.setupWithViewPager(mVpSearch);
+
+        mLnlBack = (LinearLayout) findViewById(R.id.lnl_back);
+        mLnlBack.setOnClickListener(this);
     }
 
     private void initialData() {
@@ -130,6 +134,10 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.lnl_search:
                 System.out.println("********************** btn img search name *********************************");
                 searchVegetable();
+                break;
+            case R.id.lnl_back:
+                Intent intentHome = new Intent(SearchActivity.this, MainActivity.class);
+                startActivity(intentHome);
                 break;
         }
     }

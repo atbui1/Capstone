@@ -58,12 +58,9 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
             return;
         }
         holder.mTxtVegetableName.setText(mVegetableList.get(position).getName());
-//        holder.mTxtVegetableDescription.setText(mVegetableList.get(position).getDescription());
-//        holder.mTxtVegetableFeature.setText(mVegetableList.get(position).getFeature());
         try {
             if (vegetableData.getImageVegetables().size() >0) {
                 int maxSize = mVegetableList.get(position).getImageVegetables().size() - 1;
-                System.out.println("link url: " + vegetableData.getImageVegetables().get(maxSize).getUrl());
                 if (mVegetableList.get(position).getImageVegetables().get(maxSize).getUrl() != null) {
                     Picasso.with(mContext).load(mVegetableList.get(position).getImageVegetables().get(maxSize).getUrl())
                             .placeholder(R.drawable.ic_launcher_background)

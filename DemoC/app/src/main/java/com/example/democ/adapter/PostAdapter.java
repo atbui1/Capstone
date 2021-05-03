@@ -74,7 +74,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.mTxtPostUsername.setText(mListPost.get(position).getFullName());
         holder.mTxtPhoneNumber.setText("Liên hệ: " + mListPost.get(position).getPhoneNumber());
 
-        if (mListPost.get(position).getAvatar() == null) {
+        if (mListPost.get(position).getAvatar() == null || mListPost.get(position).getAvatar().equals("")) {
             holder.mImgImagePostUser.setImageResource(R.drawable.avatardefault);
         } else {
             Picasso.with(mContext).load(mListPost.get(position).getAvatar())

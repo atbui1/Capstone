@@ -111,38 +111,69 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
     }
 
     @Override
-    public void register(final Context context, AccountData accountData, final CallBackData<AccountData> callBackData) {
+    public void register(Context context, RequestBody phoneNumber, RequestBody password, RequestBody fullName, RequestBody birthDate, RequestBody sex, RequestBody address, RequestBody email, final CallBackData<String> callBackData) {
         ClientApi clientApi = new ClientApi();
-        final Gson gson = new Gson();
-        String json = gson.toJson(accountData);
-        RequestBody requestBody = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), json);
-        Call<ResponseBody> serviceCall = clientApi.capstoneService().register(requestBody);
+        Call<ResponseBody> serviceCall = clientApi.capstoneService().register(phoneNumber, password, fullName, birthDate, sex,
+                address, email);
         serviceCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.code() == 200 && response.body() != null) {
                     try {
-                        String result = response.body().string();
-                        AccountData accountDataResult = gson.fromJson(result, AccountData.class);
-                        if (accountDataResult != null) {
-                            callBackData.onSuccess(accountDataResult);
-                        } else {
-                            callBackData.onFail("");
-                        }
+                        callBackData.onSuccess("");
+                        System.out.println("SSSSSSSSSSSSSSSSSSS dk success  SSSSSSSSSSSSSSSSSSSSSSSSSSS");
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 } else {
                     callBackData.onFail("");
+                    System.out.println("FFFFFFFFFFFFFFF dk fail ngoai if FFFFFFFFFFFFFFFFFFFFFFFFFFF");
+                    System.out.println("code: " + response.code());
+                    System.out.println("FFFFFFFFFFFFFFF dk fail ngoai if FFFFFFFFFFFFFFFFFFFFFFFFFFF");
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                callBackData.onFail("");
+                System.out.println("FFFFFFFFFFFFFFF dk fail loi server FFFFFFFFFFFFFFFFFFFFFFFFFFF");
             }
         });
     }
+
+
+//    @Override
+//    public void register(final Context context, AccountData accountData, final CallBackData<AccountData> callBackData) {
+//        ClientApi clientApi = new ClientApi();
+//        final Gson gson = new Gson();
+//        String json = gson.toJson(accountData);
+//        RequestBody requestBody = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), json);
+//        Call<ResponseBody> serviceCall = clientApi.capstoneService().register(requestBody);
+//        serviceCall.enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                if (response.code() == 200 && response.body() != null) {
+//                    try {
+//                        String result = response.body().string();
+//                        AccountData accountDataResult = gson.fromJson(result, AccountData.class);
+//                        if (accountDataResult != null) {
+//                            callBackData.onSuccess(accountDataResult);
+//                        } else {
+//                            callBackData.onFail("");
+//                        }
+//                    } catch (Exception ex) {
+//                        ex.printStackTrace();
+//                    }
+//                } else {
+//                    callBackData.onFail("");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                callBackData.onFail("");
+//            }
+//        });
+//    }
 
     @Override
     public void getInfoAccount(Context context, String accountId, String token, final CallBackData<AccountData> callBackData) {
@@ -1596,10 +1627,10 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
     }
 
     @Override
-    public void getAllProvince(Context context, String token, final CallBackData<List<ProvinceData>> callBackData) {
+    public void getAllProvince(Context context, final CallBackData<List<ProvinceData>> callBackData) {
         mListProvince = new ArrayList<>();
         ClientApi clientApi = new ClientApi();
-        Call<ResponseBody> serviceCall = clientApi.capstoneService().getAllProvince("Bearer " + token);
+        Call<ResponseBody> serviceCall = clientApi.capstoneService().getAllProvince();
         serviceCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -1632,10 +1663,10 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
     }
 
     @Override
-    public void getDistrictById(Context context, int id, String token, final CallBackData<List<DistrictData>> callBackData) {
+    public void getDistrictById(Context context, int id, final CallBackData<List<DistrictData>> callBackData) {
         mListDistrict = new ArrayList<>();
         ClientApi clientApi = new ClientApi();
-        Call<ResponseBody> serviceCall = clientApi.capstoneService().getDistrictByID(id, "Bearer " + token);
+        Call<ResponseBody> serviceCall = clientApi.capstoneService().getDistrictByID(id);
         serviceCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -1666,10 +1697,10 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
     }
 
     @Override
-    public void getWardById(Context context, int id, String token, final CallBackData<List<WardData>> callBackData) {
+    public void getWardById(Context context, int id, final CallBackData<List<WardData>> callBackData) {
         mListWard = new ArrayList<>();
         ClientApi clientApi = new ClientApi();
-        Call<ResponseBody> serviceCall = clientApi.capstoneService().getWardById(id, "Bearer " + token);
+        Call<ResponseBody> serviceCall = clientApi.capstoneService().getWardById(id);
         serviceCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

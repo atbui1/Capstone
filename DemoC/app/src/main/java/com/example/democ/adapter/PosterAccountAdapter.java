@@ -57,7 +57,7 @@ public class PosterAccountAdapter extends RecyclerView.Adapter<PosterAccountAdap
         holder.mTxtVegetablePostQuantity.setText("Số lượng: " + String.valueOf(mListPost.get(position).getQuantity()));
         holder.mTxtPhoneNumber.setText("Liên hệ: " + mListPost.get(position).getPhoneNumber());
 
-        if (mListPost.get(position).getAvatar() == null) {
+        if (mListPost.get(position).getAvatar() == null || mListPost.get(position).getAvatar().equals("")) {
             holder.mImgAvatar.setImageResource(R.drawable.avatardefault);
         } else {
             Picasso.with(mContext).load(mListPost.get(position).getAvatar())

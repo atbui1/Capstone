@@ -24,8 +24,8 @@ public class ProvincePresenter {
         mCapstoneRepository = new CapstoneRepositoryImp();
     }
 
-    public void getAllProvince(String token) {
-        mCapstoneRepository.getAllProvince(mContext, token, new CallBackData<List<ProvinceData>>() {
+    public void getAllProvince() {
+        mCapstoneRepository.getAllProvince(mContext, new CallBackData<List<ProvinceData>>() {
             @Override
             public void onSuccess(List<ProvinceData> provinceData) {
                 mProvinceView.getProvinceSuccess(provinceData);

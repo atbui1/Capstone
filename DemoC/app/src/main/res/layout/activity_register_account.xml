@@ -345,7 +345,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp50">
                 <TextView
-                    android:text="Đại chỉ chi tiết"
+                    android:text="Địa chỉ chi tiết"
                     android:textStyle="bold"
                     android:textSize="@dimen/sp17"
                     android:gravity="center_vertical"
@@ -359,7 +359,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp50">
                 <EditText
-                    android:id="@+id/edt_garden_address"
+                    android:id="@+id/edt_sub_address"
                     android:background="@drawable/bg_edt"
                     android:hint="Địa chỉ chi tiết"
                     android:paddingLeft="@dimen/dp8"

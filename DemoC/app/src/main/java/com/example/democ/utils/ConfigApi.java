@@ -6,7 +6,7 @@ public class ConfigApi {
     public interface Api {
 
         String ACCOUNT_LOGIN = "api/Login/MobileLogin";
-        String ACCOUNT_REGISTER = "api/AccountData/Registration";
+        String ACCOUNT_REGISTER = "api/Account/Registration";
         String ACCOUNT_GET_INFO = "/api/AccountDetail/GetAccountDetailByPhoneNumber";
         String ACCOUNT_UPDATE = "api/AccountData/Update";
         //Friend

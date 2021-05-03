@@ -177,7 +177,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp50">
                 <TextView
-                    android:text="Đại chỉ chi tiết"
+                    android:text="Địa chỉ chi tiết"
                     android:textStyle="bold"
                     android:textSize="@dimen/sp17"
                     android:gravity="center_vertical"

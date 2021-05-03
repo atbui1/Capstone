@@ -24,8 +24,8 @@ public class DistrictPresenter {
         mCapstoneRepository = new CapstoneRepositoryImp();
     }
 
-    public  void getDistrictById(int id, String token) {
-        mCapstoneRepository.getDistrictById(mContext, id, token, new CallBackData<List<DistrictData>>() {
+    public  void getDistrictById(int id) {
+        mCapstoneRepository.getDistrictById(mContext, id, new CallBackData<List<DistrictData>>() {
             @Override
             public void onSuccess(List<DistrictData> districtData) {
                 mDistrictView.getDistrictSuccess(districtData);

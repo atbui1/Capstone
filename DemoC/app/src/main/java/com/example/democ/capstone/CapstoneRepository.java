@@ -38,7 +38,9 @@ import okhttp3.RequestBody;
 public interface CapstoneRepository {
 
     void login(Context context, String userName, String password, String deviceToken, CallBackData<User> callBackData);
-    void register(Context context, AccountData accountData, CallBackData<AccountData> callBackData);
+//    void register(Context context, AccountData accountData, CallBackData<AccountData> callBackData);
+    void register(Context context, RequestBody phoneNumber, RequestBody password, RequestBody fullName, RequestBody birthDate,
+                  RequestBody sex, RequestBody address, RequestBody email, CallBackData<String> callBackData);
     void getInfoAccount(Context context, String accountId, String token, CallBackData<AccountData> callBackData);
     void updateAccount(Context context, AccountData accountData, String token, CallBackData<AccountData> callBackData);
     //Friend
@@ -98,9 +100,9 @@ public interface CapstoneRepository {
     void uploadAvatar(Context context, MultipartBody.Part newItem, String token, CallBackData<String> callBackData);
 
     //address
-    void getAllProvince(Context context, String token, CallBackData<List<ProvinceData>> callBackData);
-    void getDistrictById(Context context, int id, String token, CallBackData<List<DistrictData>> callBackData);
-    void getWardById(Context context, int id, String token, CallBackData<List<WardData>> callBackData);
+    void getAllProvince(Context context, CallBackData<List<ProvinceData>> callBackData);
+    void getDistrictById(Context context, int id, CallBackData<List<DistrictData>> callBackData);
+    void getWardById(Context context, int id, CallBackData<List<WardData>> callBackData);
 
     //Report post
     void reportPost(Context context, ReportPost reportPost, String token, CallBackData<String> callBackData);

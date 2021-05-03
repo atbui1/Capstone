@@ -9,6 +9,8 @@ import com.example.democ.model.AccountData;
 import com.example.democ.utils.CallBackData;
 import com.example.democ.views.RegisterAccountView;
 
+import okhttp3.RequestBody;
+
 public class RegisterAccountPresenter {
 
     private CapstoneRepository mCapstoneRepository;
@@ -23,18 +25,33 @@ public class RegisterAccountPresenter {
         mCapstoneRepository = new CapstoneRepositoryImp();
     }
 
-    public void registerAccount(AccountData accountData) {
-        mCapstoneRepository.register(mContext, accountData, new CallBackData<AccountData>() {
+//    public void registerAccount(AccountData accountData) {
+//        mCapstoneRepository.register(mContext, accountData, new CallBackData<AccountData>() {
+//            @Override
+//            public void onSuccess(AccountData accountData) {
+//                mRegisterAccountView.registerAccountSuccess();
+//                System.out.println("************** register presenter 31");
+//            }
+//
+//            @Override
+//            public void onFail(String msgFail) {
+//                mRegisterAccountView.registerAccountFail();
+//                System.out.println("************** register presenter 37");
+//            }
+//        });
+//    }
+
+    public void registerAccount(RequestBody phoneNumber, RequestBody password, RequestBody fullName, RequestBody birthDate,
+                                RequestBody sex, RequestBody address, RequestBody email) {
+        mCapstoneRepository.register(mContext, phoneNumber, password, fullName, birthDate, sex, address, email, new CallBackData<String>() {
             @Override
-            public void onSuccess(AccountData accountData) {
+            public void onSuccess(String s) {
                 mRegisterAccountView.registerAccountSuccess();
-                System.out.println("************** register presenter 31");
             }
 
             @Override
             public void onFail(String msgFail) {
                 mRegisterAccountView.registerAccountFail();
-                System.out.println("************** register presenter 37");
             }
         });
     }

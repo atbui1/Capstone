@@ -130,7 +130,8 @@ public class VegetableActivity extends AppCompatActivity implements View.OnClick
         VegetableData vegetableData = (VegetableData) bundleGetData.getSerializable(KEY_VEGETABLE);
         /* getting send info bundle */
         Intent intentSendData = new Intent(VegetableActivity.this, UpdateVegetableActivity.class);
-        intentSendData.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+//        intentSendData.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        intentSendData.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Bundle bundleSendData = new Bundle();
         bundleSendData.putInt("GARDEN_ID", mGardenId);
         bundleSendData.putString("GARDEN_NAME", mGardenName);
@@ -148,7 +149,8 @@ public class VegetableActivity extends AppCompatActivity implements View.OnClick
         /* getting send info bundle */
 //        Intent intentSendData = new Intent(VegetableActivity.this, UpdateVegetableActivity.class);
         Intent intentSendData = new Intent(VegetableActivity.this, CreatePostActivity.class);
-        intentSendData.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+//        intentSendData.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        intentSendData.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Bundle bundleSendData = new Bundle();
         bundleSendData.putInt("GARDEN_ID", mGardenId);
         bundleSendData.putString("GARDEN_NAME", mGardenName);
@@ -163,7 +165,8 @@ public class VegetableActivity extends AppCompatActivity implements View.OnClick
         Bundle bundleGetData = intentGetData.getExtras();
         VegetableData vegetableData = (VegetableData) bundleGetData.getSerializable(KEY_VEGETABLE);
         Intent intentSendData = new Intent(VegetableActivity.this, CreatePostShareActivity.class);
-        intentSendData.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+//        intentSendData.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        intentSendData.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Bundle bundleSendData = new Bundle();
         bundleSendData.putInt("GARDEN_ID", mGardenId);
         bundleSendData.putString("GARDEN_NAME", mGardenName);
@@ -178,7 +181,8 @@ public class VegetableActivity extends AppCompatActivity implements View.OnClick
         Bundle bundleGetData = intentGetData.getExtras();
         VegetableData vegetableData = (VegetableData) bundleGetData.getSerializable(KEY_VEGETABLE);
         Intent intentSendData = new Intent(VegetableActivity.this, CreatePostExchangeActivity.class);
-        intentSendData.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+//        intentSendData.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        intentSendData.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Bundle bundleSendData = new Bundle();
         bundleSendData.putInt("GARDEN_ID", mGardenId);
         bundleSendData.putString("GARDEN_NAME", mGardenName);

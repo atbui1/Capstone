@@ -91,8 +91,9 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
     private boolean mBlIsFixed = false;
     private static String URL_SEARCH_NAME = "url_search_name";
     private static String URL_TELEPHONE = "url_telephone";
-    private String mMediaPath, mStrLinkUrl = "", mStrUrl = "";
+    private String mMediaPath, mStrLinkUrl = "", mStrUrl = "", mStrFeature = "";
     private SearchByNameBottomSheetFragment mSearchByNameBottomSheetFragment;
+    private Dialog mDialogAddVegetable;
 
 
     @Override
@@ -168,7 +169,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
         dialog.show();
     }
     /*incomplete information*/
-    private  void showDialogInputInfoyErr() {
+    private  void showDialogInputInfoErr() {
         final Dialog dialog = new Dialog(CreateVegetableActivity.this);
         dialog.setContentView(R.layout.dialog_login_fail);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -187,8 +188,17 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
         });
         dialog.show();
     }
+    /*show dialog add vegetable*/
+    private  void showDialogAddVegetable() {
+        mDialogAddVegetable = new Dialog(CreateVegetableActivity.this);
+        mDialogAddVegetable.setContentView(R.layout.dialog_add_vegetable);
+        mDialogAddVegetable.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mDialogAddVegetable.setCanceledOnTouchOutside(false);
 
-    private  void showDialogChoiceImage() {
+        mDialogAddVegetable.show();
+    }
+    /*dialog create vegetable err*/
+    private  void showDialogCreateVegetableErr() {
         final Dialog dialog = new Dialog(CreateVegetableActivity.this);
         dialog.setContentView(R.layout.dialog_login_fail);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -198,7 +208,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
         Button btnOk;
         txtDetail = (TextView) dialog.findViewById(R.id.txt_detail_err);
         btnOk = (Button) dialog.findViewById(R.id.btn_close);
-        txtDetail.setText("Vui lòng chọn ảnh từ điện thoại");
+        txtDetail.setText("Thêm rau không thành công, vui lòng thử lại");
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -262,7 +272,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
             showDialogQuantityErr();
             return;
         } else if (mName.equals("") || mDescription.equals("") || mFeature.equals("")) {
-            showDialogInputInfoyErr();
+            showDialogInputInfoErr();
             return;
         }
         //new
@@ -292,11 +302,29 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
         } else {
             mRequestImage = null;
             mStrIdDescription = "";
-            mStrSearchValue = "";
-            mStrSynonymOfFeature = "";
+//            mStrSearchValue = "";
+            mStrSearchValue = mName;
+
+            if (!mStrFeature.equals("")) {
+                String[] str_feature_arr = mStrFeature.split("\n\r");
+                if (str_feature_arr != null) {
+                    mStrSynonymOfFeature = str_feature_arr[0].trim();
+                    System.out.println("****************************************************");
+                    System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+                    System.out.println("****************************************************");
+                } else {
+                    mStrSynonymOfFeature = "";
+                }
+            } else {
+                mStrSynonymOfFeature = "";
+            }
+
+//            mStrSynonymOfFeature = "";
+
             requestLinkImage = RequestBody.create(MediaType.parse("text/plain"), mStrLinkUrl);
             System.out.println("HHHHHHHHHHHHHHHH    chay vao else (url tu search) HHHHHHHHHHHHHHHHHHHHHHhh");
             System.out.println("link image: " + mStrLinkUrl);
+            System.out.println("tach ra nek: " + mStrSynonymOfFeature);
             System.out.println("HHHHHHHHHHHHHHHH    chay vao else (url tu search) HHHHHHHHHHHHHHHHHHHHHHhh");
         }
 
@@ -330,11 +358,11 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
 
         System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD chay api tao rau DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
 
-        mCreateVegetablePresenter.createVegetable(requestTitle, requestDescription, requestFeature, requestQuantity,
-                requestGardenId, requestIdDescription, requestIsFixed, requestNameSearch, requestSynonymOfFeature, requestLinkImage,
-                mRequestImage, mToken);
+//        mCreateVegetablePresenter.createVegetable(requestTitle, requestDescription, requestFeature, requestQuantity,
+//                requestGardenId, requestIdDescription, requestIsFixed, requestNameSearch, requestSynonymOfFeature, requestLinkImage,
+//                mRequestImage, mToken);
 
-
+        showDialogAddVegetable();
     }
 
     @Override
@@ -473,16 +501,11 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
 
 
                     String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-//                    File destination = new File(Environment.getExternalStorageDirectory() + "/" +
-//                            getString(R.string.app_name), "IMG_" + timeStamp + ".jpg");
                     File path = Environment.getExternalStoragePublicDirectory(
                             Environment.DIRECTORY_PICTURES);
                     File file = new File(path, timeStamp + ".jpg");
                     FileOutputStream fo;
                     try {
-//                        destination.mkdirs();
-//                        destination.createNewFile();
-//                        fo = new FileOutputStream(destination);
                         path.mkdirs();
                         fo = new FileOutputStream(file);
                         fo.write(bytes.toByteArray());
@@ -493,7 +516,6 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
                         e.printStackTrace();
                     }
 
-//                    mMediaPath = destination.getAbsolutePath();
                     mMediaPath = file.getAbsolutePath();
                     System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
                     System.out.println("link came ra");
@@ -525,7 +547,8 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
     @Override
     public void searchByNameSuccess(List<VegetableData> vegetableData) {
         this.mListVegetable = (ArrayList<VegetableData>) vegetableData;
-        System.out.println(mListVegetable.size());
+        System.out.println("searchByNameSuccess searchByNameSuccess");
+        System.out.println("list search trong he thong: " + mListVegetable.size());
         mSearchByNameBottomSheetFragment =
                 new SearchByNameBottomSheetFragment(mListVegetable, mStrSearchValue, new IClickVegetable() {
                     @Override
@@ -539,7 +562,17 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
 
     @Override
     public void searchByNameFail() {
-
+        mListVegetable = new ArrayList<>();
+        mSearchByNameBottomSheetFragment =
+                new SearchByNameBottomSheetFragment(mListVegetable, mStrSearchValue, new IClickVegetable() {
+                    @Override
+                    public void clickVegetable(VegetableData vegetableData) {
+//                        showDialogIntroVegetable(vegetableData);
+                    }
+                });
+        mSearchByNameBottomSheetFragment.setCancelable(false);
+        mSearchByNameBottomSheetFragment.show(getSupportFragmentManager(), mSearchByNameBottomSheetFragment.getTag());
+        System.out.println("BBBBBBBBBBBBBBBB searchByNameFail   BBBBBBBBBBBBBBBBBBBBB");
     }
 
     /*get data search wiki full*/
@@ -548,6 +581,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
         mEdtVegetableName.setText(vegName);
         mEdtVegetableDescription.setText(vegDescription);
         mEdtVegetableFeature.setText(vegFeature);
+        mStrFeature = vegFeature;
         if (vegLinkUrl.equals("")) {
             mImgCreateVegetable.setImageResource(R.mipmap.addimage64);
         } else {
@@ -571,6 +605,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
         mEdtVegetableName.setText(vegName);
         mEdtVegetableDescription.setText(vegDescription);
         mEdtVegetableFeature.setText(vegFeature);
+        mStrFeature = vegFeature;
         if (vegLinkUrl.equals("")) {
             mImgCreateVegetable.setImageResource(R.mipmap.addimage64);
         } else {
@@ -592,6 +627,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
         System.out.println("************************ 5555555555555555 **************************************");
         System.out.println("createVegetableView Success");
         System.out.println("************************ 5555555555555555 **************************************");
+        mDialogAddVegetable.dismiss();
         Intent intent = new Intent(CreateVegetableActivity.this, GardenActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt("GARDEN_ID", mGardenId);
@@ -603,10 +639,9 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
 
     @Override
     public void createVegetableFail() {
-        Toast.makeText(getApplicationContext(), "FFFFFFFFFFFF tao rau khong thanh cong", Toast.LENGTH_SHORT).show();
-        System.out.println("FFFFFFFFFFF FFFFFFFFFFF         FFFFFFFFFFFFFF      FFFFFFFFF");
-        System.out.println("tao rau fail");
-        System.out.println("FFFFFFFFFFF FFFFFFFFFFF         FFFFFFFFFFFFFF      FFFFFFFFF");
+        mDialogAddVegetable.dismiss();
+        showDialogCreateVegetableErr();
+//        Toast.makeText(getApplicationContext(), "FFFFFFFFFFFF tao rau khong thanh cong", Toast.LENGTH_SHORT).show();
     }
 
     /*upload image only*/

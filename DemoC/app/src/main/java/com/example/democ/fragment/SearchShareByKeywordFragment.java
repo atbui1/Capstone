@@ -48,14 +48,15 @@ public class SearchShareByKeywordFragment extends Fragment implements IClickSear
 
     private void initialView() {
         mTxtSearchValue = (TextView) mView.findViewById(R.id.txt_search_value);
-        mTxtSearchValue.setText("ccccccccccccc");
 
         mSearchActivity = (SearchActivity) getActivity();
         searchValue = mSearchActivity.getmSearchValue();
         //nhan list vegetable tu search activity
         mList = (ArrayList<PostSearchKeyword>) mSearchActivity.getmListSearchKeyword();
-        if (mList.size() == 0 || mList == null) {
+        if (mList == null) {
             mTxtSearchValue.setText("Không có: " + searchValue);
+        } else {
+            mTxtSearchValue.setText("Kết quả: " + searchValue);
         }
         System.out.println("list vegetable search keyword");
         System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");

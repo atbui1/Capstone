@@ -24,8 +24,8 @@ public class WardPresenter {
         mCapstoneRepository = new CapstoneRepositoryImp();
     }
 
-    public void getWardById(int id, String token) {
-        mCapstoneRepository.getWardById(mContext, id, token, new CallBackData<List<WardData>>() {
+    public void getWardById(int id) {
+        mCapstoneRepository.getWardById(mContext, id, new CallBackData<List<WardData>>() {
             @Override
             public void onSuccess(List<WardData> wardData) {
                 mWardView.getWardSuccess(wardData);

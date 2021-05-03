@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.democ.R;
+import com.example.democ.fragment.SearchByWikiBottomSheetFragment;
 import com.example.democ.iclick.IClickWiki;
 import com.example.democ.iclick.IClickWikiTitle;
 import com.example.democ.model.WikiData;
@@ -26,8 +27,14 @@ public class SearchWikiTitleAdapter extends RecyclerView.Adapter<SearchWikiTitle
     private Context mContext;
     private IClickWikiTitle mIClickWikiTitle;
 
-    public SearchWikiTitleAdapter(ArrayList<WikiDataTitle> mListWiki, IClickWikiTitle mIClickWikiTitle) {
+//    public SearchWikiTitleAdapter(ArrayList<WikiDataTitle> mListWiki, SearchByWikiBottomSheetFragment searchByWikiBottomSheetFragment, IClickWikiTitle mIClickWikiTitle) {
+//        this.mListWiki = mListWiki;
+//        this.mIClickWikiTitle = mIClickWikiTitle;
+//    }
+
+    public SearchWikiTitleAdapter(ArrayList<WikiDataTitle> mListWiki, Context mContext, IClickWikiTitle mIClickWikiTitle) {
         this.mListWiki = mListWiki;
+        this.mContext = mContext;
         this.mIClickWikiTitle = mIClickWikiTitle;
     }
 
@@ -46,7 +53,7 @@ public class SearchWikiTitleAdapter extends RecyclerView.Adapter<SearchWikiTitle
             return;
         }
         holder.mTxtVegetableName.setText(mListWiki.get(position).getTitle());
-        if (mListWiki.get(position).getImage().equals("")) {
+        if (mListWiki.get(position).getImage().equals("") || mListWiki.get(position).getImage() == null) {
             holder.mImgVegetable.setImageResource(R.mipmap.addimage64);
             System.out.println("if:" + mListWiki.get(position).getImage());
         } else {

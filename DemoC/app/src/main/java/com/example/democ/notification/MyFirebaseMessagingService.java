@@ -5,6 +5,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 
@@ -29,6 +31,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         if (remoteMessage.getNotification() != null) {
             showNotificationExchange(remoteMessage.getNotification().getBody());
+            return;
         }
         showNotificationExchange(remoteMessage.getData().get("body"), remoteMessage.getData().get("title"));
     }
@@ -42,16 +45,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void showNotificationExchange(String body, String title) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent=PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, getNotificationId(), intent,PendingIntent.FLAG_ONE_SHOT);
+
         Uri sound= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.logov);
 
         Notification notification = new NotificationCompat.Builder(this, MyApplication.CHANNEL_ID)
                 .setContentTitle(title)
                 .setContentText(body)
-                .setSmallIcon(android.R.drawable.ic_dialog_alert)
-                .setColor(getResources().getColor(R.color.red))
+                .setSmallIcon(R.drawable.notifications)
+                .setLargeIcon(bitmap)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
+                .setColor(getResources().getColor(R.color.sick_green))
                 .setSound(sound)
-                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+//                .setContentIntent(pendingIntent)
                 .build();
 
 //        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
@@ -64,7 +72,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void showNotificationExchange(String body) {
-        showNotificationExchange(body, "google");
+        showNotificationExchange(body, "Vegetable");
     }
 
     private int getNotificationId() {

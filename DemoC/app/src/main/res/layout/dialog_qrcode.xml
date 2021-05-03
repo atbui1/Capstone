@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="@dimen/dp150">
+
+    <LinearLayout
+        android:background="@drawable/bg_edt_white"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/txt_content_qr_code"
+            android:text="Bạn có muốn xóa vườn rau này không"
+            android:textSize="@dimen/sp20"
+            android:paddingLeft="@dimen/dp50"
+            android:paddingRight="@dimen/dp50"
+            android:gravity="center_horizontal|center"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp100" />
+
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <Button
+                android:id="@+id/btn_ok"
+                android:text="Xác nhận"
+                android:layout_marginRight="@dimen/dp20"
+                android:layout_marginBottom="@dimen/dp5"
+                android:paddingLeft="@dimen/dp20"
+                android:paddingRight="@dimen/dp20"
+                android:textSize="@dimen/sp17"
+                android:textColor="@color/red"
+                android:background="@drawable/bg_edt_red"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

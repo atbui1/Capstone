@@ -178,6 +178,18 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />
                     </LinearLayout>
+                    <!--<LinearLayout-->
+                        <!--android:id="@+id/lnl_img_create_post"-->
+                        <!--android:layout_marginTop="@dimen/dp10"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="@dimen/dp300">-->
+                        <!--<androidx.recyclerview.widget.RecyclerView-->
+                            <!--android:id="@+id/recycler_image"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="match_parent">-->
+
+                        <!--</androidx.recyclerview.widget.RecyclerView>-->
+                    <!--</LinearLayout>-->
                     <!--số lượng-->
                     <LinearLayout
                         android:layout_marginTop="@dimen/dp10"

@@ -227,7 +227,7 @@ public class PostDetailActivity extends AppCompatActivity implements PersonalVie
                     mStrPostImage = postData.getImageVegetablesList().get(maxSize).getUrl().trim();
                 }
 
-                if (postData.getAvatar() == null) {
+                if (postData.getAvatar() == null || postData.getAvatar().equals("")) {
                     mStrPosterImage = "";
                 } else {
                     mStrPosterImage = postData.getAvatar().trim();
@@ -955,7 +955,7 @@ public class PostDetailActivity extends AppCompatActivity implements PersonalVie
         Button btnClose;
         btnClose = (Button) dialog.findViewById(R.id.btn_close);
         txtQuantity = (TextView) dialog.findViewById(R.id.txt_exchange_quantity);
-        txtQuantity.setText("Trao đổi thành công" );
+        txtQuantity.setText("Gửi yêu cầu thành công" );
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

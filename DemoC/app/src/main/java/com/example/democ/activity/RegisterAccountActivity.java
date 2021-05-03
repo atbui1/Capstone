@@ -45,12 +45,16 @@ import com.example.democ.views.DistrictView;
 import com.example.democ.views.ProvinceView;
 import com.example.democ.views.RegisterAccountView;
 import com.example.democ.views.WardView;
+import com.google.android.gms.tasks.TaskExecutors;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthProvider;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 public class RegisterAccountActivity extends AppCompatActivity implements View.OnClickListener, RegisterAccountView,
         ProvinceView, DistrictView, WardView {
@@ -74,12 +78,10 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
     private TextView mTxtProvince, mTxtDistrict, mTxtWard;
     private EditText mEdtSubAddress;
     private  int mIntDistrictId = 0, mIdWard = 0;
-    private String mStrProvince = "", mStrDistrict = "", mStrWard = "", mStrSubAddress = "";
+    private String mStrProvince = "", mStrDistrict = "", mStrWard = "", mStrSubAddress = "", mStrAddress = "";
     private List<ProvinceData> mListProvince;
     private List<DistrictData> mListDistrict;
     private List<WardData> mListWard;
-
-    private FirebaseAuth mAuth;
 
 
     Calendar myCalendar = Calendar.getInstance();
@@ -108,6 +110,10 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
     private void initialView() {
 
         mRegisterAccountPresenter = new RegisterAccountPresenter(getApplication(), this, this);
+        mProvincePresenter = new ProvincePresenter(getApplication(), this, this);
+        mDistrictPresenter = new DistrictPresenter(getApplication(), this, this);
+        mWardPresenter = new WardPresenter(getApplication(), this, this);
+        mProvincePresenter.getAllProvince();
 
         mLnlBackRegisterLogin = (LinearLayout) findViewById(R.id.lnl_back_register_login);
         mLnlBackRegisterLogin.setOnClickListener(RegisterAccountActivity.this);
@@ -131,9 +137,9 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
         mTxtDistrict.setOnClickListener(this);
         mTxtWard.setOnClickListener(this);
 
-        mProvincePresenter = new ProvincePresenter(getApplication(), getApplicationContext(), this);
-        mDistrictPresenter = new DistrictPresenter(getApplication(), getApplicationContext(), this);
-        mWardPresenter = new WardPresenter(getApplication(),getApplicationContext(), this);
+//        mProvincePresenter = new ProvincePresenter(getApplication(), getApplicationContext(), this);
+//        mDistrictPresenter = new DistrictPresenter(getApplication(), getApplicationContext(), this);
+//        mWardPresenter = new WardPresenter(getApplication(),getApplicationContext(), this);
     }
 
     private void initialData() {
@@ -147,13 +153,13 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
     }
 
     private void setData() {
-        mStrPhone = mEdtPhoneNumber.getText().toString();
-        mStrPassword = mEdtPassword.getText().toString();
-        mStrPasswordConfirm = mEditPasswordConfirm.getText().toString();
-        mStrFullName = mEdtFullName.getText().toString();
-        mStrEmail = mEdtEmail.getText().toString();
-        mStrSexTmp = mTxtSex.getText().toString();
-        mStrYOB = mTxtYOB.getText().toString();
+        mStrPhone = mEdtPhoneNumber.getText().toString().trim();
+        mStrPassword = mEdtPassword.getText().toString().trim();
+        mStrPasswordConfirm = mEditPasswordConfirm.getText().toString().trim();
+        mStrFullName = mEdtFullName.getText().toString().trim();
+        mStrEmail = mEdtEmail.getText().toString().trim();
+        mStrSexTmp = mTxtSex.getText().toString().trim();
+        mStrYOB = mTxtYOB.getText().toString().trim();
         active = true;
 
         if (mStrSexTmp.equals("Nam")) {
@@ -198,11 +204,15 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
         System.out.println("confirm pass " + mStrPasswordConfirm);
         System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
 
-//        if (mStrProvince.equals("") || mStrDistrict.equals("") || mStrWard.equals("") || mStrSubAddress.equals("")) {
-//            System.out.println("show dia log err distric null or ward null");
-//            showDialogAddressErr();
-//            return;
-//        }
+        mStrSubAddress = mEdtSubAddress.getText().toString().trim();
+        if (mStrProvince.equals("") || mStrDistrict.equals("") || mStrWard.equals("") || mStrSubAddress.equals("")) {
+            System.out.println("show dia log err distric null or ward null");
+            showDialogAddressErr();
+            return;
+        }
+
+        mStrAddress = mStrSubAddress + ", " + mStrWard + ", " + mStrDistrict + ", " + mStrProvince;
+
 
         if (awesomeValidation.validate()) {
             if (mStrPassword.equals(mStrPasswordConfirm)) {
@@ -214,18 +224,29 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
                 System.out.println("fullname: " +mStrFullName);
                 System.out.println("birthday: " +mStrYOB);
                 System.out.println("sex: " + mIntSex);
+                System.out.println("address: " + mStrAddress);
                 System.out.println("email: " + mStrEmail);
                 System.out.println("active: " + active);
                 System.out.println("REGISTER 22222222222222222222222222222222222222");
 
+                RequestBody phone = RequestBody.create(MediaType.parse("text/plain"), mStrPhone);
+                RequestBody pass = RequestBody.create(MediaType.parse("text/plain"), mStrPassword);
+                RequestBody fullName = RequestBody.create(MediaType.parse("text/plain"), mStrFullName);
+                RequestBody YOB = RequestBody.create(MediaType.parse("text/plain"), mStrYOB);
+                RequestBody sex = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(mIntSex));
+                RequestBody address = RequestBody.create(MediaType.parse("text/plain"), mStrAddress);
+                RequestBody email = RequestBody.create(MediaType.parse("text/plain"), mStrEmail);
                 /*api register*/
-//                mRegisterAccountPresenter.registerAccount(accountData);
-                confirmPhoneNumber(mStrPhone);
+//                confirmPhoneNumber(mStrPhone);
+
+                mRegisterAccountPresenter.registerAccount(phone, pass, fullName, YOB, sex, address, email);
 
             } else {
+                showDialogConfirmPassErr();
                 System.out.println("REGISTER ssssssssssssssssssssssssssssssssssss");
                 awesomeValidation.addValidation(this, R.id.edt_password_confirm, mStrPasswordConfirm, R.string.password_confirm_error);
                 System.out.println("REGISTER xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+                return;
             }
         }
     }
@@ -245,7 +266,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
                 mStrDistrict = "";
                 mStrWard = "";
                 mStrSubAddress = "";
-//                mDistrictPresenter.getDistrictById(mIntDistrictId, mUser.getToken());
+                mDistrictPresenter.getDistrictById(mIntDistrictId);
             }
         });
         provinceBottomSheetFragment.show(getSupportFragmentManager(), provinceBottomSheetFragment.getTag());
@@ -259,7 +280,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
                 mTxtDistrict.setText(districtData.getName());
                 mIdWard = districtData.getId();
                 mStrDistrict = districtData.getName();
-//                mWardPresenter.getWardById(mIdWard, mUser.getToken());
+                mWardPresenter.getWardById(mIdWard);
 
             }
         });
@@ -294,6 +315,44 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
+    private void showDialogConfirmPassErr() {
+        final Dialog dialog = new Dialog(RegisterAccountActivity.this);
+        dialog.setContentView(R.layout.dialog_login_fail);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtErr;
+        Button btnClose;
+        txtErr = (TextView) dialog.findViewById(R.id.txt_detail_err);
+        btnClose = (Button) dialog.findViewById(R.id.btn_close);
+        txtErr.setText("vui lòng nhập đúng mật khẩu");
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+    private void showDialogRegisterSuccess() {
+        final Dialog dialog = new Dialog(RegisterAccountActivity.this);
+        dialog.setContentView(R.layout.dialog_login_fail);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtErr;
+        Button btnClose;
+        txtErr = (TextView) dialog.findViewById(R.id.txt_detail_err);
+        btnClose = (Button) dialog.findViewById(R.id.btn_close);
+        txtErr.setText("Đăng ký tài khoản thành công");
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                Intent intentMainHome = new Intent(RegisterAccountActivity.this, LoginActivity.class);
+                startActivity(intentMainHome);
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -302,8 +361,8 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
                 startActivity(intentRegisterLogin);
                 break;
             case R.id.btn_register_account:
-//                registerAccount();
-                sendPhoneNumberToFirebase();
+                registerAccount();
+//                sendPhoneNumberToFirebase();
                 break;
             case R.id.txt_sex:
                 showSexDialog();
@@ -373,10 +432,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
 
     @Override
     public void registerAccountSuccess() {
-        Toast.makeText(this, "register Successfully", Toast.LENGTH_SHORT).show();
-        Intent intentMainHome = new Intent(RegisterAccountActivity.this, LoginActivity.class);
-        startActivity(intentMainHome);
-        finish();
+        showDialogRegisterSuccess();
     }
 
     @Override
@@ -416,7 +472,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
 
     private void sendPhoneNumberToFirebase() {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                "+84 123456789",
+                "+840976298669",
                 60, TimeUnit.SECONDS,
                 RegisterAccountActivity.this,
                 new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
