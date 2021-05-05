@@ -38,12 +38,14 @@ import com.example.democ.model.PostData;
 import com.example.democ.presenters.DeleteSharePresenter;
 import com.example.democ.presenters.GetAllShareByIdPresenter;
 import com.example.democ.presenters.GetInfoAccountPresenter;
+import com.example.democ.presenters.LogoutApiPresenter;
 import com.example.democ.presenters.LogoutPresenter;
 import com.example.democ.presenters.PersonalPresenter;
 import com.example.democ.room.entities.User;
 import com.example.democ.views.DeleteShareView;
 import com.example.democ.views.GetAllShareByIdView;
 import com.example.democ.views.GetInfoAccountView;
+import com.example.democ.views.LogoutApiView;
 import com.example.democ.views.LogoutView;
 import com.example.democ.views.PersonalView;
 import com.squareup.picasso.Picasso;
@@ -55,7 +57,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class PersonalFragment extends Fragment implements View.OnClickListener, LogoutView, PersonalView, GetAllShareByIdView,
-        IClickPostAccount, DeleteShareView, GetInfoAccountView {
+        IClickPostAccount, DeleteShareView, GetInfoAccountView, LogoutApiView {
 
     private final String KEY_UPDATE_POST = "KEY_UPDATE_POST";
 
@@ -76,6 +78,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
     private PostByAccountAdapter mPostByAccountAdapter;
     private GetAllShareByIdPresenter mGetAllShareByIdPresenter;
     private GetInfoAccountPresenter mGetInfoAccountPresenter;
+    private LogoutApiPresenter mLogoutApiPresenter;
     private int mIntTotalPosts;
     //11
     //22
@@ -101,6 +104,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
         mDeleteSharePresenter = new DeleteSharePresenter(getActivity().getApplication(), getActivity(), this);
         mGetInfoAccountPresenter = new GetInfoAccountPresenter(getActivity().getApplication(), getActivity(), this);
         mLogoutPresenter = new LogoutPresenter(getActivity().getApplication(), getActivity(), this);
+        mLogoutApiPresenter = new LogoutApiPresenter(getActivity().getApplication(), getActivity(), this);
 
         //22
         mLnlImagePerson = (LinearLayout) mView.findViewById(R.id.lnl_image_person);
@@ -154,6 +158,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
     }
 
     private void logoutApp() {
+        mLogoutApiPresenter.logoutApi(mUser.getDeviceToken(), mUser.getToken());
         mLogoutPresenter.deleteAccountRoom();
     }
 
@@ -355,18 +360,6 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
         }
     }
 
-    @Override
-    public void logoutSuccess() {
-        Intent intent = new Intent(getActivity(), LoginActivity.class);
-//        intentLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        getActivity().finish();
-    }
-
-    @Override
-    public void logoutFail() {
-
-    }
 
     @Override
     public void showInfoPersonal(User user) {
@@ -446,6 +439,29 @@ public class PersonalFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void getInfoAccountFail() {
+
+    }
+
+    @Override
+    public void logoutSuccess() {
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+//        intentLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        getActivity().finish();
+    }
+
+    @Override
+    public void logoutFail() {
+
+    }
+
+    @Override
+    public void logoutApiSuccess() {
+
+    }
+
+    @Override
+    public void logoutApiFail() {
 
     }
 }

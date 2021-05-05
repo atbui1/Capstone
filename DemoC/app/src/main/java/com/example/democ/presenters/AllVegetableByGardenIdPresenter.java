@@ -28,9 +28,6 @@ public class AllVegetableByGardenIdPresenter {
         mCapstoneRepository.getAllVegetableByGardenId(mContext, gardenId, token, new CallBackData<List<VegetableData>>() {
             @Override
             public void onSuccess(List<VegetableData> vegetableData) {
-                System.out.println("AllVegetableByGardenIdPresenter thanh cong222222222222222222222222222222");
-                System.out.println("AllVegetableByGardenIdPresenter size: " + vegetableData.size());
-                System.out.println("AllVegetableByGardenIdPresenter thanh cong222222222222222222222222222222");
                 mAllVegetableByGardenIdView.getAllVegetableByGardenIdSuccess(vegetableData);
             }
 

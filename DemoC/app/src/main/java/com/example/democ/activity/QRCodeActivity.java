@@ -70,6 +70,7 @@ public class QRCodeActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.lnl_back:
+                finish();
                 break;
         }
     }

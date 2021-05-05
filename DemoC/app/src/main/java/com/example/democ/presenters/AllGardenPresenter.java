@@ -31,12 +31,11 @@ public class AllGardenPresenter {
                 if (gardenResults != null) {
                     mAllGardenView.getAllGardenSuccess(gardenResults);
                 }
-                System.out.println("get all garden success line 31");
             }
 
             @Override
             public void onFail(String msgFail) {
-                System.out.println("get all garden fail line 36");
+                mAllGardenView.getAllGardenFail();
             }
         });
     }

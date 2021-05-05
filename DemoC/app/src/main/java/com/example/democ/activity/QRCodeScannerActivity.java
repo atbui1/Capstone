@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.democ.R;
 import com.example.democ.presenters.ConfirmExchangeFinishPresenter;
@@ -32,14 +31,13 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class QRCodeScannerActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler,
-        View.OnClickListener, PersonalView, ReplyExchangeRequestView, ConfirmExchangeFinishView {
+        View.OnClickListener, PersonalView, ConfirmExchangeFinishView {
 
     ZXingScannerView mZXingScannerView;
     private LinearLayout mLnlBack;
     private String mStrQRCodeScanner = "";
     private User mUser;
     private PersonalPresenter mPersonalPresenter;
-    private ReplyExchangeRequestPresenter mReplyExchangeRequestPresenter;
     private ConfirmExchangeFinishPresenter mConfirmExchangeFinishPresenter;
 
     @Override
@@ -60,7 +58,6 @@ public class QRCodeScannerActivity extends AppCompatActivity implements ZXingSca
 
         mPersonalPresenter = new PersonalPresenter(getApplicationContext(), this);
         mPersonalPresenter.getInfoPersonal();
-        mReplyExchangeRequestPresenter = new ReplyExchangeRequestPresenter(getApplication(), getApplicationContext(), this);
         mConfirmExchangeFinishPresenter = new ConfirmExchangeFinishPresenter(getApplication(), getApplicationContext(), this);
 
         Dexter.withContext(getApplicationContext())
@@ -107,7 +104,7 @@ public class QRCodeScannerActivity extends AppCompatActivity implements ZXingSca
     public void handleResult(Result rawResult) {
         mStrQRCodeScanner = rawResult.getText();
         showDialogSendQRCodeScanner(mStrQRCodeScanner);
-        Toast.makeText(getApplicationContext(), rawResult.getText(), Toast.LENGTH_SHORT).show();
+
         System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
         System.out.println("abc: " + rawResult.getText());
         System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
@@ -139,6 +136,10 @@ public class QRCodeScannerActivity extends AppCompatActivity implements ZXingSca
             @Override
             public void onClick(View view) {
 //                mReplyExchangeRequestPresenter.replyExchangeRequest(requestId, 4, mUser.getToken());
+                System.out.println("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+                System.out.println("request id: " + requestId);
+                System.out.println("token: " + mUser.getToken());
+                System.out.println("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
                 mConfirmExchangeFinishPresenter.confirmExchangeFinish(requestId, mUser.getToken());
                 dialog.dismiss();
             }
@@ -193,16 +194,6 @@ public class QRCodeScannerActivity extends AppCompatActivity implements ZXingSca
     @Override
     public void showInfoPersonal(User user) {
         mUser = user;
-    }
-
-    @Override
-    public void replyExchangeRequestSuccess() {
-        showDialogSendQRCodeScannerSuccess();
-    }
-
-    @Override
-    public void replyExchangeRequestFail() {
-        showDialogSendQRCodeScannerErr();
     }
 
     @Override

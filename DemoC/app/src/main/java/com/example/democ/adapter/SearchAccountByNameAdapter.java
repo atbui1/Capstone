@@ -26,8 +26,9 @@ public class SearchAccountByNameAdapter extends RecyclerView.Adapter<SearchAccou
     Context mContext;
     IClickAccountName mIClickAccountName;
 
-    public SearchAccountByNameAdapter(List<AccountSearchByName> mListAccount, IClickAccountName mIClickAccountName) {
+    public SearchAccountByNameAdapter(List<AccountSearchByName> mListAccount, Context mContext, IClickAccountName mIClickAccountName) {
         this.mListAccount = mListAccount;
+        this.mContext = mContext;
         this.mIClickAccountName = mIClickAccountName;
     }
 
@@ -46,7 +47,7 @@ public class SearchAccountByNameAdapter extends RecyclerView.Adapter<SearchAccou
             return;
         }
         holder.mTxtAccountName.setText(accountSearchByName.getAccountName());
-        if (mListAccount.get(position).getAvatar() == null) {
+        if (mListAccount.get(position).getAvatar() == null || mListAccount.get(position).getAvatar().equals("")) {
             holder.mImgAvatar.setImageResource(R.drawable.avatardefault);
         } else {
             Picasso.with(mContext).load(mListAccount.get(position).getAvatar())

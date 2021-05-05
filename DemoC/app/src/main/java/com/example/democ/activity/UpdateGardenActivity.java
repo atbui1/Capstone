@@ -268,14 +268,14 @@ public class UpdateGardenActivity extends AppCompatActivity implements View.OnCl
                 break;
             case R.id.txt_district:
                 if (mStrProvince == null) {
-                    Toast.makeText(getApplicationContext(), "vui long chon tinh/ thanh pho", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Vui lòng chọn tỉnh/thành phố", Toast.LENGTH_SHORT).show();
                 } else {
                     clickOpenDistrict();
                 }
                 break;
             case R.id.txt_ward:
                 if (mStrProvince == null || mStrDistrict == null) {
-                    Toast.makeText(getApplicationContext(),"chua chon thanh pho hoac quan huyen", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Vui lòng chọn tỉnh/thành phố hoặc quận/huyện", Toast.LENGTH_SHORT).show();
                 } else {
                     clickOpenWard();
                 }

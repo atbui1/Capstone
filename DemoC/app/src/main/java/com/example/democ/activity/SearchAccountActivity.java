@@ -5,9 +5,13 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -83,7 +87,7 @@ public class SearchAccountActivity extends AppCompatActivity implements View.OnC
     }
 
     private void updateUI() {
-        mSearchAccountByNameAdapter = new SearchAccountByNameAdapter( mListAccount, this);
+        mSearchAccountByNameAdapter = new SearchAccountByNameAdapter( mListAccount, this, this);
         mRecyclerView.setAdapter(mSearchAccountByNameAdapter);
     }
 
@@ -106,19 +110,42 @@ public class SearchAccountActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    /*owner account*/
+    private void showDialogOwner() {
+        final Dialog dialog = new Dialog(SearchAccountActivity.this);
+        dialog.setContentView(R.layout.dialog_login_fail);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtErr;
+        Button btnClose;
+        txtErr = (TextView) dialog.findViewById(R.id.txt_detail_err);
+        btnClose = (Button) dialog.findViewById(R.id.btn_close);
+        txtErr.setText("Người dùng này chính là bạn");
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+
     @Override
     public void clickAccountName(AccountSearchByName accountSearchByName) {
         if (mUser.getAccountId().equals(accountSearchByName.getAccountId())) {
-            Intent intent = new Intent(SearchAccountActivity.this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-            Bundle bundle = new Bundle();
-            bundle.putInt(KEY_FLAG, 4);
-            bundle.putSerializable(SEARCH_ACCOUNT, accountSearchByName);
-            intent.putExtras(bundle);
-            startActivity(intent);
+//            Intent intent = new Intent(SearchAccountActivity.this, MainActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+//            Bundle bundle = new Bundle();
+//            bundle.putInt(KEY_FLAG, 4);
+//            bundle.putSerializable(SEARCH_ACCOUNT, accountSearchByName);
+//            intent.putExtras(bundle);
+//            startActivity(intent);
+            showDialogOwner();
+
         } else {
             Intent intent = new Intent(SearchAccountActivity.this, PosterProfileActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             Bundle bundle = new Bundle();
             bundle.putSerializable(SEARCH_ACCOUNT, accountSearchByName);
             intent.putExtras(bundle);

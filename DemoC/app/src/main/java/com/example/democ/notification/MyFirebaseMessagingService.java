@@ -30,7 +30,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
 
         if (remoteMessage.getNotification() != null) {
-            showNotificationExchange(remoteMessage.getNotification().getBody());
+            showNotificationExchange(remoteMessage.getNotification().getBody(), remoteMessage.getNotification().getTitle());
             return;
         }
         showNotificationExchange(remoteMessage.getData().get("body"), remoteMessage.getData().get("title"));
@@ -72,7 +72,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void showNotificationExchange(String body) {
-        showNotificationExchange(body, "Vegetable");
+        showNotificationExchange(body);
     }
 
     private int getNotificationId() {

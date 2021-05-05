@@ -13,12 +13,15 @@ public class FriendData implements Serializable {
     private String friendName;
     @SerializedName("requestedDate")
     private String requestedDate;
+    @SerializedName("avatar")
+    private String avatar;
 
-    public FriendData(int id, String accountSend, String friendName, String requestedDate) {
+    public FriendData(int id, String accountSend, String friendName, String requestedDate, String avatar) {
         this.id = id;
         this.accountSend = accountSend;
         this.friendName = friendName;
         this.requestedDate = requestedDate;
+        this.avatar = avatar;
     }
 
     public int getId() {
@@ -51,5 +54,13 @@ public class FriendData implements Serializable {
 
     public void setRequestedDate(String requestedDate) {
         this.requestedDate = requestedDate;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

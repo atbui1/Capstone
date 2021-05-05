@@ -377,7 +377,10 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
     public void createExchangeAnyVegetable() {
         int status = 2;
 
-        if (mIntExchangeQuantityReceive > mIntQuantityOfShare || mIntExchangeQuantityReceive < 1) {
+        if (mStrGardenNameDonate.equals("") || mStrVegetableNameDonate.equals("")){
+            showDialogInputInfoErr();
+            return;
+        } else if (mIntExchangeQuantityReceive > mIntQuantityOfShare || mIntExchangeQuantityReceive < 1) {
             System.out.println("chay vao if mIntExchangeQuantityReceive > mIntQuantityOfShare");
             showDialogQuantityErr();
             return;
@@ -412,6 +415,26 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         mCreateExchangePresenter.createExchange(exchangeRequest, mUser.getToken());
     }
 
+    /*dialog input info err */
+    private void showDialogInputInfoErr() {
+        final Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_exchange_quantity_err);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtQuantity;
+        Button btnClose;
+        btnClose = (Button) dialog.findViewById(R.id.btn_close);
+        txtQuantity = (TextView) dialog.findViewById(R.id.txt_exchange_quantity);
+        txtQuantity.setText("Chọn vườn rau và tên rau muốn cho");
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
     private void showDialogQuantityErr() {
         final Dialog dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.dialog_exchange_quantity_err);

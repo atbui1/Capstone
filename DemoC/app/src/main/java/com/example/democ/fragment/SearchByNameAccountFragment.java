@@ -77,7 +77,7 @@ public class SearchByNameAccountFragment extends Fragment implements IClickAccou
     private void updateUI() {
         //khoi tao adapter
         if (mSearchAccountByNameAdapter == null) {
-            mSearchAccountByNameAdapter = new SearchAccountByNameAdapter(mListAccount, this);
+            mSearchAccountByNameAdapter = new SearchAccountByNameAdapter(mListAccount, getContext(), this);
             mRecyclerView.setAdapter(mSearchAccountByNameAdapter);
         } else {
             mSearchAccountByNameAdapter.notifyDataSetChanged();

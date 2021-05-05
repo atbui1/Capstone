@@ -7,13 +7,15 @@ public class ConfigApi {
 
         String ACCOUNT_LOGIN = "api/Login/MobileLogin";
         String ACCOUNT_REGISTER = "api/Account/Registration";
-        String ACCOUNT_GET_INFO = "/api/AccountDetail/GetAccountDetailByPhoneNumber";
-        String ACCOUNT_UPDATE = "api/AccountData/Update";
+        String ACCOUNT_GET_INFO = "api/AccountDetail/GetAccountDetailByPhoneNumber";
+        String ACCOUNT_UPDATE = "api/AccountDetail/Update";
+        String ACCOUNT_CHANGE_PASS = "api/AccountDetail/ChangePassword";
         //Friend
-        String ACCOUNT_FRIEND = "/api/AccountFriend";
+        String ACCOUNT_FRIEND = "api/AccountFriend";
         String ACCOUNT_ADD_FRIEND = "api/AccountRequest/GetAccountRequest";
         String ACCOUNT_SEND_ADD_FRIEND = "api/AccountRequest";
         String ACCOUNT_DELETE_FRIEND = "api/AccountFriend";
+        String ACCOUNT_DELETE_REQUEST_FRIEND = "api/AccountRequest/CancleRequest";
 
         String ACCOUNT_SEARCH_NAME = "api/AccountDetail/SearchAccount";
 
@@ -49,7 +51,7 @@ public class ConfigApi {
         String EXCHANGE_HISTORY = "api/ExchangeDetail/GetByAccountId";
 
         //upload image
-        String UPLOAD_AVATAR = "/api/AccountDetail/UploadAvata";
+        String UPLOAD_AVATAR = "api/AccountDetail/UploadAvata";
 
         //Address
         String PROVINCE = "api/Province";
@@ -60,6 +62,10 @@ public class ConfigApi {
         String REPORT_POST = "api/Report";
         //QRCode
         String QR_CODE = "api/QRCode";
+        String QR_CODE_FINISH = "api/ExchangeDetail/Finish";
+
+        //logout Api
+        String LOGOUT_API = "api/AccountDetail/LogOut";
 
     }
 }

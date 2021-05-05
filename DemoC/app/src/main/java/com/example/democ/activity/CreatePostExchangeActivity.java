@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.democ.R;
 import com.example.democ.fragment.GardenBottomSheetFragment;
@@ -133,7 +132,7 @@ public class CreatePostExchangeActivity extends AppCompatActivity implements Vie
         GardenBottomSheetFragment gardenBottomSheetFragment = new GardenBottomSheetFragment(mListGarden, new IClickGarden() {
             @Override
             public void clickGarden(GardenResult gardenResult) {
-                Toast.makeText(CreatePostExchangeActivity.this, gardenResult.getName(), Toast.LENGTH_SHORT).show();
+
                 mTxtPostGarden.setText(gardenResult.getName());
                 mIntGardenId = gardenResult.getId();
 
@@ -151,7 +150,7 @@ public class CreatePostExchangeActivity extends AppCompatActivity implements Vie
         VegetableBottomSheetFragment vegetableBottomSheetFragment = new VegetableBottomSheetFragment(mListVegetable, new IClickVegetable() {
             @Override
             public void clickVegetable(VegetableData vegetableData) {
-                Toast.makeText(CreatePostExchangeActivity.this, vegetableData.getName(), Toast.LENGTH_SHORT).show();
+
                 mStrVegetableName = vegetableData.getName();
                 mTxtPostVegetableName.setText(mStrVegetableName);
                 mStrVegetableId = vegetableData.getId();

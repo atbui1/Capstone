@@ -39,6 +39,9 @@ public class AccountData implements Serializable {
     @SerializedName("isFriend")
     private int isFriend;
 
+    @SerializedName("idRequest")
+    private int idRequest;
+
     /*old request*/
     public AccountData(String phone, String password, String fullName, String YOB, int sex, String email) {
         this.phone = phone;
@@ -50,7 +53,7 @@ public class AccountData implements Serializable {
     }
 
     /*old response*/
-    public AccountData(String id, String phone, String password, String fullName, String YOB, int sex, String email) {
+    public AccountData(String id, String phone, String password, String fullName, String YOB, int sex, String email, int idRequest) {
         this.id = id;
         this.phone = phone;
         this.password = password;
@@ -58,6 +61,7 @@ public class AccountData implements Serializable {
         this.YOB = YOB;
         this.sex = sex;
         this.email = email;
+        this.idRequest = idRequest;
     }
 /*them address request*/
     public AccountData(String phone, String password, String fullName, String YOB, int sex, String email, String address) {
@@ -70,7 +74,8 @@ public class AccountData implements Serializable {
         this.address = address;
     }
     /*them address response*/
-    public AccountData(String id, String phone, String password, String fullName, String YOB, int sex, String email, String address) {
+    public AccountData(String id, String phone, String password, String fullName, String YOB, int sex,
+                       String email, String address, int idRequest) {
         this.id = id;
         this.phone = phone;
         this.password = password;
@@ -79,22 +84,32 @@ public class AccountData implements Serializable {
         this.sex = sex;
         this.email = email;
         this.address = address;
+        this.idRequest = idRequest;
     }
 
-    /*new update*/
-    public AccountData(String id, String phone, String password, String fullName, String YOB, int sex, String email,
-                       String address, String avatarRequest, String avatarResponse, int isFriend) {
+    /*new update account*/
+//    public AccountData(String id, String phone, String password, String fullName, String YOB, int sex, String email,
+//                       String address, String avatarRequest, String avatarResponse, int isFriend) {
+//        this.id = id;
+//        this.phone = phone;
+//        this.password = password;
+//        this.fullName = fullName;
+//        this.YOB = YOB;
+//        this.sex = sex;
+//        this.email = email;
+//        this.address = address;
+//        this.avatarRequest = avatarRequest;
+//        this.avatarResponse = avatarResponse;
+//        this.isFriend = isFriend;
+//    }
+    public AccountData(String id, String fullName, String YOB, int sex, String email,
+                       String address) {
         this.id = id;
-        this.phone = phone;
-        this.password = password;
         this.fullName = fullName;
         this.YOB = YOB;
         this.sex = sex;
         this.email = email;
         this.address = address;
-        this.avatarRequest = avatarRequest;
-        this.avatarResponse = avatarResponse;
-        this.isFriend = isFriend;
     }
 
     public String getId() {
@@ -183,5 +198,13 @@ public class AccountData implements Serializable {
 
     public void setIsFriend(int isFriend) {
         this.isFriend = isFriend;
+    }
+
+    public int getIdRequest() {
+        return idRequest;
+    }
+
+    public void setIdRequest(int idRequest) {
+        this.idRequest = idRequest;
     }
 }

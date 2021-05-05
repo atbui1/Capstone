@@ -39,18 +39,24 @@ import com.example.democ.presenters.AllGardenPresenter;
 import com.example.democ.presenters.AllVegetableByGardenIdPresenter;
 import com.example.democ.presenters.CheckVegetableOfAccountPresenter;
 import com.example.democ.presenters.CreateExchangePresenter;
+import com.example.democ.presenters.DeleteFriendPresenter;
+import com.example.democ.presenters.DeleteRequestFriendPresenter;
 import com.example.democ.presenters.GetAllShareByIdPresenter;
 import com.example.democ.presenters.GetInfoAccountPresenter;
 import com.example.democ.presenters.PersonalPresenter;
+import com.example.democ.presenters.ReplyFriendRequestPresenter;
 import com.example.democ.presenters.SendAddFriendPresenter;
 import com.example.democ.room.entities.User;
 import com.example.democ.views.AllGardenView;
 import com.example.democ.views.AllVegetableByGardenIdView;
 import com.example.democ.views.CheckVegetableOfAccountView;
 import com.example.democ.views.CreateExchangeView;
+import com.example.democ.views.DeleteFriendView;
+import com.example.democ.views.DeleteRequestFriendView;
 import com.example.democ.views.GetAllShareByIdView;
 import com.example.democ.views.GetInfoAccountView;
 import com.example.democ.views.PersonalView;
+import com.example.democ.views.ReplyFriendRequestView;
 import com.example.democ.views.SendAddFriendView;
 import com.squareup.picasso.Picasso;
 
@@ -61,14 +67,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PosterProfileActivity extends AppCompatActivity implements View.OnClickListener, SendAddFriendView, PersonalView,
         GetAllShareByIdView, IClickPostAccount, GetInfoAccountView,
-        CreateExchangeView, CheckVegetableOfAccountView, AllGardenView, AllVegetableByGardenIdView {
+        CreateExchangeView, CheckVegetableOfAccountView, AllGardenView, AllVegetableByGardenIdView,
+        ReplyFriendRequestView, DeleteRequestFriendView {
 
     private final static String KEY_POST_DETAIL_SEND = "KEY_POST_DETAIL_SEND";
     private final static String KEY_BUNDLE_POSTER_DETAIL = "KEY_BUNDLE_POSTER_DETAIL";
     private LinearLayout mLnlBackProfileHome;
     private TextView mTxtPosterFullName, mTxtTotalPosts;
     private Button mBtnAddFriend, mBtnRemoveAddFriend;
-    private LinearLayout mLnlBtnRemoveAddFriend;
+    private LinearLayout mLnlBtnRemoveAddFriend, mLnlReplyAddFriend, mLnlAgreeAddFriend, mLnlRejectAddFriend;
     private CircleImageView mImgAvatar;
 
     private SendAddFriendPresenter mSendAddFriendPresenter;
@@ -87,8 +94,9 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
     private PosterAccountAdapter mPosterAccountAdapter;
     private RecyclerView mRecyclerView;
     private GetAllShareByIdPresenter mGetAllShareByIdPresenter;
+    private ReplyFriendRequestPresenter mReplyFriendRequestPresenter;
     private ArrayList<PostData> mListPost;
-    private int mIntTotalPosts = 0;
+    private int mIntTotalPosts = 0, mIntIdRequestAddFriend = 0;
     private PersonalPresenter mPersonalPresenter;
     private String mStrPostUser = "", mStrPostTime = "", mStrPostContent = "", mStrPostImage = "",
             mStrAccountIdOfPost = "", mStrAccountId = "", mShareIdOfShare = "", mAccessTokenAAA = "",
@@ -98,6 +106,7 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
             mIntQuantityOfShare = 0, mIntSizeListVegetableShare = 0, mIntQuantityOfAccount = 0, mIntIsFriend = 0;
     private User mUser;
 
+    private DeleteRequestFriendPresenter mDeleteRequestFriendPresenter;
     private CreateExchangePresenter mCreateExchangePresenter;
     private CheckVegetableOfAccountPresenter mCheckVegetableOfAccountPresenter;
     private GetInfoAccountPresenter mGetInfoAccountPresenter;
@@ -132,6 +141,7 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
         mAllGardenPresenter = new AllGardenPresenter(getApplication(), getApplicationContext(), this);
         mAllVegetableByGardenIdPresenter = new AllVegetableByGardenIdPresenter(getApplication(), getApplicationContext(), this);
         mGetInfoAccountPresenter = new GetInfoAccountPresenter(getApplication(), getApplicationContext(), this);
+        mDeleteRequestFriendPresenter = new DeleteRequestFriendPresenter(getApplication(), getApplicationContext(), this);
 
         getDataPostExchange();
         getDataSearchAccount();
@@ -148,11 +158,19 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
         //add friend
         mBtnAddFriend = (Button) findViewById(R.id.btn_add_friend);
         mBtnAddFriend.setOnClickListener(this);
-        mBtnRemoveAddFriend = (Button) findViewById(R.id.btn_remove_add_friend);
+        mBtnRemoveAddFriend = (Button) findViewById(R.id.btn_remove_request_friend);
         mBtnRemoveAddFriend.setOnClickListener(this);
         mLnlBtnRemoveAddFriend = (LinearLayout) findViewById(R.id.lnl_btn_remove_add_friend);
         mLnlBtnRemoveAddFriend.setVisibility(View.GONE);
+        mLnlReplyAddFriend = (LinearLayout) findViewById(R.id.lnl_btn_reply_add_friend);
+        mLnlReplyAddFriend.setVisibility(View.GONE);
+        mLnlRejectAddFriend = (LinearLayout) findViewById(R.id.lnl_reject_add_friend);
+        mLnlRejectAddFriend.setOnClickListener(this);
+        mLnlAgreeAddFriend = (LinearLayout) findViewById(R.id.lnl_agree_add_friend);
+        mLnlAgreeAddFriend.setOnClickListener(this);
+
         mSendAddFriendPresenter = new SendAddFriendPresenter(getApplication(), getApplicationContext(), this);
+        mReplyFriendRequestPresenter = new ReplyFriendRequestPresenter(getApplication(), getApplicationContext(), this);
 
 //        RecyclerView
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_share_by_account);
@@ -203,47 +221,7 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
             mStrAccountShareId = bundle.getString("ACCOUNT_SHARE");
         }
     }
-    /*send friend request*/
-    private void clickSendAddFriend() {
-        Toast.makeText(getApplication(), mBtnAddFriend.getText(), Toast.LENGTH_SHORT).show();
-        String contentType = mBtnAddFriend.getText().toString().trim();
-        if (contentType.equals(ADD_FRIEND_1)) {
-            mBtnAddFriend.setText(ADD_FRIEND_2);
-            AddFriendRequest addFriendRequest = new AddFriendRequest(mUser.getAccountId(), mStrAccountShareId);
-            mSendAddFriendPresenter.sendAddFriend(addFriendRequest, mUser.getToken());
-        } else if (contentType.equals(ADD_FRIEND_2)) {
 
-            if (mLnlBtnRemoveAddFriend.getVisibility() == View.GONE) {
-                Toast.makeText(getApplication(), "222 aaaaaa", Toast.LENGTH_SHORT).show();
-                mLnlBtnRemoveAddFriend.setVisibility(View.VISIBLE);
-                mBtnRemoveAddFriend.setText(ADD_FRIEND_2_U);
-            } else if (mLnlBtnRemoveAddFriend.getVisibility() == View.VISIBLE) {
-                mLnlBtnRemoveAddFriend.setVisibility(View.GONE);
-            }
-        } else if (contentType.equals(ADD_FRIEND_3)) {
-            Toast.makeText(getApplication(), "33333333333", Toast.LENGTH_SHORT).show();
-        } else if (contentType.equals(ADD_FRIEND_4)) {
-
-            if (mLnlBtnRemoveAddFriend.getVisibility() == View.GONE) {
-                mLnlBtnRemoveAddFriend.setVisibility(View.VISIBLE);
-                mBtnRemoveAddFriend.setText(ADD_FRIEND_4_U);
-            } else if (mLnlBtnRemoveAddFriend.getVisibility() == View.VISIBLE) {
-                mLnlBtnRemoveAddFriend.setVisibility(View.GONE);
-            }
-        }
-
-    }
-    /*remove send friend request*/
-    private void clickRemoveSendAddFriend() {
-        String contentType = mBtnRemoveAddFriend.getText().toString().trim();
-        if (contentType.equals(ADD_FRIEND_2_U)) {
-            Toast.makeText(getApplication(), "huy kb", Toast.LENGTH_SHORT).show();
-            mLnlBtnRemoveAddFriend.setVisibility(View.GONE);
-        } else if (contentType.equals(ADD_FRIEND_4_U)) {
-            Toast.makeText(getApplication(), "huy ban be", Toast.LENGTH_SHORT).show();
-            mLnlBtnRemoveAddFriend.setVisibility(View.GONE);
-        }
-    }
     public void updateUI() {
         if (mPosterAccountAdapter == null) {
             mPosterAccountAdapter = new PosterAccountAdapter(mListPost, getApplicationContext(), this);
@@ -663,7 +641,58 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
         }
         System.out.println("ket thuc goi api exchange createExchange");
     }
+    /*send friend request*/
+    private void clickSendAddFriend() {
 
+        String contentType = mBtnAddFriend.getText().toString().trim();
+        if (contentType.equals(ADD_FRIEND_1)) {
+            mBtnAddFriend.setText(ADD_FRIEND_2);
+            AddFriendRequest addFriendRequest = new AddFriendRequest(mUser.getAccountId(), mStrAccountShareId);
+            mSendAddFriendPresenter.sendAddFriend(addFriendRequest, mUser.getToken());
+        } else if (contentType.equals(ADD_FRIEND_2)) {
+            if (mLnlBtnRemoveAddFriend.getVisibility() == View.GONE) {
+                mLnlBtnRemoveAddFriend.setVisibility(View.VISIBLE);
+                mBtnRemoveAddFriend.setText(ADD_FRIEND_2_U);
+            } else if (mLnlBtnRemoveAddFriend.getVisibility() == View.VISIBLE) {
+                mLnlBtnRemoveAddFriend.setVisibility(View.GONE);
+            }
+        } else if (contentType.equals(ADD_FRIEND_3)) {
+            if (mLnlReplyAddFriend.getVisibility() == View.GONE) {
+                mLnlReplyAddFriend.setVisibility(View.VISIBLE);
+            } else  if (mLnlReplyAddFriend.getVisibility() == View.VISIBLE) {
+                mLnlReplyAddFriend.setVisibility(View.GONE);
+            }
+
+        } else if (contentType.equals(ADD_FRIEND_4)) {
+
+//            if (mLnlBtnRemoveAddFriend.getVisibility() == View.GONE) {
+//                mLnlBtnRemoveAddFriend.setVisibility(View.VISIBLE);
+//                mBtnRemoveAddFriend.setText(ADD_FRIEND_4_U);
+//            } else if (mLnlBtnRemoveAddFriend.getVisibility() == View.VISIBLE) {
+//                mLnlBtnRemoveAddFriend.setVisibility(View.GONE);
+//            }
+        }
+
+    }
+    /*remove send friend request*/
+    private void clickRemoveSendAddFriend() {
+        mDeleteRequestFriendPresenter.deleteRequestFriend(mIntIdRequestAddFriend, mUser.getToken());
+        System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLllll");
+        System.out.println("id: " + mIntIdRequestAddFriend);
+        System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLllll");
+        mLnlBtnRemoveAddFriend.setVisibility(View.GONE);
+        mBtnAddFriend.setText(ADD_FRIEND_1);
+    }
+    private void agreeAddFriend() {
+        mReplyFriendRequestPresenter.replyFriendRequest(mIntIdRequestAddFriend, 2, mUser.getToken());
+        mLnlReplyAddFriend.setVisibility(View.GONE);
+        mBtnAddFriend.setText(ADD_FRIEND_4);
+    }
+    private void rejectAddFriend() {
+        mReplyFriendRequestPresenter.replyFriendRequest(mIntIdRequestAddFriend, 3, mUser.getToken());
+        mLnlReplyAddFriend.setVisibility(View.GONE);
+        mBtnAddFriend.setText(ADD_FRIEND_1);
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -671,17 +700,23 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
                 finish();
                 break;
             case R.id.btn_add_friend:
-                Toast.makeText(getApplication(), "btn kb", Toast.LENGTH_SHORT).show();
                 clickSendAddFriend();
                 break;
-            case R.id.btn_remove_add_friend:
+            case R.id.btn_remove_request_friend:
                 clickRemoveSendAddFriend();
+                break;
+            case R.id.lnl_agree_add_friend:
+                agreeAddFriend();
+                break;
+            case R.id.lnl_reject_add_friend:
+                rejectAddFriend();
                 break;
         }
     }
 
     @Override
     public void sendAddFriendSuccess(AddFriendRequest addFriendRequest) {
+        mIntIdRequestAddFriend = addFriendRequest.getId();
         mBtnAddFriend.setText(ADD_FRIEND_2);
         Toast.makeText(getApplication(), "Đã gửi yêu cầu kết bạn", Toast.LENGTH_SHORT).show();
     }
@@ -778,7 +813,7 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
         Button btnClose;
         btnClose = (Button) dialog.findViewById(R.id.btn_close);
         txtQuantity = (TextView) dialog.findViewById(R.id.txt_exchange_quantity);
-        txtQuantity.setText("Trao đổi thành công" );
+        txtQuantity.setText("Gửi yêu cầu thành công" );
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -862,12 +897,12 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void getAllVegetableByGardenIdFail() {
-
     }
 
     @Override
     public void getInfoAccountSuccess(AccountData accountData) {
         mIntIsFriend = accountData.getIsFriend();
+        mIntIdRequestAddFriend = accountData.getIdRequest();
         if (mIntIsFriend == 1){
             mBtnAddFriend.setText(ADD_FRIEND_1);
         } else if (mIntIsFriend == 2) {
@@ -890,6 +925,27 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void getInfoAccountFail() {
+
+    }
+
+    @Override
+    public void replyFriendRequestSuccess() {
+
+    }
+
+    @Override
+    public void replyFriendRequestFail() {
+
+    }
+
+    @Override
+    public void deleteRequestFriendSuccess() {
+        System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+        System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+    }
+
+    @Override
+    public void deleteRequestFriendFail() {
 
     }
 }

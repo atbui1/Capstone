@@ -52,6 +52,10 @@ public class User implements Serializable {
     @ColumnInfo(name = "token")
     private String token;
 
+    @SerializedName("deviceToken")
+    @ColumnInfo(name = "deviceToken")
+    private String deviceToken;
+
     public User() {
     }
 
@@ -69,7 +73,7 @@ public class User implements Serializable {
 
 
     public User(int userId, int userInfoId, String phoneNumber, String email, String full_name, String accountId,
-                String fullName, String password, String sex, String YOB, String token) {
+                String fullName, String password, String sex, String YOB, String token, String deviceToken) {
         this.userId = userId;
         this.userInfoId = userInfoId;
         this.phoneNumber = phoneNumber;
@@ -81,6 +85,7 @@ public class User implements Serializable {
         this.sex = sex;
         this.YOB = YOB;
         this.token = token;
+        this.deviceToken = deviceToken;
     }
 
     public int getUserId() {
@@ -169,5 +174,13 @@ public class User implements Serializable {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getDeviceToken() {
+        return deviceToken;
+    }
+
+    public void setDeviceToken(String deviceToken) {
+        this.deviceToken = deviceToken;
     }
 }

@@ -137,9 +137,6 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
         mTxtDistrict.setOnClickListener(this);
         mTxtWard.setOnClickListener(this);
 
-//        mProvincePresenter = new ProvincePresenter(getApplication(), getApplicationContext(), this);
-//        mDistrictPresenter = new DistrictPresenter(getApplication(), getApplicationContext(), this);
-//        mWardPresenter = new WardPresenter(getApplication(),getApplicationContext(), this);
     }
 
     private void initialData() {
@@ -204,7 +201,8 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
         System.out.println("confirm pass " + mStrPasswordConfirm);
         System.out.println("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
 
-        mStrSubAddress = mEdtSubAddress.getText().toString().trim();
+        String subAddressTmp = mEdtSubAddress.getText().toString().trim();
+        mStrSubAddress = subAddressTmp.replaceAll("\\,","");
         if (mStrProvince.equals("") || mStrDistrict.equals("") || mStrWard.equals("") || mStrSubAddress.equals("")) {
             System.out.println("show dia log err distric null or ward null");
             showDialogAddressErr();
@@ -333,6 +331,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
+    /*register success*/
     private void showDialogRegisterSuccess() {
         final Dialog dialog = new Dialog(RegisterAccountActivity.this);
         dialog.setContentView(R.layout.dialog_login_fail);
@@ -348,6 +347,25 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
                 dialog.dismiss();
                 Intent intentMainHome = new Intent(RegisterAccountActivity.this, LoginActivity.class);
                 startActivity(intentMainHome);
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+    /*register success*/
+    private void showDialogRegisterFail() {
+        final Dialog dialog = new Dialog(RegisterAccountActivity.this);
+        dialog.setContentView(R.layout.dialog_login_fail);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtErr;
+        Button btnClose;
+        txtErr = (TextView) dialog.findViewById(R.id.txt_detail_err);
+        btnClose = (Button) dialog.findViewById(R.id.btn_close);
+        txtErr.setText("Đăng ký tài khoản không thành công");
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
             }
         });
         dialog.setCanceledOnTouchOutside(false);
@@ -381,14 +399,14 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
                 break;
             case R.id.txt_district:
                 if (mStrProvince == null) {
-                    Toast.makeText(getApplicationContext(), "vui long chon tinh/ thanh pho", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Vui lòng chọn tỉnh/thành phố", Toast.LENGTH_SHORT).show();
                 } else {
                     clickOpenDistrict();
                 }
                 break;
             case R.id.txt_ward:
                 if (mStrProvince == null || mStrDistrict == null) {
-                    Toast.makeText(getApplicationContext(),"chua chon thanh pho hoac quan huyen", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Vui lòng chọn tỉnh/thành phố, quận/huyện", Toast.LENGTH_SHORT).show();
                 } else {
                     clickOpenWard();
                 }
@@ -437,7 +455,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
 
     @Override
     public void registerAccountFail() {
-        Toast.makeText(this, "register fail", Toast.LENGTH_SHORT).show();
+        showDialogRegisterFail();
     }
 
     @Override
@@ -486,6 +504,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
                     public void onVerificationFailed(@NonNull FirebaseException e) {
                         System.out.println("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
                         System.out.println("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+                        e.printStackTrace();
                     }
                 }
         );

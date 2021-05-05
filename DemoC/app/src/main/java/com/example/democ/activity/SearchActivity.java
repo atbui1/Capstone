@@ -82,8 +82,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tl_search);
         tabLayout.setupWithViewPager(mVpSearch);
 
-        mLnlBack = (LinearLayout) findViewById(R.id.lnl_back);
-        mLnlBack.setOnClickListener(this);
     }
 
     private void initialData() {
@@ -102,6 +100,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         mLnlSearch.setOnClickListener(this);
         mSearchValue = mEdtSearchValue.getText().toString();
 
+        mLnlBack = (LinearLayout) findViewById(R.id.lnl_back);
+        mLnlBack.setOnClickListener(this);
     }
 
     private void searchVegetable() {

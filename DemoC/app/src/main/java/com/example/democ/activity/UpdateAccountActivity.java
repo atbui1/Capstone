@@ -17,19 +17,36 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.democ.R;
+import com.example.democ.fragment.DistrictBottomSheetFragment;
+import com.example.democ.fragment.ProvinceBottomSheetFragment;
+import com.example.democ.fragment.WardBottomSheetFragment;
+import com.example.democ.iclick.IClickDistrict;
+import com.example.democ.iclick.IClickProvince;
+import com.example.democ.iclick.IClickWard;
 import com.example.democ.model.AccountData;
+import com.example.democ.model.DistrictData;
+import com.example.democ.model.ProvinceData;
+import com.example.democ.model.WardData;
+import com.example.democ.presenters.DistrictPresenter;
 import com.example.democ.presenters.GetInfoAccountPresenter;
 import com.example.democ.presenters.PersonalPresenter;
+import com.example.democ.presenters.ProvincePresenter;
 import com.example.democ.presenters.UpdateAccountPresenter;
+import com.example.democ.presenters.WardPresenter;
 import com.example.democ.room.entities.User;
+import com.example.democ.views.DistrictView;
 import com.example.democ.views.GetInfoAccountView;
 import com.example.democ.views.PersonalView;
+import com.example.democ.views.ProvinceView;
 import com.example.democ.views.UpdateAccountView;
+import com.example.democ.views.WardView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class UpdateAccountActivity extends AppCompatActivity implements View.OnClickListener, PersonalView,
-        GetInfoAccountView, UpdateAccountView {
+        GetInfoAccountView, UpdateAccountView, ProvinceView, DistrictView, WardView {
 
     private EditText mEdtFullName, mEdtEmail;
     private TextView mTxtYOB, mTxtSex;
@@ -39,9 +56,21 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
             fullName = "", sexTmp = "", email = "", yob = "", accountId = "", mAccessToken = "";
     private int sex;
 
+    private User mUser;
     private PersonalPresenter mPersonalPresenter;
     private GetInfoAccountPresenter mGetInfoAccountPresenter;
     private UpdateAccountPresenter mUpdateAccountPresenter;
+
+    private ProvincePresenter mProvincePresenter;
+    private DistrictPresenter mDistrictPresenter;
+    private WardPresenter mWardPresenter;
+    private TextView mTxtProvince, mTxtDistrict, mTxtWard;
+    private EditText mEdtSubAddress;
+    private  int mIntDistrictId = 0, mIdWard = 0;
+    private String mStrProvince = "", mStrDistrict = "", mStrWard = "", mStrSubAddress = "", mStrAddress = "";
+    private List<ProvinceData> mListProvince;
+    private List<DistrictData> mListDistrict;
+    private List<WardData> mListWard;
 
 
     Calendar myCalendar = Calendar.getInstance();
@@ -84,6 +113,19 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
         mGetInfoAccountPresenter = new GetInfoAccountPresenter(getApplication(), this, this);
         mUpdateAccountPresenter = new UpdateAccountPresenter(getApplication(), this, this);
 
+        mProvincePresenter = new ProvincePresenter(getApplication(), this, this);
+        mDistrictPresenter = new DistrictPresenter(getApplication(), this, this);
+        mWardPresenter = new WardPresenter(getApplication(), this, this);
+        mProvincePresenter.getAllProvince();
+
+        mTxtProvince = (TextView) findViewById(R.id.txt_province);
+        mTxtDistrict = (TextView) findViewById(R.id.txt_district);
+        mTxtWard = (TextView) findViewById(R.id.txt_ward);
+        mEdtSubAddress = (EditText) findViewById(R.id.edt_sub_address);
+        mTxtProvince.setOnClickListener(this);
+        mTxtDistrict.setOnClickListener(this);
+        mTxtWard.setOnClickListener(this);
+
     }
 
     private void initialData() {
@@ -114,21 +156,27 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
         } else if (sexTmp.equals("Khác")) {
             sex = 3;
         }
+
+        String subAddressTmp = mEdtSubAddress.getText().toString().trim();
+        mStrSubAddress = subAddressTmp.replaceAll("\\,","");
+        if (mStrProvince.equals("") || mStrDistrict.equals("") || mStrWard.equals("") || mStrSubAddress.equals("")
+                || fullName.equals("")) {
+            System.out.println("show dia log err district null or ward null");
+            showDialogAddressErr();
+            return;
+        }
+        mStrAddress = mStrSubAddress + ", " + mStrWard + ", " + mStrDistrict + ", " + mStrProvince;
+
         System.out.println("lllllllllllllllllllllllllllll");
-        System.out.println(password);
-        System.out.println(passwordConfirm);
+        System.out.println(accountId);
         System.out.println(fullName);
         System.out.println(email);
         System.out.println(yob);
         System.out.println(sex);
-        if (!password.equals(passwordConfirm)) {
-            Toast.makeText(getApplicationContext(), "vui long xac nhan mk", Toast.LENGTH_SHORT).show();
-        } else {
+        System.out.println(mStrAddress);
             //chay update
-            AccountData accountData = new AccountData(accountId,phone, password, fullName, yob, sex, email);
-            mUpdateAccountPresenter.updateAccount(accountData, mAccessToken);
-        }
-        System.out.println("lllllllllllllllllllllllllllllllll");
+        AccountData accountData = new AccountData(accountId, fullName, yob, sex, email, mStrAddress);
+        mUpdateAccountPresenter.updateAccount(accountData, mAccessToken);
     }
 
     private void showSexDialog() {
@@ -168,7 +216,111 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+    private void showDialogAddressErr() {
+        final Dialog dialog = new Dialog(UpdateAccountActivity.this);
+        dialog.setContentView(R.layout.dialog_login_fail);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtErr;
+        Button btnClose;
+        txtErr = (TextView) dialog.findViewById(R.id.txt_detail_err);
+        btnClose = (Button) dialog.findViewById(R.id.btn_close);
+        txtErr.setText("vui lòng nhập đầy đủ thông tin");
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+    /*update faul*/
+    private void showDialogUpdateErr() {
+        final Dialog dialog = new Dialog(UpdateAccountActivity.this);
+        dialog.setContentView(R.layout.dialog_login_fail);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtErr;
+        Button btnClose;
+        txtErr = (TextView) dialog.findViewById(R.id.txt_detail_err);
+        btnClose = (Button) dialog.findViewById(R.id.btn_close);
+        txtErr.setText("Vui lòng kiểm tra lại");
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+    /*update success*/
+    private void showDialogUpdateSuccess() {
+        final Dialog dialog = new Dialog(UpdateAccountActivity.this);
+        dialog.setContentView(R.layout.dialog_login_fail);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtErr;
+        Button btnClose;
+        txtErr = (TextView) dialog.findViewById(R.id.txt_detail_err);
+        btnClose = (Button) dialog.findViewById(R.id.btn_close);
+        txtErr.setText("cập nhật thông tin thành công");
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                Intent intent = new Intent(UpdateAccountActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
 
+    // get province
+    private void clickOpenProvince() {
+        ProvinceBottomSheetFragment provinceBottomSheetFragment = new ProvinceBottomSheetFragment((ArrayList<ProvinceData>) mListProvince, new IClickProvince() {
+            @Override
+            public void clickProvince(ProvinceData provinceData) {
+                mTxtProvince.setText(provinceData.getName());
+                mIntDistrictId = provinceData.getId();
+                mStrProvince = provinceData.getName();
+                //
+                mTxtDistrict.setText("");
+                mTxtWard.setText("");
+                mEdtSubAddress.setText("");
+                mStrDistrict = "";
+                mStrWard = "";
+                mStrSubAddress = "";
+                mDistrictPresenter.getDistrictById(mIntDistrictId);
+            }
+        });
+        provinceBottomSheetFragment.show(getSupportFragmentManager(), provinceBottomSheetFragment.getTag());
+        provinceBottomSheetFragment.setCancelable(false);
+    }
+    //get district by id
+    private void clickOpenDistrict() {
+        DistrictBottomSheetFragment districtBottomSheetFragment = new DistrictBottomSheetFragment((ArrayList<DistrictData>) mListDistrict, new IClickDistrict() {
+            @Override
+            public void clickDistrict(DistrictData districtData) {
+                mTxtDistrict.setText(districtData.getName());
+                mIdWard = districtData.getId();
+                mStrDistrict = districtData.getName();
+                mWardPresenter.getWardById(mIdWard);
+
+            }
+        });
+        districtBottomSheetFragment.show(getSupportFragmentManager(), districtBottomSheetFragment.getTag());
+    }
+    //get ward by id
+    private void clickOpenWard() {
+        WardBottomSheetFragment wardBottomSheetFragment = new WardBottomSheetFragment((ArrayList<WardData>) mListWard, new IClickWard() {
+            @Override
+            public void clickWard(WardData wardData) {
+                mTxtWard.setText(wardData.getName());
+                mStrWard = wardData.getName();
+            }
+        });
+        wardBottomSheetFragment.show(getSupportFragmentManager(), wardBottomSheetFragment.getTag());
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -191,12 +343,30 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
 //                clickBack();
                 finish();
                 break;
+            case R.id.txt_province:
+                clickOpenProvince();
+                break;
+            case R.id.txt_district:
+                if (mStrProvince == null) {
+                    Toast.makeText(getApplicationContext(), "Vui lòng chọn tỉnh/thành phố", Toast.LENGTH_SHORT).show();
+                } else {
+                    clickOpenDistrict();
+                }
+                break;
+            case R.id.txt_ward:
+                if (mStrProvince == null || mStrDistrict == null) {
+                    Toast.makeText(getApplicationContext(),"Vui lòng chọn tỉnh/thành phố, quận/huyện", Toast.LENGTH_SHORT).show();
+                } else {
+                    clickOpenWard();
+                }
+                break;
         }
     }
 
     @Override
     public void showInfoPersonal(User user) {
         mAccessToken = user.getToken();
+        mUser = user;
         System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
         System.out.println(mAccessToken);
         System.out.println("TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
@@ -235,6 +405,7 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
         }
         mTxtYOB.setText(yob);
         mEdtEmail.setText(email);
+
     }
 
     @Override
@@ -244,12 +415,41 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void updateAccountSuccess(AccountData accountData) {
-        Intent intent = new Intent(UpdateAccountActivity.this, MainActivity.class);
-        startActivity(intent);
+        showDialogUpdateSuccess();
     }
 
     @Override
     public void updateAccountFail() {
+        showDialogUpdateErr();
+    }
+
+    @Override
+    public void getProvinceSuccess(List<ProvinceData> provinceData) {
+        mListProvince = provinceData;
+    }
+
+    @Override
+    public void getProvinceFail() {
+
+    }
+
+    @Override
+    public void getDistrictSuccess(List<DistrictData> districtData) {
+        mListDistrict = districtData;
+    }
+
+    @Override
+    public void getDistrictFail() {
+
+    }
+
+    @Override
+    public void getWardSuccess(List<WardData> wardData) {
+        mListWard = wardData;
+    }
+
+    @Override
+    public void getWardFail() {
 
     }
 }

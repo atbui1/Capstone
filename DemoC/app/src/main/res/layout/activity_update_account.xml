@@ -274,7 +274,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp50">
                 <EditText
-                    android:id="@+id/edt_garden_address"
+                    android:id="@+id/edt_sub_address"
                     android:background="@drawable/bg_edt"
                     android:hint="Địa chỉ chi tiết"
                     android:paddingLeft="@dimen/dp8"

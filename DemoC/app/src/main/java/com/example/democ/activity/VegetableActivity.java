@@ -131,7 +131,7 @@ public class VegetableActivity extends AppCompatActivity implements View.OnClick
         /* getting send info bundle */
         Intent intentSendData = new Intent(VegetableActivity.this, UpdateVegetableActivity.class);
 //        intentSendData.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-        intentSendData.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intentSendData.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         Bundle bundleSendData = new Bundle();
         bundleSendData.putInt("GARDEN_ID", mGardenId);
         bundleSendData.putString("GARDEN_NAME", mGardenName);
@@ -220,6 +220,26 @@ public class VegetableActivity extends AppCompatActivity implements View.OnClick
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
+    /* dialog delete vegetable Err*/
+    private void showDialogDeleteVegetableErr() {
+        final Dialog dialog = new Dialog(VegetableActivity.this);
+        dialog.setContentView(R.layout.dialog_exchange_quantity_err);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        TextView txtQuantity;
+        Button btnClose;
+        btnClose = (Button) dialog.findViewById(R.id.btn_close);
+        txtQuantity = (TextView) dialog.findViewById(R.id.txt_exchange_quantity);
+        txtQuantity.setText("Vui lòng xóa bài viết trước");
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -245,6 +265,7 @@ public class VegetableActivity extends AppCompatActivity implements View.OnClick
     public void DeleteVegetableSuccess() {
         System.out.println("interface Delete Vegetable Success");
         Intent intent = new Intent(VegetableActivity.this, GardenActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         Bundle bundle = new Bundle();
         bundle.putInt("GARDEN_ID", mGardenId);
         bundle.putString("GARDEN_NAME", mGardenName);
@@ -256,7 +277,7 @@ public class VegetableActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void DeleteVegetableFail() {
-
+        showDialogDeleteVegetableErr();
     }
 
     @Override

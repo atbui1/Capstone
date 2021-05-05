@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.democ.R;
 import com.example.democ.fragment.GardenBottomSheetFragment;
@@ -116,7 +115,7 @@ public class CreatePostShareActivity extends AppCompatActivity implements View.O
         GardenBottomSheetFragment gardenBottomSheetFragment = new GardenBottomSheetFragment(mListGarden, new IClickGarden() {
             @Override
             public void clickGarden(GardenResult gardenResult) {
-                Toast.makeText(CreatePostShareActivity.this, gardenResult.getName(), Toast.LENGTH_SHORT).show();
+
                 mTxtPostGarden.setText(gardenResult.getName());
                 mIntGardenId = gardenResult.getId();
 
@@ -134,7 +133,7 @@ public class CreatePostShareActivity extends AppCompatActivity implements View.O
         VegetableBottomSheetFragment vegetableBottomSheetFragment = new VegetableBottomSheetFragment(mListVegetable, new IClickVegetable() {
             @Override
             public void clickVegetable(VegetableData vegetableData) {
-                Toast.makeText(CreatePostShareActivity.this, vegetableData.getName(), Toast.LENGTH_SHORT).show();
+
                 mStrVegetableName = vegetableData.getName();
                 mTxtPostVegetableName.setText(mStrVegetableName);
                 mStrVegetableId = vegetableData.getId();

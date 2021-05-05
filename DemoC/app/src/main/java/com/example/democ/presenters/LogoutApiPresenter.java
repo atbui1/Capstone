@@ -5,36 +5,32 @@ import android.content.Context;
 
 import com.example.democ.capstone.CapstoneRepository;
 import com.example.democ.capstone.CapstoneRepositoryImp;
-import com.example.democ.model.PostData;
 import com.example.democ.utils.CallBackData;
-import com.example.democ.views.AllShareView;
+import com.example.democ.views.LogoutApiView;
 
-import java.util.List;
-
-public class AllSharePresenter {
+public class LogoutApiPresenter {
     private CapstoneRepository mCapstoneRepository;
     private Application mApplication;
     private Context mContext;
-    private AllShareView mAllShareView;
+    private LogoutApiView mLogoutApiView;
 
-    public AllSharePresenter(Application mApplication, Context mContext, AllShareView mAllShareView) {
+    public LogoutApiPresenter(Application mApplication, Context mContext, LogoutApiView mLogoutApiView) {
         this.mApplication = mApplication;
         this.mContext = mContext;
-        this.mAllShareView = mAllShareView;
+        this.mLogoutApiView = mLogoutApiView;
         mCapstoneRepository = new CapstoneRepositoryImp();
     }
 
-    public void getAllShare(String token) {
-
-        mCapstoneRepository.getAllShare(mContext, token, new CallBackData<List<PostData>>() {
+    public void logoutApi(String deviceToken, String token) {
+        mCapstoneRepository.logoutApi(mContext, deviceToken, token, new CallBackData<String>() {
             @Override
-            public void onSuccess(List<PostData> postData) {
-                mAllShareView.allShareSuccess(postData);
+            public void onSuccess(String s) {
+                mLogoutApiView.logoutApiSuccess();
             }
 
             @Override
             public void onFail(String msgFail) {
-                mAllShareView.allShareFail();
+                mLogoutApiView.logoutApiFail();
             }
         });
     }

@@ -44,18 +44,12 @@ public class LoginPresenter {
 
                 } else {
 //                    mLoginView.loginFail("Lưu thông tin người dùng thất bại");
-                    System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
-                    System.out.println("luu thong tin nguoi dung vao room fail");
-                    System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
+
                 }
             }
 
             @Override
             public void onFail(String msgFail) {
-                System.out.println("************** login presenter err******************");
-                System.out.println(msgFail);
-                System.out.println("************** login presenter err******************");
-
                 showDialogLoginFail();
             }
         });

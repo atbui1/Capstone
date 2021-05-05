@@ -212,7 +212,8 @@ public class HistoryExchangeActivity extends AppCompatActivity implements IClick
         } else if (exchangeData.getStatus() == 2) {
             if (exchangeData.getAccountHostId().equals(mUser.getAccountId())) {
                 Intent intent = new Intent(HistoryExchangeActivity.this, QRCodeActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(KEY_QR_CODE, exchangeData);
                 intent.putExtras(bundle);

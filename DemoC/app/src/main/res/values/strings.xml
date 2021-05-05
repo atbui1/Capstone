@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DemoC</string>
+    <string name="app_name">Vegetable</string>
     <string name="title_activity_login">LoginActivity</string>
 
     <string name="channel_name">channel_1</string>
@@ -36,7 +36,7 @@
 
 
     <!--edt name-->
-    <string name="edt_user_login">số điện thoại</string>
+    <string name="edt_user_login">Số điện thoại</string>
     <string name="edt_password">Mật khẩu</string>
     <string name="edt_forgot_password">Quên mật khẩu</string>
     <string name="edt_no_account_register_now">Chưa có tài khoản? Đăng ký ngay</string>

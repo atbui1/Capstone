@@ -25,17 +25,16 @@ public class CreateGardenPresenter {
     }
 
     public void createGarden(Garden garden, String token) {
-        System.out.println("CHAY TOI GARDEN PRESENTER");
+
         mCapstoneRepository.createGarden(mContext, garden, token, new CallBackData<GardenResult>() {
             @Override
             public void onSuccess(GardenResult gardenResult) {
-                System.out.println("garden presenter success dong 32");
                 mCreateGardenView.createGardenSuccess(gardenResult);
             }
 
             @Override
             public void onFail(String msgFail) {
-                System.out.println("Garden presenter fail dong 37");
+                mCreateGardenView.createGardenFail();
             }
         });
     }

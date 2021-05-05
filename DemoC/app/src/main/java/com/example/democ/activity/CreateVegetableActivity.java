@@ -91,7 +91,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
     private boolean mBlIsFixed = false;
     private static String URL_SEARCH_NAME = "url_search_name";
     private static String URL_TELEPHONE = "url_telephone";
-    private String mMediaPath, mStrLinkUrl = "", mStrUrl = "", mStrFeature = "";
+    private String mMediaPath, mStrLinkUrl = "", mStrUrl = "", mStrFeature = "", mStrFeatureOfLisText = "";
     private SearchByNameBottomSheetFragment mSearchByNameBottomSheetFragment;
     private Dialog mDialogAddVegetable;
 
@@ -303,10 +303,10 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
             mRequestImage = null;
             mStrIdDescription = "";
 //            mStrSearchValue = "";
-            mStrSearchValue = mName;
+//            mStrSearchValue = mStrSearchValue;
 
-            if (!mStrFeature.equals("")) {
-                String[] str_feature_arr = mStrFeature.split("\n\r");
+            if (!mStrFeatureOfLisText.equals("")) {
+                String[] str_feature_arr = mStrFeatureOfLisText.split("\n\r");
                 if (str_feature_arr != null) {
                     mStrSynonymOfFeature = str_feature_arr[0].trim();
                     System.out.println("****************************************************");
@@ -335,7 +335,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
         RequestBody requestGardenId = (RequestBody) RequestBody.create(MediaType.parse("text/plain"), String.valueOf(mGardenId));
         RequestBody requestIdDescription = RequestBody.create(MediaType.parse("text/plain"), mStrIdDescription);
         RequestBody requestIsFixed = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(mBlIsFixed));
-        RequestBody requestNameSearch = RequestBody.create(MediaType.parse("text/plain"), mStrNameSearch);
+        RequestBody requestNameSearch = RequestBody.create(MediaType.parse("text/plain"), mStrSearchValue);
         RequestBody requestSynonymOfFeature = RequestBody.create(MediaType.parse("text/plain"), mStrSynonymOfFeature);
 
 
@@ -358,9 +358,9 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
 
         System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD chay api tao rau DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
 
-//        mCreateVegetablePresenter.createVegetable(requestTitle, requestDescription, requestFeature, requestQuantity,
-//                requestGardenId, requestIdDescription, requestIsFixed, requestNameSearch, requestSynonymOfFeature, requestLinkImage,
-//                mRequestImage, mToken);
+        mCreateVegetablePresenter.createVegetable(requestTitle, requestDescription, requestFeature, requestQuantity,
+                requestGardenId, requestIdDescription, requestIsFixed, requestNameSearch, requestSynonymOfFeature, requestLinkImage,
+                mRequestImage, mToken);
 
         showDialogAddVegetable();
     }
@@ -483,7 +483,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
 
             }
         } catch (Exception ex) {
-            Toast.makeText(this, "upload image fail", Toast.LENGTH_SHORT).show();
+            ex.printStackTrace();
         }
 
         //cach 2
@@ -531,7 +531,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
             }
 
         } catch (Exception ex) {
-            Toast.makeText(this, "upload image 22222222222", Toast.LENGTH_SHORT).show();
+            ex.printStackTrace();
         }
     }
 
@@ -606,6 +606,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
         mEdtVegetableDescription.setText(vegDescription);
         mEdtVegetableFeature.setText(vegFeature);
         mStrFeature = vegFeature;
+        mStrFeatureOfLisText = vegFeature;
         if (vegLinkUrl.equals("")) {
             mImgCreateVegetable.setImageResource(R.mipmap.addimage64);
         } else {
@@ -629,6 +630,7 @@ public class CreateVegetableActivity extends AppCompatActivity implements View.O
         System.out.println("************************ 5555555555555555 **************************************");
         mDialogAddVegetable.dismiss();
         Intent intent = new Intent(CreateVegetableActivity.this, GardenActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         Bundle bundle = new Bundle();
         bundle.putInt("GARDEN_ID", mGardenId);
         bundle.putString("GARDEN_NAME", mGardenName);

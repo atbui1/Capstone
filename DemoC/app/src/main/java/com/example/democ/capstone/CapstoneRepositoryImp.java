@@ -121,21 +121,17 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
                 if (response.code() == 200 && response.body() != null) {
                     try {
                         callBackData.onSuccess("");
-                        System.out.println("SSSSSSSSSSSSSSSSSSS dk success  SSSSSSSSSSSSSSSSSSSSSSSSSSS");
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 } else {
                     callBackData.onFail("");
-                    System.out.println("FFFFFFFFFFFFFFF dk fail ngoai if FFFFFFFFFFFFFFFFFFFFFFFFFFF");
-                    System.out.println("code: " + response.code());
-                    System.out.println("FFFFFFFFFFFFFFF dk fail ngoai if FFFFFFFFFFFFFFFFFFFFFFFFFFF");
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                System.out.println("FFFFFFFFFFFFFFF dk fail loi server FFFFFFFFFFFFFFFFFFFFFFFFFFF");
+                callBackData.onFail("");
             }
         });
     }
@@ -233,6 +229,12 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
                     }
                 } else {
                     callBackData.onFail("");
+                    System.out.println("FFFFFFFFFFFFFFFFFF      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF       FFFFFFFFFFFFFF");
+                    System.out.println("FFFFFFFFFFFFFFFFFF      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF       FFFFFFFFFFFFFF");
+                    System.out.println("code: " + response.code());
+                    System.out.println("msg: " + response.message());
+                    System.out.println("FFFFFFFFFFFFFFFFFF      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF       FFFFFFFFFFFFFF");
+                    System.out.println("FFFFFFFFFFFFFFFFFF      FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF       FFFFFFFFFFFFFF");
                 }
             }
 
@@ -242,7 +244,29 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
             }
         });
     }
-/*get all friend account*/
+
+    @Override
+    public void changePass(Context context, String oldPass, String newPass, String token, final CallBackData<String> callBackData) {
+        ClientApi clientApi = new ClientApi();
+        Call<ResponseBody> serviceCall = clientApi.capstoneService().changePass(oldPass, newPass, "Bearer " + token);
+        serviceCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.code() == 200) {
+                    callBackData.onSuccess("");
+                } else {
+                    callBackData.onFail("");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                callBackData.onFail("");
+            }
+        });
+    }
+
+    /*get all friend account*/
     @Override
     public void getAllFriend(Context context, String token, final CallBackData<List<FriendData>> callBackData) {
         mListFriendData = new ArrayList<>();
@@ -261,26 +285,20 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
                         }
                         if (mListFriendData == null) {
                             callBackData.onFail("");
-                            System.out.println("FFFFFFFFFFFFFFFF get friend fail FFFFFFFFFFFFFFFFFFFFFFFFFFF");
                         } else {
                             callBackData.onSuccess(mListFriendData);
-                            System.out.println("SSSSSSSSSSSSSSSSSSSS get friend success FFFFFFFFFFFFFFFFFFFFFFFFFFFF");
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 } else {
                     callBackData.onFail("");
-                    System.out.println("FFFFFFFFFFFFFFF get friend fail ngoai if FFFFFFFFFFFFFFFFFFFF");
-                    System.out.println("response: " + response.code());
-                    System.out.println("FFFFFFFFFFFFFFF get friend fail ngoai if FFFFFFFFFFFFFFFFFFFF");
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 callBackData.onFail("");
-                System.out.println("FFFFFFFFFFFFFFFFF get friend loi server FFFFFFFFFFFFFFFFFFF");
             }
         });
     }
@@ -390,22 +408,43 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
                 if (response.code() == 200) {
                     try {
                         callBackData.onSuccess("");
-                        System.out.println("SSSSSSSSSSSSSSSSSSSS    xoa ban be thanh cong SSSSSSSSSSSSSSSSSSSSS");
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 } else {
                     callBackData.onFail("");
-                    System.out.println("FFFFFFFFFFF     xoa ban be ngoai if FFFFFFFFFFFFFFFFFFFFFFFFFF");
-                    System.out.println("code: " + response.code());
-                    System.out.println("FFFFFFFFFFF     xoa ban be ngoai if FFFFFFFFFFFFFFFFFFFFFFFFFF");
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 callBackData.onFail("");
-                System.out.println("FFFFFFFFFFF     xoa ban be loi server FFFFFFFFFFFFFFFFFFFFFFFFFF");
+            }
+        });
+    }
+
+    @Override
+    public void deleteRequestFriend(Context context, int id, String token, final CallBackData<String> callBackData) {
+        ClientApi clientApi = new ClientApi();
+        Call<ResponseBody> serviceCall = clientApi.capstoneService().deleteRequestFriend(id, "Bearer " + token);
+        serviceCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.code() == 200) {
+                    callBackData.onSuccess("");
+                    System.out.println("SSSSSSSSSSSSSSSSS   huy kb thanh cong SSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+                } else {
+                    callBackData.onFail("");
+                    System.out.println("FFFFFFFFFFFFFFFF huy kb khg thanh cong FFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+                    System.out.println("code: " + response.code());
+                    System.out.println("FFFFFFFFFFFFFFFF huy kb khg thanh cong FFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                callBackData.onFail("");
+                System.out.println("FFFFFFFFFFFFFFFFFF huy kb loi server FFFFFFFFFFFFFFFFFFFFFFF");
             }
         });
     }
@@ -429,25 +468,19 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
                         }
                         if (mListAccount == null) {
                             callBackData.onFail("");
-                            System.out.println("FFFFFFFFFFFFFFFFFFF  search name account fail FFFFFFFFFFFFFFFFF");
                         } else {
                             callBackData.onSuccess(mListAccount);
-                            System.out.println("SSSSSSSSSSSSSSSSSS  search name account success SSSSSSSSSSSSSSSSSSSSSSS");
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 } else {
                     callBackData.onFail("");
-                    System.out.println("FFFFFFFFFFFFFFFF ngoai if search name account FFFFFFFFFFFFFFFFFFFFFFFFFF");
-                    System.out.println("code: " + response.code());
-                    System.out.println("FFFFFFFFFFFFFFFF ngoai if search name account FFFFFFFFFFFFFFFFFFFFFFFFFF");
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                System.out.println("FFFFFFFFFFFFFFFFFFFFFFF  search name account onFailure    FFFFFFFFFFFFFFFFFFFFFFFF");
                 callBackData.onFail("");
             }
         });
@@ -471,26 +504,20 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
                         GardenResult gardenResult = gson.fromJson(jsonObject.toString(), GardenResult.class);
                         if (gardenResult != null) {
                             callBackData.onSuccess(gardenResult);
-                            System.out.println("SSSSSSSSSSSSSS tao vuon rau thanh cong SSSSSSSSSSSSSSSSSSSSSSS");
                         } else {
                             callBackData.onFail("");
-                            System.out.println("FFFFFFFFFFFFFFFFFFtao vuon rau fai FFFFFFFFFFFFFFFFFFFFFFF");
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 } else {
                     callBackData.onFail("");
-                    System.out.println("FFFFFFFFFFFFFFFFFF tao vuon rau ngoai if FFFFFFFFFFFFFFFFFFFFFFF");
-                    System.out.println("response code: " + response.code());
-                    System.out.println("FFFFFFFFFFFFFFFFFF tao vuon rau ngoai if FFFFFFFFFFFFFFFFFFFFFFF");
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 callBackData.onFail("");
-                System.out.println("FFFFFFFFFFFFFFFFFF tao vuon rau loi server FFFFFFFFFFFFFFFFFFFFFFF");
             }
         });
     }
@@ -743,20 +770,14 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
                         UpdateVegetableResponse vegetableData = new Gson().fromJson(jsonObject.toString(), UpdateVegetableResponse.class);
                         if (vegetableData == null) {
                             callBackData.onFail("");
-                            System.out.println("FFFFFFFFFFFFFFFFFF update vegetable fail FFFFFFFFFFFFFFFFFFFFF");
                         } else {
                             callBackData.onSuccess(vegetableData);
-                            System.out.println("SSSSSSSSSSSSSSSSSS  update vegetable success SSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 } else {
                     callBackData.onFail("");
-                    System.out.println("FFFFFFFFFFFFFFFFFFF update vegetable fail ngoai if FFFFFFFFFFFFFFFFFFFFFFF");
-                    System.out.println("code: " + response.code());
-                    System.out.println("mess: " + response.message());
-                    System.out.println("FFFFFFFFFFFFFFFFFFF update vegetable fail ngoai if FFFFFFFFFFFFFFFFFFFFFFF");
                 }
             }
 
@@ -1826,6 +1847,32 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 callBackData.onFail("");
                 System.out.println("FFFFFFFFFFFFF confirm exchange finish fail loi server FFFFFFFFFFFFFFFF");
+            }
+        });
+    }
+
+    @Override
+    public void logoutApi(Context context, String deviceToken, String token, final CallBackData<String> callBackData) {
+        ClientApi clientApi = new ClientApi();
+        Call<ResponseBody> serviceCall = clientApi.capstoneService().logoutApi(deviceToken, "Bearer " + token);
+        serviceCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.code() == 200) {
+                    callBackData.onSuccess("");
+                    System.out.println("SSSSSSSSSSSSSSSSS   logout api success SSSSSSSSSSSSSSSSSSSSSS");
+                } else {
+                    callBackData.onFail("");
+                    System.out.println("FFFFFFFFFFFFFFFFFF logout api fail FFFFFFFFFFFFFFFFFFFFFFFFFF");
+                    System.out.println("code: " + response.code());
+                    System.out.println("FFFFFFFFFFFFFFFFFF logout api fail FFFFFFFFFFFFFFFFFFFFFFFFFF");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                callBackData.onFail("");
+                System.out.println("FFFFFFFFFFFF logout api loi server FFFFFFFFFFFFFFFFFFFFFFFFFFFF");
             }
         });
     }

@@ -194,7 +194,7 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
         try {
             quantityTmp = Integer.parseInt(mEdtVegetableQuantity.getText().toString());
         } catch (NumberFormatException ex) {
-            Toast.makeText(getApplicationContext(), "khong covert dc quantity", Toast.LENGTH_SHORT).show();
+            ex.printStackTrace();
         }
 
         if (quantityTmp == 0) {
@@ -299,7 +299,6 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_update_vegetable:
-                Toast.makeText(getApplicationContext(), "btn update vegetable", Toast.LENGTH_SHORT).show();
                 updateVegetable();
                 break;
             case R.id.img_vegetable:
@@ -368,7 +367,7 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
                 }
             }
         } catch (Exception ex) {
-            Toast.makeText(this, "upload image fail", Toast.LENGTH_SHORT).show();
+            ex.printStackTrace();
         }
 
     }
@@ -376,6 +375,7 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
     @Override
     public void updateVegetableSuccess(UpdateVegetableResponse updateVegetableResponse) {
         Intent intent = new Intent(UpdateVegetableActivity.this, GardenActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         Bundle bundle = new Bundle();
         bundle.putInt("GARDEN_ID", mGardenId);
         bundle.putString("GARDEN_NAME", mGardenName);

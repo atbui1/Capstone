@@ -73,7 +73,7 @@
                         android:layout_height="@dimen/dp100">
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/img_avatar"
-                            android:src="@drawable/avatar1"
+                            android:src="@drawable/avatardefault"
                             android:layout_width="@dimen/dp80"
                             android:layout_height="@dimen/dp80" />
                     </LinearLayout>
@@ -117,6 +117,7 @@
                         <TextView
                             android:id="@+id/txt_total_posts"
                             android:textSize="@dimen/sp20"
+                            android:text="0"
                             android:textStyle="bold"
                             android:gravity="center|start"
                             android:paddingLeft="@dimen/dp20"
@@ -140,15 +141,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                 </LinearLayout>
-                <!--button follow-->
+                <!--button reject friend 1-->
                 <LinearLayout
                     android:id="@+id/lnl_btn_remove_add_friend"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp50">
                     <Button
-                        android:id="@+id/btn_remove_add_friend"
-                        android:background="@drawable/bg_btn_login"
-                        android:textColor="@color/white"
+                        android:id="@+id/btn_remove_request_friend"
+                        android:background="@drawable/bg_edt_red"
                         android:textSize="@dimen/sp20"
                         android:layout_marginLeft="@dimen/dp50"
                         android:layout_marginRight="@dimen/dp50"
@@ -156,6 +156,44 @@
                         android:layout_marginBottom="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
+                </LinearLayout>
+                <!--button reject friend 2-->
+                <LinearLayout
+                    android:id="@+id/lnl_btn_reply_add_friend"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp50">
+                    <LinearLayout
+                        android:id="@+id/lnl_reject_add_friend"
+                        android:background="@drawable/bg_edt_red"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="@dimen/dp50"
+                        android:layout_marginRight="@dimen/dp20"
+                        android:layout_width="@dimen/dp0"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:text="Từ chối"
+                            android:textColor="@color/red"
+                            android:textSize="@dimen/sp20"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/lnl_agree_add_friend"
+                        android:background="@drawable/bg_edt"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="@dimen/dp20"
+                        android:layout_marginRight="@dimen/dp50"
+                        android:layout_width="@dimen/dp0"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:text="Chấp thuận"
+                            android:textColor="@color/sick_green"
+                            android:textSize="@dimen/sp20"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView

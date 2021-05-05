@@ -43,12 +43,14 @@ public interface CapstoneRepository {
                   RequestBody sex, RequestBody address, RequestBody email, CallBackData<String> callBackData);
     void getInfoAccount(Context context, String accountId, String token, CallBackData<AccountData> callBackData);
     void updateAccount(Context context, AccountData accountData, String token, CallBackData<AccountData> callBackData);
+    void changePass(Context context, String oldPass, String newPass, String token, CallBackData<String> callBackData);
     //Friend
     void getAllFriend(Context context, String token, CallBackData<List<FriendData>> callBackData);
     void getAddFriendRequest(Context context, String token, CallBackData<List<AddFriendRequest>> callBackData);
     void sendAddFriend(Context context, AddFriendRequest addFriendRequest, String token, CallBackData<AddFriendRequest> callBackData);
     void replyFriendRequest(Context context, int idRequest, int status, String token, CallBackData<String> callBackData);
     void deleteFriend(Context context, int idFriend, String token, CallBackData<String> callBackData);
+    void deleteRequestFriend(Context context, int id, String token, CallBackData<String> callBackData);
 
     void searchAccountByName(Context context, String searchValue, String token, CallBackData<List<AccountSearchByName>> callBackData);
 
@@ -110,5 +112,6 @@ public interface CapstoneRepository {
     void getQRCode(Context context, String exchangeId, String token, CallBackData<QRCodeData> callBackData);
     void confirmExchangeFinish(Context context, String exchangeId, String token, CallBackData<String> callBackData);
 
-
+    //logout Api
+    void logoutApi(Context context, String deviceToken, String token, CallBackData<String> callBackData);
 }

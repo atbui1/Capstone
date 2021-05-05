@@ -5,35 +5,35 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.example.democ.R;
 import com.example.democ.presenters.LoginPresenter;
+import com.example.democ.presenters.RememberAccountPresenter;
 import com.example.democ.room.entities.User;
 import com.example.democ.views.LoginView;
+import com.example.democ.views.RememberAccountView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LoginView {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LoginView, RememberAccountView {
 
     private Button mBtnLogin;
     private LinearLayout mLnlRegisterAccount, mLnlForgotPassword;
     private EditText mEdtUsername, mEdtPassword;
 
     private LoginPresenter mLoginPresenter;
+    private RememberAccountPresenter mRememberAccountPresenter;
 
 
     //token device
     private static String DEVICE_TOKEN = "";
     //token device
-
-    /*back exit app*/
-    private long mBackPressTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,19 +42,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         initialView();
         initialData();
-    }
-
-    @Override
-    public void onBackPressed() {
-//        super.onBackPressed();
-
-        if (mBackPressTime + 2000 > System.currentTimeMillis()) {
-            super.onBackPressed();
-            return;
-        } else {
-            Toast.makeText(LoginActivity.this, "Click BACK thêm lần nữa để thoát ứng dụng", Toast.LENGTH_SHORT).show();
-        }
-        mBackPressTime = System.currentTimeMillis();
     }
 
     private void initialView() {
@@ -103,11 +90,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void initialData() {
         mLoginPresenter = new LoginPresenter(getApplication(), this, this);
+        mRememberAccountPresenter = new RememberAccountPresenter(getApplication(), getApplicationContext(), this);
+        mRememberAccountPresenter.rememberAccount();
     }
 
     private void checkLogin() {
-        String user = mEdtUsername.getText().toString();
-        String pass = mEdtPassword.getText().toString();
+        String user = mEdtUsername.getText().toString().trim();
+        String pass = mEdtPassword.getText().toString().trim();
 
 //        mLoginPresenter.login(user, pass);
         System.out.println("LLLLLLL     LLLLLLLLLL  LLLLLLLLLLL");
@@ -137,7 +126,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void loginSuccess(User user) {
-        Toast.makeText(this, "Login thanh cong (LoginActivity)", Toast.LENGTH_SHORT).show();
+
         System.out.println("2222222222222222222222  LOGIN SUCCESS   222222222222222222222222222222");
         Intent intentMain = new Intent(LoginActivity.this, MainActivity.class);
 //        Bundle bundle = new Bundle();
@@ -150,7 +139,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void loginFail() {
-        Toast.makeText(this, "Login fail (LoginActivity)", Toast.LENGTH_SHORT).show();
-        System.out.println("33333333333333333333333333  LOGIN FAIL 3333333333333333333333333333333333");
+
+    }
+
+    @Override
+    public void rememberAccountSuccess(User user) {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intentMain = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intentMain);
+                finish();
+            }
+        }, 2000);
+
+    }
+
+    @Override
+    public void rememberAccountFail() {
+
     }
 }

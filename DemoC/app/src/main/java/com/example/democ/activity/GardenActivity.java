@@ -185,12 +185,12 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
     public void createVegetable() {
         Intent intentCreateVegetable = new Intent(GardenActivity.this, CreateVegetableActivity.class);
 //        intentCreateVegetable.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-        intentCreateVegetable.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intentCreateVegetable.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Bundle bundle = new Bundle();
         bundle.putInt("GARDEN_ID", mGardenId);
         bundle.putString("GARDEN_NAME", mGardenName);
         bundle.putString("GARDEN_ADDRESS", mGardenAddress);
-        Toast.makeText(this, "GardenId: " + mGardenId, Toast.LENGTH_SHORT).show();
+
         intentCreateVegetable.putExtras(bundle);
         startActivity(intentCreateVegetable);
     }
@@ -271,7 +271,7 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
     public void clickVegetable(VegetableData vegetableData) {
         Intent intent = new Intent(GardenActivity.this, VegetableActivity.class);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         /*      send new                  */
         Bundle bundle = new Bundle();
         VegetableData vegetable = vegetableData;

@@ -13,8 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.democ.R;
 import com.example.democ.iclick.IClickFriend;
 import com.example.democ.model.FriendData;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder> {
     private List<FriendData> mList;
@@ -53,6 +56,14 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
                 mIClickFriend.clickDeleteFriend(friendData, holder.getAdapterPosition());
             }
         });
+        if (mList.get(position).getAvatar() == null || mList.get(position).getAvatar().equals("")) {
+            holder.mImgAvatar.setImageResource(R.drawable.avatardefault);
+        } else {
+            Picasso.with(mContext).load(mList.get(position).getAvatar())
+                    .placeholder(R.drawable.avatardefault)
+                    .error(R.drawable.avatardefault)
+                    .into(holder.mImgAvatar);
+        }
     }
 
     @Override
@@ -66,10 +77,12 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView mTxtFriendName;
         LinearLayout mLnlFriend, mLnlDeleteFriend;
+        CircleImageView mImgAvatar;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mTxtFriendName = (TextView) itemView.findViewById(R.id.txt_friend_name);
             mLnlFriend = (LinearLayout) itemView.findViewById(R.id.lnl_friend);
+            mImgAvatar = (CircleImageView) itemView.findViewById(R.id.img_avatar);
             mLnlDeleteFriend = (LinearLayout) itemView.findViewById(R.id.lnl_delete_friend);
         }
     }

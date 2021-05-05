@@ -199,7 +199,7 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
         try {
             mPostVegetableQuantity = Integer.parseInt(mStrQuantity);
         } catch (NumberFormatException ex) {
-            Toast.makeText(getApplicationContext(), "khoong the convert quantity", Toast.LENGTH_SHORT).show();
+            ex.printStackTrace();
         }
         System.out.println("KKKKKKKKKKKKKKKKKKKkk");
         System.out.println("content: " + mPostContent);
@@ -224,7 +224,7 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
         System.out.println("vegetable need id: " + mStrVegetableNeedId);
         System.out.println("vegetable need name: " + mStrVegetableNeedName);
         if (mStrBtnOption == SHARE_POST) {
-            Toast.makeText(getApplicationContext(), "share share", Toast.LENGTH_SHORT).show();
+
             System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
             System.out.println(SHARE_POST + SHARE_POST+SHARE_POST + SHARE_POST);
             mStrVegetableNeedId = null;
@@ -237,7 +237,7 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
             /** tao bai share */
             mCreateSharePresenter.createShare(shareRequest, mUser.getToken());
         } else if (mStrBtnOption == EXCHANGE_POST) {
-            Toast.makeText(getApplicationContext(), "Exchange Exchange", Toast.LENGTH_SHORT).show();
+
             System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
             System.out.println("mStrVegetableNeedName: " + mStrVegetableNeedName);
             System.out.println(EXCHANGE_POST + EXCHANGE_POST + EXCHANGE_POST + EXCHANGE_POST);
@@ -343,7 +343,7 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
                 System.out.println(mPostGardenName);
                 System.out.println("++++++++++++++");
                 if (mTxtPostGarden.getText().toString().equals("")) {
-                    Toast.makeText(this, "chon vuon rau truoc", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Vui lòng chọn vườn rau trước", Toast.LENGTH_SHORT).show();
                 } else {
                     clickOpenVegetableBottomSheet();
                 }
@@ -364,7 +364,7 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
         GardenBottomSheetFragment gardenBottomSheetFragment = new GardenBottomSheetFragment(mListGarden, new IClickGarden() {
             @Override
             public void clickGarden(GardenResult gardenResult) {
-                Toast.makeText(CreatePostActivity.this, gardenResult.getName(), Toast.LENGTH_SHORT).show();
+
                 mTxtPostGarden.setText(gardenResult.getName());
                 mGardenId = gardenResult.getId();
                 System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
@@ -386,7 +386,7 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
         VegetableBottomSheetFragment vegetableBottomSheetFragment = new VegetableBottomSheetFragment(mListVegetable, new IClickVegetable() {
             @Override
             public void clickVegetable(VegetableData vegetableData) {
-                Toast.makeText(CreatePostActivity.this, vegetableData.getName(), Toast.LENGTH_SHORT).show();
+
                 mPostVegetableName = vegetableData.getName();
                 mTxtPostVegetableName.setText(mPostVegetableName);
                 mPostVegetableId = vegetableData.getId();
@@ -433,17 +433,17 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void getAllVegetableByGardenIdSuccess(List<VegetableData> vegetableData) {
-        Toast.makeText(getApplicationContext(), "AAAAAAAAAAA", Toast.LENGTH_SHORT).show();
+
         mListVegetable = new ArrayList<>();
         this.mListVegetable = vegetableData;
         if (mListVegetable == null || mListVegetable.size() == 0) {
-            Toast.makeText(getApplicationContext(), "bbbbbbbbbbbbbb", Toast.LENGTH_SHORT).show();
+
         }
     }
 
     @Override
     public void getAllVegetableByGardenIdFail() {
-        Toast.makeText(getApplicationContext(), "vuon rau chua co rau", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Vườn rau chưa có rau", Toast.LENGTH_SHORT).show();
     }
 
     @Override

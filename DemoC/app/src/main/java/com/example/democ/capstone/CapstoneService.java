@@ -48,6 +48,8 @@ public interface CapstoneService {
     Call<ResponseBody> getInfoAccount(@Query("Id") String accountId, @Header("Authorization") String token);
     @PUT(ConfigApi.Api.ACCOUNT_UPDATE)
     Call<ResponseBody> updateAccount(@Body RequestBody body, @Header("Authorization") String token);
+    @PUT(ConfigApi.Api.ACCOUNT_CHANGE_PASS)
+    Call<ResponseBody> changePass(@Query("oldPass") String oldPass, @Query("newPass") String newPass, @Header("Authorization") String token);
     /*Friend*/
     @GET(ConfigApi.Api.ACCOUNT_FRIEND)
     Call<ResponseBody> getAllFriend(@Header("Authorization") String token);
@@ -59,6 +61,8 @@ public interface CapstoneService {
     Call<ResponseBody> replyFriendRequest(@Query("Id") int idRequest, @Query("status") int status, @Header("Authorization") String token);
     @PUT(ConfigApi.Api.ACCOUNT_DELETE_FRIEND)
     Call<ResponseBody> deleteFriend(@Query("Id") int idFriend, @Header("Authorization") String token);
+    @DELETE(ConfigApi.Api.ACCOUNT_DELETE_REQUEST_FRIEND)
+    Call<ResponseBody> deleteRequestFriend(@Query("Id") int Id, @Header("Authorization") String token);
 
     @GET(ConfigApi.Api.ACCOUNT_SEARCH_NAME)
     Call<ResponseBody> searchAccountByName(@Query("searchValue") String searchValue, @Header("Authorization") String token);
@@ -180,9 +184,11 @@ public interface CapstoneService {
     //QRCode
     @GET(ConfigApi.Api.QR_CODE)
     Call<ResponseBody> getQRCode(@Query("ExchangeId") String ExchangeId, @Header("Authorization") String token);
-    @POST(ConfigApi.Api.QR_CODE)
-    Call<ResponseBody> confirmExchangeFinish(@Query("ExchangeId") String exchangeId, @Header("Authorization") String token);
+    @PUT(ConfigApi.Api.QR_CODE_FINISH)
+    Call<ResponseBody> confirmExchangeFinish(@Query("Id") String exchangeId, @Header("Authorization") String token);
 
-
+    //logout Api
+    @DELETE(ConfigApi.Api.LOGOUT_API)
+    Call<ResponseBody> logoutApi(@Query("deviceToken") String deviceToken, @Header("Authorization") String token);
 
 }
