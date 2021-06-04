@@ -15,9 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.democ.R;
 import com.example.democ.iclick.IClickPostAccount;
 import com.example.democ.model.PostData;
+import com.example.democ.model.VegetableExchange;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -54,7 +56,27 @@ public class PostByAccountAdapter extends RecyclerView.Adapter<PostByAccountAdap
         holder.mTxtPostTime.setText(subPostTime);
         holder.mTxtPostContent.setText(mListPost.get(position).getContent());
         holder.mTxtPostUsername.setText(mListPost.get(position).getFullName());
-        holder.mTxtVegetablePostQuantity.setText("Số lượng: " + String.valueOf(mListPost.get(position).getQuantity()));
+        holder.mTxtVegetablePostQuantity.setText("Số lượng (chậu): " + String.valueOf(mListPost.get(position).getQuantity()));
+
+        if (mListPost.get(position).getType() == 1) {
+//            holder.mLnlVegetableNeed.setVisibility(View.GONE);
+            holder.mTxtVegetableNeed.setText("Chia sẻ rau");
+        } else if (mListPost.get(position).getType() == 2) {
+            if (mListPost.get(position).getVegetableExchange().size() == 0 || mListPost.get(position).getVegetableExchange() == null) {
+                holder.mTxtVegetableNeed.setText("Nhận lại rau bất kì");
+                System.out.println("6666666666666666666666666666666666666");
+            } else {
+                List<VegetableExchange> ListExchange = mListPost.get(position).getVegetableExchange();
+                List<String> listVegetableExchangeTmp = new ArrayList<>();
+                String vegetableNeedName = "";
+                for (VegetableExchange x: ListExchange) {
+                    vegetableNeedName = x.getVegetableExchangeName();
+                    listVegetableExchangeTmp.add(vegetableNeedName);
+                }
+                holder.mTxtVegetableNeed.setText("Rau cần đổi: " + listVegetableExchangeTmp);
+                System.out.println("8888888888888888888888888888888888888888888");
+            }
+        }
 
         if (mListPost.get(position).getAvatar() == null || mListPost.get(position).getAvatar().equals("")) {
             holder.mImgAvatar.setImageResource(R.drawable.avatardefault);
@@ -108,7 +130,7 @@ public class PostByAccountAdapter extends RecyclerView.Adapter<PostByAccountAdap
         ImageView mImgPostContent;
         CircleImageView mImgAvatar;
         TextView mTxtPostUsername, mTxtPostTime, mTxtPostContent, mTxtPostNumberLike, mTxtVegetablePostNeed,
-                mTxtVegetablePostQuantity, mTxtDeletePost, mTxtEditPost, mTxtBtnExchange;
+                mTxtVegetablePostQuantity, mTxtDeletePost, mTxtEditPost, mTxtBtnExchange, mTxtVegetableNeed;
         LinearLayout mLnlPostLike, mLnlPostComment, mLnlBtnExchange, mLnlLeftMenu;
         Button mBtnPostExchange;
         public ViewHolder(@NonNull View itemView) {
@@ -126,6 +148,7 @@ public class PostByAccountAdapter extends RecyclerView.Adapter<PostByAccountAdap
             mTxtDeletePost = (TextView) itemView.findViewById(R.id.txt_post_remove);
             mTxtEditPost = (TextView) itemView.findViewById(R.id.txt_post_edit);
             mTxtBtnExchange = (TextView) itemView.findViewById(R.id.txt_btn_exchange);
+            mTxtVegetableNeed = (TextView) itemView.findViewById(R.id.txt_post_vegetable_need);
         }
     }
 }

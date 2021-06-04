@@ -138,6 +138,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>
+            <!--Rau cần đổi-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txt_post_vegetable_need"
+                    android:paddingLeft="@dimen/dp8"
+                    android:text="Rau cần đổi"
+                    android:textSize="@dimen/sp15"
+                    android:paddingTop="@dimen/dp8"
+                    android:paddingBottom="@dimen/dp8"
+                    android:inputType="textMultiLine|textAutoComplete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
             <!--Số lượng rau-->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -146,7 +161,8 @@
                     android:id="@+id/txt_post_vegetable_quantity"
                     android:paddingLeft="@dimen/dp8"
                     android:text="Thanh long không hạt"
-                    android:textColor="@color/red"
+                    android:textColor="@color/dark_yellow"
+                    android:textStyle="bold"
                     android:textSize="@dimen/sp15"
                     android:paddingTop="@dimen/dp8"
                     android:paddingBottom="@dimen/dp8"
@@ -177,7 +193,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp50">
                 <LinearLayout
-                    android:layout_weight="3"
+                    android:layout_weight="2"
                     android:layout_width="0dp"
                     android:layout_height="match_parent">
                     <TextView

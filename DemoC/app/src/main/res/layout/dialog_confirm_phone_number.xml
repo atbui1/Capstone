@@ -68,7 +68,8 @@
             android:layout_height="@dimen/dp50">
             <TextView
                 android:id="@+id/txt_send_confirm_code"
-                android:background="@drawable/bg_btn_login"
+                android:background="@drawable/bg_light"
+                android:textColor="@color/white"
                 android:text="Xác thực"
                 android:textSize="@dimen/sp20"
                 android:paddingLeft="@dimen/dp30"

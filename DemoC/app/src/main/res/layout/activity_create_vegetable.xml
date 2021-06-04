@@ -209,7 +209,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp50">
                 <TextView
-                    android:text="Số lượng"
+                    android:text="Số lượng (chậu)"
                     android:textSize="@dimen/sp20"
                     android:textColor="@color/sick_green"
                     android:textStyle="bold"
@@ -232,6 +232,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>
+            <!--edit vegetable-->
+            <LinearLayout
+                android:id="@+id/lnl_edit_info_vegetable"
+                android:layout_marginLeft="@dimen/dp30"
+                android:layout_marginRight="@dimen/dp30"
+                android:layout_marginTop="@dimen/dp10"
+                android:layout_marginBottom="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:id="@+id/txt_edit_info_vegetable"
+                    android:text="Chỉnh sửa thông tin rau"
+                    android:gravity="center"
+                    android:textSize="@dimen/sp20"
+                    android:textColor="@color/black"
+                    android:background="@drawable/bg_edt_red"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--create vegetable-->
             <LinearLayout
                 android:layout_marginTop="@dimen/dp30"
                 android:layout_marginBottom="@dimen/dp40"

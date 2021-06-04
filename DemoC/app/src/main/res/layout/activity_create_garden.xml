@@ -209,7 +209,7 @@
                 <Button
                     android:id="@+id/btn_create_garden"
                     android:background="@drawable/bg_btn_login"
-                    android:text="Tạo vườn rau"
+                    android:text="Thêm vườn rau"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp20"
                     android:textStyle="bold"

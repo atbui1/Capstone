@@ -47,7 +47,7 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
     @Override
     public SearchNameAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View itemView = layoutInflater.inflate(R.layout.item_row_search, parent, false);
+        View itemView = layoutInflater.inflate(R.layout.item_row_vegetable_search, parent, false);
         return new ViewHolder(itemView);
     }
 

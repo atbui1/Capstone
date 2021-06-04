@@ -33,13 +33,13 @@ import com.example.democ.model.ExchangeData;
 import com.example.democ.model.ExchangeRequest;
 import com.example.democ.model.GardenResult;
 import com.example.democ.model.PostData;
+import com.example.democ.model.VegetableCheckIsExist;
 import com.example.democ.model.VegetableData;
-import com.example.democ.model.VegetableShare;
+import com.example.democ.model.VegetableExchange;
 import com.example.democ.presenters.AllGardenPresenter;
 import com.example.democ.presenters.AllVegetableByGardenIdPresenter;
 import com.example.democ.presenters.CheckVegetableOfAccountPresenter;
 import com.example.democ.presenters.CreateExchangePresenter;
-import com.example.democ.presenters.DeleteFriendPresenter;
 import com.example.democ.presenters.DeleteRequestFriendPresenter;
 import com.example.democ.presenters.GetAllShareByIdPresenter;
 import com.example.democ.presenters.GetInfoAccountPresenter;
@@ -51,7 +51,6 @@ import com.example.democ.views.AllGardenView;
 import com.example.democ.views.AllVegetableByGardenIdView;
 import com.example.democ.views.CheckVegetableOfAccountView;
 import com.example.democ.views.CreateExchangeView;
-import com.example.democ.views.DeleteFriendView;
 import com.example.democ.views.DeleteRequestFriendView;
 import com.example.democ.views.GetAllShareByIdView;
 import com.example.democ.views.GetInfoAccountView;
@@ -111,7 +110,7 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
     private CheckVegetableOfAccountPresenter mCheckVegetableOfAccountPresenter;
     private GetInfoAccountPresenter mGetInfoAccountPresenter;
     private Spinner mSpVegetableNedd;
-    private List<VegetableShare> mListVegetableNeed;
+    private List<VegetableExchange> mListVegetableNeed;
     /*dialog choice garden*/
     private TextView mTxtGardenName, mTxtVegetableName;
     /*dilog garden*/
@@ -124,6 +123,9 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
     private List<VegetableData> mListVegetable;
     private int mIntGardenId = 0;
     private Dialog mDlExchangeAnyVegetable, mDlExchangeDetermineVegetable;
+
+    private int mIntProvinceId = 0, mIntDistrictId = 0, mIntWardId = 0;
+    private String mStrSubAddress = "", mStrFullAddress = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -258,14 +260,16 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
                     }
 
                     if (mIntExchangeQuantityReceive > mIntQuantityOfShare) {
-                        showDialogQuantityErr();
+                        showDialogQuantityReceiveErr();
                         return;
                     } else if (mIntExchangeQuantityReceive < 1){
                         showDialogInputReceiveZero();
                         return;
                     }else {
                         // goi api exchange
-                        ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityReceive, 0, mShareIdOfShare, "");
+//                        ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityReceive, 0, mShareIdOfShare, "");
+                        ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityReceive, 0,
+                                mIntProvinceId, mIntDistrictId, mIntWardId, mStrSubAddress, mStrFullAddress, mShareIdOfShare, "");
                         mCreateExchangePresenter.createExchange(exchangeRequest, mUser.getToken());
                     }
                 } catch (NumberFormatException ex) {
@@ -290,16 +294,21 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
         btnClose = (Button) mDlExchangeDetermineVegetable.findViewById(R.id.btn_close);
 
         /* spinner*/
-        ArrayAdapter<VegetableShare> adapterVegetableNeed = new ArrayAdapter<VegetableShare>(PosterProfileActivity.this,
-                android.R.layout.simple_spinner_item, mListVegetableNeed);
+//        ArrayAdapter<VegetableExchange> adapterVegetableNeed = new ArrayAdapter<VegetableExchange>(PosterProfileActivity.this,
+//                android.R.layout.simple_spinner_item, mListVegetableNeed);
+        ArrayAdapter<VegetableData> adapterVegetableNeed = new ArrayAdapter<VegetableData>(PosterProfileActivity.this,
+                android.R.layout.simple_spinner_item, mListVegetable);
         adapterVegetableNeed.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpVegetableNedd = mDlExchangeDetermineVegetable.findViewById(R.id.sp_vegetable_need);
         mSpVegetableNedd.setAdapter(adapterVegetableNeed);
         mSpVegetableNedd.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                VegetableShare vegetableShare = (VegetableShare) adapterView.getSelectedItem();
-                displaySpinnerVegetableNeed(vegetableShare);
+//                VegetableExchange vegetableExchange = (VegetableExchange) adapterView.getSelectedItem();
+//                displaySpinnerVegetableNeed(vegetableExchange);
+                VegetableData vegetableData = (VegetableData) adapterView.getSelectedItem();
+                mIntQuantityOfAccount = vegetableData.getQuantity();
+                mStrVegetableNeedId = vegetableData.getId();
             }
 
             @Override
@@ -339,7 +348,29 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
                 mIntExchangeQuantityDonate = quantityDonate;
                 mIntExchangeQuantityReceive = quantityReceive;
 
-                mCheckVegetableOfAccountPresenter.CheckVegetableOfAccountPresenter(mStrVegetableNeedId, mStrVegetableNeedName, mUser.getToken());
+                /*new*/
+                if (mIntExchangeQuantityReceive > mIntQuantityOfShare) {
+                    showDialogQuantityReceiveErr();
+                    return;
+                } else if (mIntExchangeQuantityDonate > mIntQuantityOfAccount) {
+                    showDialogQuantityDonate();
+                    return;
+                }
+                System.out.println("AAAAAAAAAAAAAAA chay api create exchange AAAAAAAAAAAAAAAAAA");
+                ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityReceive, mIntExchangeQuantityDonate,
+                        mIntProvinceId, mIntDistrictId, mIntWardId, mStrSubAddress, mStrFullAddress, mShareIdOfShare, mStrVegetableNeedId);
+
+                System.out.println("BBBBBBBBBBBBBBBBBBBBb   exchangeRequest BBBBBBBBBBBBBBBBBBBBBBBBBBB");
+                System.out.println("sl cho: " + mIntExchangeQuantityDonate);
+                System.out.println("sl nhan: " + mIntExchangeQuantityReceive);
+                System.out.println("id bai post: " + mShareIdOfShare);
+                System.out.println("id rau cho: " + mStrVegetableNeedId);
+                System.out.println("name rau cho: " + mStrVegetableNeedName);
+                System.out.println("BBBBBBBBBBBBBBBBBBBBb   exchangeRequest BBBBBBBBBBBBBBBBBBBBBBBBBBB");
+
+                mCreateExchangePresenter.createExchange(exchangeRequest, mUser.getToken());
+
+//                mCheckVegetableOfAccountPresenter.CheckVegetableOfAccountPresenter(mStrVegetableNeedId, mStrVegetableNeedName, mUser.getToken());
 //                dialog.dismiss();
             }
         });
@@ -421,15 +452,15 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
         mDlExchangeAnyVegetable.show();
     }
     /* display vegetable need*/
-    public void displaySpinnerVegetableNeed(VegetableShare vegetableShare) {
-        String needName = vegetableShare.getVegetableShareName();
-        String needId = vegetableShare.getVegetableShareId();
-        mStrVegetableNeedId = vegetableShare.getVegetableShareId();
-        mStrVegetableNeedName = vegetableShare.getVegetableShareName();
+    public void displaySpinnerVegetableNeed(VegetableExchange vegetableExchange) {
+        String needName = vegetableExchange.getVegetableExchangeName();
+        String needId = vegetableExchange.getVegetableExchangeId();
+        mStrVegetableNeedId = vegetableExchange.getVegetableExchangeId();
+        mStrVegetableNeedName = vegetableExchange.getVegetableExchangeName();
 //        createExchange();
     }
     /*dialog quantity receive */
-    private void showDialogQuantityErr() {
+    private void showDialogQuantityReceiveErr() {
         final Dialog dialog = new Dialog(PosterProfileActivity.this);
         dialog.setContentView(R.layout.dialog_exchange_quantity_err);
         dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
@@ -437,7 +468,7 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
         Button btnClose;
         btnClose = (Button) dialog.findViewById(R.id.btn_close);
         txtQuantity = (TextView) dialog.findViewById(R.id.txt_exchange_quantity);
-        txtQuantity.setText("Số lượng nhận không lớn hơn " + mIntQuantityOfShare + " cây");
+        txtQuantity.setText("Số lượng nhận không lớn hơn " + mIntQuantityOfShare + " Chậu");
 
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -457,7 +488,7 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
         Button btnClose;
         btnClose = (Button) dialog.findViewById(R.id.btn_close);
         txtQuantity = (TextView) dialog.findViewById(R.id.txt_exchange_quantity);
-        txtQuantity.setText("Số lượng cho không lớn hơn " + mIntQuantityOfAccount + " cây");
+        txtQuantity.setText("Số lượng cho không lớn hơn " + mIntQuantityOfAccount + " Chậu");
 
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -605,8 +636,10 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
     }
     /*goi api create exchange determined vegetable*/
     public void createExchangeDeterminedVegetable() {
-        ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityReceive,
-                mIntExchangeQuantityDonate, mShareIdOfShare, mStrVegetableNeedId);
+//        ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityReceive,
+//                mIntExchangeQuantityDonate, mShareIdOfShare, mStrVegetableNeedId);
+        ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityReceive, mIntExchangeQuantityDonate,
+                mIntProvinceId, mIntDistrictId, mIntWardId, mStrSubAddress, mStrFullAddress, mShareIdOfShare, mStrVegetableNeedId);
 
         mCreateExchangePresenter.createExchange(exchangeRequest, mUser.getToken());
     }
@@ -619,26 +652,41 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
             return;
         } else if (mIntExchangeQuantityReceive > mIntQuantityOfShare || mIntExchangeQuantityReceive < 1) {
             System.out.println("chay vao if mIntExchangeQuantityReceive > mIntQuantityOfShare");
-            showDialogQuantityErr();
+            showDialogQuantityReceiveErr();
             return;
         } else if (mIntExchangeQuantityDonate > mIntQuantityOfAccount || mIntExchangeQuantityDonate < 1) {
             System.out.println("chay vao else if mIntExchangeQuantityDonate > mIntQuantityOfAccount");
             showDialogQuantityDonate();
             return;
-        } else {
-            ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityReceive,
-                    mIntExchangeQuantityDonate, mShareIdOfShare, mStrVegetableNeedId);
-
-            System.out.println("nhan bat ki");
-            System.out.println("1: " + mIntExchangeQuantityDonate);
-            System.out.println("2: " + mIntExchangeQuantityReceive);
-            System.out.println("3: " + mShareIdOfShare);
-            System.out.println("4: " + mStrVegetableNeedId);
-            System.out.println("nhan bat ki");
-
-            mDlExchangeAnyVegetable.dismiss();
-            mCreateExchangePresenter.createExchange(exchangeRequest, mUser.getToken());
         }
+//        else {
+//            ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityReceive,
+//                    mIntExchangeQuantityDonate, mShareIdOfShare, mStrVegetableNeedId);
+//            ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityReceive, mIntExchangeQuantityDonate,
+//                    mIntProvinceId, mIntDistrictId, mIntWardId, mStrSubAddress, mStrFullAddress, mShareIdOfShare, mStrVegetableNeedId);
+//
+//            System.out.println("nhan bat ki");
+//            System.out.println("1: " + mIntExchangeQuantityDonate);
+//            System.out.println("2: " + mIntExchangeQuantityReceive);
+//            System.out.println("3: " + mShareIdOfShare);
+//            System.out.println("4: " + mStrVegetableNeedId);
+//            System.out.println("nhan bat ki");
+//
+//            mDlExchangeAnyVegetable.dismiss();
+//            mCreateExchangePresenter.createExchange(exchangeRequest, mUser.getToken());
+//        }
+        ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityReceive, mIntExchangeQuantityDonate,
+                mIntProvinceId, mIntDistrictId, mIntWardId, mStrSubAddress, mStrFullAddress, mShareIdOfShare, mStrVegetableNeedId);
+
+        System.out.println("nhan bat ki");
+        System.out.println("1: " + mIntExchangeQuantityDonate);
+        System.out.println("2: " + mIntExchangeQuantityReceive);
+        System.out.println("3: " + mShareIdOfShare);
+        System.out.println("4: " + mStrVegetableNeedId);
+        System.out.println("nhan bat ki");
+
+        mDlExchangeAnyVegetable.dismiss();
+        mCreateExchangePresenter.createExchange(exchangeRequest, mUser.getToken());
         System.out.println("ket thuc goi api exchange createExchange");
     }
     /*send friend request*/
@@ -735,6 +783,15 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
         mUser = user;
         mStrAccountUserId = user.getAccountId();
 
+        mIntProvinceId = user.getProvinceId();
+        mIntDistrictId = user.getDistrictId();
+        mIntWardId = user.getWardId();
+        mStrFullAddress = user.getAddress();
+        if (!mStrFullAddress.equals("")) {
+            String[] addressTmp = mStrFullAddress.split(",");
+            mStrSubAddress = addressTmp[0];
+        }
+
         mGetAllShareByIdPresenter.getAllShareById(mStrAccountShareId, mUser.getToken());
         mGetInfoAccountPresenter.getInfoAccount(mStrAccountShareId, mUser.getToken());
     }
@@ -763,18 +820,37 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
     public void clickPostAccount(PostData postData) {
         mIntQuantityOfShare = postData.getQuantity();
         mShareIdOfShare = postData.getId();
-        mIntSizeListVegetableShare = postData.getVegetableShareList().size();
-        mListVegetableNeed = postData.getVegetableShareList();
+        mIntSizeListVegetableShare = postData.getVegetableExchange().size();
+        mListVegetableNeed = postData.getVegetableExchange();
 
-        if (postData.getStatius() == 1) {
+        if (postData.getType() == 1) {
             openDialogShowShare();
-        } else if (postData.getStatius() == 2) {
+        } else if (postData.getType() == 2) {
             if (mIntSizeListVegetableShare == 0) {
                 openDialogShowAnyVegetable();
             } else {
-                openDialogShowExchange();
+                checkVegetableNeed();
+//                openDialogShowExchange();
             }
         }
+    }
+    /*check vegetable*/
+    private void checkVegetableNeed(){
+        List<String> listVegetableExchangeTmp = new ArrayList<>();
+        String vegetableExchangeId = "";
+        for (VegetableExchange x: mListVegetableNeed) {
+            System.out.println("7777777777777777777777777777777777777777777777777777777");
+            System.out.println(x.getVegetableExchangeId());
+            System.out.println(x.getVegetableExchangeName());
+            vegetableExchangeId = x.getVegetableExchangeId();
+            listVegetableExchangeTmp.add(vegetableExchangeId);
+            System.out.println("8888888888888888888888888888888888888888888");
+        }
+        System.out.println("list id vegetable exchange aaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        System.out.println(listVegetableExchangeTmp);
+        VegetableCheckIsExist vegetableCheckIsExist = new VegetableCheckIsExist(listVegetableExchangeTmp);
+        mCheckVegetableOfAccountPresenter.CheckVegetableOfAccountPresenter(listVegetableExchangeTmp, mUser.getToken());
+        System.out.println("list id vegetable exchange bbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
     }
 
     @Override
@@ -838,15 +914,19 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void checkVegetableOfAccountSuccess(List<VegetableData> vegetableData) {
-        mIntQuantityOfAccount = vegetableData.get(0).getQuantity();
-        mStrVegetableNeedId = vegetableData.get(0).getId();
-        if (mIntExchangeQuantityDonate > mIntQuantityOfAccount) {
-            showDialogQuantityDonate();
-            return;
-        } else {
-            System.out.println("AAAAAAAAAAAAAAA chay api create exchange AAAAAAAAAAAAAAAAAA");
-            createExchangeDeterminedVegetable();
-            System.out.println("AAAAAAAAAAAAAAA chay api create exchange AAAAAAAAAAAAAAAAAA");
+//        mIntQuantityOfAccount = vegetableData.get(0).getQuantity();
+//        mStrVegetableNeedId = vegetableData.get(0).getId();
+//        if (mIntExchangeQuantityDonate > mIntQuantityOfAccount) {
+//            showDialogQuantityDonate();
+//            return;
+//        } else {
+//            System.out.println("AAAAAAAAAAAAAAA chay api create exchange AAAAAAAAAAAAAAAAAA");
+//            createExchangeDeterminedVegetable();
+//            System.out.println("AAAAAAAAAAAAAAA chay api create exchange AAAAAAAAAAAAAAAAAA");
+//        }
+        mListVegetable = vegetableData;
+        if (mListVegetable.size() > 0 || mListVegetable != null) {
+            openDialogShowExchange();
         }
     }
 
@@ -869,7 +949,7 @@ public class PosterProfileActivity extends AppCompatActivity implements View.OnC
         dialog.show();
     }
     @Override
-    public void checkVegetableOfAccountFail() {
+    public void checkVegetableOfAccountFail(String msg) {
         showDialogCheckVegetableNeedErr();
     }
 

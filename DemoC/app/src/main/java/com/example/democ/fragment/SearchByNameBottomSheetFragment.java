@@ -77,7 +77,7 @@ public class SearchByNameBottomSheetFragment extends BottomSheetDialogFragment i
         void getDataSearchWiki(String vegName, String vegDescription, String vegFeature, String vegLinkUrl);
     }
     public interface IGetDataSearchWikiTitleListener {
-        void getDataSearchWikiTitle(String vegName, String vegLinkUrl, String vegDescription, String vegFeature);
+        void getDataSearchWikiTitleNull(String vegName, String vegLinkUrl, String vegDescription, String vegFeature);
     }
 
     @Override
@@ -193,7 +193,7 @@ public class SearchByNameBottomSheetFragment extends BottomSheetDialogFragment i
         dialog.show();
     }
     /*dialog intro vegetable with name and image*/
-    private void showDialogIntroVegetableWikiTitle() {
+    private void showDialogIntroVegetableWikiTitleNull() {
         final Dialog dialog = new Dialog(mBottomSheetDialog.getContext());
         dialog.setContentView(R.layout.dialog_intro_vegetable_wiki_title);
         dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
@@ -225,7 +225,7 @@ public class SearchByNameBottomSheetFragment extends BottomSheetDialogFragment i
             @Override
             public void onClick(View view) {
 
-                mIGetDataSearchWikiTitleListener.getDataSearchWikiTitle(mStrName, mStrLinkImage, mStrDescription, mStrFeature);
+                mIGetDataSearchWikiTitleListener.getDataSearchWikiTitleNull(mStrName, mStrLinkImage, mStrDescription, mStrFeature);
                 mSearchByWikiBottomSheetFragment.dismiss();
                 mBottomSheetDialog.dismiss();
                 dialog.dismiss();
@@ -318,7 +318,7 @@ public class SearchByNameBottomSheetFragment extends BottomSheetDialogFragment i
             System.out.println("link image wiki: " + mStrLinkImage);
             mStrDescription = wikiData.getDescription();
             mStrFeature = wikiData.getFeature();
-            showDialogIntroVegetableWikiTitle();
+            showDialogIntroVegetableWikiTitleNull();
             System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
         } else {
             mStrDescription = wikiData.getDescription();

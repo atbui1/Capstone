@@ -45,7 +45,7 @@ public class CreateGardenActivity extends AppCompatActivity implements View.OnCl
 
     private User mUser;
 
-    private EditText mEdtGardenName, mEdtGardenAddress;
+    private EditText mEdtGardenName, mEdtSubAddress;
     private Button mBtnCreateGarden;
     private TextView mTxtProvince, mTxtDistrict, mTxtWard;
     private LinearLayout mLnlBack;
@@ -58,7 +58,7 @@ public class CreateGardenActivity extends AppCompatActivity implements View.OnCl
     private ArrayList<ProvinceData> mListProvince;
     private ArrayList<DistrictData> mListDistrict;
     private ArrayList<WardData> mListWard;
-    private  int mIntDistrictId = 0, mIdWard = 0;
+    private  int mIntProvinceId = 0, mIntDistrictId = 0, mIntWardId = 0;
     private  String mStrProvince = "", mStrDistrict = "", mStrWard = "", mStrSubAddress ="", mStrAddress = "";
 
     @Override
@@ -76,7 +76,7 @@ public class CreateGardenActivity extends AppCompatActivity implements View.OnCl
         mPersonalPresenter.getInfoPersonal();
 
         mEdtGardenName = (EditText) findViewById(R.id.edt_garden_name);
-        mEdtGardenAddress = (EditText) findViewById(R.id.edt_sub_address);
+        mEdtSubAddress = (EditText) findViewById(R.id.edt_sub_address);
 
         mBtnCreateGarden = (Button) findViewById(R.id.btn_create_garden);
         mBtnCreateGarden.setOnClickListener(this);
@@ -94,7 +94,7 @@ public class CreateGardenActivity extends AppCompatActivity implements View.OnCl
         mStrProvince = mTxtProvince.getText().toString();
         mStrDistrict = mTxtDistrict.getText().toString();
         mStrWard = mTxtWard.getText().toString();
-        mStrSubAddress = mEdtGardenAddress.getText().toString();
+        mStrSubAddress = mEdtSubAddress.getText().toString();
 
 
         mProvincePresenter = new ProvincePresenter(getApplication(), getApplicationContext(), this);
@@ -108,13 +108,13 @@ public class CreateGardenActivity extends AppCompatActivity implements View.OnCl
 
     public void createGarden() {
         String gardenName = mEdtGardenName.getText().toString().trim();
-        String subAddressTmp = mEdtGardenAddress.getText().toString().trim();
+        String subAddressTmp = mEdtSubAddress.getText().toString().trim();
 
         mStrSubAddress = subAddressTmp.replaceAll("\\,","");
 
         mStrAddress = mStrSubAddress + ", " + mStrWard + ", " + mStrDistrict + ", " + mStrProvince;
 
-        Garden garden = new Garden(gardenName, mStrAddress);
+        Garden garden = new Garden(gardenName, mIntProvinceId, mIntDistrictId, mIntWardId, mStrAddress);
 
         System.out.println("cretea garden 114");
         System.out.println("garden name: " + gardenName);
@@ -146,17 +146,17 @@ public class CreateGardenActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void clickProvince(ProvinceData provinceData) {
                 mTxtProvince.setText(provinceData.getName());
-                mIntDistrictId = provinceData.getId();
+                mIntProvinceId = provinceData.getId();
                 mStrProvince = provinceData.getName();
                 //
                 mTxtDistrict.setText("");
                 mTxtWard.setText("");
-                mEdtGardenAddress.setText("");
+                mEdtSubAddress.setText("");
                 mStrDistrict = "";
                 mStrWard = "";
                 mStrSubAddress = "";
                 //
-                mDistrictPresenter.getDistrictById(mIntDistrictId);
+                mDistrictPresenter.getDistrictById(mIntProvinceId);
             }
         });
         provinceBottomSheetFragment.show(getSupportFragmentManager(), provinceBottomSheetFragment.getTag());
@@ -168,9 +168,14 @@ public class CreateGardenActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void clickDistrict(DistrictData districtData) {
                 mTxtDistrict.setText(districtData.getName());
-                mIdWard = districtData.getId();
+                mIntDistrictId = districtData.getId();
                 mStrDistrict = districtData.getName();
-                mWardPresenter.getWardById(mIdWard);
+                mStrSubAddress = "";
+                mStrWard = "";
+                mEdtSubAddress.setText("");
+                mTxtWard.setText("");
+
+                mWardPresenter.getWardById(mIntDistrictId);
 
             }
         });
@@ -183,6 +188,8 @@ public class CreateGardenActivity extends AppCompatActivity implements View.OnCl
             public void clickWard(WardData wardData) {
                 mTxtWard.setText(wardData.getName());
                 mStrWard = wardData.getName();
+                mStrSubAddress = "";
+                mEdtSubAddress.setText("");
             }
         });
         wardBottomSheetFragment.show(getSupportFragmentManager(), wardBottomSheetFragment.getTag());
@@ -258,7 +265,30 @@ public class CreateGardenActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void showInfoPersonal(User user) {
         mUser = user;
+        mIntProvinceId = user.getProvinceId();
+        mIntDistrictId = user.getDistrictId();
+        mIntWardId = user.getWardId();
+        mStrAddress = user.getAddress();
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa");
+        System.out.println("address: " + mStrAddress);
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa");
+        if (mStrAddress != null) {
+            String[] addressTmp = mStrAddress.split(",");
+            if (addressTmp != null) {
+                mStrSubAddress = addressTmp[0];
+                mStrWard = addressTmp[1];
+                mStrDistrict = addressTmp[2];
+                mStrProvince = addressTmp[3];
+                mEdtSubAddress.setText(mStrSubAddress);
+                mTxtWard.setText(mStrWard);
+                mTxtDistrict.setText(mStrDistrict);
+                mTxtProvince.setText(mStrProvince);
+            }
+        }
+
         mProvincePresenter.getAllProvince();
+        mDistrictPresenter.getDistrictById(mIntProvinceId);
+        mWardPresenter.getWardById(mIntDistrictId);
     }
 
     @Override

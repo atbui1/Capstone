@@ -27,7 +27,7 @@
                 android:text="Đóng"
                 android:textSize="@dimen/sp17"
                 android:textColor="@color/white"
-                android:background="@drawable/bg_btn_login"
+                android:background="@drawable/bg_light"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
         </LinearLayout>

@@ -24,10 +24,6 @@ public class User implements Serializable {
     @ColumnInfo(name = "email")
     private String email;
 
-    @SerializedName("full_name")
-    @ColumnInfo(name = "full_name")
-    private String full_name;
-
     @SerializedName("accountId")
     @ColumnInfo(name = "accountId")
     private String accountId;
@@ -56,29 +52,32 @@ public class User implements Serializable {
     @ColumnInfo(name = "deviceToken")
     private String deviceToken;
 
+    @SerializedName("provinceId")
+    @ColumnInfo(name = "provinceId")
+    private int provinceId;
+
+    @SerializedName("districtId")
+    @ColumnInfo(name = "districtId")
+    private int districtId;
+
+    @SerializedName("wardId")
+    @ColumnInfo(name = "wardId")
+    private int wardId;
+
+    @SerializedName("address")
+    @ColumnInfo(name = "address")
+    private String address;
+
     public User() {
     }
 
-//    public User(int userId, int userInfoId, String phoneNumber, String email,
-//                String full_name, String password, String sex, String YOB) {
-//        this.userId = userId;
-//        this.userInfoId = userInfoId;
-//        this.phoneNumber = phoneNumber;
-//        this.email = email;
-//        this.full_name = full_name;
-//        this.password = password;
-//        this.sex = sex;
-//        this.YOB = YOB;
-//    }
-
-
-    public User(int userId, int userInfoId, String phoneNumber, String email, String full_name, String accountId,
-                String fullName, String password, String sex, String YOB, String token, String deviceToken) {
+    public User(int userId, int userInfoId, String phoneNumber, String email, String accountId, String fullName,
+                String password, String sex, String YOB, String token, String deviceToken, int provinceId,
+                int districtId, int wardId, String address) {
         this.userId = userId;
         this.userInfoId = userInfoId;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.full_name = full_name;
         this.accountId = accountId;
         this.fullName = fullName;
         this.password = password;
@@ -86,6 +85,10 @@ public class User implements Serializable {
         this.YOB = YOB;
         this.token = token;
         this.deviceToken = deviceToken;
+        this.provinceId = provinceId;
+        this.districtId = districtId;
+        this.wardId = wardId;
+        this.address = address;
     }
 
     public int getUserId() {
@@ -118,14 +121,6 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getFull_name() {
-        return full_name;
-    }
-
-    public void setFull_name(String full_name) {
-        this.full_name = full_name;
     }
 
     public String getAccountId() {
@@ -182,5 +177,37 @@ public class User implements Serializable {
 
     public void setDeviceToken(String deviceToken) {
         this.deviceToken = deviceToken;
+    }
+
+    public int getProvinceId() {
+        return provinceId;
+    }
+
+    public void setProvinceId(int provinceId) {
+        this.provinceId = provinceId;
+    }
+
+    public int getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(int districtId) {
+        this.districtId = districtId;
+    }
+
+    public int getWardId() {
+        return wardId;
+    }
+
+    public void setWardId(int wardId) {
+        this.wardId = wardId;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

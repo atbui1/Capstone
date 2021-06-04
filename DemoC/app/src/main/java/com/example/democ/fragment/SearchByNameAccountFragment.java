@@ -88,7 +88,8 @@ public class SearchByNameAccountFragment extends Fragment implements IClickAccou
     @Override
     public void clickAccountName(AccountSearchByName accountSearchByName) {
         Intent intent = new Intent(getContext().getApplicationContext(), PosterProfileActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Bundle bundle = new Bundle();
         bundle.putSerializable(SEARCH_ACCOUNT, accountSearchByName);
         intent.putExtras(bundle);

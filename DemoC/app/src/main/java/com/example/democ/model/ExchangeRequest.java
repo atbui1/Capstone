@@ -11,23 +11,31 @@ public class ExchangeRequest implements Serializable {
     private int quantity;
     @SerializedName("quantityExchange")
     private int quantityExchange;
-    @SerializedName("shareDetailId")
-    private String shareDetailId;
+    @SerializedName("provinceId")
+    private int provinceId;
+    @SerializedName("districtId")
+    private int districtId;
+    @SerializedName("wardId")
+    private int wardId;
+    @SerializedName("address")
+    private String address;
+    @SerializedName("fullAddress")
+    private String fullAddress;
+    @SerializedName("postId")
+    private String postId;
     @SerializedName("vegetableId")
     private String vegetableId;
 
-    public ExchangeRequest(String id, int quantity, int quantityExchange, String shareDetailId, String vegetableId) {
-        this.id = id;
+    public ExchangeRequest(int quantity, int quantityExchange, int provinceId, int districtId,
+                           int wardId, String address, String fullAddress, String postId, String vegetableId) {
         this.quantity = quantity;
         this.quantityExchange = quantityExchange;
-        this.shareDetailId = shareDetailId;
-        this.vegetableId = vegetableId;
-    }
-
-    public ExchangeRequest(int quantity, int quantityExchange, String shareDetailId, String vegetableId) {
-        this.quantity = quantity;
-        this.quantityExchange = quantityExchange;
-        this.shareDetailId = shareDetailId;
+        this.provinceId = provinceId;
+        this.districtId = districtId;
+        this.wardId = wardId;
+        this.address = address;
+        this.fullAddress = fullAddress;
+        this.postId = postId;
         this.vegetableId = vegetableId;
     }
 
@@ -55,12 +63,52 @@ public class ExchangeRequest implements Serializable {
         this.quantityExchange = quantityExchange;
     }
 
-    public String getShareDetailId() {
-        return shareDetailId;
+    public int getProvinceId() {
+        return provinceId;
     }
 
-    public void setShareDetailId(String shareDetailId) {
-        this.shareDetailId = shareDetailId;
+    public void setProvinceId(int provinceId) {
+        this.provinceId = provinceId;
+    }
+
+    public int getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(int districtId) {
+        this.districtId = districtId;
+    }
+
+    public int getWardId() {
+        return wardId;
+    }
+
+    public void setWardId(int wardId) {
+        this.wardId = wardId;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getFullAddress() {
+        return fullAddress;
+    }
+
+    public void setFullAddress(String fullAddress) {
+        this.fullAddress = fullAddress;
+    }
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 
     public String getVegetableId() {

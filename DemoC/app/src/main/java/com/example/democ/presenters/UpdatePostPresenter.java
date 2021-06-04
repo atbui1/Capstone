@@ -5,8 +5,8 @@ import android.content.Context;
 
 import com.example.democ.capstone.CapstoneRepository;
 import com.example.democ.capstone.CapstoneRepositoryImp;
+import com.example.democ.model.PostRequest;
 import com.example.democ.model.ShareDetail;
-import com.example.democ.model.ShareRequest;
 import com.example.democ.utils.CallBackData;
 import com.example.democ.views.UpdatePostView;
 
@@ -23,8 +23,8 @@ public class UpdatePostPresenter {
         mCapstoneRepository = new CapstoneRepositoryImp();
     }
 
-    public void updatePost(ShareRequest shareRequest, String token) {
-        mCapstoneRepository.updatePost(mContext, shareRequest, token, new CallBackData<ShareDetail>() {
+    public void updatePost(PostRequest postRequest, String token) {
+        mCapstoneRepository.updatePost(mContext, postRequest, token, new CallBackData<ShareDetail>() {
             @Override
             public void onSuccess(ShareDetail shareDetail) {
                 mUpdatePostView.updatePostSuccess(shareDetail);

@@ -18,10 +18,9 @@ import com.example.democ.fragment.VegetableBottomSheetFragment;
 import com.example.democ.fragment.VegetableNeedBottomSheetFragment;
 import com.example.democ.iclick.IClickGarden;
 import com.example.democ.iclick.IClickVegetable;
-import com.example.democ.iclick.IClickVegetableNeed;
 import com.example.democ.model.GardenResult;
 import com.example.democ.model.ShareDetail;
-import com.example.democ.model.ShareRequest;
+import com.example.democ.model.PostRequest;
 import com.example.democ.model.VegetableData;
 import com.example.democ.model.VegetableNeedAll;
 import com.example.democ.presenters.AllGardenPresenter;
@@ -36,7 +35,6 @@ import com.example.democ.views.AllVegetableByGardenIdView;
 import com.example.democ.views.AllVegetableNeedView;
 import com.example.democ.views.CreateShareView;
 import com.example.democ.views.PersonalView;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -215,8 +213,8 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
             showDialogQuantityErr();
             return;
         }
-//        final ShareRequest shareRequest = new ShareRequest(mPostContent, mPostVegetableQuantity, status, mPostVegetableId);
-//        ShareRequest shareRequest = new ShareRequest(mPostContent, mPostVegetableQuantity, mIntStatus, mPostVegetableId, mStrVegetableNeedId, mStrVegetableNeedName);
+//        final PostRequest shareRequest = new PostRequest(mPostContent, mPostVegetableQuantity, status, mPostVegetableId);
+//        PostRequest shareRequest = new PostRequest(mPostContent, mPostVegetableQuantity, mIntStatus, mPostVegetableId, mStrVegetableNeedId, mStrVegetableNeedName);
         System.out.println("content: " + mPostContent);
         System.out.println("quantity: " + mPostVegetableQuantity);
         System.out.println("status: " + mIntStatus);
@@ -231,23 +229,23 @@ public class CreatePostActivity extends AppCompatActivity implements View.OnClic
             mStrVegetableNeedName = "";
             System.out.println("vegetable need id: " + mStrVegetableNeedId);
             System.out.println("vegetable need name: " + mStrVegetableNeedName);
-            ShareRequest shareRequest = new ShareRequest(mPostContent, mPostVegetableQuantity, mIntStatus,
-                    mPostVegetableId, mStrVegetableNeedId);
+//            PostRequest postRequest = new PostRequest(mPostContent, mPostVegetableQuantity, mIntStatus,
+//                    mPostVegetableId, mStrVegetableNeedId);
             System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
             /** tao bai share */
-            mCreateSharePresenter.createShare(shareRequest, mUser.getToken());
+//            mCreateSharePresenter.createShare(postRequest, mUser.getToken());
         } else if (mStrBtnOption == EXCHANGE_POST) {
 
             System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
             System.out.println("mStrVegetableNeedName: " + mStrVegetableNeedName);
             System.out.println(EXCHANGE_POST + EXCHANGE_POST + EXCHANGE_POST + EXCHANGE_POST);
-            ShareRequest shareRequest = new ShareRequest(mPostContent, mPostVegetableQuantity, mIntStatus,
-                    mPostVegetableId, mListVegetableNeedId);
+//            PostRequest postRequest = new PostRequest(mPostContent, mPostVegetableQuantity, mIntStatus,
+//                    mPostVegetableId, mListVegetableNeedId);
             System.out.println("mListVegetableNeedId size: " + mListVegetableNeedId.size());
             System.out.println("in ra : " + mListVegetableNeedId);
             System.out.println("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
             /** tao bai exchange */
-            mCreateSharePresenter.createShare(shareRequest, mUser.getToken());
+//            mCreateSharePresenter.createShare(postRequest, mUser.getToken());
         }
 
 //        mCreateSharePresenter.createShare(shareRequest, mUser.getToken());

@@ -25,9 +25,9 @@
             android:layout_height="@dimen/dp50">
             <Button
                 android:id="@+id/btn_close"
-                android:background="@drawable/bg_edt_red"
+                android:background="@drawable/bg_dark"
                 android:text="Đóng"
-                android:textColor="@color/red"
+                android:textColor="@color/black"
                 android:paddingLeft="@dimen/dp50"
                 android:paddingRight="@dimen/dp50"
                 android:layout_marginTop="@dimen/dp5"

@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp50">
                 <TextView
-                    android:text="vườn rau"
+                    android:text="Vườn rau"
                     android:textSize="@dimen/sp20"
                     android:textColor="@color/sick_green"
                     android:textStyle="bold"
@@ -90,7 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp50">
                 <TextView
-                    android:text="tên rau muốn cho"
+                    android:text="Tên rau muốn cho"
                     android:textSize="@dimen/sp20"
                     android:textColor="@color/sick_green"
                     android:textStyle="bold"
@@ -122,7 +122,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp50">
                 <TextView
-                    android:text="tên rau muốn nhận"
+                    android:text="Tên rau muốn nhận"
                     android:textSize="@dimen/sp20"
                     android:textColor="@color/sick_green"
                     android:textStyle="bold"
@@ -154,7 +154,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp40">
                 <TextView
-                    android:text="nội dung"
+                    android:text="Nội dung"
                     android:textSize="@dimen/sp20"
                     android:textColor="@color/sick_green"
                     android:textStyle="bold"
@@ -167,12 +167,14 @@
                 android:layout_marginTop="@dimen/dp10"
                 android:background="@drawable/bg_edt"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp50">
+                android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/edt_post_content"
                     android:background="@drawable/bg_edt"
                     android:hint="nội dung"
                     android:padding="@dimen/dp8"
+                    android:paddingTop="@dimen/dp5"
+                    android:paddingBottom="@dimen/dp5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>
@@ -182,7 +184,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp40">
                 <TextView
-                    android:text="Số lượng cho"
+                    android:text="Số lượng cho(chậu)"
                     android:textSize="@dimen/sp20"
                     android:textColor="@color/sick_green"
                     android:textStyle="bold"

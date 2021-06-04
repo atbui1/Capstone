@@ -106,6 +106,7 @@
                     android:gravity="center_vertical"
                     android:layout_marginTop="@dimen/dp5"
                     android:layout_marginBottom="@dimen/dp5"
+                    android:layout_marginRight="@dimen/dp10"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>
@@ -137,6 +138,7 @@
                     android:gravity="center_vertical"
                     android:layout_marginTop="@dimen/dp5"
                     android:layout_marginBottom="@dimen/dp5"
+                    android:layout_marginRight="@dimen/dp10"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>
@@ -152,12 +154,15 @@
                 android:layout_height="match_parent">
                 <Button
                     android:id="@+id/btn_close"
-                    android:background="@drawable/bg_edt_red"
+                    android:background="@drawable/bg_dark"
                     android:text="Đóng"
-                    android:textColor="@color/red"
+                    android:textSize="@dimen/sp20"
+                    android:textColor="@color/black"
                     android:paddingLeft="@dimen/dp30"
                     android:paddingRight="@dimen/dp30"
-                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="@dimen/dp10"
+                    android:layout_marginRight="@dimen/dp10"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>
             <LinearLayout
@@ -167,12 +172,15 @@
                 android:layout_height="match_parent">
                 <Button
                     android:id="@+id/btn_ok"
-                    android:background="@drawable/bg_edt"
-                    android:text="Trao đổi"
-                    android:textColor="@color/sick_green"
+                    android:background="@drawable/bg_light"
+                    android:text="Gửi yêu cầu"
+                    android:textSize="@dimen/sp20"
+                    android:textColor="@color/white"
                     android:paddingRight="@dimen/dp20"
                     android:paddingLeft="@dimen/dp20"
-                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="@dimen/dp10"
+                    android:layout_marginRight="@dimen/dp10"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>
         </LinearLayout>

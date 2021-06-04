@@ -24,7 +24,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.democ.activity.CreatePostActivity;
 import com.example.democ.activity.PostDetailActivity;
 import com.example.democ.activity.PosterProfileActivity;
 import com.example.democ.activity.QRCodeScannerActivity;
@@ -38,29 +37,24 @@ import com.example.democ.iclick.IClickPost;
 import com.example.democ.iclick.IClickVegetable;
 import com.example.democ.model.ExchangeData;
 import com.example.democ.model.ExchangeRequest;
-import com.example.democ.model.Garden;
 import com.example.democ.model.GardenResult;
-import com.example.democ.model.Post;
 import com.example.democ.model.PostData;
+import com.example.democ.model.VegetableCheckIsExist;
 import com.example.democ.model.VegetableData;
-import com.example.democ.model.VegetableShare;
+import com.example.democ.model.VegetableExchange;
 import com.example.democ.presenters.AllGardenPresenter;
 import com.example.democ.presenters.AllSharePresenter;
 import com.example.democ.presenters.AllVegetableByGardenIdPresenter;
 import com.example.democ.presenters.CheckVegetableOfAccountPresenter;
 import com.example.democ.presenters.CreateExchangePresenter;
 import com.example.democ.presenters.PersonalPresenter;
-import com.example.democ.presenters.ReportPostPresenter;
 import com.example.democ.room.entities.User;
-import com.example.democ.room.managements.UserManagement;
 import com.example.democ.views.AllGardenView;
 import com.example.democ.views.AllShareView;
 import com.example.democ.views.AllVegetableByGardenIdView;
 import com.example.democ.views.CheckVegetableOfAccountView;
 import com.example.democ.views.CreateExchangeView;
 import com.example.democ.views.PersonalView;
-import com.example.democ.views.ReportPostView;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +75,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
 
     //new
     private User mUser;
+    private int mIntProvinceId = 0, mIntDistrictId = 0, mIntWardId = 0;
+    private String mStrSubAddress = "", mStrFullAddress = "";
     int mIntExchangeQuantityDonate = 0;
     int mIntExchangeQuantityReceive = 0;
     int mIntQuantityOfShare = 0;
@@ -97,10 +93,10 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
     private AllVegetableByGardenIdPresenter mAllVegetableByGardenIdPresenter;
 
     /* Spinner*/
-    private Spinner mSpVegetableNedd;
+    private Spinner mSpVegetableNeed;
     private List<GardenResult> mListGarden;
     private List<VegetableData> mListVegetable;
-    private List<VegetableShare> mListVegetableNeed;
+    private List<VegetableExchange> mListVegetableNeed;
     private Dialog mDlExchangeDetermineVegetable, mDlExchangeAnyVegetable;
     private TextView mTxtGardenName, mTxtVegetableName;
     private int mIntGardenId = 0;
@@ -199,11 +195,23 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
                     }
 
                     if (mIntExchangeQuantityReceive > mIntQuantityOfShare || mIntExchangeQuantityReceive < 1) {
-                        showDialogQuantityErr();
+                        showDialogQuantityReceiveErr();
                         return;
                     }
 
-                    ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityReceive, 0, mShareIdOfShare, "");
+//                    ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityReceive, 0, mShareIdOfShare, "");
+                    ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityReceive, 0,
+                            mIntProvinceId, mIntDistrictId, mIntWardId, mStrSubAddress, mStrFullAddress, mShareIdOfShare, "");
+
+                    System.out.println("*********************nhanrau*************************************");
+                    System.out.println("mIntExchangeQuantityReceive:" + mIntExchangeQuantityReceive);
+                    System.out.println("mIntProvinceId:" + mIntProvinceId);
+                    System.out.println("mIntDistrictId:" + mIntDistrictId);
+                    System.out.println("mIntWardId:" + mIntWardId);
+                    System.out.println("mStrSubAddress:" + mStrSubAddress);
+                    System.out.println("mStrFullAddress:" + mStrFullAddress);
+                    System.out.println("mShareIdOfShare:" + mShareIdOfShare);
+
                     mCreateExchangePresenter.createExchange(exchangeRequest, mUser.getToken());
 
                 } catch (NumberFormatException ex) {
@@ -228,16 +236,22 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         btnClose = (Button) mDlExchangeDetermineVegetable.findViewById(R.id.btn_close);
 
         /* spinner*/
-        ArrayAdapter<VegetableShare> adapterVegetableNeed = new ArrayAdapter<VegetableShare>(getContext(),
-                android.R.layout.simple_spinner_item, mListVegetableNeed);
+//        ArrayAdapter<VegetableExchange> adapterVegetableNeed = new ArrayAdapter<VegetableExchange>(getContext(),
+//                android.R.layout.simple_spinner_item, mListVegetableNeed);
+        ArrayAdapter<VegetableData> adapterVegetableNeed = new ArrayAdapter<VegetableData>(getContext(),
+                android.R.layout.simple_spinner_item, mListVegetable);
         adapterVegetableNeed.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpVegetableNedd = mDlExchangeDetermineVegetable.findViewById(R.id.sp_vegetable_need);
-        mSpVegetableNedd.setAdapter(adapterVegetableNeed);
-        mSpVegetableNedd.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mSpVegetableNeed = mDlExchangeDetermineVegetable.findViewById(R.id.sp_vegetable_need);
+        mSpVegetableNeed.setAdapter(adapterVegetableNeed);
+        mSpVegetableNeed.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                VegetableShare vegetableShare = (VegetableShare) adapterView.getSelectedItem();
-                displaySpinnerVegetableNeed(vegetableShare);
+//                VegetableExchange vegetableExchange = (VegetableExchange) adapterView.getSelectedItem();
+//                displaySpinnerVegetableNeed(vegetableExchange);
+                VegetableData vegetableData = (VegetableData) adapterView.getSelectedItem();
+                mIntQuantityOfAccount = vegetableData.getQuantity();
+                mStrVegetableNeedId = vegetableData.getId();
+//                displaySpinnerVegetableNeed(vegetableData);
             }
 
             @Override
@@ -277,14 +291,27 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
                 mIntExchangeQuantityDonate = quantityDonate;
                 mIntExchangeQuantityReceive = quantityReceive;
 
-                System.out.println("AAAAAAAAAAAAAAaa    openDialogShowExchange  AAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                System.out.println("sl cho:" + mIntExchangeQuantityDonate);
-                System.out.println("sl nhan: " + mIntExchangeQuantityReceive);
-                System.out.println("id rau check: " + mStrVegetableNeedId);
-                System.out.println("name rau check: " + mStrVegetableNeedName);
-                System.out.println("AAAAAAAAAAAAAAaa    openDialogShowExchange  AAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                if (mIntExchangeQuantityReceive > mIntQuantityOfShare) {
+                    showDialogQuantityReceiveErr();
+                    return;
+                } else if (mIntExchangeQuantityDonate > mIntQuantityOfAccount) {
+                    showDialogQuantityDonate();
+                    return;
+                }
 
-                mCheckVegetableOfAccountPresenter.CheckVegetableOfAccountPresenter(mStrVegetableNeedId, mStrVegetableNeedName, mUser.getToken());
+                System.out.println("AAAAAAAAAAAAAAA chay api create exchange AAAAAAAAAAAAAAAAAA");
+                ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityReceive, mIntExchangeQuantityDonate,
+                        mIntProvinceId, mIntDistrictId, mIntWardId, mStrSubAddress, mStrFullAddress, mShareIdOfShare, mStrVegetableNeedId);
+
+                System.out.println("BBBBBBBBBBBBBBBBBBBBb   exchangeRequest BBBBBBBBBBBBBBBBBBBBBBBBBBB");
+                System.out.println("sl cho: " + mIntExchangeQuantityDonate);
+                System.out.println("sl nhan: " + mIntExchangeQuantityReceive);
+                System.out.println("id bai post: " + mShareIdOfShare);
+                System.out.println("id rau cho: " + mStrVegetableNeedId);
+                System.out.println("name rau cho: " + mStrVegetableNeedName);
+                System.out.println("BBBBBBBBBBBBBBBBBBBBb   exchangeRequest BBBBBBBBBBBBBBBBBBBBBBBBBBB");
+
+                mCreateExchangePresenter.createExchange(exchangeRequest, mUser.getToken());
 
             }
         });
@@ -292,11 +319,11 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         mDlExchangeDetermineVegetable.show();
     }
 //    display vegetable need
-    public void displaySpinnerVegetableNeed(VegetableShare vegetableShare) {
-        String needName = vegetableShare.getVegetableShareName();
-        String needId = vegetableShare.getVegetableShareId();
-        mStrVegetableNeedId = vegetableShare.getVegetableShareId();
-        mStrVegetableNeedName = vegetableShare.getVegetableShareName();
+    public void displaySpinnerVegetableNeed(VegetableExchange vegetableExchange) {
+        String needName = vegetableExchange.getVegetableExchangeName();
+        String needId = vegetableExchange.getVegetableExchangeId();
+        mStrVegetableNeedId = vegetableExchange.getVegetableExchangeName();
+        mStrVegetableNeedName = vegetableExchange.getVegetableExchangeId();
 //        createExchange();
     }
     /* show dialog donate any vegetables from the exchange  post*/
@@ -374,6 +401,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         mDlExchangeAnyVegetable.show();
     }
 
+    /* create Exchange Any Vegetable */
     public void createExchangeAnyVegetable() {
         int status = 2;
 
@@ -382,38 +410,36 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
             return;
         } else if (mIntExchangeQuantityReceive > mIntQuantityOfShare || mIntExchangeQuantityReceive < 1) {
             System.out.println("chay vao if mIntExchangeQuantityReceive > mIntQuantityOfShare");
-            showDialogQuantityErr();
+            showDialogQuantityReceiveErr();
             return;
         } else if (mIntExchangeQuantityDonate > mIntQuantityOfAccount || mIntExchangeQuantityDonate < 1) {
             System.out.println("chay vao else if mIntExchangeQuantityDonate > mIntQuantityOfAccount");
             showDialogQuantityExchangeErr();
             return;
-        } else {
-            ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityReceive,
-                    mIntExchangeQuantityDonate, mShareIdOfShare, mStrVegetableNeedId);
-
-            System.out.println("1: " + mIntExchangeQuantityReceive);
-            System.out.println("2: " + mIntExchangeQuantityDonate);
-            System.out.println("3: " + mShareIdOfShare);
-            System.out.println("4: " + mStrVegetableNeedId);
-            mCreateExchangePresenter.createExchange(exchangeRequest, mUser.getToken());
         }
-    }
-    //create exchange with vegetable need detail
-    public void createExchangeDeterminedVegetable() {
+//        else {
+//            ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityReceive,
+//                    mIntExchangeQuantityDonate, mShareIdOfShare, mStrVegetableNeedId);
+//            ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityReceive, mIntExchangeQuantityDonate,
+//                    mIntProvinceId, mIntDistrictId, mIntWardId, mStrSubAddress, mStrFullAddress, mShareIdOfShare, mStrVegetableNeedId);
+//
+//            System.out.println("1: " + mIntExchangeQuantityReceive);
+//            System.out.println("2: " + mIntExchangeQuantityDonate);
+//            System.out.println("3: " + mShareIdOfShare);
+//            System.out.println("4: " + mStrVegetableNeedId);
+//            mCreateExchangePresenter.createExchange(exchangeRequest, mUser.getToken());
+//        }
+        ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityReceive, mIntExchangeQuantityDonate,
+                mIntProvinceId, mIntDistrictId, mIntWardId, mStrSubAddress, mStrFullAddress, mShareIdOfShare, mStrVegetableNeedId);
 
-        ExchangeRequest exchangeRequest = new ExchangeRequest(mIntExchangeQuantityReceive,
-                mIntExchangeQuantityDonate, mShareIdOfShare, mStrVegetableNeedId);
-
-        System.out.println("BBBBBBBBBBBBBBBBBBBBb   exchangeRequest BBBBBBBBBBBBBBBBBBBBBBBBBBB");
-        System.out.println("sl cho: " + mIntExchangeQuantityDonate);
-        System.out.println("sl nhan: " + mIntExchangeQuantityReceive);
-        System.out.println("id bai post: " + mShareIdOfShare);
-        System.out.println("id rau cho: " + mStrVegetableNeedId);
-        System.out.println("BBBBBBBBBBBBBBBBBBBBb   exchangeRequest BBBBBBBBBBBBBBBBBBBBBBBBBBB");
-
+        System.out.println("1: " + mIntExchangeQuantityReceive);
+        System.out.println("2: " + mIntExchangeQuantityDonate);
+        System.out.println("3: " + mShareIdOfShare);
+        System.out.println("4: " + mStrVegetableNeedId);
         mCreateExchangePresenter.createExchange(exchangeRequest, mUser.getToken());
     }
+
+
 
     /*dialog input info err */
     private void showDialogInputInfoErr() {
@@ -435,7 +461,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
-    private void showDialogQuantityErr() {
+    private void showDialogQuantityReceiveErr() {
         final Dialog dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.dialog_exchange_quantity_err);
         dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
@@ -443,7 +469,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         Button btnClose;
         btnClose = (Button) dialog.findViewById(R.id.btn_close);
         txtQuantity = (TextView) dialog.findViewById(R.id.txt_exchange_quantity);
-        txtQuantity.setText("Số lượng nhận không lớn hơn " + mIntQuantityOfShare + " cây");
+        txtQuantity.setText("Số lượng nhận không lớn hơn " + mIntQuantityOfShare + " chậu");
 
         mIntExchangeQuantityDonate = 0;
 
@@ -581,7 +607,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         Button btnClose;
         btnClose = (Button) dialog.findViewById(R.id.btn_close);
         txtQuantity = (TextView) dialog.findViewById(R.id.txt_exchange_quantity);
-        txtQuantity.setText("Số lượng cho không lớn hơn " + mIntQuantityOfAccount + " cây");
+        txtQuantity.setText("Số lượng cho không lớn hơn " + mIntQuantityOfAccount + " Chậu");
 
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -600,7 +626,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         Button btnClose;
         btnClose = (Button) dialog.findViewById(R.id.btn_close);
         txtQuantity = (TextView) dialog.findViewById(R.id.txt_exchange_quantity);
-        txtQuantity.setText("Số lượng cho không lớn hơn " + mIntQuantityOfAccount + " cây");
+        txtQuantity.setText("Số lượng cho không lớn hơn " + mIntQuantityOfAccount + " Chậu");
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -618,7 +644,8 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         Button btnClose;
         btnClose = (Button) dialog.findViewById(R.id.btn_close);
         txtQuantity = (TextView) dialog.findViewById(R.id.txt_exchange_quantity);
-        txtQuantity.setText("Bạn không có: " + mStrVegetableNeedName );
+//        txtQuantity.setText("Bạn không có: " + mStrVegetableNeedName );
+        txtQuantity.setText("Bạn không có rau người dùng cần trao đổi");
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -641,6 +668,7 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
+//                mDlExchangeAnyVegetable.dismiss();
             }
         });
         dialog.setCanceledOnTouchOutside(false);
@@ -675,32 +703,58 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
 
 
     @Override
-    public void clickBtnExchange(PostData shareData) {
-        mIntQuantityOfShare = shareData.getQuantity();
-        mShareIdOfShare = shareData.getId();
-        mAccountIdOfShare = shareData.getAccountId();
-        mVegetableIdOfShare = shareData.getId();
+    public void clickBtnExchange(PostData postData) {
+        mIntQuantityOfShare = postData.getQuantity();
+        mShareIdOfShare = postData.getId();
+        mAccountIdOfShare = postData.getAccountId();
+        mVegetableIdOfShare = postData.getId();
 
-        mListVegetableNeed = shareData.getVegetableShareList();
+        mListVegetableNeed = postData.getVegetableExchange();
+        System.out.println("************************list vegetable exchange*************************");
+        System.out.println("size: " + mListVegetableNeed.size());
+        for (int i = 0; i < mListVegetableNeed.size(); i++) {
+            System.out.println("id: " + mListVegetableNeed.get(i).getVegetableExchangeId());
+            System.out.println("ten: " + mListVegetableNeed.get(i).getVegetableExchangeName());
+        }
+        System.out.println("************************list vegetable exchange*************************");
         if (mVegetableIdOfShare.isEmpty()) {
             mVegetableIdOfShare = "";
         }
-        if (shareData.getStatius() == 1) {
+        if (postData.getType() == 1) {
             openDialogShowShare();
-        } else if(shareData.getStatius() == 2) {
-            if (shareData.getVegetableShareList().size() == 0) {
+        } else if(postData.getType() == 2) {
+            if (postData.getVegetableExchange().size() == 0) {
                 openDialogShowAnyVegetable();
             } else {
-                openDialogShowExchange();
+                checkVegetableNeed();
+//                openDialogShowExchange();
             }
 
         }
     }
+    /*check vegetable*/
+    private void checkVegetableNeed(){
+        List<String> listVegetableExchangeTmp = new ArrayList<>();
+        String vegetableExchangeId = "";
+        for (VegetableExchange x: mListVegetableNeed) {
+            System.out.println("7777777777777777777777777777777777777777777777777777777");
+            System.out.println(x.getVegetableExchangeId());
+            System.out.println(x.getVegetableExchangeName());
+            vegetableExchangeId = x.getVegetableExchangeId();
+            listVegetableExchangeTmp.add(vegetableExchangeId);
+            System.out.println("8888888888888888888888888888888888888888888");
+        }
+        System.out.println("list id vegetable exchange aaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        System.out.println(listVegetableExchangeTmp);
+//        VegetableCheckIsExist vegetableCheckIsExist = new VegetableCheckIsExist(listVegetableExchangeTmp);
+        mCheckVegetableOfAccountPresenter.CheckVegetableOfAccountPresenter(listVegetableExchangeTmp, mUser.getToken());
+        System.out.println("list id vegetable exchange bbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+    }
 
     @Override
-    public void clickPosterUser(PostData shareData) {
+    public void clickPosterUser(PostData postData) {
 
-        if (shareData.getAccountId().equals(mAccountIdUser)) {
+        if (postData.getAccountId().equals(mAccountIdUser)) {
             System.out.println("AAAAAAAAAAAAAAAAAA");
 //            BottomNavigationView.setOnNavigationItemSelectedListener();
             Fragment fragment = new PersonalFragment();
@@ -708,10 +762,11 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         } else {
 
             Intent intent = new Intent(getContext().getApplicationContext(), PosterProfileActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             Bundle bundle = new Bundle();
-            mStrNameOfShare = shareData.getFullName();
-            mAccountIdOfShare = shareData.getAccountId();
+            mStrNameOfShare = postData.getFullName();
+            mAccountIdOfShare = postData.getAccountId();
             bundle.putString("ACCOUNT_ID", mAccountIdUser);
             bundle.putString("ACCOUNT_SHARE", mAccountIdOfShare);
             bundle.putString("NAME_SHARE", mStrNameOfShare);
@@ -723,21 +778,21 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
     }
 
     @Override
-    public void clickReportPost(PostData shareData) {
+    public void clickReportPost(PostData postData) {
         mAccountIdUser = mUser.getAccountId();
-        String accountIdiInShare = shareData.getAccountId();
-        mShareIdOfShare = shareData.getId();
-        clickOpenReportBottomSheet(shareData);
+        String accountIdiInShare = postData.getAccountId();
+        mShareIdOfShare = postData.getId();
+        clickOpenReportBottomSheet(postData);
     }
 
     @Override
-    public void clickPostDetail(PostData shareData) {
+    public void clickPostDetail(PostData postData) {
         System.out.println("XXXXXXXXX   XXXXXXXXXXXX    XXXXXXXXXXXXXX");
         System.out.println("post detail");
         System.out.println("XXXXXXXXX   XXXXXXXXXXXX    XXXXXXXXXXXXXX");
         Intent intent = new Intent(getContext().getApplicationContext(), PostDetailActivity.class);
         Bundle  bundle = new Bundle();
-        bundle.putSerializable(KEY_BUNDLE_HOME, shareData);
+        bundle.putSerializable(KEY_BUNDLE_HOME, postData);
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -768,8 +823,13 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
         System.out.println("createExchangeSuccess");
         System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA createExchangeSuccess");
         showDialogCreateExchangeSuccess();
-        mDlExchangeAnyVegetable.dismiss();
-        initialView();
+        System.out.println("chay toi day roi");
+//        if (mDlExchangeAnyVegetable != null) {
+//            System.out.println("da chay vao toi dialog != null");
+//            mDlExchangeAnyVegetable.dismiss();
+//        }
+        System.out.println("het line roi");
+//        initialView();
     }
 
     @Override
@@ -782,28 +842,53 @@ public class DiaryFragment extends Fragment implements View.OnClickListener, ICl
     @Override
     public void checkVegetableOfAccountSuccess(List<VegetableData> vegetableData) {
 
-        mIntQuantityOfAccount = vegetableData.get(0).getQuantity();
-        mStrVegetableNeedId = vegetableData.get(0).getId();
-        System.out.println("mIntExchangeQuantityDonate: " + mIntExchangeQuantityDonate);
-        System.out.println("mIntQuantityOfAccount: " + mIntQuantityOfAccount);
-        if (mIntExchangeQuantityDonate > mIntQuantityOfAccount) {
-            showDialogQuantityDonate();
-            return;
-        } else {
-            System.out.println("AAAAAAAAAAAAAAA chay api create exchange AAAAAAAAAAAAAAAAAA");
-            createExchangeDeterminedVegetable();
-            System.out.println("AAAAAAAAAAAAAAA chay api create exchange AAAAAAAAAAAAAAAAAA");
+        mListVegetable = vegetableData;
+        if (mListVegetable.size() > 0) {
+//            mIntQuantityOfAccount = vegetableData.get(0).getQuantity();
+//            mStrVegetableNeedId = vegetableData.get(0).getId();
+//            System.out.println("mIntExchangeQuantityDonate: " + mIntExchangeQuantityDonate);
+//            System.out.println("mIntQuantityOfAccount: " + mIntQuantityOfAccount);
+//
+//            if (mIntExchangeQuantityDonate > mIntQuantityOfAccount) {
+//                showDialogQuantityDonate();
+//                return;
+//            } else {
+//                System.out.println("AAAAAAAAAAAAAAA chay api create exchange AAAAAAAAAAAAAAAAAA");
+////                createExchangeDeterminedVegetable();
+//                System.out.println("AAAAAAAAAAAAAAA chay api create exchange AAAAAAAAAAAAAAAAAA");
+//            }
+            openDialogShowExchange();
         }
+//        System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+//        System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+//        System.out.println("************* co rau ***************************");
+//        for (VegetableData x: vegetableData) {
+//            System.out.println("ten");
+//            System.out.println(x.getName());
+//            System.out.println("***then ten ***");
+//        }
+//        System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+//        System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
     }
 
     @Override
-    public void checkVegetableOfAccountFail() {
+    public void checkVegetableOfAccountFail(String msg) {
         showDialogCheckVegetableNeedErr();
     }
 
     @Override
     public void showInfoPersonal(User user) {
         mUser = user;
+
+        mIntProvinceId = user.getProvinceId();
+        mIntDistrictId = user.getDistrictId();
+        mIntWardId = user.getWardId();
+        mStrFullAddress = user.getAddress();
+        if (!mStrFullAddress.equals("")) {
+            String[] addressTmp = mStrFullAddress.split(",");
+            mStrSubAddress = addressTmp[0];
+        }
+
         mAccountIdUser = mUser.getAccountId();
         mAllSharePresenter.getAllShare(user.getToken());
 

@@ -45,9 +45,9 @@
             android:layout_height="match_parent">
             <TextView
                 android:id="@+id/txt_update_garden"
-                android:background="@drawable/bg_edt"
+                android:background="@drawable/bg_light"
                 android:text="Chỉnh sửa"
-                android:textColor="@color/sick_green"
+                android:textColor="@color/white"
                 android:textSize="@dimen/sp17"
                 android:gravity="center"
                 android:paddingLeft="@dimen/dp20"
@@ -62,9 +62,9 @@
             android:layout_height="match_parent">
             <TextView
                 android:id="@+id/txt_delete_garden"
-                android:background="@drawable/bg_edt_red"
+                android:background="@drawable/bg_dark"
                 android:text="Xóa"
-                android:textColor="@color/red"
+                android:textColor="@color/black"
                 android:textSize="@dimen/sp17"
                 android:gravity="center"
                 android:paddingLeft="@dimen/dp40"

@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 
 import com.example.democ.R;
 import com.example.democ.model.ExchangeData;
-import com.example.democ.model.QRCodeData;
 import com.example.democ.presenters.GetQRCodePresenter;
 import com.example.democ.presenters.PersonalPresenter;
 import com.example.democ.room.entities.User;
@@ -77,30 +76,19 @@ public class QRCodeActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void showInfoPersonal(User user) {
-        System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
-        System.out.println("exchangeid: " + mStrExchangeId);
-        System.out.println("accessToken: " + user.getToken());
-        System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
-        mGetQRCodePresenter.getQRCode(mStrExchangeId, user.getToken());
+        mGetQRCodePresenter.getQRCode(mStrExchangeId, user.getPhoneNumber(), user.getToken());
     }
 
     @Override
-    public void GetQRCodeSuccess(QRCodeData qrCodeData) {
-//        QRCodeData qrCodeDataResponse = qrCodeData;
-//        if (qrCodeDataResponse != null) {
-//            Picasso.with(this).load(qrCodeDataResponse.getUrl().trim())
-//                    .placeholder(R.drawable.ic_launcher_background)
-//                    .error(R.drawable.caybacha)
-//                    .into(mImgQRCode);
-//        }
-        if (qrCodeData != null) {
-            Picasso.with(this).load(qrCodeData.getUrl().trim())
+    public void GetQRCodeSuccess(String linkQRCode) {
+        if (linkQRCode != null || !linkQRCode.equals("")) {
+            Picasso.with(this).load(linkQRCode)
                     .placeholder(R.drawable.ic_launcher_background)
                     .error(R.drawable.caybacha)
                     .into(mImgQRCode);
         }
         System.out.println("QQQQQQQQQQQQQ   GetQRCodeSuccess    QQQQQQQQQQQQQQQQQQQ");
-        System.out.println("linkUrl: " + qrCodeData.getUrl());
+        System.out.println("linkUrl: " + linkQRCode);
         System.out.println("QQQQQQQQQQQQQ   GetQRCodeSuccess    QQQQQQQQQQQQQQQQQQQ");
     }
 

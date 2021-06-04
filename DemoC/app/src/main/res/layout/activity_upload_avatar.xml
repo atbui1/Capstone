@@ -63,7 +63,9 @@
         android:layout_height="@dimen/dp50">
         <Button
             android:id="@+id/btn_upload_avatar"
-            android:background="@drawable/bg_btn_login"
+            android:background="@drawable/bg_light"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp20"
             android:text="Cập nhật"
             android:paddingLeft="@dimen/dp30"
             android:paddingRight="@dimen/dp30"

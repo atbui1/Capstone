@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp250">
         <TextView
-            android:text="vui lòng nhập thông tin"
+            android:text="Vui lòng nhập thông tin"
             android:textSize="@dimen/sp20"
             android:gravity="center"
             android:layout_width="match_parent"
@@ -114,8 +114,8 @@
                 android:layout_weight="1"
                 android:id="@+id/btn_close"
                 android:text="Đóng"
-                android:background="@drawable/bg_edt_red"
-                android:textColor="@color/red"
+                android:background="@drawable/bg_dark"
+                android:textColor="@color/black"
                 android:textSize="@dimen/sp20"
                 android:layout_marginLeft="@dimen/dp10"
                 android:layout_marginRight="@dimen/sp20"
@@ -128,9 +128,9 @@
             <Button
                 android:layout_weight="1"
                 android:id="@+id/btn_ok"
-                android:text="Trao đổi"
-                android:background="@drawable/bg_edt"
-                android:textColor="@color/sick_green"
+                android:text="Gửi yêu cầu"
+                android:background="@drawable/bg_light"
+                android:textColor="@color/white"
                 android:textSize="@dimen/sp20"
                 android:layout_marginRight="@dimen/dp10"
                 android:layout_marginLeft="@dimen/dp20"

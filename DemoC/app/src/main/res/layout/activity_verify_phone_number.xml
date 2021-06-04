@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.VerifyPhoneNumberActivity">
+
+
+    <LinearLayout
+        android:background="@color/sick_green"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp50">
+        <LinearLayout
+            android:id="@+id/lnl_back"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
+            <ImageView
+                android:src="@drawable/arrow_left_v"
+                android:layout_width="@dimen/dp30"
+                android:layout_height="@dimen/dp30" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="4"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="match_parent"></LinearLayout>
+    </LinearLayout>
+    <!--LinearLayout content-->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/dp16"
+        android:layout_marginRight="@dimen/dp16"
+        android:layout_marginTop="@dimen/dp20"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_marginBottom="@dimen/dp10"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <TextView
+                android:text="Nhập số điện thoại muốn đăng ký"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dp10"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <EditText
+                android:id="@+id/edt_submit_phone_number"
+                android:background="@drawable/bg_edt"
+                android:hint="Nhập số điện thoại muốn đăng ký"
+                android:paddingLeft="@dimen/dp10"
+                android:inputType="number"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <!--LinearLayout button-->
+        <LinearLayout
+            android:layout_marginTop="@dimen/dp10"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp50">
+            <!--btn submit-->
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/txt_submit_phone"
+                    android:background="@drawable/bg_light"
+                    android:text="Xác nhận"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:textSize="@dimen/sp20"
+                    android:layout_marginLeft="@dimen/dp20"
+                    android:layout_marginRight="@dimen/dp20"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <!--btn cancel-->
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="@dimen/dp0"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/txt_cancel_phone"
+                    android:background="@drawable/bg_dark"
+                    android:text="Thoát"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:textSize="@dimen/sp20"
+                    android:layout_marginLeft="@dimen/dp20"
+                    android:layout_marginRight="@dimen/dp20"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

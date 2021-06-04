@@ -6,7 +6,7 @@ import android.content.Context;
 import com.example.democ.capstone.CapstoneRepository;
 import com.example.democ.capstone.CapstoneRepositoryImp;
 import com.example.democ.model.ShareDetail;
-import com.example.democ.model.ShareRequest;
+import com.example.democ.model.PostRequest;
 import com.example.democ.utils.CallBackData;
 import com.example.democ.views.CreateShareView;
 
@@ -23,8 +23,8 @@ public class CreateSharePresenter {
         mCapstoneRepository = new CapstoneRepositoryImp();
     }
 
-    public void createShare(ShareRequest shareRequest, String token) {
-        mCapstoneRepository.createPostShare(mContext, shareRequest, token, new CallBackData<ShareDetail>() {
+    public void createShare(PostRequest postRequest, String token) {
+        mCapstoneRepository.createPost(mContext, postRequest, token, new CallBackData<ShareDetail>() {
             @Override
             public void onSuccess(ShareDetail shareDetail) {
                 mCreateShareView.createShareViewSuccess(shareDetail);

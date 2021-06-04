@@ -35,13 +35,13 @@ public class ConfigApi {
         String SEARCH_WIKI_DES = "GetDescription";
 
         //post -share
-        String SHARE_CREATE_POST = "api/ShareDetail";
-        String SHARE_ALL = "api/ShareDetail/GetAll";
-        String SHARE_ALL_BY_ID = "api/ShareDetail/GetAllShareById";
-        String SHARE_DELETE = "api/ShareDetail";
-        String SHARE_SEARCH_DESCRIPTION = "api/ShareDetail/SearchShareByDescription";
-        String SHARE_SEARCH_NAME = "api/ShareDetail/SearchShareByName";
-        String SHARE_SEARCH_KEYWORD = "api/ShareDetail/SearchShareByKeyword";
+        String POST_CREATE_POST = "api/Post";
+        String POST_ALL = "api/Post/GetAll";
+        String POST_ALL_BY_ID = "api/Post/GetAllShareById";
+        String POST_DELETE = "api/Post";
+        String POST_SEARCH_DESCRIPTION = "api/Post/SearchShareByDescription";
+        String POST_SEARCH_NAME = "api/Post/SearchShareByName";
+        String POST_SEARCH_KEYWORD = "api/Post/SearchShareByKeyword";
 
         //exchange
         String EXCHANGE = "api/ExchangeDetail";

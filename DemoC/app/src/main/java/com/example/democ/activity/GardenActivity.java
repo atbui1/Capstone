@@ -45,12 +45,13 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
     private final static String KEY_VEGETABLE_DELETE = "KEY_VEGETABLE_DELETE";
     private final static String KEY_VEGETABLE_CREATE = "KEY_VEGETABLE_CREATE";
     private final static String KEY_VEGETABLE_UPDATE = "KEY_VEGETABLE_UPDATE";
+    private final static String KEY_GARDEN_INFO = "KEY_GARDEN_INFO";
     private RecyclerView mRecyclerVegetable;
     private List<Vegetable> mVegetablesList;
     private VegetableAdapter mVegetableAdapter;
 
-    static int mGardenId;
-    static String mGardenName = "", mGardenAddress = "";
+    private int mIntGardenID, mIntProvinceId, mIntDistrictId, mIntWardId;
+    private String mStrGardenName = "", mStrGardenAddress = "";
     private List<VegetableData> mVegetableDataList;
 
     private TextView mTxtTitle;
@@ -63,6 +64,7 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
     private PersonalPresenter mPersonalPresenter;
     private AllVegetableByGardenIdPresenter mAllVegetableByGardenIdPresenter;
     private static int CREATE_VEGETABLE = 2;
+    GardenResult mGardenResult = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,45 +99,122 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerVegetable.setLayoutManager(layoutManager);
 
+        getDataGardenList();
+        getDataGardenCreateVegetable();
+        getGardenDeleteVegetable();
+        getGardenUpdateVegetable();
         getData();
-        mTxtTitle.setText(mGardenName);
+        mTxtTitle.setText(mStrGardenName);
     }
 
+    private void getDataGardenList() {
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
+            GardenResult gardenResult = (GardenResult) bundle.getSerializable(KEY_GARDEN_INFO);
+            if (gardenResult != null) {
+                mGardenResult = gardenResult;
+                mStrGardenName = mGardenResult.getName();
+                mStrGardenAddress = mGardenResult.getAddress();
+                mIntGardenID = mGardenResult.getId();
+                mIntProvinceId = mGardenResult.getProvinceId();
+                mIntDistrictId = mGardenResult.getDistrictId();
+                mIntWardId = mGardenResult.getWardId();
+                System.out.println("chay bundleGardenAdapter ***************************************");
+            }
+        }
+    }
+    private void getDataGardenCreateVegetable() {
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
+            GardenResult gardenResult = (GardenResult) bundle.getSerializable(KEY_VEGETABLE_CREATE);
+            if (gardenResult != null) {
+                mGardenResult = gardenResult;
+                mStrGardenName = mGardenResult.getName();
+                mStrGardenAddress = mGardenResult.getAddress();
+                mIntGardenID = mGardenResult.getId();
+                mIntProvinceId = mGardenResult.getProvinceId();
+                mIntDistrictId = mGardenResult.getDistrictId();
+                mIntWardId = mGardenResult.getWardId();
+                System.out.println("chay bundleGarden create Vegetable ***************************************");
+            }
+        }
+    }
+    private void getGardenDeleteVegetable() {
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
+            GardenResult gardenResult = (GardenResult) bundle.getSerializable(KEY_VEGETABLE_DELETE);
+            if (gardenResult != null) {
+                mGardenResult = gardenResult;
+                mStrGardenName = mGardenResult.getName();
+                mStrGardenAddress = mGardenResult.getAddress();
+                mIntGardenID = mGardenResult.getId();
+                mIntProvinceId = mGardenResult.getProvinceId();
+                mIntDistrictId = mGardenResult.getDistrictId();
+                mIntWardId = mGardenResult.getWardId();
+                System.out.println("chay bundleGarden create Vegetable ***************************************");
+            }
+        }
+    }
+    private void getGardenUpdateVegetable() {
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
+            GardenResult gardenResult = (GardenResult) bundle.getSerializable(KEY_VEGETABLE_UPDATE);
+            if (gardenResult != null) {
+                mGardenResult = gardenResult;
+                mStrGardenName = mGardenResult.getName();
+                mStrGardenAddress = mGardenResult.getAddress();
+                mIntGardenID = mGardenResult.getId();
+                mIntProvinceId = mGardenResult.getProvinceId();
+                mIntDistrictId = mGardenResult.getDistrictId();
+                mIntWardId = mGardenResult.getWardId();
+                System.out.println("chay bundleGarden create Vegetable ***************************************");
+            }
+        }
+    }
     private void getData() {
         Intent intent = getIntent();
 
         /*bundle list garden*/
-        Bundle bundleGardenAdapter = intent.getBundleExtra("infoGardenTo");
+//        Bundle bundleGardenAdapter = intent.getBundleExtra(KEY_GARDEN_INFO);
+//        Bundle bundleGardenAdapter = intent.getExtras();
         /*bundle create vegetable*/
-        Bundle bundleCreateVegetable = intent.getBundleExtra(KEY_VEGETABLE_CREATE);
+//        Bundle bundleCreateVegetable = intent.getBundleExtra(KEY_VEGETABLE_CREATE);
         /*bundle delete vegetable*/
-        Bundle bundleDeleteVegetable = intent.getBundleExtra(KEY_VEGETABLE_DELETE);
+//        Bundle bundleDeleteVegetable = intent.getBundleExtra(KEY_VEGETABLE_DELETE);
         /*bundle update vegetable*/
-        Bundle bundleUpdateVegetable = intent.getBundleExtra(KEY_VEGETABLE_UPDATE);
-        if (bundleGardenAdapter != null) {
-            mGardenName = bundleGardenAdapter.getString("GARDEN_NAME");
-            mGardenAddress = bundleGardenAdapter.getString("GARDEN_ADDRESS");
-            mGardenId = bundleGardenAdapter.getInt("GARDEN_ID");
-            System.out.println("chay bundleGardenAdapter ***************************************");
-        }
-        if (bundleCreateVegetable != null) {
-            mGardenName = bundleCreateVegetable.getString("GARDEN_NAME");
-            mGardenAddress = bundleCreateVegetable.getString("GARDEN_ADDRESS");
-            mGardenId = bundleCreateVegetable.getInt("GARDEN_ID");
-            System.out.println("chay bundleCreateVegetable **************************");
-        }
-        if (bundleDeleteVegetable != null) {
-            mGardenName = bundleDeleteVegetable.getString("GARDEN_NAME");
-            mGardenAddress = bundleDeleteVegetable.getString("GARDEN_ADDRESS");
-            mGardenId = bundleDeleteVegetable.getInt("GARDEN_ID");
-            System.out.println("chay bundleDeleteVegetable **************************");
-        }
-        if (bundleUpdateVegetable != null) {
-            mGardenName = bundleUpdateVegetable.getString("GARDEN_NAME");
-            mGardenAddress = bundleUpdateVegetable.getString("GARDEN_ADDRESS");
-            mGardenId = bundleUpdateVegetable.getInt("GARDEN_ID");
-            System.out.println("chay bundleGardenAdapter ***************************************");
-        }
+//        Bundle bundleUpdateVegetable = intent.getBundleExtra(KEY_VEGETABLE_UPDATE);
+//        if (bundleGardenAdapter != null) {
+//            mGardenResult = (GardenResult) bundleGardenAdapter.getSerializable(KEY_GARDEN_INFO);
+//            mStrGardenName = mGardenResult.getName();
+//            mStrGardenAddress = mGardenResult.getAddress();
+//            mIntGardenID = mGardenResult.getId();
+//            mIntProvinceId = mGardenResult.getProvinceId();
+//            mIntDistrictId = mGardenResult.getDistrictId();
+//            mIntWardId = mGardenResult.getWardId();
+//            System.out.println("chay bundleGardenAdapter ***************************************");
+//        }
+//        if (bundleCreateVegetable != null) {
+//            mStrGardenName = bundleCreateVegetable.getString("GARDEN_NAME");
+//            mStrGardenAddress = bundleCreateVegetable.getString("GARDEN_ADDRESS");
+//            mIntGardenID = bundleCreateVegetable.getInt("GARDEN_ID");
+//            System.out.println("chay bundleCreateVegetable **************************");
+//        }
+//        if (bundleDeleteVegetable != null) {
+//            mStrGardenName = bundleDeleteVegetable.getString("GARDEN_NAME");
+//            mStrGardenAddress = bundleDeleteVegetable.getString("GARDEN_ADDRESS");
+//            mIntGardenID = bundleDeleteVegetable.getInt("GARDEN_ID");
+//            System.out.println("chay bundleDeleteVegetable **************************");
+//        }
+//        if (bundleUpdateVegetable != null) {
+//            mStrGardenName = bundleUpdateVegetable.getString("GARDEN_NAME");
+//            mStrGardenAddress = bundleUpdateVegetable.getString("GARDEN_ADDRESS");
+//            mIntGardenID = bundleUpdateVegetable.getInt("GARDEN_ID");
+//            System.out.println("chay bundleGardenAdapter ***************************************");
+//        }
     }
 
     public void updateUI() {
@@ -149,12 +228,7 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
 
     public void deleteGarden() {
         String token = mUser.getToken();
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        System.out.println("token delete garden: " + token);
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        mDeleteGardenPresenter.deleteGarden(mGardenId, token);
+        mDeleteGardenPresenter.deleteGarden(mIntGardenID, token);
     }
 
     public void showDialogDeleteGarden() {
@@ -182,17 +256,14 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
         dialog.show();
     }
 
-    public void createVegetable() {
-        Intent intentCreateVegetable = new Intent(GardenActivity.this, CreateVegetableActivity.class);
+    public void createVegetable(GardenResult gardenResult) {
+        Intent intent = new Intent(GardenActivity.this, CreateVegetableActivity.class);
 //        intentCreateVegetable.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
 //        intentCreateVegetable.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Bundle bundle = new Bundle();
-        bundle.putInt("GARDEN_ID", mGardenId);
-        bundle.putString("GARDEN_NAME", mGardenName);
-        bundle.putString("GARDEN_ADDRESS", mGardenAddress);
-
-        intentCreateVegetable.putExtras(bundle);
-        startActivity(intentCreateVegetable);
+        bundle.putSerializable(KEY_GARDEN_INFO, gardenResult);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     private void showDialogDeleteGardenErr() {
@@ -219,7 +290,7 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.lnl_add_vegetable:
-                createVegetable();
+                createVegetable(mGardenResult);
                 break;
             case R.id.lnl_back:
                 finish();
@@ -242,28 +313,19 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void getAllVegetableByGardenIdSuccess(List<VegetableData> vegetableData) {
         mVegetableDataList = vegetableData;
-        System.out.println("gggggggggggggggggggggggggggggggggggggggggggggggg");
-        System.out.println("mVegetableDataList.size truoc if else: " + mVegetableDataList.size());
-        System.out.println("gggggggggggggggggggggggggggggggggggggggggggggggg");
         if (mVegetableDataList.size() > 0) {
-            System.out.println("getAllVegetableByGardenIdSuccess garden activity trong if");
             System.out.println("mVegetableDataList.size: " + mVegetableDataList.size());
             updateUI();
         } else {
-            System.out.println("Load recycleView trong else");
-            System.out.println("chay vao else getAllVegetableByGardenIdSuccess");
-            System.out.println("chay vao else getAllVegetableByGardenIdSuccess size: " + mVegetableDataList.size());
+
         }
 
-        System.out.println("111111111111    getAllVegetableByGardenIdSuccess    11111111111111111111");
 
         updateUI();
     }
 
     @Override
     public void getAllVegetableByGardenIdFail() {
-        System.out.println("22222222222222  getAllVegetableByGardenIdFail   22222222222222222222222222");
-        System.out.println("22222222222222  getAllVegetableByGardenIdFail   22222222222222222222222222");
         System.out.println("22222222222222  getAllVegetableByGardenIdFail   22222222222222222222222222");
     }
 
@@ -275,10 +337,11 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
         /*      send new                  */
         Bundle bundle = new Bundle();
         VegetableData vegetable = vegetableData;
-        bundle.putInt("GARDEN_ID", mGardenId);
-        bundle.putString("GARDEN_NAME", mGardenName);
-        bundle.putString("GARDEN_ADDRESS", mGardenAddress);
+//        bundle.putInt("GARDEN_ID", mIntGardenID);
+//        bundle.putString("GARDEN_NAME", mStrGardenName);
+//        bundle.putString("GARDEN_ADDRESS", mStrGardenAddress);
         bundle.putSerializable(KEY_VEGETABLE, vegetable);
+        bundle.putSerializable(KEY_GARDEN_INFO, mGardenResult);
         intent.putExtras(bundle);
         startActivityForResult(intent, CREATE_VEGETABLE);
     }
@@ -286,11 +349,8 @@ public class GardenActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void showInfoPersonal(User user) {
         mUser = user;
-        mAllVegetableByGardenIdPresenter.getAllVegetableByGardenId(mGardenId, user.getToken());
-        System.out.println("chay showInfoPersonal ***************************");
-        System.out.println("garden Id: " + mGardenId);
-        System.out.println("token showInfoPersonal: " + user.getToken());
-        System.out.println("chay showInfoPersonal ***************************");
+        mAllVegetableByGardenIdPresenter.getAllVegetableByGardenId(mIntGardenID, user.getToken());
+
     }
 
 }

@@ -42,6 +42,7 @@ public class GardenFragment extends Fragment implements View.OnClickListener, Al
         IClickGardenFull, DeleteGardenView {
 
     private final static String KEY_GARDEN_SEND_UPDATE = "KEY_GARDEN_SEND_UPDATE";
+    private final static String KEY_GARDEN_INFO = "KEY_GARDEN_INFO";
 
     private View mView;
     //    Floating action
@@ -136,11 +137,8 @@ public class GardenFragment extends Fragment implements View.OnClickListener, Al
 //        intentGarden.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
         intentGarden.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Bundle bundle = new Bundle();
-        bundle.putString("GARDEN_NAME", gardenResult.getName());
-        bundle.putString("GARDEN_ADDRESS", gardenResult.getAddress());
-        bundle.putInt("GARDEN_ID", gardenResult.getId());
-//                intentGarden.putExtras(bundle);
-        intentGarden.putExtra("infoGardenTo", bundle);
+        bundle.putSerializable(KEY_GARDEN_INFO, gardenResult);
+        intentGarden.putExtras(bundle);
         startActivity(intentGarden);
     }
 
@@ -187,6 +185,7 @@ public class GardenFragment extends Fragment implements View.OnClickListener, Al
     public void clickGardenUpdate(GardenResult gardenResult) {
 
         Intent intent = new Intent(getContext(), UpdateGardenActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         Bundle bundle = new Bundle();
         bundle.putSerializable(KEY_GARDEN_SEND_UPDATE, gardenResult);
         intent.putExtras(bundle);

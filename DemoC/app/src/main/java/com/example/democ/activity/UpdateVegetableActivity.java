@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.democ.R;
+import com.example.democ.model.GardenResult;
 import com.example.democ.model.UpdateVegetableResponse;
 import com.example.democ.model.VegetableData;
 import com.example.democ.presenters.PersonalPresenter;
@@ -56,6 +57,7 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
     private static final int REQUEST_STORAGE = 2;
     private final static String KEY_VEGETABLE_UPDATE = "KEY_VEGETABLE_UPDATE";
     private final static String KEY_VEGETABLE_SEND_UPDATE = "KEY_VEGETABLE_SEND_UPDATE";
+    private final static String KEY_GARDEN_INFO_SEND = "KEY_GARDEN_INFO_SEND";
     private final String URL_TELEPHONE = "URL_TELEPHONE";
     private final String URL_LINK = "URL_LINK";
 
@@ -68,13 +70,14 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
     private ImageView mImgVegetable;
     private LinearLayout mLnlBack;
     private EditText mEdtVegetableName, mEdtVegetableDescription, mEdtVegetableFeature, mEdtVegetableQuantity;
-    private String mVegetableImg, mVegetableName, mVegetableDescription, mVegetableFeature, mVegetableId, mGardenName, mGardenAddress;
-    private int mNoVegetable, mGardenId, mVegetableQuantity;
+    private String mVegetableImg, mVegetableName, mVegetableDescription, mVegetableFeature, mVegetableId;
+    private int mNoVegetable, mIntGardenId, mVegetableQuantity;
 
     private UpdateVegetablePresenter mUpdateVegetablePresenter;
     private User mUser;
     private PersonalPresenter mPersonalPresenter;
     private String mAccessToken;
+    private GardenResult mGardenResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,8 +115,11 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
     public void getDataVegetableNew() {
         Intent intentGetData = getIntent();
         Bundle bundleGetData = intentGetData.getExtras();
-        VegetableData vegetableData = (VegetableData) bundleGetData.getSerializable(KEY_VEGETABLE_SEND_UPDATE);
+
         if (bundleGetData != null) {
+            VegetableData vegetableData = (VegetableData) bundleGetData.getSerializable(KEY_VEGETABLE_SEND_UPDATE);
+            mGardenResult = (GardenResult) bundleGetData.getSerializable(KEY_GARDEN_INFO_SEND);
+
             mVegetableId = vegetableData.getId();
             mVegetableName = vegetableData.getName();
             mVegetableDescription = vegetableData.getDescription();
@@ -133,9 +139,8 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
                         .into(mImgVegetable);
             }
             mVegetableQuantity = vegetableData.getQuantity();
-            mGardenId = bundleGetData.getInt("GARDEN_ID");
-            mGardenName = bundleGetData.getString("GARDEN_NAME");
-            mGardenAddress = bundleGetData.getString("GARDEN_ADDRESS");
+
+            mIntGardenId = mGardenResult.getId();
 
             mEdtVegetableName.setText(mVegetableName);
             mEdtVegetableDescription.setText(mVegetableDescription);
@@ -236,7 +241,7 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
         RequestBody requestDescription = RequestBody.create(MediaType.parse("text/plain"), mVegetableDescription);
         RequestBody requestFeature = RequestBody.create(MediaType.parse("text/plain"), mVegetableFeature);
         RequestBody requestQuantity = (RequestBody) RequestBody.create(MediaType.parse("text/plain"), String.valueOf(quantityTmp));
-        RequestBody requestGardenId = (RequestBody) RequestBody.create(MediaType.parse("text/plain"), String.valueOf(mGardenId));
+        RequestBody requestGardenId = (RequestBody) RequestBody.create(MediaType.parse("text/plain"), String.valueOf(mIntGardenId));
 
 
         System.out.println("goi api ***************** ************************");
@@ -247,9 +252,10 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
         System.out.println("mVegetableDescription: " + mVegetableDescription);
         System.out.println("mVegetableFeature: " + mVegetableFeature);
         System.out.println("mVegetableQuantity: " + mVegetableQuantity);
+        System.out.println("quantityTmp: " + quantityTmp);
         System.out.println("media path: " + mMediaPath);
         System.out.println("link image: " + mVegetableImg);
-        System.out.println("mGardenId: " + mGardenId);
+        System.out.println("mGardenId: " + mIntGardenId);
 
         mUpdateVegetablePresenter.updateVegetable(requestId, requestTitle, requestDescription, requestFeature, requestQuantity,
                 requestGardenId, requestLinkImage, mRequestImage, mAccessToken);
@@ -377,11 +383,8 @@ public class UpdateVegetableActivity extends AppCompatActivity implements View.O
         Intent intent = new Intent(UpdateVegetableActivity.this, GardenActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         Bundle bundle = new Bundle();
-        bundle.putInt("GARDEN_ID", mGardenId);
-        bundle.putString("GARDEN_NAME", mGardenName);
-        bundle.putString("GARDEN_ADDRESS", mGardenAddress);
-
-        intent.putExtra(KEY_VEGETABLE_UPDATE, bundle);
+        bundle.putSerializable(KEY_VEGETABLE_UPDATE, mGardenResult);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 

@@ -19,9 +19,9 @@
     <string name="txt_password">Mật khẩu</string>
     <string name="txt_confirm_password">Xác nhận mật khẩu</string>
     <string name="txt_full_name">Họ tên người dùng</string>
-    <string name="txt_yob">ngày sinh</string>
-    <string name="txt_sex">giới tính</string>
-    <string name="txt_email">email</string>
+    <string name="txt_yob">Ngày sinh</string>
+    <string name="txt_sex">Giới tính</string>
+    <string name="txt_email">Email</string>
     <string name="txt_plant_name">Tên</string>
     <string name="txt_plant_description">Mô tả</string>
     <string name="txt_plant_effect">Công dụng</string>

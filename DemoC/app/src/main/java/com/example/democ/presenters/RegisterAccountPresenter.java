@@ -42,8 +42,10 @@ public class RegisterAccountPresenter {
 //    }
 
     public void registerAccount(RequestBody phoneNumber, RequestBody password, RequestBody fullName, RequestBody birthDate,
-                                RequestBody sex, RequestBody address, RequestBody email) {
-        mCapstoneRepository.register(mContext, phoneNumber, password, fullName, birthDate, sex, address, email, new CallBackData<String>() {
+                                RequestBody sex, RequestBody address, RequestBody email, RequestBody provinceId,
+                                RequestBody districtId, RequestBody wardId) {
+        mCapstoneRepository.register(mContext, phoneNumber, password, fullName, birthDate, sex, address, email,
+                provinceId, districtId, wardId, new CallBackData<String>() {
             @Override
             public void onSuccess(String s) {
                 mRegisterAccountView.registerAccountSuccess();

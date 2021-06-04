@@ -15,7 +15,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp50">
             <TextView
-                android:text="Chon 1 loại rau bạn muốn cho"
+                android:text="Chọn 1 loại rau bạn muốn cho"
+                android:textSize="@dimen/sp20"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
@@ -91,9 +92,13 @@
                 android:layout_height="match_parent">
                 <EditText
                     android:id="@+id/edt_quantity_receive"
+                    android:background="@drawable/bg_edt"
                     android:inputType="number"
                     android:paddingLeft="@dimen/dp10"
                     android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/dp5"
+                    android:layout_marginBottom="@dimen/dp5"
+                    android:layout_marginRight="@dimen/dp10"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>
@@ -119,9 +124,13 @@
                 android:layout_height="match_parent">
                 <EditText
                     android:id="@+id/edt_quantity_donate"
+                    android:background="@drawable/bg_edt"
                     android:inputType="number"
                     android:paddingLeft="@dimen/dp10"
                     android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/dp5"
+                    android:layout_marginBottom="@dimen/dp5"
+                    android:layout_marginRight="@dimen/dp10"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>
@@ -136,8 +145,11 @@
                 android:layout_height="match_parent">
                 <Button
                     android:id="@+id/btn_close"
-                    android:background="@drawable/bg_edt"
+                    android:background="@drawable/bg_dark"
                     android:text="Đóng"
+                    android:textSize="@dimen/sp20"
+                    android:layout_marginLeft="@dimen/dp10"
+                    android:layout_marginRight="@dimen/dp10"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>
@@ -147,8 +159,12 @@
                 android:layout_height="match_parent">
                 <Button
                     android:id="@+id/btn_ok"
-                    android:background="@drawable/bg_edt"
-                    android:text="xác nhận"
+                    android:background="@drawable/bg_light"
+                    android:textSize="@dimen/sp20"
+                    android:textColor="@color/white"
+                    android:text="Gửi yêu cầu"
+                    android:layout_marginLeft="@dimen/dp10"
+                    android:layout_marginRight="@dimen/dp10"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>

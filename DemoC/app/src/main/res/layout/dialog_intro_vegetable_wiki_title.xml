@@ -4,8 +4,8 @@
     android:background="@drawable/bg_edt"
     android:layout_marginTop="@dimen/dp100"
     android:layout_marginBottom="@dimen/dp100"
-    android:layout_marginLeft="@dimen/dp30"
-    android:layout_marginRight="@dimen/dp30"
+    android:layout_marginLeft="@dimen/dp20"
+    android:layout_marginRight="@dimen/dp20"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -168,11 +168,12 @@
                             android:layout_marginRight="@dimen/dp20"
                             android:layout_marginTop="@dimen/dp5"
                             android:layout_marginBottom="@dimen/dp5"
-                            android:background="@drawable/bg_edt_red"
+                            android:background="@drawable/bg_dark"
                             android:text="Không"
+                            android:textSize="@dimen/sp20"
                             android:gravity="center"
                             android:textStyle="bold"
-                            android:textColor="@color/red"
+                            android:textColor="@color/black"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />
                     </LinearLayout>
@@ -186,11 +187,12 @@
                             android:layout_marginRight="@dimen/dp20"
                             android:layout_marginTop="@dimen/dp5"
                             android:layout_marginBottom="@dimen/dp5"
-                            android:background="@drawable/bg_edt"
+                            android:background="@drawable/bg_light"
                             android:text="Đúng"
+                            android:textSize="@dimen/sp20"
                             android:gravity="center"
                             android:textStyle="bold"
-                            android:textColor="@color/sick_green"
+                            android:textColor="@color/white"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />
                     </LinearLayout>

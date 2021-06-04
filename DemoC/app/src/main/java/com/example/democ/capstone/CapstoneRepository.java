@@ -11,17 +11,16 @@ import com.example.democ.model.ExchangeRequest;
 import com.example.democ.model.FriendData;
 import com.example.democ.model.Garden;
 import com.example.democ.model.GardenResult;
-import com.example.democ.model.ImageVegetable;
 import com.example.democ.model.PostData;
+import com.example.democ.model.PostRequest;
 import com.example.democ.model.PostSearchDescription;
 import com.example.democ.model.PostSearchKeyword;
 import com.example.democ.model.PostSearchName;
 import com.example.democ.model.ProvinceData;
-import com.example.democ.model.QRCodeData;
 import com.example.democ.model.ReportPost;
 import com.example.democ.model.ShareDetail;
-import com.example.democ.model.ShareRequest;
 import com.example.democ.model.UpdateVegetableResponse;
+import com.example.democ.model.VegetableCheckIsExist;
 import com.example.democ.model.VegetableData;
 import com.example.democ.model.VegetableNeedAll;
 import com.example.democ.model.WardData;
@@ -40,7 +39,8 @@ public interface CapstoneRepository {
     void login(Context context, String userName, String password, String deviceToken, CallBackData<User> callBackData);
 //    void register(Context context, AccountData accountData, CallBackData<AccountData> callBackData);
     void register(Context context, RequestBody phoneNumber, RequestBody password, RequestBody fullName, RequestBody birthDate,
-                  RequestBody sex, RequestBody address, RequestBody email, CallBackData<String> callBackData);
+                  RequestBody sex, RequestBody address, RequestBody email,
+                  RequestBody provinceId, RequestBody districtId, RequestBody wardId, CallBackData<String> callBackData);
     void getInfoAccount(Context context, String accountId, String token, CallBackData<AccountData> callBackData);
     void updateAccount(Context context, AccountData accountData, String token, CallBackData<AccountData> callBackData);
     void changePass(Context context, String oldPass, String newPass, String token, CallBackData<String> callBackData);
@@ -72,7 +72,9 @@ public interface CapstoneRepository {
                          MultipartBody.Part newImages, String token, CallBackData<UpdateVegetableResponse> callBackData);
 
     void getAllVegetableNeed(Context context, String token, CallBackData<List<VegetableNeedAll>> callBackData);
-    void checkVegetableOfAccount(Context context, String vegetableNeedId, String vegetableNeedName, String token,
+//    void checkVegetableOfAccount(Context context, String vegetableNeedId, String vegetableNeedName, String token,
+//                                 CallBackData<List<VegetableData>> callBackData);
+    void checkVegetableOfAccount(Context context, List<String> vegetableCheckIsExist, String token,
                                  CallBackData<List<VegetableData>> callBackData);
 
 //    search
@@ -85,8 +87,8 @@ public interface CapstoneRepository {
 //    share - post
     void getAllShare(Context context, String token, CallBackData<List<PostData>> callBackData);
     void getAllShareById(Context context, String id, String token, CallBackData<List<PostData>> callBackData);
-    void createPostShare(Context context, ShareRequest shareRequest, String token, CallBackData<ShareDetail> callBackData);
-    void updatePost(Context context, ShareRequest shareRequest, String token, CallBackData<ShareDetail> callBackData);
+    void createPost(Context context, PostRequest postRequest, String token, CallBackData<ShareDetail> callBackData);
+    void updatePost(Context context, PostRequest postRequest, String token, CallBackData<ShareDetail> callBackData);
     void deleteShare(Context context, String shareId, String token, CallBackData<String> callBackData);
     void searchShareByDescription(Context context, String valueSearch, String token, CallBackData<List<PostSearchDescription>> callBackData);
     void searchShareByName(Context context, String valueSearch, String token, CallBackData<List<PostSearchName>> callBackData);
@@ -109,7 +111,7 @@ public interface CapstoneRepository {
     //Report post
     void reportPost(Context context, ReportPost reportPost, String token, CallBackData<String> callBackData);
     //QRCode
-    void getQRCode(Context context, String exchangeId, String token, CallBackData<QRCodeData> callBackData);
+    void getQRCode(Context context, String exchangeId, String phoneNumber, String token, CallBackData<String> callBackData);
     void confirmExchangeFinish(Context context, String exchangeId, String token, CallBackData<String> callBackData);
 
     //logout Api

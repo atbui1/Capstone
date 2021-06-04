@@ -58,6 +58,7 @@
                 android:background="@drawable/bg_edt"
                 android:layout_marginLeft="@dimen/dp50"
                 android:layout_marginTop="@dimen/dp5"
+                android:paddingLeft="@dimen/dp10"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>

@@ -15,13 +15,18 @@ import android.widget.TextView;
 import com.example.democ.R;
 import com.example.democ.model.PostData;
 import com.example.democ.model.ShareDetail;
-import com.example.democ.model.ShareRequest;
+import com.example.democ.model.PostRequest;
+import com.example.democ.model.VegetableData;
+import com.example.democ.model.VegetableExchange;
 import com.example.democ.presenters.PersonalPresenter;
 import com.example.democ.presenters.UpdatePostPresenter;
 import com.example.democ.room.entities.User;
 import com.example.democ.views.PersonalView;
 import com.example.democ.views.UpdatePostView;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UpdatePostActivity extends AppCompatActivity implements View.OnClickListener, UpdatePostView, PersonalView {
 
@@ -34,12 +39,16 @@ public class UpdatePostActivity extends AppCompatActivity implements View.OnClic
     private ImageView mImgPost;
 
     private String mStrPostContent = "", mStrUrl = "", mStrNameVegetable = "";
-    private int mIntPostQuantity = 0, mIntCheckStatus = 1, mIntQuantityOfVeg = 0, mIntQuantityDonate = 0;
+    private int mIntPostQuantity = 0, mIntCheckTypePost = 1, mIntQuantityOfVeg = 0, mIntQuantityDonate = 0;
     private PostData mPostData;
 
     private User mUser;
     private PersonalPresenter mPersonalPresenter;
     private UpdatePostPresenter mUpdatePostPresenter;
+
+    private String mStrAddress = "";
+    private List<String> mListVegetableNeedId;
+    private List<VegetableExchange> mListVegetableExchange;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +73,7 @@ public class UpdatePostActivity extends AppCompatActivity implements View.OnClic
         mTxtNameVegetable = (TextView) findViewById(R.id.txt_name_vegetable);
 
 
+        mListVegetableNeedId = new ArrayList<>();
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
@@ -72,9 +82,21 @@ public class UpdatePostActivity extends AppCompatActivity implements View.OnClic
 
                 mStrPostContent = mPostData.getContent().trim();
                 mIntPostQuantity = mPostData.getQuantity();
-                mIntCheckStatus = mPostData.getStatius();
+                mIntCheckTypePost = mPostData.getType();
                 mIntQuantityOfVeg = mPostData.getQuantityVeg();
                 mStrNameVegetable = mPostData.getVegName();
+                mStrAddress = mPostData.getAddress();
+                mListVegetableExchange = mPostData.getVegetableExchange();
+                String vegetableNeedId = "";
+                if (mListVegetableExchange != null) {
+                    for (int i = 0; i < mListVegetableExchange.size(); i++) {
+                        vegetableNeedId = mListVegetableExchange.get(i).getVegetableExchangeId();
+                        mListVegetableNeedId.add(vegetableNeedId);
+                    }
+                } else {
+                    mListVegetableNeedId = null;
+                }
+
                 if (mPostData.getImageVegetablesList() == null || mPostData.getImageVegetablesList().size() == 0) {
                     mStrUrl = "";
                 } else {
@@ -126,9 +148,9 @@ public class UpdatePostActivity extends AppCompatActivity implements View.OnClic
         }
 
         System.out.println("SSSSSSSSSSSSS       khong loi SSSSSSSSSSSSSSSSSSSSSS");
-        ShareRequest shareRequest = new ShareRequest(postData.getId(), mStrPostContent, mIntQuantityDonate,
-                postData.getStatius(), postData.getVegetableId());
-        mUpdatePostPresenter.updatePost(shareRequest, mUser.getToken());
+        PostRequest postRequest = new PostRequest(postData.getId(), mStrPostContent, mIntQuantityDonate,
+                postData.getType(), 0, 0, 0, mStrAddress, postData.getVegetableId(), mListVegetableNeedId);
+        mUpdatePostPresenter.updatePost(postRequest, mUser.getToken());
     }
     /*quantity donate zero*/
     private void showDialogInputDonateZero() {

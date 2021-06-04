@@ -5,7 +5,6 @@ import android.content.Context;
 
 import com.example.democ.capstone.CapstoneRepository;
 import com.example.democ.capstone.CapstoneRepositoryImp;
-import com.example.democ.model.QRCodeData;
 import com.example.democ.utils.CallBackData;
 import com.example.democ.views.GetQRCodeView;
 
@@ -22,11 +21,11 @@ public class GetQRCodePresenter {
         mCapstoneRepository = new CapstoneRepositoryImp();
     }
 
-    public void getQRCode(String exchangeId, String token) {
-        mCapstoneRepository.getQRCode(mContext, exchangeId, token, new CallBackData<QRCodeData>() {
+    public void getQRCode(String exchangeId, String phoneNumber, String token) {
+        mCapstoneRepository.getQRCode(mContext, exchangeId, phoneNumber, token, new CallBackData<String>() {
             @Override
-            public void onSuccess(QRCodeData qrCodeData) {
-                mGetQRCodeView.GetQRCodeSuccess(qrCodeData);
+            public void onSuccess(String s) {
+                mGetQRCodeView.GetQRCodeSuccess(s);
             }
 
             @Override

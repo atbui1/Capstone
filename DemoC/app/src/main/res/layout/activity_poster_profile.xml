@@ -148,7 +148,7 @@
                     android:layout_height="@dimen/dp50">
                     <Button
                         android:id="@+id/btn_remove_request_friend"
-                        android:background="@drawable/bg_edt_red"
+                        android:background="@drawable/bg_edt"
                         android:textSize="@dimen/sp20"
                         android:layout_marginLeft="@dimen/dp50"
                         android:layout_marginRight="@dimen/dp50"
@@ -164,7 +164,7 @@
                     android:layout_height="@dimen/dp50">
                     <LinearLayout
                         android:id="@+id/lnl_reject_add_friend"
-                        android:background="@drawable/bg_edt_red"
+                        android:background="@drawable/bg_dark"
                         android:layout_weight="1"
                         android:layout_marginLeft="@dimen/dp50"
                         android:layout_marginRight="@dimen/dp20"
@@ -172,7 +172,7 @@
                         android:layout_height="match_parent">
                         <TextView
                             android:text="Từ chối"
-                            android:textColor="@color/red"
+                            android:textColor="@color/black"
                             android:textSize="@dimen/sp20"
                             android:gravity="center"
                             android:layout_width="match_parent"

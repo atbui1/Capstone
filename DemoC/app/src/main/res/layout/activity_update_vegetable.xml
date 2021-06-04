@@ -29,7 +29,7 @@
             android:layout_width="@dimen/dp0"
             android:layout_height="match_parent">
             <TextView
-                android:text="Cập nhật vườn rau"
+                android:text="Cập nhật rau"
                 android:textSize="@dimen/sp20"
                 android:textStyle="bold"
                 android:gravity="center"
@@ -131,7 +131,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp40">
                     <TextView
-                        android:text="Số lượng"
+                        android:text="Số lượng (chậu)"
                         android:textSize="@dimen/sp20"
                         android:textColor="@color/sick_green"
                         android:textStyle="bold"

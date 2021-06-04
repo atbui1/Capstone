@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface CheckVegetableOfAccountView {
     void checkVegetableOfAccountSuccess(List<VegetableData> vegetableData);
-    void checkVegetableOfAccountFail();
+    void checkVegetableOfAccountFail(String msg);
 }

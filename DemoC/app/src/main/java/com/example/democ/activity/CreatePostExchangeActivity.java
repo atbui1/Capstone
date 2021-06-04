@@ -18,8 +18,8 @@ import com.example.democ.fragment.VegetableNeedBottomSheetFragment;
 import com.example.democ.iclick.IClickGarden;
 import com.example.democ.iclick.IClickVegetable;
 import com.example.democ.model.GardenResult;
+import com.example.democ.model.PostRequest;
 import com.example.democ.model.ShareDetail;
-import com.example.democ.model.ShareRequest;
 import com.example.democ.model.VegetableData;
 import com.example.democ.model.VegetableNeedAll;
 import com.example.democ.presenters.AllGardenPresenter;
@@ -35,7 +35,6 @@ import com.example.democ.views.CreateShareView;
 import com.example.democ.views.PersonalView;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class CreatePostExchangeActivity extends AppCompatActivity implements View.OnClickListener, PersonalView, AllGardenView,
@@ -43,6 +42,7 @@ public class CreatePostExchangeActivity extends AppCompatActivity implements Vie
         VegetableNeedBottomSheetFragment.IVegetableNeedListener {
 
     private final static String KEY_VEGETABLE_SEND_CREATE_SHARE = "KEY_VEGETABLE_SEND_CREATE_SHARE";
+    private final static String KEY_GARDEN_INFO_SEND = "KEY_GARDEN_INFO_SEND";
     private LinearLayout mLnlBack;
     private Button mBtnCreatePost;
     private EditText mEdtPostContent, mEdtPostVegetableQuantity;
@@ -54,14 +54,18 @@ public class CreatePostExchangeActivity extends AppCompatActivity implements Vie
     private CreateSharePresenter mCreateSharePresenter;
     private AllVegetableNeedPresenter mAllVegetableNeedPresenter;
 
-    private String mStrGardenName = "", mStrVegetableName = "", mStrVegetableId = "", mStrPostContent = "", mStrQuantity = "";
-    private int mIntGardenId = 0, mIntQuantityVegetable = 0, mIntQuantityDonate = 0;
+    private String mStrGardenName = "", mStrVegetableName = "", mStrVegetableId = "", mStrPostContent = "", mStrQuantity = "",
+            mStrAddress = "";
+    private int mIntGardenId = 0, mIntQuantityVegetable = 0, mIntQuantityDonate = 0,
+            mIntProvinceId = 0, mIntDistrictId = 0, mIntWardId = 0;;
     private String mAccessToken = "";
     private List<GardenResult> mListGarden;
     private List<VegetableData> mListVegetable;
     private List<VegetableNeedAll> mListVegetableNeed;
     private List<String> mListVegetableNeedName;
     private List<String> mListVegetableNeedId;
+    private VegetableData mVegetableData;
+    private GardenResult mGardenResult;
 
 
     @Override
@@ -111,13 +115,14 @@ public class CreatePostExchangeActivity extends AppCompatActivity implements Vie
         Intent intentGetData = getIntent();
         Bundle bundleGetData = intentGetData.getExtras();
         if (bundleGetData != null) {
-            VegetableData vegetableData = (VegetableData) bundleGetData.getSerializable(KEY_VEGETABLE_SEND_CREATE_SHARE);
-            mStrVegetableId = vegetableData.getId();
-            mStrVegetableName = vegetableData.getName();
+            mVegetableData = (VegetableData) bundleGetData.getSerializable(KEY_VEGETABLE_SEND_CREATE_SHARE);
+            mGardenResult = (GardenResult) bundleGetData.getSerializable(KEY_GARDEN_INFO_SEND);
+            mStrVegetableId = mVegetableData.getId();
+            mStrVegetableName = mVegetableData.getName();
 
-            mIntQuantityVegetable = vegetableData.getQuantity();
-            mIntGardenId = bundleGetData.getInt("GARDEN_ID");
-            mStrGardenName = bundleGetData.getString("GARDEN_NAME");
+            mIntQuantityVegetable = mVegetableData.getQuantity();
+            mIntGardenId = mGardenResult.getId();
+            mStrGardenName = mGardenResult.getName();
 
             mEdtPostVegetableQuantity.setText(String.valueOf(mIntQuantityVegetable));
             mTxtPostGarden.setText(mStrGardenName);
@@ -191,8 +196,10 @@ public class CreatePostExchangeActivity extends AppCompatActivity implements Vie
             return;
         }
 
-        ShareRequest shareRequest = new ShareRequest(mStrPostContent, mIntQuantityDonate, 2, mStrVegetableId, mListVegetableNeedId);
-        mCreateSharePresenter.createShare(shareRequest, mAccessToken);
+//        PostRequest postRequest = new PostRequest(mStrPostContent, mIntQuantityDonate, 2, mStrVegetableId, mListVegetableNeedId);
+        PostRequest postRequest = new PostRequest(mStrPostContent, mIntQuantityDonate, 2,
+                mIntProvinceId, mIntDistrictId, mIntWardId, mStrAddress, mStrVegetableId, mListVegetableNeedId);
+        mCreateSharePresenter.createShare(postRequest, mAccessToken);
     }
     @Override
     public void onClick(View view) {
@@ -275,6 +282,12 @@ public class CreatePostExchangeActivity extends AppCompatActivity implements Vie
     @Override
     public void showInfoPersonal(User user) {
         mAccessToken = user.getToken();
+
+        mIntProvinceId = user.getProvinceId();
+        mIntDistrictId = user.getDistrictId();
+        mIntWardId = user.getWardId();
+        mStrAddress = user.getAddress();
+
         mAllGardenPresenter.getAllGarden(user.getToken());
         mAllVegetableByGardenIdPresenter.getAllVegetableByGardenId(mIntGardenId, mAccessToken);
         mAllVegetableNeedPresenter.getAllVegetableNeed(user.getToken());

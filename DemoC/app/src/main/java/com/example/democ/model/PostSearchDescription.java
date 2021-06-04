@@ -16,12 +16,12 @@ public class PostSearchDescription implements Serializable {
     private String vegFeature;
     @SerializedName("quantity")
     private int quantity;
-    @SerializedName("statius")
-    private int statius;
+    @SerializedName("type")
+    private int type;
     @SerializedName("content")
     private String content;
-    @SerializedName("vegetableShare")
-    private List<VegetableShare> vegetableShareList;
+    @SerializedName("vegetableExchange")
+    private List<VegetableExchange> vegetableExchange;
     @SerializedName("createdDate")
     private String createdDate;
     @SerializedName("accountId")
@@ -36,17 +36,17 @@ public class PostSearchDescription implements Serializable {
     private List<ImageVegetable> imageVegetablesList;
 
     //CST GetAllShareById - 12 element
-    public PostSearchDescription(String id, String vegName, String vegDescription, String vegFeature, int quantity, int statius,
-                             String content, List<VegetableShare> vegetableShareList, String createdDate, String accountId,
-                             String fullName, String avatar, String phoneNumber, List<ImageVegetable> imageVegetablesList) {
+    public PostSearchDescription(String id, String vegName, String vegDescription, String vegFeature, int quantity, int type,
+                                 String content, List<VegetableExchange> vegetableExchange, String createdDate, String accountId,
+                                 String fullName, String avatar, String phoneNumber, List<ImageVegetable> imageVegetablesList) {
         this.id = id;
         this.vegName = vegName;
         this.vegDescription = vegDescription;
         this.vegFeature = vegFeature;
         this.quantity = quantity;
-        this.statius = statius;
+        this.type = type;
         this.content = content;
-        this.vegetableShareList = vegetableShareList;
+        this.vegetableExchange = vegetableExchange;
         this.createdDate = createdDate;
         this.accountId = accountId;
         this.fullName = fullName;
@@ -95,12 +95,12 @@ public class PostSearchDescription implements Serializable {
         this.quantity = quantity;
     }
 
-    public int getStatius() {
-        return statius;
+    public int getType() {
+        return type;
     }
 
-    public void setStatius(int statius) {
-        this.statius = statius;
+    public void setType(int type) {
+        this.type = type;
     }
 
     public String getContent() {
@@ -111,12 +111,12 @@ public class PostSearchDescription implements Serializable {
         this.content = content;
     }
 
-    public List<VegetableShare> getVegetableShareList() {
-        return vegetableShareList;
+    public List<VegetableExchange> getVegetableExchange() {
+        return vegetableExchange;
     }
 
-    public void setVegetableShareList(List<VegetableShare> vegetableShareList) {
-        this.vegetableShareList = vegetableShareList;
+    public void setVegetableExchange(List<VegetableExchange> vegetableExchange) {
+        this.vegetableExchange = vegetableExchange;
     }
 
     public String getCreatedDate() {

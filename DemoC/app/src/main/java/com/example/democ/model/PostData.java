@@ -21,12 +21,12 @@ public class PostData implements Serializable {
     private int quantity;
     @SerializedName("quantityVeg")
     private int quantityVeg;
-    @SerializedName("statius")
-    private int statius;
+    @SerializedName("type")
+    private int type;
     @SerializedName("content")
     private String content;
-    @SerializedName("vegetableShare")
-    private List<VegetableShare> vegetableShareList;
+    @SerializedName("vegetableExchange")
+    private List<VegetableExchange> vegetableExchange;
     @SerializedName("createdDate")
     private String createdDate;
     @SerializedName("accountId")
@@ -39,11 +39,13 @@ public class PostData implements Serializable {
     private String phoneNumber;
     @SerializedName("images")
     private List<ImageVegetable> imageVegetablesList;
+    @SerializedName("address")
+    private String address;
 
     //CST GetAllShareById - 12 element
-    public PostData(String id, String vegetableId, String vegName, String vegDescription, String vegFeature, int quantity, int quantityVeg, int statius,
-                    String content, List<VegetableShare> vegetableShareList, String createdDate, String accountId,
-                    String fullName, String avatar, String phoneNumber, List<ImageVegetable> imageVegetablesList) {
+    public PostData(String id, String vegetableId, String vegName, String vegDescription, String vegFeature, int quantity, int quantityVeg, int type,
+                    String content, List<VegetableExchange> vegetableExchange, String createdDate, String accountId,
+                    String fullName, String avatar, String phoneNumber, List<ImageVegetable> imageVegetablesList, String address) {
         this.id = id;
         this.vegetableId = vegetableId;
         this.vegName = vegName;
@@ -51,15 +53,16 @@ public class PostData implements Serializable {
         this.vegFeature = vegFeature;
         this.quantity = quantity;
         this.quantityVeg = quantityVeg;
-        this.statius = statius;
+        this.type = type;
         this.content = content;
-        this.vegetableShareList = vegetableShareList;
+        this.vegetableExchange = vegetableExchange;
         this.createdDate = createdDate;
         this.accountId = accountId;
         this.fullName = fullName;
         this.avatar = avatar;
         this.phoneNumber = phoneNumber;
         this.imageVegetablesList = imageVegetablesList;
+        this.address = address;
     }
 
     public String getId() {
@@ -118,12 +121,12 @@ public class PostData implements Serializable {
         this.quantityVeg = quantityVeg;
     }
 
-    public int getStatius() {
-        return statius;
+    public int getType() {
+        return type;
     }
 
-    public void setStatius(int statius) {
-        this.statius = statius;
+    public void setType(int type) {
+        this.type = type;
     }
 
     public String getContent() {
@@ -134,12 +137,12 @@ public class PostData implements Serializable {
         this.content = content;
     }
 
-    public List<VegetableShare> getVegetableShareList() {
-        return vegetableShareList;
+    public List<VegetableExchange> getVegetableExchange() {
+        return vegetableExchange;
     }
 
-    public void setVegetableShareList(List<VegetableShare> vegetableShareList) {
-        this.vegetableShareList = vegetableShareList;
+    public void setVegetableExchange(List<VegetableExchange> vegetableExchange) {
+        this.vegetableExchange = vegetableExchange;
     }
 
     public String getCreatedDate() {
@@ -188,5 +191,13 @@ public class PostData implements Serializable {
 
     public void setImageVegetablesList(List<ImageVegetable> imageVegetablesList) {
         this.imageVegetablesList = imageVegetablesList;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

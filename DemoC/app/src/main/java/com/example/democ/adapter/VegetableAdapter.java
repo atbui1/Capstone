@@ -49,18 +49,13 @@ public class VegetableAdapter extends RecyclerView.Adapter<VegetableAdapter.View
             return;
         }
 
-        System.out.println("------------------- **************** --------------------------");
-        System.out.println("bat dau chay VegetableAdapter");
         mImageList = new ArrayList<>();
         mImageList = (ArrayList<ImageVegetable>) mVegetableList.get(position).getImageVegetables();
-        int maxSize = mVegetableList.get(position).getImageVegetables().size() - 1;
+//        int maxSize = mVegetableList.get(position).getImageVegetables().size() - 1;
         try {
             if (mImageList.size() > 0) {
-                System.out.println("co img VegetableAdapter");
+                int maxSize = mVegetableList.get(position).getImageVegetables().size() - 1;
                 if (mImageList.get(maxSize).getUrl() != "") {
-                    System.out.println("******************************");
-                    System.out.println(mImageList.get(maxSize).getUrl());
-                    System.out.println("******************************");
 //                    Picasso.Builder builder = new Picasso.Builder(mContext);
 //                    builder.build().load("http://" + mImageList.get(0).getUrl())
 //                            .placeholder(R.drawable.ic_launcher_background)
@@ -72,10 +67,6 @@ public class VegetableAdapter extends RecyclerView.Adapter<VegetableAdapter.View
                             .placeholder(R.drawable.ic_launcher_background)
                             .error(R.drawable.caybacha)
                             .into(holder.mImgVegetable);
-                    System.out.println("-----------------***************-------------------------");
-                    System.out.println(mImageList.get(maxSize).getUrl());
-                    System.out.println("http://" + mImageList.get(maxSize).getUrl());
-                    System.out.println("-----------------***************-------------------------");
                 } else {
                     holder.mImgVegetable.setImageResource(R.mipmap.addimage64);
                 }

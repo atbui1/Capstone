@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
-            android:id="@+id/txt_content_qr_code"
-            android:text="Bạn có muốn xóa vườn rau này không"
+            android:id="@+id/txt_content_delete"
+            android:text="Bạn có muốn xóa vườn rau này không?"
             android:textSize="@dimen/sp20"
             android:paddingLeft="@dimen/dp50"
             android:paddingRight="@dimen/dp50"
@@ -23,15 +23,29 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp50">
             <Button
-                android:id="@+id/btn_ok"
-                android:text="Xác nhận"
+                android:id="@+id/btn_delete_yes"
+                android:text="Có"
                 android:layout_marginRight="@dimen/dp20"
                 android:layout_marginBottom="@dimen/dp5"
                 android:paddingLeft="@dimen/dp20"
                 android:paddingRight="@dimen/dp20"
                 android:textSize="@dimen/sp17"
+                android:textStyle="bold"
                 android:textColor="@color/white"
                 android:background="@drawable/bg_light"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+            <Button
+                android:id="@+id/btn_delete_no"
+                android:text="Không"
+                android:layout_marginLeft="@dimen/dp20"
+                android:layout_marginBottom="@dimen/dp5"
+                android:paddingLeft="@dimen/dp20"
+                android:paddingRight="@dimen/dp20"
+                android:textSize="@dimen/sp17"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:background="@drawable/bg_dark"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
         </LinearLayout>

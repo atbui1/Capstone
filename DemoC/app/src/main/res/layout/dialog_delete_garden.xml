@@ -10,7 +10,7 @@
         android:layout_height="match_parent">
         <TextView
             android:id="@+id/txt_content_delete"
-            android:text="Bạn có muốn xóa vườn rau này không"
+            android:text="Bạn có muốn xóa vườn rau này không?"
             android:textSize="@dimen/sp20"
             android:paddingLeft="@dimen/dp50"
             android:paddingRight="@dimen/dp50"
@@ -30,8 +30,8 @@
                 android:paddingLeft="@dimen/dp20"
                 android:paddingRight="@dimen/dp20"
                 android:textSize="@dimen/sp17"
-                android:textColor="@color/red"
-                android:background="@drawable/bg_edt_red"
+                android:textColor="@color/white"
+                android:background="@drawable/bg_light"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
             <Button
@@ -42,8 +42,8 @@
                 android:paddingLeft="@dimen/dp20"
                 android:paddingRight="@dimen/dp20"
                 android:textSize="@dimen/sp17"
-                android:textColor="@color/sick_green"
-                android:background="@drawable/bg_edt"
+                android:textColor="@color/black"
+                android:background="@drawable/bg_dark"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
         </LinearLayout>

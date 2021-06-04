@@ -66,7 +66,7 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
     private WardPresenter mWardPresenter;
     private TextView mTxtProvince, mTxtDistrict, mTxtWard;
     private EditText mEdtSubAddress;
-    private  int mIntDistrictId = 0, mIdWard = 0;
+    private  int mIntProvinceId = 0, mIntDistrictId = 0, mIntWardId = 0;
     private String mStrProvince = "", mStrDistrict = "", mStrWard = "", mStrSubAddress = "", mStrAddress = "";
     private List<ProvinceData> mListProvince;
     private List<DistrictData> mListDistrict;
@@ -175,7 +175,8 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
         System.out.println(sex);
         System.out.println(mStrAddress);
             //chay update
-        AccountData accountData = new AccountData(accountId, fullName, yob, sex, email, mStrAddress);
+        AccountData accountData = new AccountData(accountId, fullName, yob, sex, mIntProvinceId,
+                mIntDistrictId, mIntWardId, email, mStrAddress);
         mUpdateAccountPresenter.updateAccount(accountData, mAccessToken);
     }
 
@@ -281,7 +282,8 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
             @Override
             public void clickProvince(ProvinceData provinceData) {
                 mTxtProvince.setText(provinceData.getName());
-                mIntDistrictId = provinceData.getId();
+//                mIntDistrictId = provinceData.getId();
+                mIntProvinceId = provinceData.getId();
                 mStrProvince = provinceData.getName();
                 //
                 mTxtDistrict.setText("");
@@ -290,7 +292,7 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
                 mStrDistrict = "";
                 mStrWard = "";
                 mStrSubAddress = "";
-                mDistrictPresenter.getDistrictById(mIntDistrictId);
+                mDistrictPresenter.getDistrictById(mIntProvinceId);
             }
         });
         provinceBottomSheetFragment.show(getSupportFragmentManager(), provinceBottomSheetFragment.getTag());
@@ -302,9 +304,14 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
             @Override
             public void clickDistrict(DistrictData districtData) {
                 mTxtDistrict.setText(districtData.getName());
-                mIdWard = districtData.getId();
+//                mIntWardId = districtData.getId();
+                mIntDistrictId = districtData.getId();
                 mStrDistrict = districtData.getName();
-                mWardPresenter.getWardById(mIdWard);
+                mStrWard = "";
+                mStrSubAddress = "";
+                mEdtSubAddress.setText("");
+                mTxtWard.setText("");
+                mWardPresenter.getWardById(mIntDistrictId);
 
             }
         });
@@ -317,6 +324,8 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
             public void clickWard(WardData wardData) {
                 mTxtWard.setText(wardData.getName());
                 mStrWard = wardData.getName();
+                mStrSubAddress = "";
+                mEdtSubAddress.setText("");
             }
         });
         wardBottomSheetFragment.show(getSupportFragmentManager(), wardBottomSheetFragment.getTag());
@@ -347,14 +356,14 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
                 clickOpenProvince();
                 break;
             case R.id.txt_district:
-                if (mStrProvince == null) {
+                if (mStrProvince == null || mStrProvince.equals("")) {
                     Toast.makeText(getApplicationContext(), "Vui lòng chọn tỉnh/thành phố", Toast.LENGTH_SHORT).show();
                 } else {
                     clickOpenDistrict();
                 }
                 break;
             case R.id.txt_ward:
-                if (mStrProvince == null || mStrDistrict == null) {
+                if (mStrProvince == null || mStrDistrict == null || mStrProvince.equals("") || mStrDistrict.equals("")) {
                     Toast.makeText(getApplicationContext(),"Vui lòng chọn tỉnh/thành phố, quận/huyện", Toast.LENGTH_SHORT).show();
                 } else {
                     clickOpenWard();
@@ -382,7 +391,22 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
         sex = accountData.getSex();
         email = accountData.getEmail();
         accountId = accountData.getId();
-
+        /*new address*/
+        mIntProvinceId = accountData.getProvinceId();
+        mIntDistrictId = accountData.getDistrictId();
+        mIntWardId = accountData.getWardId();
+        mStrAddress = accountData.getAddress();
+        String[] addressTmp = mStrAddress.split(",");
+        if (addressTmp != null) {
+            mStrSubAddress = addressTmp[0].trim();
+            mStrWard = addressTmp[1].trim();
+            mStrDistrict = addressTmp[2].trim();
+            mStrProvince = addressTmp[3].trim();
+            mEdtSubAddress.setText(mStrSubAddress);
+            mTxtWard.setText(mStrWard);
+            mTxtDistrict.setText(mStrDistrict);
+            mTxtProvince.setText(mStrProvince);
+        }
 
         System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         System.out.println(phone);
@@ -392,8 +416,13 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
         System.out.println(sex);
         System.out.println(email);
         System.out.println(accountId);
+        System.out.println("mIntProvinceId: " + mIntProvinceId);
+        System.out.println("mIntDistrictId: " + mIntDistrictId);
+        System.out.println("mIntWardId: " + mIntWardId);
         System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
 
+        mDistrictPresenter.getDistrictById(mIntProvinceId);
+        mWardPresenter.getWardById(mIntDistrictId);
 
         mEdtFullName.setText(fullName);
         if (sex == 1) {
@@ -425,7 +454,11 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void getProvinceSuccess(List<ProvinceData> provinceData) {
+        System.out.println("11111111111111111111111111111111111111111111111111111");
+
         mListProvince = provinceData;
+
+        System.out.println("mListProvince: " + mListProvince.size());
     }
 
     @Override
@@ -435,7 +468,11 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void getDistrictSuccess(List<DistrictData> districtData) {
+        System.out.println("222222222222222222222222222222222222222222222222222222");
+
         mListDistrict = districtData;
+
+        System.out.println("mListDistrict: " + mListDistrict.size());
     }
 
     @Override
@@ -445,7 +482,11 @@ public class UpdateAccountActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void getWardSuccess(List<WardData> wardData) {
+        System.out.println("3333333333333333333333333333333333333333333333333333333333333333");
+
         mListWard = wardData;
+
+        System.out.println("mListWard: " + mListWard.size());
     }
 
     @Override

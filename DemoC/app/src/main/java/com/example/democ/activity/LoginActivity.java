@@ -115,6 +115,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.lnl_register_account:
                 Intent intentRegisterAccount = new Intent(LoginActivity.this, RegisterAccountActivity.class);
+                intentRegisterAccount.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intentRegisterAccount);
                 break;
             case R.id.lnl_forgot_password:

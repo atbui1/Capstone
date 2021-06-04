@@ -56,7 +56,7 @@
             android:layout_height="match_parent">
             <Button
                 android:id="@+id/btn_close"
-                android:background="@drawable/bg_edt"
+                android:background="@drawable/bg_dark"
                 android:text="Đóng"
                 android:textStyle="bold"
                 android:textSize="@dimen/sp20"

@@ -11,16 +11,14 @@ import com.example.democ.model.ExchangeRequest;
 import com.example.democ.model.FriendData;
 import com.example.democ.model.Garden;
 import com.example.democ.model.GardenResult;
-import com.example.democ.model.ImageVegetable;
 import com.example.democ.model.PostData;
+import com.example.democ.model.PostRequest;
 import com.example.democ.model.PostSearchDescription;
 import com.example.democ.model.PostSearchKeyword;
 import com.example.democ.model.PostSearchName;
 import com.example.democ.model.ProvinceData;
-import com.example.democ.model.QRCodeData;
 import com.example.democ.model.ReportPost;
 import com.example.democ.model.ShareDetail;
-import com.example.democ.model.ShareRequest;
 import com.example.democ.model.UpdateVegetableResponse;
 import com.example.democ.model.VegetableData;
 import com.example.democ.model.VegetableNeedAll;
@@ -111,10 +109,12 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
     }
 
     @Override
-    public void register(Context context, RequestBody phoneNumber, RequestBody password, RequestBody fullName, RequestBody birthDate, RequestBody sex, RequestBody address, RequestBody email, final CallBackData<String> callBackData) {
+    public void register(Context context, RequestBody phoneNumber, RequestBody password, RequestBody fullName, RequestBody birthDate,
+                         RequestBody sex, RequestBody address, RequestBody email,
+                         RequestBody provinceId, RequestBody districtId, RequestBody wardId, final CallBackData<String> callBackData) {
         ClientApi clientApi = new ClientApi();
         Call<ResponseBody> serviceCall = clientApi.capstoneService().register(phoneNumber, password, fullName, birthDate, sex,
-                address, email);
+                address, email, provinceId, districtId, wardId);
         serviceCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -772,6 +772,7 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
                             callBackData.onFail("");
                         } else {
                             callBackData.onSuccess(vegetableData);
+                            System.out.println("SSSSSSSSSSSSSSSSSSSSS update vegetable success SSSSSSSSSSSSSSSSSSSSSSSSSS");
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -875,11 +876,18 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
     }
 
     @Override
-    public void checkVegetableOfAccount(Context context, String vegetableNeedId, final String vegetableNeedName, String token, final CallBackData<List<VegetableData>> callBackData) {
+    public void checkVegetableOfAccount(Context context, List<String> vegetableCheckIsExist, String token, final CallBackData<List<VegetableData>> callBackData) {
         mListVegetable = new ArrayList<>();
         ClientApi clientApi = new ClientApi();
-        Call<ResponseBody> serviceCall = clientApi.capstoneService().checkVegetableOfAccount(vegetableNeedId, vegetableNeedName,
-                "Bearer " + token);
+        final Gson gson = new Gson();
+        String json = gson.toJson(vegetableCheckIsExist);
+        System.out.println("111111111111111111111111111111111111111111111");
+        System.out.println(json);
+        System.out.println("vegetable");
+        System.out.println(vegetableCheckIsExist);
+        System.out.println("111111111111111111111111111111111111111111111");
+        RequestBody requestBody = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), json);
+        Call<ResponseBody> serviceCall = clientApi.capstoneService().checkVegetableOfAccount(requestBody, "Bearer " + token);
         serviceCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -892,30 +900,71 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
                             mListVegetable.add(vegetableData);
                         }
                         if (mListVegetable == null || mListVegetable.size() == 0) {
-                            callBackData.onFail("");
-                            System.out.println("FFFFFFFFFFFFFFFFF check rau fail FFFFFFFFFFFFFFFFF");
+                            callBackData.onFail("Không có rau cần trao đổi");
                         } else {
                             callBackData.onSuccess(mListVegetable);
-                            System.out.println("SSSSSSSSSSSSSSSS check rau success SSSSSSSSSSSSSSSSS");
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 } else {
-                    callBackData.onFail("");
-                    System.out.println("FFFFFFFFFFFFFFFFFFFFF check rau ngoai if FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
-                    System.out.println("response code: " + response.code());
-                    System.out.println("FFFFFFFFFFFFFFFFFFFFF check rau ngoai if FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+                    callBackData.onFail(response.message());
+                    System.out.println("FFFFFFFFFFFFFFFFF  check vegetable khong ton tai FFFFFFFFFFFFFFFFFFFF");
+                    System.out.println("code: " + response.code());
+                    System.out.println("mess: " + response.message());
+                    System.out.println("FFFFFFFFFFFFFFFFF  check vegetable khong ton tai FFFFFFFFFFFFFFFFFFFF");
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                callBackData.onFail("");
-                System.out.println("FFFFFFFFFFFFFFF check rau loi server FFFFFFFFFFFFFFFFFFFFFFff");
+                callBackData.onFail("Hệ thống đang quá tải, vui lòng thử lại sau");
             }
         });
     }
+
+//    @Override
+//    public void checkVegetableOfAccount(Context context, String vegetableNeedId, final String vegetableNeedName, String token, final CallBackData<List<VegetableData>> callBackData) {
+//        mListVegetable = new ArrayList<>();
+//        ClientApi clientApi = new ClientApi();
+//        Call<ResponseBody> serviceCall = clientApi.capstoneService().checkVegetableOfAccount(vegetableNeedId, vegetableNeedName,
+//                "Bearer " + token);
+//        serviceCall.enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                if (response.code() == 200 && response.body() != null) {
+//                    try {
+//                        String result = response.body().string();
+//                        JSONArray jsonArray = new JSONArray(result);
+//                        for (int i = 0; i < jsonArray.length(); i++) {
+//                            VegetableData vegetableData = new Gson().fromJson(jsonArray.getJSONObject(i).toString(), VegetableData.class);
+//                            mListVegetable.add(vegetableData);
+//                        }
+//                        if (mListVegetable == null || mListVegetable.size() == 0) {
+//                            callBackData.onFail("");
+//                            System.out.println("FFFFFFFFFFFFFFFFF check rau fail FFFFFFFFFFFFFFFFF");
+//                        } else {
+//                            callBackData.onSuccess(mListVegetable);
+//                            System.out.println("SSSSSSSSSSSSSSSS check rau success SSSSSSSSSSSSSSSSS");
+//                        }
+//                    } catch (Exception ex) {
+//                        ex.printStackTrace();
+//                    }
+//                } else {
+//                    callBackData.onFail("");
+//                    System.out.println("FFFFFFFFFFFFFFFFFFFFF check rau ngoai if FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+//                    System.out.println("response code: " + response.code());
+//                    System.out.println("FFFFFFFFFFFFFFFFFFFFF check rau ngoai if FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                callBackData.onFail("");
+//                System.out.println("FFFFFFFFFFFFFFF check rau loi server FFFFFFFFFFFFFFFFFFFFFFff");
+//            }
+//        });
+//    }
 
 
     @Override
@@ -1196,12 +1245,12 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
 
     //        create post share
     @Override
-    public void createPostShare(Context context, ShareRequest shareRequest, String token, final CallBackData<ShareDetail> callBackData) {
+    public void createPost(Context context, PostRequest postRequest, String token, final CallBackData<ShareDetail> callBackData) {
         ClientApi clientApi = new ClientApi();
         final Gson gson = new Gson();
-        String json = gson.toJson(shareRequest);
+        String json = gson.toJson(postRequest);
         RequestBody requestBody = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), json);
-        Call<ResponseBody> serviceCall = clientApi.capstoneService().createPostShare(requestBody, "Bearer " + token);
+        Call<ResponseBody> serviceCall = clientApi.capstoneService().createPost(requestBody, "Bearer " + token);
         serviceCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -1237,10 +1286,10 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
     }
 
     @Override
-    public void updatePost(Context context, final ShareRequest shareRequest, String token, final CallBackData<ShareDetail> callBackData) {
+    public void updatePost(Context context, final PostRequest postRequest, String token, final CallBackData<ShareDetail> callBackData) {
         ClientApi clientApi = new ClientApi();
         final Gson gson = new Gson();
-        String json = gson.toJson(shareRequest);
+        String json = gson.toJson(postRequest);
         final RequestBody requestBody = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), json);
         Call<ResponseBody> serviceCall = clientApi.capstoneService().updatePost(requestBody, "Bearer " + token);
         serviceCall.enqueue(new Callback<ResponseBody>() {
@@ -1785,24 +1834,25 @@ public class CapstoneRepositoryImp implements CapstoneRepository {
     }
 
     @Override
-    public void getQRCode(Context context, String exchangeId, String token, final CallBackData<QRCodeData> callBackData) {
+    public void getQRCode(Context context, String exchangeId, String phoneNumber, String token, final CallBackData<String> callBackData) {
         ClientApi clientApi = new ClientApi();
-        Call<ResponseBody> serviceCall = clientApi.capstoneService().getQRCode(exchangeId, "Bearer " + token);
+        Call<ResponseBody> serviceCall = clientApi.capstoneService().getQRCode(exchangeId, phoneNumber, "Bearer " + token);
         serviceCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.code() == 200 && response.body() != null) {
                     try {
                         String result = response.body().string();
-                        JSONObject jsonObject = new JSONObject(result);
-                        QRCodeData qrCodeData = new Gson().fromJson(jsonObject.toString(), QRCodeData.class);
-                        if (qrCodeData == null) {
-                            callBackData.onFail("");
-                            System.out.println("FFFFFFFFFFFFFFFFFFFF    qrcode fail FFFFFFFFFFFFFFFFFFFFFF");
-                        } else {
-                            callBackData.onSuccess(qrCodeData);
-                            System.out.println("SSSSSSSSSSSSSSSSSSSSS       qrcode success SSSSSSSSSSSSSSSSSSSSSS");
-                        }
+//                        JSONObject jsonObject = new JSONObject(result);
+//                        QRCodeData qrCodeData = new Gson().fromJson(jsonObject.toString(), QRCodeData.class);
+//                        if (qrCodeData == null) {
+//                            callBackData.onFail("");
+//                            System.out.println("FFFFFFFFFFFFFFFFFFFF    qrcode fail FFFFFFFFFFFFFFFFFFFFFF");
+//                        } else {
+//                            callBackData.onSuccess(qrCodeData);
+//                            System.out.println("SSSSSSSSSSSSSSSSSSSSS       qrcode success SSSSSSSSSSSSSSSSSSSSSS");
+//                        }
+                        callBackData.onSuccess(result);
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }

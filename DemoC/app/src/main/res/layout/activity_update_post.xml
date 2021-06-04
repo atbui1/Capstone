@@ -101,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp40">
                 <TextView
-                    android:text="số lượng"
+                    android:text="số lượng(chậu)"
                     android:textSize="@dimen/sp15"
                     android:textColor="@color/sick_green"
                     android:gravity="center_vertical"

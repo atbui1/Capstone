@@ -50,6 +50,11 @@ public class SearchShareKeywordAdapter extends RecyclerView.Adapter<SearchShareK
         }
 
         holder.mTxtVegetableName.setText(mList.get(position).getVegName());
+        if (mList.get(position).getType() == 1) {
+            holder.mTxtPostType.setText("Bài viết: Chia sẻ rau");
+        } else if (mList.get(position).getType() == 2) {
+            holder.mTxtPostType.setText("Bài viết: Trao đổi rau");
+        }
 
         if (mList.get(position).getImageVegetablesList().size() > 0) {
             int maxSize = mList.get(position).getImageVegetablesList().size() - 1;
@@ -80,7 +85,7 @@ public class SearchShareKeywordAdapter extends RecyclerView.Adapter<SearchShareK
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mTxtVegetableName;
+        TextView mTxtVegetableName, mTxtPostType;
         ImageView mImgVegetable;
         LinearLayout mLnlRoot;
         public ViewHolder(@NonNull View itemView) {
@@ -88,6 +93,7 @@ public class SearchShareKeywordAdapter extends RecyclerView.Adapter<SearchShareK
             mTxtVegetableName = (TextView) itemView.findViewById(R.id.txt_vegetable_name);
             mImgVegetable = (ImageView) itemView.findViewById(R.id.img_vegetable);
             mLnlRoot = (LinearLayout) itemView.findViewById(R.id.lnl_root_vegetable);
+            mTxtPostType = (TextView) itemView.findViewById(R.id.txt_post_type);
         }
     }
 }

@@ -17,8 +17,8 @@ import com.example.democ.fragment.VegetableBottomSheetFragment;
 import com.example.democ.iclick.IClickGarden;
 import com.example.democ.iclick.IClickVegetable;
 import com.example.democ.model.GardenResult;
+import com.example.democ.model.PostRequest;
 import com.example.democ.model.ShareDetail;
-import com.example.democ.model.ShareRequest;
 import com.example.democ.model.VegetableData;
 import com.example.democ.presenters.AllGardenPresenter;
 import com.example.democ.presenters.AllVegetableByGardenIdPresenter;
@@ -37,6 +37,7 @@ public class CreatePostShareActivity extends AppCompatActivity implements View.O
         AllVegetableByGardenIdView, CreateShareView {
 
     private final static String KEY_VEGETABLE_SEND_CREATE_SHARE = "KEY_VEGETABLE_SEND_CREATE_SHARE";
+    private final static String KEY_GARDEN_INFO_SEND = "KEY_GARDEN_INFO_SEND";
     private LinearLayout mLnlBack;
     private Button mBtnCreatePost;
     private EditText mEdtPostContent, mEdtPostVegetableQuantity;
@@ -47,11 +48,15 @@ public class CreatePostShareActivity extends AppCompatActivity implements View.O
     private AllVegetableByGardenIdPresenter mAllVegetableByGardenIdPresenter;
     private CreateSharePresenter mCreateSharePresenter;
 
-    private String mStrGardenName = "", mStrVegetableName = "", mStrVegetableId = "", mStrPostContent = "", mStrQuantity = "";
-    private int mIntGardenId = 0, mIntQuantityVegetable = 0, mIntQuantityDonate = 0;
+    private String mStrGardenName = "", mStrVegetableName = "", mStrVegetableId = "", mStrPostContent = "", mStrQuantity = "",
+        mStrProvinceName = "", mStrDistrictName = "", mStrWardName = "", mStrAddress = "";
+    private int mIntGardenId = 0, mIntQuantityVegetable = 0, mIntQuantityDonate = 0,
+                mIntProvinceId = 0, mIntDistrictId = 0, mIntWardId = 0;
     private String mAccessToken = "";
     private List<GardenResult> mListGarden;
     private List<VegetableData> mListVegetable;
+    private VegetableData mVegetableData;
+    private GardenResult mGardenResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,13 +99,15 @@ public class CreatePostShareActivity extends AppCompatActivity implements View.O
         Intent intentGetData = getIntent();
         Bundle bundleGetData = intentGetData.getExtras();
         if (bundleGetData != null) {
-            VegetableData vegetableData = (VegetableData) bundleGetData.getSerializable(KEY_VEGETABLE_SEND_CREATE_SHARE);
-            mStrVegetableId = vegetableData.getId();
-            mStrVegetableName = vegetableData.getName();
+            mVegetableData = (VegetableData) bundleGetData.getSerializable(KEY_VEGETABLE_SEND_CREATE_SHARE);
+            mGardenResult = (GardenResult) bundleGetData.getSerializable(KEY_GARDEN_INFO_SEND);
 
-            mIntQuantityVegetable = vegetableData.getQuantity();
-            mIntGardenId = bundleGetData.getInt("GARDEN_ID");
-            mStrGardenName = bundleGetData.getString("GARDEN_NAME");
+            mStrVegetableId = mVegetableData.getId();
+            mStrVegetableName = mVegetableData.getName();
+
+            mIntQuantityVegetable = mVegetableData.getQuantity();
+            mIntGardenId = mGardenResult.getId();
+            mStrGardenName = mGardenResult.getName();
 
             mEdtPostVegetableQuantity.setText(String.valueOf(mIntQuantityVegetable));
             mTxtPostGarden.setText(mStrGardenName);
@@ -148,11 +155,15 @@ public class CreatePostShareActivity extends AppCompatActivity implements View.O
     /*createPostShare*/
     private void createPostShare() {
         mStrPostContent = mEdtPostContent.getText().toString();
+
         try {
             mIntQuantityDonate = Integer.parseInt(mEdtPostVegetableQuantity.getText().toString().trim());
         } catch (NumberFormatException ex) {
             ex.printStackTrace();
         }
+        System.out.println("mStrPostContent: " + mStrPostContent);
+        System.out.println("mStrVegetableName: " + mStrVegetableName);
+        System.out.println("mStrGardenName: " + mStrGardenName);
         if (mStrPostContent.equals("") || mStrVegetableName.equals("") || mStrGardenName.equals("")) {
             //show dialog
             showDialogInputInfo();
@@ -166,9 +177,20 @@ public class CreatePostShareActivity extends AppCompatActivity implements View.O
             showDialogQuantityDonateZero();
             return;
         }
-
-        ShareRequest shareRequest = new ShareRequest(mStrPostContent, mIntQuantityDonate, 1, mStrVegetableId);
-        mCreateSharePresenter.createShare(shareRequest, mAccessToken);
+        System.out.println("***************** chay api create post share ************************");
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAA*************************************AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa");
+        System.out.println("content: " + mStrPostContent);
+        System.out.println("mIntQuantityDonate: " + mIntQuantityDonate);
+        System.out.println("mIntProvinceId: " + mIntProvinceId);
+        System.out.println("mIntDistrictId: " + mIntDistrictId);
+        System.out.println("mIntWardId: " + mIntWardId);
+        System.out.println("mStrAddress: " + mStrAddress);
+        System.out.println("mStrVegetableId: " + mStrVegetableId);
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAA*************************************AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa");
+//        PostRequest postRequest = new PostRequest(mStrPostContent, mIntQuantityDonate, 1, mStrVegetableId);
+        PostRequest postRequest = new PostRequest(mStrPostContent, mIntQuantityDonate, 1,
+                mIntProvinceId, mIntDistrictId, mIntWardId, mStrAddress, mStrVegetableId);
+        mCreateSharePresenter.createShare(postRequest, mAccessToken);
     }
     @Override
     public void onClick(View view) {
@@ -248,6 +270,10 @@ public class CreatePostShareActivity extends AppCompatActivity implements View.O
     @Override
     public void showInfoPersonal(User user) {
         mAccessToken = user.getToken();
+        mIntProvinceId = user.getProvinceId();
+        mIntDistrictId = user.getDistrictId();
+        mIntWardId = user.getWardId();
+        mStrAddress = user.getAddress();
         mAllGardenPresenter.getAllGarden(user.getToken());
         mAllVegetableByGardenIdPresenter.getAllVegetableByGardenId(mIntGardenId, mAccessToken);
     }

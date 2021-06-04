@@ -62,7 +62,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
     private LinearLayout mLnlBackRegisterLogin;
     private EditText mEdtPhoneNumber, mEdtPassword, mEditPasswordConfirm, mEdtFullName, mEdtEmail;
     private Button mBtnRegisterAccount;
-    private TextView mTxtSex, mTxtYOB;
+    private TextView mTxtSex, mTxtYOB, mTxtPhoneNumber;
     private AwesomeValidation awesomeValidation;
     private RegisterAccountPresenter mRegisterAccountPresenter;
 
@@ -77,7 +77,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
     private WardPresenter mWardPresenter;
     private TextView mTxtProvince, mTxtDistrict, mTxtWard;
     private EditText mEdtSubAddress;
-    private  int mIntDistrictId = 0, mIdWard = 0;
+    private  int mIntProvinceId = 0, mIntDistrictId = 0, mIntWardId = 0;
     private String mStrProvince = "", mStrDistrict = "", mStrWard = "", mStrSubAddress = "", mStrAddress = "";
     private List<ProvinceData> mListProvince;
     private List<DistrictData> mListDistrict;
@@ -117,6 +117,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
 
         mLnlBackRegisterLogin = (LinearLayout) findViewById(R.id.lnl_back_register_login);
         mLnlBackRegisterLogin.setOnClickListener(RegisterAccountActivity.this);
+        mTxtPhoneNumber = (TextView) findViewById(R.id.txt_phone_number);
         mEdtPhoneNumber = (EditText) findViewById(R.id.edt_phone_number);
         mEdtPassword = (EditText) findViewById(R.id.edt_password);
         mEditPasswordConfirm = (EditText) findViewById(R.id.edt_password_confirm);
@@ -140,6 +141,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
     }
 
     private void initialData() {
+        getPhoneNumber();
         mEdtPhoneNumber.setText((mStrPhone.trim().length() > 0) ? mStrPhone : "");
         mEdtPassword.setText((mStrPassword.trim().length() > 0) ? mStrPassword : "");
         mEditPasswordConfirm.setText((mStrPasswordConfirm.trim().length() > 0) ? mStrPasswordConfirm : "");
@@ -147,6 +149,15 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
         mEdtEmail.setText((mStrEmail.trim().length() > 0) ? mStrEmail : "");
         mTxtSex.setText((mStrSexTmp.trim().length() > 0) ? mStrSexTmp : "");
         mTxtYOB.setText((mStrYOB.trim().length() > 0) ? mStrYOB : "");
+    }
+
+    private void getPhoneNumber() {
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
+            mStrPhone = bundle.getString("PHONE_NUMBER_VERIFY");
+            mTxtPhoneNumber.setText(mStrPhone);
+        }
     }
 
     private void setData() {
@@ -225,6 +236,9 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
                 System.out.println("address: " + mStrAddress);
                 System.out.println("email: " + mStrEmail);
                 System.out.println("active: " + active);
+                System.out.println("mIntProvinceId: " + mIntProvinceId);
+                System.out.println("mIntDistrictId: " + mIntDistrictId);
+                System.out.println("mIntWardId: " + mIntWardId);
                 System.out.println("REGISTER 22222222222222222222222222222222222222");
 
                 RequestBody phone = RequestBody.create(MediaType.parse("text/plain"), mStrPhone);
@@ -234,10 +248,13 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
                 RequestBody sex = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(mIntSex));
                 RequestBody address = RequestBody.create(MediaType.parse("text/plain"), mStrAddress);
                 RequestBody email = RequestBody.create(MediaType.parse("text/plain"), mStrEmail);
+                RequestBody provinceId = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(mIntProvinceId));
+                RequestBody districtId = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(mIntDistrictId));
+                RequestBody wardId = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(mIntWardId));
                 /*api register*/
 //                confirmPhoneNumber(mStrPhone);
 
-                mRegisterAccountPresenter.registerAccount(phone, pass, fullName, YOB, sex, address, email);
+                mRegisterAccountPresenter.registerAccount(phone, pass, fullName, YOB, sex, address, email, provinceId, districtId, wardId);
 
             } else {
                 showDialogConfirmPassErr();
@@ -257,6 +274,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
                 mTxtProvince.setText(provinceData.getName());
                 mIntDistrictId = provinceData.getId();
                 mStrProvince = provinceData.getName();
+                mIntProvinceId = provinceData.getId();
                 //
                 mTxtDistrict.setText("");
                 mTxtWard.setText("");
@@ -276,9 +294,10 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
             @Override
             public void clickDistrict(DistrictData districtData) {
                 mTxtDistrict.setText(districtData.getName());
-                mIdWard = districtData.getId();
+                mIntWardId = districtData.getId();
                 mStrDistrict = districtData.getName();
-                mWardPresenter.getWardById(mIdWard);
+                mIntDistrictId = districtData.getId();
+                mWardPresenter.getWardById(mIntWardId);
 
             }
         });
@@ -291,6 +310,8 @@ public class RegisterAccountActivity extends AppCompatActivity implements View.O
             public void clickWard(WardData wardData) {
                 mTxtWard.setText(wardData.getName());
                 mStrWard = wardData.getName();
+                mIntWardId = wardData.getId();
+                mIntDistrictId = wardData.getDistrictID();
             }
         });
         wardBottomSheetFragment.show(getSupportFragmentManager(), wardBottomSheetFragment.getTag());

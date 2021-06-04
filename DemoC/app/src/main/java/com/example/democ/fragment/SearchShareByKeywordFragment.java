@@ -86,7 +86,8 @@ public class SearchShareByKeywordFragment extends Fragment implements IClickSear
     @Override
     public void iClickPostSearchKeyword(PostSearchKeyword postSearchKeyword) {
         Intent intent = new Intent(getContext(), PostDetailActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Bundle bundle = new Bundle();
         bundle.putSerializable(KEY_BUNDLE_KEYWORD, postSearchKeyword);
         intent.putExtras(bundle);
