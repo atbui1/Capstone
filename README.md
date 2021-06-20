@@ -1,5 +1,6 @@
 # Capstone
 Green vegetable sharing system - Hệ thống chia sẻ rau xanh tự trồng
+
 • Mobile application for normal end-users that support the following functions
 - Register account to be a member
 - Login/Logout
@@ -16,6 +17,7 @@ Green vegetable sharing system - Hệ thống chia sẻ rau xanh tự trồng
 - …
 ********************
 Hệ thống chia sẻ rau xanh - Hệ thống chia sẻ tự trồng rau xanh
+
 • Ứng dụng di động dành cho người dùng cuối thông thường hỗ trợ các chức năng sau
 - Đăng ký tài khoản để trở thành thành viên
 - Đăng nhập Đăng xuất
